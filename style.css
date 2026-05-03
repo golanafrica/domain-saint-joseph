@@ -1,0 +1,23 @@
+/*
+Theme Name: Collège Filles BF
+Theme URI: https://college-filles-bf.local
+Author: Ton Nom
+Author URI: https://ton-site.bf
+Description: Site officiel du Collège Professionnel de Jeunes Filles - Formation technique et autonomie
+Version: 1.0.0
+Requires at least: 6.5
+Tested up to: 6.9
+Requires PHP: 7.4
+License: GNU General Public License v2 or later
+Text Domain: college-filles-bf
+*/
+
+/* Reset minimal mobile-first */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: system-ui, -apple-system, sans-serif; line-height: 1.6; color: #1E293B; background: #F8FAFC; }
+img { max-width: 100%; height: auto; display: block; }
+a { color: #1A365D; text-decoration: none; }
+a:hover { color: #D69E2E; }
+.container { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 1rem; }
+.skip-link { position: absolute; top: -40px; left: 0; background: #000; color: #fff; padding: 8px; z-index: 999; }
+.skip-link:focus { top: 0; }
