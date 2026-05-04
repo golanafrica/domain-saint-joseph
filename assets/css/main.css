@@ -378,3 +378,98 @@ img {
     .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
     .contact-grid .grid-2 { display: flex; flex-direction: column; }
 }
+
+/* ── Page À propos ── */
+.card-text {
+    background: var(--clr-white);
+    padding: 2rem;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    margin-bottom: 1.5rem;
+}
+.card-text.bg-light { background: var(--clr-light); }
+.card-text h2 { color: var(--clr-primary); margin-bottom: 1rem; }
+.card-text ul { margin: 1rem 0; padding-left: 1.2rem; }
+.card-text li { margin-bottom: 0.5rem; }
+
+.liste-icone li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+}
+
+/* Valeurs */
+.grid-6 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 1rem;
+    margin-top: 2rem;
+}
+.valeur-card {
+    background: var(--clr-white);
+    padding: 1.5rem 1rem;
+    border-radius: var(--radius);
+    text-align: center;
+    box-shadow: var(--shadow);
+    transition: transform 0.2s;
+}
+.valeur-card:hover { transform: translateY(-4px); }
+.valeur-icon { font-size: 2rem; display: block; margin-bottom: 0.5rem; }
+.valeur-card h3 {
+    font-size: 1rem;
+    color: var(--clr-primary);
+    margin-bottom: 0.3rem;
+}
+.valeur-card p {
+    font-size: 0.85rem;
+    color: var(--clr-text-light);
+}
+
+/* Équipe */
+.grid-3 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5rem;
+}
+.card-membre {
+    background: var(--clr-white);
+    padding: 2rem 1.5rem;
+    border-radius: var(--radius);
+    text-align: center;
+    box-shadow: var(--shadow);
+}
+.membre-photo {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    background: var(--clr-light);
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+.membre-role {
+    color: var(--clr-accent);
+    font-weight: 600;
+    font-size: 0.9rem;
+    margin: 0.5rem 0;
+}
+.card-membre p {
+    font-size: 0.9rem;
+    color: var(--clr-text-light);
+}
+
+/* Utilitaires */
+.mb-2 { margin-bottom: 2rem; }
+.text-center { text-align: center; }
+.small { font-size: 0.85rem; color: var(--clr-text-light); }
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+    .grid-2, .grid-3, .grid-6 { grid-template-columns: 1fr; }
+    .hero-cta { flex-direction: column; align-items: center; }
+    .hero-cta .btn { width: 100%; max-width: 300px; }
+}
