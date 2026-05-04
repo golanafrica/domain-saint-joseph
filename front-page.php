@@ -9,7 +9,7 @@
             <a href="<?php echo esc_url( home_url( '/formation' ) ); ?>" class="btn btn-primary">
                 Nos formations
             </a>
-            <a href="<?php echo esc_url( home_url( '/maison-accueil' ) ); ?>" class="btn btn-secondary">
+            <a href="<?php echo esc_url( home_url( '/maison-daccueil' ) ); ?>" class="btn btn-secondary">
                 Réserver un séjour
             </a>
         </div>

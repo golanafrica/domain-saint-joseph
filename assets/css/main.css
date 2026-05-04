@@ -307,3 +307,74 @@ img {
     .grid-2, .grid-6 { grid-template-columns: 1fr; }
     .btn-whatsapp { margin: 1rem 0 0; }
 }
+
+/* ── Pages templates ── */
+.page-header {
+    background: var(--clr-primary);
+    color: var(--clr-white);
+    padding: 3rem 0;
+    text-align: center;
+}
+.page-subtitle { font-size: 1.1rem; opacity: 0.95; margin-top: 0.5rem; }
+
+/* Formations */
+.grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; }
+.card-formation, .card-chambre {
+    background: var(--clr-white); padding: 1.5rem;
+    border-radius: var(--radius); box-shadow: var(--shadow);
+}
+.card-formation ul { margin: 1rem 0; padding-left: 1.2rem; }
+.card-formation li { margin-bottom: 0.3rem; }
+.btn-outline {
+    display: inline-block; padding: 0.5rem 1rem;
+    border: 2px solid var(--clr-primary); color: var(--clr-primary);
+    border-radius: var(--radius); font-weight: 600; margin-top: 1rem;
+}
+.btn-outline:hover { background: var(--clr-primary); color: var(--clr-white); }
+
+/* Chambres */
+.card-chambre { position: relative; text-align: center; }
+.chambre-badge {
+    position: absolute; top: 1rem; right: 1rem;
+    background: var(--clr-accent); color: var(--clr-text);
+    padding: 0.3rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 700;
+}
+.prix { font-weight: 700; color: var(--clr-primary); margin: 0.5rem 0 1rem; }
+
+/* Équipements */
+.grid-4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; }
+.equip-item {
+    background: var(--clr-white); padding: 1rem;
+    border-radius: var(--radius); text-align: center;
+    box-shadow: var(--shadow); font-weight: 500;
+}
+
+/* Formulaire */
+.form-reservation label { display: block; margin: 0.8rem 0 0.3rem; font-weight: 600; }
+.form-reservation input, .form-reservation select, .form-reservation textarea {
+    width: 100%; padding: 0.6rem; border: 1px solid #cbd5e1;
+    border-radius: var(--radius); font-size: 1rem;
+}
+.form-reservation input:focus, .form-reservation select:focus, .form-reservation textarea:focus {
+    outline: none; border-color: var(--clr-accent); box-shadow: 0 0 0 3px rgba(212,172,13,0.2);
+}
+.small { font-size: 0.85rem; color: var(--clr-text-light); margin-top: 0.5rem; }
+
+/* Contact */
+.contact-info h3 { margin: 1.5rem 0 0.5rem; color: var(--clr-primary); }
+.contact-info a { color: var(--clr-primary); }
+.contact-info a:hover { color: var(--clr-accent); }
+
+/* Map lazy load */
+.map-wrapper { position: relative; margin: 2rem 0; }
+.map-placeholder {
+    background: var(--clr-light); padding: 3rem;
+    text-align: center; border-radius: var(--radius);
+}
+.btn-small { padding: 0.4rem 0.8rem; font-size: 0.9rem; }
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+    .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+    .contact-grid .grid-2 { display: flex; flex-direction: column; }
+}
