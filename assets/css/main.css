@@ -473,3 +473,74 @@ img {
     .hero-cta { flex-direction: column; align-items: center; }
     .hero-cta .btn { width: 100%; max-width: 300px; }
 }
+
+/* ── Formation: Pricing & WhatsApp ── */
+.card-formation .prix {
+    font-weight: 700;
+    color: var(--clr-accent);
+    margin: 0.8rem 0 1rem;
+    font-size: 0.95rem;
+}
+.btn-whatsapp-small {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: #25D366;
+    color: white;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    text-decoration: none;
+    transition: opacity 0.2s;
+}
+.btn-whatsapp-small:hover { opacity: 0.9; }
+
+/* ── Témoignages ── */
+.card-temoignage {
+    background: var(--clr-white);
+    padding: 1.5rem;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    border-left: 4px solid var(--clr-accent);
+}
+.card-temoignage p {
+    font-style: italic;
+    margin-bottom: 0.8rem;
+    color: var(--clr-text);
+}
+.card-temoignage footer {
+    font-weight: 600;
+    color: var(--clr-primary);
+    font-size: 0.9rem;
+}
+
+/* ── Infos pratiques ── */
+.grid-3 .info-item {
+    text-align: center;
+    padding: 1.5rem;
+}
+.info-icon {
+    font-size: 2rem;
+    display: block;
+    margin-bottom: 0.5rem;
+}
+.info-item h4 {
+    color: var(--clr-primary);
+    margin-bottom: 0.5rem;
+}
+.info-item p {
+    font-size: 0.9rem;
+    color: var(--clr-text-light);
+}
+
+/* ── CTA Final ── */
+.cta-final .btn {
+    margin: 0.5rem;
+}
+
+/* ── Responsive mobile ── */
+@media (max-width: 768px) {
+    .grid-3 { grid-template-columns: 1fr; }
+    .hero-cta { flex-direction: column; align-items: center; }
+    .hero-cta .btn { width: 100%; max-width: 300px; margin: 0.3rem 0; }
+    .card-formation { text-align: center; }
+}
