@@ -12,14 +12,31 @@ License: GNU General Public License v2 or later
 Text Domain: domaine-saint-joseph
 */
 
-/* Le reste du CSS reste identique */
+:root {
+    /* Palette Domaine Saint Joseph */
+    --clr-primary:    #1A5276;  /* Bleu institutionnel */
+    --clr-secondary:  #2980B9;  /* Bleu secondaire */
+    --clr-accent:     #D4AC0D;  /* Or : excellence */
+    --clr-bg:         #FDFEFE;  /* Blanc cassé */
+    --clr-text:       #2C3E50;  /* Gris foncé lisible */
+    --clr-text-light: #566573;
+    --clr-white:      #FFFFFF;
+    --clr-light:      #F2F3F4;
+    --font-main: system-ui, -apple-system, 'Segoe UI', Arial, sans-serif;
+    --radius: 8px;
+    --shadow: 0 2px 16px rgba(0,0,0,0.10);
+    --container: 1200px;
+}
 
-/* Reset minimal mobile-first */
+/* Reset + base mobile-first */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: system-ui, -apple-system, sans-serif; line-height: 1.6; color: #1E293B; background: #F8FAFC; }
+body { font-family: var(--font-main); background: var(--clr-bg); color: var(--clr-text); line-height: 1.6; }
+a { color: var(--clr-primary); text-decoration: none; transition: color 0.2s; }
+a:hover { color: var(--clr-accent); }
 img { max-width: 100%; height: auto; display: block; }
-a { color: #1A365D; text-decoration: none; }
-a:hover { color: #D69E2E; }
-.container { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 1rem; }
+.container { max-width: var(--container); margin: 0 auto; padding: 0 1rem; }
 .skip-link { position: absolute; top: -40px; left: 0; background: #000; color: #fff; padding: 8px; z-index: 999; }
 .skip-link:focus { top: 0; }
+.section-padding { padding: 3rem 0; }
+.text-center { text-align: center; }
+.bg-light { background: var(--clr-light); }

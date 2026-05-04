@@ -19,18 +19,17 @@
 <!-- 2 ACTIVITÉS -->
 <section class="activites section-padding">
     <div class="container">
+        <h2 class="text-center">Nos Activités</h2>
         <div class="grid-2">
-            <!-- Formation -->
             <article class="card-activite">
                 <div class="card-icon">🎓</div>
-                <h2>Formation Technique</h2>
+                <h3>Formation Technique</h3>
                 <p>Couture, Informatique, Entrepreneuriat : des filières concrètes pour l'autonomie des jeunes filles.</p>
                 <a href="<?php echo esc_url( home_url( '/formation' ) ); ?>" class="btn-link">Découvrir →</a>
             </article>
-            <!-- Maison d'Accueil -->
             <article class="card-activite">
                 <div class="card-icon">🏠</div>
-                <h2>Maison d'Accueil</h2>
+                <h3>Maison d'Accueil</h3>
                 <p>Chambres confortables, salles de conférence, chapelle : un lieu de repos et de ressourcement.</p>
                 <a href="<?php echo esc_url( home_url( '/maison-accueil' ) ); ?>" class="btn-link">Voir les disponibilités →</a>
             </article>

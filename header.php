@@ -7,23 +7,21 @@
 </head>
 <body <?php body_class(); ?>>
 
-<a class="skip-link" href="#main"><?php esc_html_e( 'Aller au contenu', 'college-filles-bf' ); ?></a>
+<a class="skip-link" href="#main"><?php esc_html_e( 'Aller au contenu', 'domaine-saint-joseph' ); ?></a>
 
 <header class="site-header">
     <div class="container">
         <div class="header-inner">
-            <!-- Logo -->
             <div class="site-logo">
                 <?php if ( has_custom_logo() ) : ?>
                     <?php the_custom_logo(); ?>
                 <?php else : ?>
                     <a href="<?php echo esc_url( home_url( '/' ) ); ?>">
-    <span class="logo-text">Domaine Saint Joseph</span>
-</a>
+                        <span class="logo-text">Domaine Saint Joseph</span>
+                    </a>
                 <?php endif; ?>
             </div>
 
-            <!-- Navigation -->
             <nav class="site-nav">
                 <?php wp_nav_menu([
                     'theme_location' => 'primary',
@@ -31,11 +29,11 @@
                     'container'      => false,
                 ]); ?>
             </nav>
-             <a href="https://wa.me/22666605890" class="btn-whatsapp" target="_blank" rel="noopener" aria-label="Contact WhatsApp">
-    💬 WhatsApp
-</a>
 
-            <!-- Burger mobile (CSS pur plus tard) -->
+            <a href="https://wa.me/22666605890" class="btn-whatsapp" target="_blank" rel="noopener">
+                💬 WhatsApp
+            </a>
+
             <button class="menu-toggle" aria-label="Menu" aria-expanded="false">
                 <span></span><span></span><span></span>
             </button>
