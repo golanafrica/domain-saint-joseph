@@ -18,8 +18,8 @@
                     <?php the_custom_logo(); ?>
                 <?php else : ?>
                     <a href="<?php echo esc_url( home_url( '/' ) ); ?>">
-                        <span class="logo-text">Collège Filles BF</span>
-                    </a>
+    <span class="logo-text">Domaine Saint Joseph</span>
+</a>
                 <?php endif; ?>
             </div>
 
@@ -31,6 +31,9 @@
                     'container'      => false,
                 ]); ?>
             </nav>
+             <a href="https://wa.me/22666605890" class="btn-whatsapp" target="_blank" rel="noopener" aria-label="Contact WhatsApp">
+    💬 WhatsApp
+</a>
 
             <!-- Burger mobile (CSS pur plus tard) -->
             <button class="menu-toggle" aria-label="Menu" aria-expanded="false">

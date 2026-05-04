@@ -1,16 +1,17 @@
 <?php
-if ( ! defined( 'ABSPATH' ) ) exit; // Sécurité
+if ( ! defined( 'ABSPATH' ) ) exit;
 
-// Configuration du thème
 function cfbf_setup() {
+    // Ajoute cette ligne pour la traduction
+    load_theme_textdomain( 'domaine-saint-joseph', get_template_directory() . '/languages' );
+    
     add_theme_support( 'title-tag' );
     add_theme_support( 'post-thumbnails' );
     add_theme_support( 'html5', [ 'search-form', 'comment-form', 'gallery', 'caption' ] );
     
-    // Enregistrement des menus
     register_nav_menus([
-        'primary' => __( 'Menu Principal', 'college-filles-bf' ),
-        'footer'  => __( 'Menu Footer', 'college-filles-bf' ),
+        'primary' => __( 'Menu Principal', 'domaine-saint-joseph' ),
+        'footer'  => __( 'Menu Footer', 'domaine-saint-joseph' ),
     ]);
 }
 add_action( 'after_setup_theme', 'cfbf_setup' );

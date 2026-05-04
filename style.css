@@ -1,16 +1,18 @@
 /*
-Theme Name: Collège Filles BF
-Theme URI: https://college-filles-bf.local
+Theme Name: Domaine Saint Joseph
+Theme URI: https://domainesaintjoseph.bf
 Author: Ton Nom
 Author URI: https://ton-site.bf
-Description: Site officiel du Collège Professionnel de Jeunes Filles - Formation technique et autonomie
+Description: Site officiel du Domaine Saint Joseph — Centre de formation technique et Maison d'accueil, Bobo-Dioulasso
 Version: 1.0.0
 Requires at least: 6.5
 Tested up to: 6.9
 Requires PHP: 7.4
 License: GNU General Public License v2 or later
-Text Domain: college-filles-bf
+Text Domain: domaine-saint-joseph
 */
+
+/* Le reste du CSS reste identique */
 
 /* Reset minimal mobile-first */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }

@@ -16,12 +16,13 @@
                 ]); ?>
             </div>
             <div class="footer-col">
-                <h4>Contact</h4>
-                <p>📍 Bobo-Dioulasso, Burkina Faso</p>
-                <p>📞 +226 XX XX XX XX</p>
-                <p>✉️ contact@college-filles.bf</p>
-            </div>
-        </div>
+    <h4>Contact</h4>
+    <p>📍 547 rue de Pala, Secteur 25<br>Bobo-Dioulasso, Burkina Faso</p>
+    <p>📞 (+226) 20 97 28 97</p>
+    <p>📱 (+226) 57 52 19 29 / 01 09 36 712</p>
+    <p>✉️ centredsj@gmail.com</p>
+    <p>💬 <a href="https://wa.me/22666605890">WhatsApp : +226 66 60 58 90</a></p>
+</div>
         <div class="footer-bottom">
             <p>&copy; <?php echo date( 'Y' ); ?> Collège Filles BF. Tous droits réservés.</p>
         </div>
