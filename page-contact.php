@@ -11,6 +11,24 @@ get_header(); ?>
     </div>
 </section>
 
+<!-- Messages de confirmation/erreur -->
+<?php if ( isset( $_GET['success'] ) && $_GET['success'] === '1' ) : ?>
+    <div class="container">
+        <div class="alert alert-success">✅ Merci ! Votre message a bien été envoyé. Nous vous répondrons sous 48h.</div>
+    </div>
+<?php elseif ( isset( $_GET['error'] ) ) : ?>
+    <div class="container">
+        <div class="alert alert-error">
+            <?php
+            $error = $_GET['error'];
+            if ( $error === 'missing' ) echo '❌ Veuillez remplir tous les champs obligatoires.';
+            elseif ( $error === 'send' ) echo '❌ Une erreur est survenue. Veuillez réessayer ou nous contacter par WhatsApp.';
+            else echo '❌ Une erreur est survenue.';
+            ?>
+        </div>
+    </div>
+<?php endif; ?>
+
 <section class="contact-grid section-padding">
     <div class="container">
         <div class="grid-2">
@@ -45,8 +63,9 @@ get_header(); ?>
                 <h3>Envoyer un message</h3>
                 <form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
                     <input type="hidden" name="action" value="dsj_contact_form">
+                    <?php wp_nonce_field( 'dsj_contact_nonce', '_wpnonce' ); ?>
                     
-                    <label for="cf-nom">Nom *</label>
+                    <label for="cf-nom">Nom complet *</label>
                     <input type="text" id="cf-nom" name="cf_nom" required>
 
                     <label for="cf-contact">Email ou Téléphone *</label>
@@ -75,15 +94,13 @@ get_header(); ?>
 <section class="map-section">
     <div class="container">
         <div class="map-wrapper">
-            <!-- Placeholder léger chargé d'abord -->
             <div class="map-placeholder" id="map-placeholder">
-                <p>🗺️ Chargement de la carte...</p>
+                <p>🗺️ Carte du Domaine Saint Joseph</p>
                 <button class="btn btn-small" onclick="loadGoogleMap()">Afficher la carte</button>
             </div>
-            <!-- Iframe Google Maps chargée à la demande -->
             <iframe 
                 id="google-map"
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3902.5!2d-4.3!3d11.18!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTHCsDEwJzQ4LjAiTiA0wrAxOCcwMC4wIlc!5e0!3m2!1sfr!2sbf!4v1234567890"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3902.1234!2d-4.2987!3d11.1789!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xec370f6f8c8b8a1%3A0x8b8c8d8e8f909192!2sBobo-Dioulasso%2C%20Burkina%20Faso!5e0!3m2!1sfr!2sbf!4v1234567890"
                 loading="lazy"
                 referrerpolicy="no-referrer-when-downgrade"
                 style="border:0; width:100%; height:400px; display:none;"
@@ -94,15 +111,17 @@ get_header(); ?>
 </section>
 
 <script>
-// Chargement différé de Google Maps (optimisation 3G)
-function loadGoogleMap() {
-    const placeholder = document.getElementById('map-placeholder');
-    const iframe = document.getElementById('google-map');
-    if (placeholder && iframe) {
-        placeholder.style.display = 'none';
-        iframe.style.display = 'block';
+document.addEventListener('DOMContentLoaded', function () {
+    function loadGoogleMap() {
+        const placeholder = document.getElementById('map-placeholder');
+        const iframe = document.getElementById('google-map');
+        if (placeholder && iframe) {
+            placeholder.style.display = 'none';
+            iframe.style.display = 'block';
+        }
     }
-}
+    window.loadGoogleMap = loadGoogleMap;
+});
 </script>
 
 <?php get_footer(); ?>
