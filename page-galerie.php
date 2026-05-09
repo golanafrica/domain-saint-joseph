@@ -1,121 +1,138 @@
 <?php
-/*
-Template Name: Galerie
-*/
+/**
+ * Template Name: Galerie
+ */
 get_header(); ?>
 
 <!-- HERO SECTION -->
-<section class="page-header">
-    <div class="container">
-        <h1>Galerie Photos</h1>
-        <p class="page-subtitle">Découvrez nos activités, nos locaux et nos apprenantes en images</p>
-    </div>
-</section>
+<?php 
+$hero_image = get_theme_mod('hero_galerie_image');
+$hero_opacity = get_theme_mod('hero_galerie_opacity', '0.7');
+$hero_badge = get_theme_mod('hero_galerie_badge', '📸 Souvenirs et moments');
+$hero_titre = get_theme_mod('hero_galerie_titre', 'Notre Galerie');
+$hero_soustitre = get_theme_mod('hero_galerie_soustitre', 'Découvrez notre cadre de vie, nos formations et nos événements en images');
+?>
 
-<!-- FILTRES GALERIE -->
-<section class="gallery-filters section-padding">
-    <div class="container">
-        <div class="filter-buttons">
-            <button class="filter-btn active" data-filter="all">Toutes</button>
-            <button class="filter-btn" data-filter="formation">Formation</button>
-            <button class="filter-btn" data-filter="maison">Maison d'Accueil</button>
-            <button class="filter-btn" data-filter="evenements">Événements</button>
-            <button class="filter-btn" data-filter="equipe">Équipe</button>
+<main id="main" class="site-main">
+    
+    <section class="page-header galerie-header" <?php if( $hero_image ) : ?>style="background-image: linear-gradient(rgba(0, 0, 0, <?php echo $hero_opacity; ?>), rgba(0, 0, 0, <?php echo $hero_opacity; ?>)), url('<?php echo esc_url( $hero_image ); ?>'); background-size: cover; background-position: center;"<?php endif; ?>>
+        <div class="container">
+            <div class="header-content">
+                <span class="header-badge"><?php echo esc_html( $hero_badge ); ?></span>
+                <h1 class="header-title"><?php echo esc_html( $hero_titre ); ?></h1>
+                <div class="header-divider">
+                    <span class="divider-line"></span>
+                    <span class="divider-icon">📷</span>
+                    <span class="divider-line"></span>
+                </div>
+                <p class="header-subtitle"><?php echo esc_html( $hero_soustitre ); ?></p>
+            </div>
         </div>
-    </div>
-</section>
-
-<!-- GRILLE GALERIE -->
-<section class="gallery-grid section-padding">
-    <div class="container">
-        <div class="grid-gallery">
-            <!-- Exemple : Photo Formation -->
-            <figure class="gallery-item" data-category="formation">
-                <img 
-                    src="<?php echo get_template_directory_uri(); ?>/assets/images/placeholder-formation.jpg" 
-                    data-src="<?php echo get_template_directory_uri(); ?>/assets/images/formation-couture.jpg" 
-                    alt="Apprenantes en atelier de couture"
-                    class="lazy"
-                    loading="lazy"
-                    width="400"
-                    height="300"
-                >
-                <figcaption>
-                    <span class="gallery-category">Formation</span>
-                    <p>Atelier de couture — Promotion 2024</p>
-                </figcaption>
-            </figure>
-
-            <!-- Exemple : Photo Maison d'Accueil -->
-            <figure class="gallery-item" data-category="maison">
-                <img 
-                    src="<?php echo get_template_directory_uri(); ?>/assets/images/placeholder-maison.jpg" 
-                    data-src="<?php echo get_template_directory_uri(); ?>/assets/images/chambre-simple.jpg" 
-                    alt="Chambre simple ventilée"
-                    class="lazy"
-                    loading="lazy"
-                    width="400"
-                    height="300"
-                >
-                <figcaption>
-                    <span class="gallery-category">Maison d'Accueil</span>
-                    <p>Chambre simple — Confort et calme</p>
-                </figcaption>
-            </figure>
-
-            <!-- Exemple : Photo Événement -->
-            <figure class="gallery-item" data-category="evenements">
-                <img 
-                    src="<?php echo get_template_directory_uri(); ?>/assets/images/placeholder-event.jpg" 
-                    data-src="<?php echo get_template_directory_uri(); ?>/assets/images/ceremonie-remise.jpg" 
-                    alt="Cérémonie de remise des attestations"
-                    class="lazy"
-                    loading="lazy"
-                    width="400"
-                    height="300"
-                >
-                <figcaption>
-                    <span class="gallery-category">Événements</span>
-                    <p>Remise des attestations — Décembre 2024</p>
-                </figcaption>
-            </figure>
-
-            <!-- Exemple : Photo Équipe -->
-            <figure class="gallery-item" data-category="equipe">
-                <img 
-                    src="<?php echo get_template_directory_uri(); ?>/assets/images/placeholder-equipe.jpg" 
-                    data-src="<?php echo get_template_directory_uri(); ?>/assets/images/equipe-accueil.jpg" 
-                    alt="L'équipe d'accueil du Domaine Saint Joseph"
-                    class="lazy"
-                    loading="lazy"
-                    width="400"
-                    height="300"
-                >
-                <figcaption>
-                    <span class="gallery-category">Équipe</span>
-                    <p>L'équipe d'accueil — Bienveillance et professionnalisme</p>
-                </figcaption>
-            </figure>
-
-            <!-- Dupliquer ce bloc <figure> pour ajouter plus de photos -->
-            <!-- Important : remplacer les src par vos vraies images dans assets/images/ -->
-
+        <div class="header-wave">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 120">
+                <path fill="#ffffff" fill-opacity="1" d="M0,64L80,58.7C160,53,320,43,480,48C640,53,800,75,960,80C1120,85,1280,75,1360,69.3L1440,64L1440,120L1360,120C1280,120,1120,120,960,120C800,120,640,120,480,120C320,120,160,120,80,120L0,120Z"></path>
+            </svg>
         </div>
+    </section>
 
-        <!-- Message si aucune photo -->
-        <p class="gallery-empty text-center" style="display:none;">
-            <em>Aucune photo dans cette catégorie pour le moment.</em>
-        </p>
-    </div>
-</section>
+   
 
-<!-- LIGHTBOX (modale simple) -->
-<div class="lightbox" id="lightbox" aria-hidden="true">
-    <button class="lightbox-close" aria-label="Fermer">&times;</button>
-    <img class="lightbox-img" src="" alt="">
-    <p class="lightbox-caption"></p>
-    <button class="lightbox-nav prev" aria-label="Précédent">&#10094;</button>
-    <button class="lightbox-nav next" aria-label="Suivant">&#10095;</button>
-</div>
+    <!-- FILTRES DE CATÉGORIES -->
+    <section class="galerie-filters section-padding">
+        <div class="container">
+            <div class="filter-buttons">
+                <button class="filter-btn active" data-filter="all">📷 Toutes les photos</button>
+                <?php
+                // Récupérer toutes les catégories de la galerie
+                $categories = get_terms( [
+                    'taxonomy' => 'categorie_galerie',
+                    'hide_empty' => true,
+                ] );
+                
+                if ( ! empty( $categories ) && ! is_wp_error( $categories ) ) {
+                    foreach ( $categories as $category ) {
+                        echo '<button class="filter-btn" data-filter="' . esc_attr( $category->slug ) . '">📁 ' . esc_html( $category->name ) . '</button>';
+                    }
+                }
+                ?>
+            </div>
+        </div>
+    </section>
+
+    <!-- GRILLE GALERIE -->
+    <section class="galerie-grid-section section-padding bg-light">
+        <div class="container">
+            <div class="galerie-container">
+                <?php
+                $galerie = new WP_Query( [
+                    'post_type' => 'galerie',
+                    'posts_per_page' => -1,
+                    'orderby' => 'date',
+                    'order' => 'DESC'
+                ] );
+                
+                if ( $galerie->have_posts() ) : ?>
+                    <div class="galerie-grid">
+                        <?php while ( $galerie->have_posts() ) : $galerie->the_post(); 
+                            $categories = get_the_terms( get_the_ID(), 'categorie_galerie' );
+                            $cat_slugs = array();
+                            if ( $categories && ! is_wp_error( $categories ) ) {
+                                foreach ( $categories as $cat ) {
+                                    $cat_slugs[] = $cat->slug;
+                                }
+                            }
+                            $cat_classes = implode( ' ', $cat_slugs );
+                        ?>
+                            <div class="galerie-item" data-category="<?php echo esc_attr( $cat_classes ); ?>">
+                                <?php if ( has_post_thumbnail() ) : ?>
+                                    <a href="<?php echo esc_url( wp_get_attachment_image_url( get_post_thumbnail_id(), 'large' ) ); ?>" class="galerie-link" data-lightbox="galerie">
+                                        <?php the_post_thumbnail( 'medium', [ 'class' => 'galerie-image', 'loading' => 'lazy' ] ); ?>
+                                        <div class="galerie-overlay">
+                                            <span class="galerie-icon">🔍</span>
+                                            <div class="galerie-caption">
+                                                <h3><?php the_title(); ?></h3>
+                                                <?php if ( has_excerpt() ) : ?>
+                                                    <p><?php echo get_the_excerpt(); ?></p>
+                                                <?php endif; ?>
+                                            </div>
+                                        </div>
+                                    </a>
+                                <?php endif; ?>
+                            </div>
+                        <?php endwhile; ?>
+                    </div>
+                    
+                    <div class="gallery-empty" style="display: none; text-align: center; padding: 60px;">
+                        <p>Aucune photo dans cette catégorie.</p>
+                    </div>
+                    
+                <?php else : ?>
+                    <div class="no-content" style="text-align: center; padding: 60px;">
+                        <p>Aucune photo dans la galerie pour le moment. Revenez bientôt !</p>
+                        <p>📸 <a href="/contact">Contactez-nous</a> pour partager vos souvenirs.</p>
+                    </div>
+                <?php 
+                endif;
+                wp_reset_postdata();
+                ?>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION CTA -->
+    <section class="cta-home-section section-padding">
+        <div class="container">
+            <div class="cta-content">
+                <h2>Vous avez visité le Domaine Saint Joseph ?</h2>
+                <p>Partagez vos photos avec nous ou venez découvrir notre cadre exceptionnel !</p>
+                <div class="cta-buttons">
+                    <a href="/contact" class="btn btn-primary btn-large">📞 Nous contacter</a>
+                    <a href="https://wa.me/<?php echo dsj_get_whatsapp(); ?>" class="btn btn-whatsapp btn-large" target="_blank">💬 WhatsApp</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</main>
 
 <?php get_footer(); ?>

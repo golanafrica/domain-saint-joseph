@@ -1,65 +1,433 @@
-<?php get_header(); ?>
+<?php
+/**
+ * Page d'accueil
+ */
 
-<!-- HERO SECTION -->
-<section class="hero">
+get_header(); ?>
+
+<main id="main" class="site-main">
+    
+    <!-- ===== HERO SECTION AVEC WIDGET ===== -->
+    <?php if ( is_active_sidebar( 'hero-area' ) ) : ?>
+        <div class="hero-widget-container">
+            <?php dynamic_sidebar( 'hero-area' ); ?>
+        </div>
+    <?php else : ?>
+        <section class="custom-hero default-hero" style="background: linear-gradient(135deg, var(--clr-primary, #1A5276) 0%, #1a3c5e 100%);">
+            <div class="hero-overlay" style="background: rgba(26, 60, 94, 0.5);"></div>
+            <div class="hero-content-wrapper">
+                <div class="container">
+                    <div class="hero-content">
+                        <span class="hero-badge">✝ Travailleuses Missionnaires de l'Immaculée</span>
+                        <h1 class="hero-title">Former les jeunes filles,<br><span class="hero-highlight">accueillir avec compassion</span></h1>
+                        <p class="hero-subtitle">Centre de formation technique & Maison d'accueil<br>Bobo-Dioulasso, Burkina Faso — depuis 2022</p>
+                        <div class="hero-buttons">
+                            <a href="<?php echo esc_url( home_url( '/formation' ) ); ?>" class="btn btn-primary btn-large">🎓 Nos formations</a>
+                            <a href="<?php echo esc_url( home_url( '/maison-daccueil' ) ); ?>" class="btn btn-secondary btn-large">🏠 Découvrir l'accueil</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-wave">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 120">
+                    <path fill="#ffffff" fill-opacity="1" d="M0,64L80,58.7C160,53,320,43,480,48C640,53,800,75,960,80C1120,85,1280,75,1360,69.3L1440,64L1440,120L1360,120C1280,120,1120,120,960,120C800,120,640,120,480,120C320,120,160,120,80,120L0,120Z"></path>
+                </svg>
+            </div>
+        </section>
+    <?php endif; ?>
+
+    <!-- ===== NOTRE HISTOIRE (NOUVEAU) ===== -->
+    <section class="home-histoire section-padding bg-light">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">📖 Notre histoire</span>
+                <h2 class="section-title">Le Domaine Saint Joseph</h2>
+                <div class="section-divider"></div>
+            </div>
+            <div class="histoire-content">
+                <p>Le Domaine Saint Joseph a été créé en <strong>2022</strong>. Ce centre est une expression du charisme des <strong>Travailleuses Missionnaires de l'Immaculée</strong>.</p>
+                <p>Notre centre est dédié à la formation technique et à l'accueil, dans un esprit de service et de partage selon les valeurs de notre communauté.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== STATISTIQUES ===== -->
+    <section class="stats-section">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-item" data-count="2022">
+                    <div class="stat-number"><?php echo get_theme_mod( 'stat1_nb', '2022' ); ?></div>
+                    <div class="stat-label"><?php echo get_theme_mod( 'stat1_lbl', 'Fondé en' ); ?></div>
+                </div>
+                <div class="stat-item" data-count="3">
+                    <div class="stat-number"><?php echo get_theme_mod( 'stat2_nb', '3+' ); ?></div>
+                    <div class="stat-label"><?php echo get_theme_mod( 'stat2_lbl', 'Filières' ); ?></div>
+                </div>
+                <div class="stat-item" data-count="100">
+                    <div class="stat-number"><?php echo get_theme_mod( 'stat3_nb', '100%' ); ?></div>
+                    <div class="stat-label"><?php echo get_theme_mod( 'stat3_lbl', 'Dédié aux femmes' ); ?></div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">Secteur 25</div>
+                    <div class="stat-label">Bobo-Dioulasso</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== NOS FORMATIONS ===== -->
+    <section class="home-formations section-padding">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">🎓 Excellence académique</span>
+                <h2 class="section-title">Nos Formations</h2>
+                <div class="section-divider"></div>
+                <p class="section-subtitle">Des filières concrètes pour l'autonomie des jeunes filles</p>
+            </div>
+            
+            <div class="formations-grid">
+                <?php
+                $formations = new WP_Query( [
+                    'post_type' => 'formation',
+                    'posts_per_page' => 3,
+                    'orderby' => 'menu_order',
+                    'order' => 'ASC'
+                ] );
+                
+                if ( $formations->have_posts() ) :
+                    while ( $formations->have_posts() ) : $formations->the_post(); ?>
+                        <div class="formation-card">
+                            <?php if ( has_post_thumbnail() ) : ?>
+                                <div class="card-image">
+                                    <?php the_post_thumbnail( 'card-thumb' ); ?>
+                                </div>
+                            <?php else : ?>
+                                <div class="card-image">
+                                    <div class="card-icon-placeholder">🎓</div>
+                                </div>
+                            <?php endif; ?>
+                            
+                            <div class="card-content">
+                                <h3><?php the_title(); ?></h3>
+                                
+                                <?php 
+                                $duree = get_post_meta( get_the_ID(), '_dsj_duree', true );
+                                $prix = get_post_meta( get_the_ID(), '_dsj_prix', true );
+                                ?>
+                                
+                                <div class="card-meta">
+                                    <?php if ( $duree ) : ?>
+                                        <span class="meta-item">📅 <?php echo esc_html( $duree ); ?></span>
+                                    <?php endif; ?>
+                                    
+                                    <?php if ( $prix ) : ?>
+                                        <span class="meta-item">💰 <?php echo esc_html( $prix ); ?></span>
+                                    <?php endif; ?>
+                                </div>
+                                
+                                <div class="card-description">
+                                    <?php echo wp_trim_words( get_the_excerpt() ?: get_the_content(), 12, '...' ); ?>
+                                </div>
+                                
+                                <div class="card-footer">
+                                    <a href="<?php the_permalink(); ?>" class="btn-link">En savoir plus →</a>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endwhile;
+                    wp_reset_postdata();
+                else : ?>
+                    <div class="no-content">
+                        <p>Aucune formation disponible pour le moment.</p>
+                    </div>
+                <?php endif; ?>
+            </div>
+            
+            <div class="text-center mt-4">
+                <a href="<?php echo esc_url( home_url( '/formation' ) ); ?>" class="btn btn-primary">Voir toutes les formations</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== LA MAISON D'ACCUEIL (NOUVEAU) ===== -->
+    <section class="home-maison-presentation section-padding bg-light">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">🏡 Ouverte à tous</span>
+                <h2 class="section-title">La Maison d'Accueil</h2>
+                <div class="section-divider"></div>
+            </div>
+            <div class="maison-content">
+                <p>La Maison d'Accueil a pour but l'autoprise en charge du Centre pour soutenir la formation.</p>
+                <div class="services-list-home">
+                    <div class="service-home-item">🕊️ Retraites, récollections</div>
+                    <div class="service-home-item">🎉 Événements</div>
+                    <div class="service-home-item">👨‍👩‍👧‍👦 Réunions de famille</div>
+                    <div class="service-home-item">💼 Sessions de travail</div>
+                    <div class="service-home-item">📊 Conférences</div>
+                    <div class="service-home-item">📚 Journées d'étude</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== NOS HÉBERGEMENTS ===== -->
+    <section class="home-hebergements section-padding">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">🏠 Lieu d'accueil</span>
+                <h2 class="section-title">Nos Hébergements</h2>
+                <div class="section-divider"></div>
+                <p class="section-subtitle">Un cadre paisible pour votre séjour</p>
+            </div>
+            
+            <div class="hebergements-grid">
+                <?php
+                $hebergements = new WP_Query( [
+                    'post_type' => 'hebergement',
+                    'posts_per_page' => 3,
+                    'orderby' => 'menu_order',
+                    'order' => 'ASC'
+                ] );
+                
+                if ( $hebergements->have_posts() ) :
+                    while ( $hebergements->have_posts() ) : $hebergements->the_post(); ?>
+                        <div class="hebergement-card">
+                            <?php if ( has_post_thumbnail() ) : ?>
+                                <div class="card-image">
+                                    <a href="<?php the_permalink(); ?>">
+                                        <?php the_post_thumbnail( 'card-thumb' ); ?>
+                                    </a>
+                                </div>
+                            <?php else : ?>
+                                <div class="card-image">
+                                    <a href="<?php the_permalink(); ?>">
+                                        <div class="card-icon-placeholder">🏠</div>
+                                    </a>
+                                </div>
+                            <?php endif; ?>
+                            
+                            <div class="card-content">
+                                <h3><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h3>
+                                
+                                <?php 
+                                $capacite = get_post_meta( get_the_ID(), '_dsj_capacite', true );
+                                $prix_nuit = get_post_meta( get_the_ID(), '_dsj_prix_nuit', true );
+                                ?>
+                                
+                                <div class="card-meta">
+                                    <?php if ( $capacite ) : ?>
+                                        <span class="meta-item">👥 <?php echo esc_html( $capacite ); ?> pers.</span>
+                                    <?php endif; ?>
+                                    
+                                    <?php if ( $prix_nuit ) : ?>
+                                        <span class="meta-item">💰 <?php echo esc_html( $prix_nuit ); ?>/nuit</span>
+                                    <?php endif; ?>
+                                </div>
+                                
+                                <div class="card-description">
+                                    <?php echo wp_trim_words( get_the_excerpt() ?: get_the_content(), 12, '...' ); ?>
+                                </div>
+                                
+                                <a href="<?php the_permalink(); ?>" class="btn-link">Voir les détails →</a>
+                            </div>
+                        </div>
+                    <?php endwhile;
+                    wp_reset_postdata();
+                else : ?>
+                    <div class="no-content">
+                        <p>Aucun hébergement disponible pour le moment.</p>
+                    </div>
+                <?php endif; ?>
+            </div>
+            
+            <div class="text-center mt-4">
+                <a href="<?php echo esc_url( home_url( '/maison-daccueil' ) ); ?>" class="btn btn-primary">Voir tous les hébergements</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== SECTION RESTAURANT ===== -->
+<section class="home-restaurant section-padding bg-light">
     <div class="container">
-        <h1>Former les jeunes filles, accueillir avec compassion</h1>
-        <p class="hero-subtitle">Centre de formation technique & Maison d'accueil — Bobo-Dioulasso</p>
-        <div class="hero-cta">
-            <a href="<?php echo esc_url( home_url( '/formation' ) ); ?>" class="btn btn-primary">
-                Nos formations
-            </a>
-            <a href="<?php echo esc_url( home_url( '/maison-daccueil' ) ); ?>" class="btn btn-secondary">
-                Réserver un séjour
-            </a>
+        <div class="section-header">
+            <span class="section-badge">🍽️ Table d'hôte</span>
+            <h2 class="section-title">Notre Restaurant</h2>
+            <div class="section-divider"></div>
+            <p class="section-subtitle">Cuisine locale et internationale, préparée avec amour</p>
+        </div>
+        
+        <div class="restaurant-preview">
+            <div class="restaurant-info">
+                <div class="horaires-restaurant">
+                    <h3>🍳 Horaires</h3>
+                    <p><strong>Petit-déjeuner :</strong> 7h00 - 9h30</p>
+                    <p><strong>Déjeuner :</strong> 12h00 - 14h30</p>
+                    <p><strong>Dîner :</strong> 19h00 - 21h30</p>
+                </div>
+                <div class="restaurant-cta-home">
+                    <a href="<?php echo esc_url( home_url( '/restaurant' ) ); ?>" class="btn btn-primary">🍽️ Découvrir la carte</a>
+                    <a href="<?php echo esc_url( home_url( '/restaurant#reservation-restaurant' ) ); ?>" class="btn btn-secondary">📅 Réserver une table</a>
+                </div>
+            </div>
         </div>
     </div>
 </section>
 
-<!-- 2 ACTIVITÉS -->
-<section class="activites section-padding">
-    <div class="container">
-        <h2 class="text-center">Nos Activités</h2>
-        <div class="grid-2">
-            <article class="card-activite">
-                <div class="card-icon">🎓</div>
-                <h3>Formation Technique</h3>
-                <p>Couture, Informatique, Entrepreneuriat : des filières concrètes pour l'autonomie des jeunes filles.</p>
-                <a href="<?php echo esc_url( home_url( '/formation' ) ); ?>" class="btn-link">Découvrir →</a>
-            </article>
-            <article class="card-activite">
-                <div class="card-icon">🏠</div>
-                <h3>Maison d'Accueil</h3>
-                <p>Chambres confortables, salles de conférence, chapelle : un lieu de repos et de ressourcement.</p>
-                <a href="<?php echo esc_url( home_url( '/maison-accueil' ) ); ?>" class="btn-link">Voir les disponibilités →</a>
-            </article>
+    <!-- ===== NOS VALEURS ===== -->
+    <section class="valeurs-section section-padding bg-light">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">⭐ Nos fondamentaux</span>
+                <h2 class="section-title">Nos Valeurs</h2>
+                <div class="section-divider"></div>
+                <p class="section-subtitle">Ce qui nous guide au quotidien</p>
+            </div>
+            
+            <div class="valeurs-grid">
+                <div class="valeur-card">
+                    <div class="valeur-icon">🤝</div>
+                    <h3>Respect</h3>
+                    <p>De chaque personne humaine dans sa dignité</p>
+                </div>
+                <div class="valeur-card">
+                    <div class="valeur-icon">💎</div>
+                    <h3>Honnêteté</h3>
+                    <p>Dans toutes nos relations et engagements</p>
+                </div>
+                <div class="valeur-card">
+                    <div class="valeur-icon">❤️</div>
+                    <h3>Compassion</h3>
+                    <p>Envers les plus vulnérables</p>
+                </div>
+                <div class="valeur-card">
+                    <div class="valeur-icon">🌿</div>
+                    <h3>Partage</h3>
+                    <p>Des savoirs, ressources et expériences</p>
+                </div>
+                <div class="valeur-card">
+                    <div class="valeur-icon">📐</div>
+                    <h3>Rigueur</h3>
+                    <p>Dans le travail sérieux et bien accompli</p>
+                </div>
+                <div class="valeur-card">
+                    <div class="valeur-icon">⭐</div>
+                    <h3>Excellence</h3>
+                    <p>Toujours viser le meilleur de soi-même</p>
+                </div>
+            </div>
         </div>
-    </div>
-</section>
+    </section>
 
-<!-- VALEURS -->
-<section class="valeurs section-padding bg-light">
-    <div class="container">
-        <h2 class="text-center">Nos Valeurs</h2>
-        <div class="grid-6">
-            <?php 
-            $valeurs = ['Respect', 'Honnêteté', 'Compassion', 'Partage', 'Rigueur', 'Excellence'];
-            foreach ( $valeurs as $valeur ) : ?>
-                <div class="valeur-item"><?php echo esc_html( $valeur ); ?></div>
-            <?php endforeach; ?>
+    <!-- ===== GALERIE ===== -->
+    <?php
+    $galerie = new WP_Query( [
+        'post_type' => 'galerie',
+        'posts_per_page' => 4,
+        'orderby' => 'date',
+        'order' => 'DESC'
+    ] );
+    
+    if ( $galerie->have_posts() ) : ?>
+    <section class="home-galerie section-padding">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">📸 En images</span>
+                <h2 class="section-title">Galerie</h2>
+                <div class="section-divider"></div>
+                <p class="section-subtitle">Découvrez notre cadre de vie</p>
+            </div>
+            
+            <div class="galerie-grid">
+                <?php while ( $galerie->have_posts() ) : $galerie->the_post(); ?>
+                    <div class="galerie-item">
+                        <?php if ( has_post_thumbnail() ) : ?>
+                            <a href="<?php the_permalink(); ?>" class="galerie-link">
+                                <?php the_post_thumbnail( 'gallery-thumb' ); ?>
+                                <div class="galerie-overlay">
+                                    <span class="galerie-icon">🔍</span>
+                                </div>
+                            </a>
+                        <?php endif; ?>
+                    </div>
+                <?php endwhile; ?>
+            </div>
+            
+            <div class="text-center mt-4">
+                <a href="<?php echo esc_url( home_url( '/galerie' ) ); ?>" class="btn btn-secondary">Voir toute la galerie</a>
+            </div>
         </div>
-    </div>
-</section>
+    </section>
+    <?php 
+    wp_reset_postdata();
+    endif; ?>
 
-<!-- APPEL À L'ACTION -->
-<section class="cta section-padding">
-    <div class="container text-center">
-        <h2>Soutenez notre mission</h2>
-        <p>Votre contribution permet de former les leaders de demain.</p>
-        <a href="<?php echo esc_url( home_url( '/nous-soutenir' ) ); ?>" class="btn btn-primary">
-            Nous Soutenir
-        </a>
-    </div>
-</section>
+    <!-- ===== TÉMOIGNAGES ===== -->
+    <?php
+    $temoignages = new WP_Query( [
+        'post_type' => 'temoignage',
+        'posts_per_page' => 2,
+        'orderby' => 'date',
+        'order' => 'DESC'
+    ] );
+    
+    if ( $temoignages->have_posts() ) : ?>
+    <section class="temoignages-section section-padding bg-light">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">💬 Ils parlent de nous</span>
+                <h2 class="section-title">Témoignages</h2>
+                <div class="section-divider"></div>
+            </div>
+            
+            <div class="temoignages-grid">
+                <?php while ( $temoignages->have_posts() ) : $temoignages->the_post(); ?>
+                    <div class="temoignage-card">
+                        <div class="temoignage-quote">"</div>
+                        <div class="temoignage-content">
+                            <?php echo wp_trim_words( get_the_content(), 30, '...' ); ?>
+                        </div>
+                        <div class="temoignage-author">
+                            <strong><?php the_title(); ?></strong>
+                        </div>
+                    </div>
+                <?php endwhile; ?>
+            </div>
+        </div>
+    </section>
+    <?php 
+    wp_reset_postdata();
+    endif; ?>
+
+    <!-- ===== APPEL À L'AIDE (NOUVEAU) ===== -->
+    <section class="home-aide-section section-padding">
+        <div class="container">
+            <div class="aide-content">
+                <div class="aide-icon">🤝</div>
+                <h2>Nous sollicitons votre aide</h2>
+                <p>Nous vous remercions pour votre contribution à la formation de ces jeunes par le moyen de parrainages ou de dons.</p>
+                <div class="aide-buttons">
+                    <a href="<?php echo esc_url( home_url( '/nous-soutenir' ) ); ?>" class="btn btn-primary btn-large">💛 Faire un don</a>
+                    <a href="<?php echo esc_url( home_url( '/contact' ) ); ?>" class="btn btn-secondary btn-large">📞 Nous contacter</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== APPEL À L'ACTION (CTA original) ===== -->
+    <section class="cta-home-section section-padding">
+        <div class="container">
+            <div class="cta-content">
+                <h2><?php echo get_theme_mod( 'cta_title', 'Soutenez notre mission' ); ?></h2>
+                <p><?php echo get_theme_mod( 'cta_text', 'Votre contribution permet de former les leaders de demain. Parrainez une jeune fille ou faites un don pour soutenir le Domaine Saint Joseph.' ); ?></p>
+                <div class="cta-buttons">
+                    <a href="<?php echo esc_url( home_url( get_theme_mod( 'cta_button_url', '/nous-soutenir' ) ) ); ?>" class="btn btn-primary btn-large">💛 Nous soutenir</a>
+                    <a href="https://wa.me/<?php echo get_theme_mod( 'whatsapp', '22666605890' ); ?>" class="btn btn-whatsapp btn-large" target="_blank">📱 WhatsApp</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</main>
 
 <?php get_footer(); ?>

@@ -1,155 +1,167 @@
 <?php
 /*
-Template Name: Formation Technique
+Template Name: Formation
 */
 get_header(); ?>
 
 <!-- HERO SECTION -->
-<section class="page-header">
+<?php 
+$hero_image = get_theme_mod('hero_formation_image');
+$hero_opacity = get_theme_mod('hero_formation_opacity', '0.7');
+$hero_badge = get_theme_mod('hero_formation_badge', '🎓 Formation professionnelle');
+$hero_titre = get_theme_mod('hero_formation_titre', 'Nos Formations');
+$hero_soustitre = get_theme_mod('hero_formation_soustitre', 'Des compétences concrètes pour l\'autonomie des jeunes filles');
+?>
+
+<section class="page-header formation-header" <?php if( $hero_image ) : ?>style="background-image: linear-gradient(rgba(0, 0, 0, <?php echo $hero_opacity; ?>), rgba(0, 0, 0, <?php echo $hero_opacity; ?>)), url('<?php echo esc_url( $hero_image ); ?>'); background-size: cover; background-position: center;"<?php endif; ?>>
     <div class="container">
-        <h1>Nos Filières de Formation</h1>
-        <p class="page-subtitle">Des compétences concrètes pour l'autonomie des jeunes filles</p>
+        <div class="header-content">
+            <span class="header-badge"><?php echo esc_html( $hero_badge ); ?></span>
+            <h1 class="header-title"><?php echo esc_html( $hero_titre ); ?></h1>
+            <div class="header-divider">
+                <span class="divider-line"></span>
+                <span class="divider-icon">📚</span>
+                <span class="divider-line"></span>
+            </div>
+            <p class="header-subtitle"><?php echo esc_html( $hero_soustitre ); ?></p>
+        </div>
+    </div>
+    <div class="header-wave">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 120">
+            <path fill="#ffffff" fill-opacity="1" d="M0,64L80,58.7C160,53,320,43,480,48C640,53,800,75,960,80C1120,85,1280,75,1360,69.3L1440,64L1440,120L1360,120C1280,120,1120,120,960,120C800,120,640,120,480,120C320,120,160,120,80,120L0,120Z"></path>
+        </svg>
     </div>
 </section>
 
-<!-- FILIÈRES -->
-<section class="formations-list section-padding">
+
+
+
+
+<!-- SECTION NOS FORMATIONS (CPT Formations) -->
+<section class="formations-section section-padding">
     <div class="container">
-        <div class="grid-3">
-            <!-- Couture & Mode -->
-            <article class="card-formation">
-                <div class="card-icon">🧵</div>
-                <h3>Couture & Mode</h3>
-                <ul>
-                    <li>Techniques de coupe et assemblage</li>
-                    <li>Stylisme et création de modèles</li>
-                    <li>Gestion d'un atelier de couture</li>
-                </ul>
-                <p class="prix">🎓 6 mois • 45 000 F CFA</p>
-                <a href="<?php echo esc_url( home_url( '/contact' ) ); ?>?filiere=couture" 
-                   class="btn btn-outline" 
-                   data-filiere="Couture & Mode">
-                    S'inscrire →
-                </a>
-                <a href="https://wa.me/22666605890?text=Bonjour,%20je%20souhaite%20m'inscrire%20en%20Couture%20%26%20Mode.%20Merci!" 
-                   class="btn-whatsapp-small" 
-                   target="_blank" 
-                   rel="noopener">
-                    💬 WhatsApp
-                </a>
-            </article>
-
-            <!-- Informatique -->
-            <article class="card-formation">
-                <div class="card-icon">💻</div>
-                <h3>Informatique</h3>
-                <ul>
-                    <li>Bureautique (Word, Excel, PowerPoint)</li>
-                    <li>Initiation à la programmation</li>
-                    <li>Création de contenu numérique</li>
-                </ul>
-                <p class="prix">🎓 9 mois • 60 000 F CFA</p>
-                <a href="<?php echo esc_url( home_url( '/contact' ) ); ?>?filiere=informatique" 
-                   class="btn btn-outline"
-                   data-filiere="Informatique">
-                    S'inscrire →
-                </a>
-                <a href="https://wa.me/22666605890?text=Bonjour,%20je%20souhaite%20m'inscrire%20en%20Informatique.%20Merci!" 
-                   class="btn-whatsapp-small" 
-                   target="_blank" 
-                   rel="noopener">
-                    💬 WhatsApp
-                </a>
-            </article>
-
-            <!-- Entrepreneuriat -->
-            <article class="card-formation">
-                <div class="card-icon">🚀</div>
-                <h3>Entrepreneuriat</h3>
-                <ul>
-                    <li>Élaboration de business plan</li>
-                    <li>Gestion financière de base</li>
-                    <li>Marketing digital pour TPE</li>
-                </ul>
-                <p class="prix">🎓 6 mois • 50 000 F CFA</p>
-                <a href="<?php echo esc_url( home_url( '/contact' ) ); ?>?filiere=entrepreneuriat" 
-                   class="btn btn-outline"
-                   data-filiere="Entrepreneuriat">
-                    S'inscrire →
-                </a>
-                <a href="https://wa.me/22666605890?text=Bonjour,%20je%20souhaite%20m'inscrire%20en%20Entrepreneuriat.%20Merci!" 
-                   class="btn-whatsapp-small" 
-                   target="_blank" 
-                   rel="noopener">
-                    💬 WhatsApp
-                </a>
-            </article>
+        <div class="formations-grid">
+            <?php
+            $formations = new WP_Query( [
+                'post_type' => 'formation',
+                'posts_per_page' => -1,
+                'orderby' => 'menu_order',
+                'order' => 'ASC'
+            ] );
+            
+            if ( $formations->have_posts() ) :
+                while ( $formations->have_posts() ) : $formations->the_post(); ?>
+                    <div class="formation-card">
+                        <?php if ( has_post_thumbnail() ) : ?>
+                            <div class="card-image">
+                                <?php the_post_thumbnail( 'card-thumb' ); ?>
+                            </div>
+                        <?php else : ?>
+                            <div class="card-image">
+                                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300'%3E%3Crect width='400' height='300' fill='%23f0f0f0'/%3E%3Ctext x='200' y='160' font-size='18' text-anchor='middle' fill='%23999' font-family='Arial'%3E🎓 Formation%3C/text%3E%3C/svg%3E" 
+                                     alt="<?php the_title_attribute(); ?>"
+                                     style="width:100%; height:200px; object-fit:cover;">
+                            </div>
+                        <?php endif; ?>
+                        
+                        <div class="card-content">
+                            <h3><?php the_title(); ?></h3>
+                            
+                            <?php 
+                            $duree = get_post_meta( get_the_ID(), '_dsj_duree', true );
+                            $prix = get_post_meta( get_the_ID(), '_dsj_prix', true );
+                            $niveau = get_post_meta( get_the_ID(), '_dsj_niveau', true );
+                            $places = get_post_meta( get_the_ID(), '_dsj_places', true );
+                            ?>
+                            
+                            <div class="card-meta">
+                                <?php if ( $duree ) : ?>
+                                    <span class="meta-item">📅 <?php echo esc_html( $duree ); ?></span>
+                                <?php endif; ?>
+                                
+                                <?php if ( $prix ) : ?>
+                                    <span class="meta-item">💰 <?php echo esc_html( $prix ); ?></span>
+                                <?php endif; ?>
+                            </div>
+                            
+                            <div class="card-description">
+                                <?php 
+                                if ( has_excerpt() ) {
+                                    echo wp_trim_words( get_the_excerpt(), 15, '...' );
+                                } else {
+                                    echo wp_trim_words( get_the_content(), 15, '...' );
+                                }
+                                ?>
+                            </div>
+                            
+                            <?php if ( $niveau ) : ?>
+                                <div class="formation-niveau">
+                                    <span class="niveau-badge">📚 Niveau: <?php echo esc_html( $niveau ); ?></span>
+                                </div>
+                            <?php endif; ?>
+                            
+                            <div class="formation-footer">
+                                <a href="<?php the_permalink(); ?>" class="btn-link">En savoir plus →</a>
+                                <a href="https://wa.me/<?php echo get_theme_mod( 'whatsapp', '22666605890' ); ?>?text=Bonjour,%20je%20suis%20intéressée%20par%20la%20formation%20<?php echo urlencode( get_the_title() ); ?>" 
+                                   class="btn-whatsapp-small" target="_blank">
+                                   💬 S'inscrire
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                <?php endwhile;
+                wp_reset_postdata();
+            else : ?>
+                <div class="no-formations">
+                    <p>Aucune formation disponible pour le moment. Revenez bientôt !</p>
+                </div>
+            <?php endif; ?>
         </div>
     </div>
 </section>
 
-<!-- TÉMOIGNAGES -->
-<section class="temoignages section-padding bg-light">
+<!-- SECTION POURQUOI NOUS CHOISIR -->
+<section class="pourquoi-section section-padding bg-light">
     <div class="container">
-        <h2 class="text-center">Elles témoignent</h2>
-        <div class="grid-2">
-            <blockquote class="card-temoignage">
-                <p>"Grâce à la formation en couture, j'ai pu ouvrir mon propre atelier. Je suis fière de subvenir aux besoins de ma famille."</p>
-                <footer>— Aïssa, promotion 2024</footer>
-            </blockquote>
-            <blockquote class="card-temoignage">
-                <p>"L'informatique m'a donné confiance en moi. Aujourd'hui, je gère la comptabilité d'une petite entreprise."</p>
-                <footer>— Fatou, promotion 2023</footer>
-            </blockquote>
+        <div class="section-header">
+            <span class="section-badge">⭐ Pourquoi nous choisir</span>
+            <h2 class="section-title">Une formation de qualité</h2>
+            <div class="section-divider"></div>
+        </div>
+        
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">👩‍🏫</div>
+                <h3>Formatrices expérimentées</h3>
+                <p>Des professionnelles passionnées qui vous accompagnent tout au long de votre formation.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🏆</div>
+                <h3>Certification reconnue</h3>
+                <p>Un diplôme valorisable sur le marché du travail local.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🤝</div>
+                <h3>Accompagnement personnalisé</h3>
+                <p>Un suivi individuel pour garantir votre réussite.</p>
+            </div>
         </div>
     </div>
 </section>
 
-<!-- INFOS PRATIQUES -->
-<section class="infos-pratiques section-padding">
+<!-- SECTION CTA -->
+<section class="cta-formation section-padding">
     <div class="container">
-        <h2 class="text-center">Informations Pratiques</h2>
-        <div class="grid-3">
-            <div class="info-item">
-                <span class="info-icon">📅</span>
-                <h4>Durée</h4>
-                <p>6 à 12 mois selon la filière, avec stages pratiques inclus.</p>
+        <div class="cta-content">
+            <h2>Prête à commencer votre formation ?</h2>
+            <p>Contactez-nous dès aujourd'hui pour plus d'informations ou pour vous inscrire.</p>
+            <div class="cta-buttons">
+                <a href="<?php echo esc_url( home_url( '/contact' ) ); ?>" class="btn btn-primary">📞 Nous contacter</a>
+                <a href="https://wa.me/<?php echo get_theme_mod( 'whatsapp', '22666605890' ); ?>?text=Bonjour,%20je%20souhaite%20des%20informations%20sur%20les%20formations" 
+                   class="btn btn-whatsapp" target="_blank">
+                   💬 WhatsApp
+                </a>
             </div>
-            <div class="info-item">
-                <span class="info-icon">💰</span>
-                <h4>Paiement</h4>
-                <p>Échelonné possible. Bourses d'excellence sur critères sociaux.</p>
-            </div>
-            <div class="info-item">
-                <span class="info-icon">📜</span>
-                <h4>Certification</h4>
-                <p>Attestation de fin de formation reconnue localement.</p>
-            </div>
-        </div>
-        <p class="text-center" style="margin-top: 2rem;">
-            <a href="#" class="btn btn-primary" onclick="alert('Brochure en préparation — contactez-nous par WhatsApp !'); return false;">
-                📥 Télécharger la brochure (PDF)
-            </a>
-        </p>
-    </div>
-</section>
-
-<!-- CTA FINAL -->
-<section class="cta-final section-padding" style="background: var(--clr-primary); color: var(--clr-white); text-align: center;">
-    <div class="container">
-        <h2>Prête à commencer votre formation ?</h2>
-        <p style="margin: 1rem 0 2rem; opacity: 0.95;">Contactez-nous dès aujourd'hui pour réserver votre place.</p>
-        <div class="hero-cta" style="justify-content: center;">
-            <a href="<?php echo esc_url( home_url( '/contact' ) ); ?>" class="btn btn-secondary">
-                Formulaire d'inscription
-            </a>
-            <a href="https://wa.me/22666605890?text=Bonjour,%20je%20souhaite%20des%20informations%20sur%20les%20formations.%20Merci!" 
-               class="btn" 
-               style="background: #25D366; color: white;"
-               target="_blank" 
-               rel="noopener">
-                💬 WhatsApp direct
-            </a>
         </div>
     </div>
 </section>

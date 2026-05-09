@@ -1,127 +1,180 @@
 <?php
-/*
-Template Name: Contact
-*/
+/**
+ * Template Name: Contact
+ */
 get_header(); ?>
 
-<section class="page-header">
+<!-- HERO SECTION -->
+<?php 
+$hero_image = get_theme_mod('hero_contact_image');
+$hero_opacity = get_theme_mod('hero_contact_opacity', '0.7');
+$hero_badge = get_theme_mod('hero_contact_badge', '📞 Restons connectés');
+$hero_titre = get_theme_mod('hero_contact_titre', 'Contactez-nous');
+$hero_soustitre = get_theme_mod('hero_contact_soustitre', 'Une question ? Une demande d\'information ? Nous sommes à votre écoute.');
+?>
+
+<section class="page-header contact-header" <?php if( $hero_image ) : ?>style="background-image: linear-gradient(rgba(0, 0, 0, <?php echo $hero_opacity; ?>), rgba(0, 0, 0, <?php echo $hero_opacity; ?>)), url('<?php echo esc_url( $hero_image ); ?>'); background-size: cover; background-position: center;"<?php endif; ?>>
     <div class="container">
-        <h1>Nous Contacter</h1>
-        <p class="page-subtitle">Une question ? Une réservation ? Écrivez-nous.</p>
+        <div class="header-content">
+            <span class="header-badge"><?php echo esc_html( $hero_badge ); ?></span>
+            <h1 class="header-title"><?php echo esc_html( $hero_titre ); ?></h1>
+            <div class="header-divider">
+                <span class="divider-line"></span>
+                <span class="divider-icon">✉️</span>
+                <span class="divider-line"></span>
+            </div>
+            <p class="header-subtitle"><?php echo esc_html( $hero_soustitre ); ?></p>
+        </div>
+    </div>
+    <div class="header-wave">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 120">
+            <path fill="#ffffff" fill-opacity="1" d="M0,64L80,58.7C160,53,320,43,480,48C640,53,800,75,960,80C1120,85,1280,75,1360,69.3L1440,64L1440,120L1360,120C1280,120,1120,120,960,120C800,120,640,120,480,120C320,120,160,120,80,120L0,120Z"></path>
+        </svg>
     </div>
 </section>
 
-<!-- Messages de confirmation/erreur -->
-<?php if ( isset( $_GET['success'] ) && $_GET['success'] === '1' ) : ?>
+<!-- SECTION CONTACT -->
+<section class="contact-section section-padding">
     <div class="container">
-        <div class="alert alert-success">✅ Merci ! Votre message a bien été envoyé. Nous vous répondrons sous 48h.</div>
-    </div>
-<?php elseif ( isset( $_GET['error'] ) ) : ?>
-    <div class="container">
-        <div class="alert alert-error">
-            <?php
-            $error = $_GET['error'];
-            if ( $error === 'missing' ) echo '❌ Veuillez remplir tous les champs obligatoires.';
-            elseif ( $error === 'send' ) echo '❌ Une erreur est survenue. Veuillez réessayer ou nous contacter par WhatsApp.';
-            else echo '❌ Une erreur est survenue.';
-            ?>
-        </div>
-    </div>
-<?php endif; ?>
-
-<section class="contact-grid section-padding">
-    <div class="container">
-        <div class="grid-2">
-            <!-- Coordonnées -->
-            <div class="contact-info">
-                <h3>📍 Adresse</h3>
-                <p>547 rue de Pala, Secteur 25<br>Bobo-Dioulasso, Burkina Faso</p>
-
-                <h3>📞 Téléphones</h3>
-                <p>
-                    <a href="tel:+22620972897">(+226) 20 97 28 97</a><br>
-                    <a href="tel:+22657521929">(+226) 57 52 19 29</a><br>
-                    <a href="tel:+226010936712">(+226) 01 09 36 712</a>
-                </p>
-
-                <h3>💬 WhatsApp</h3>
-                <p>
-                    <a href="https://wa.me/22666605890" class="btn-whatsapp" target="_blank" rel="noopener">
-                        +226 66 60 58 90 → Discuter maintenant
-                    </a>
-                </p>
-
-                <h3>✉️ Email</h3>
-                <p><a href="mailto:centredsj@gmail.com">centredsj@gmail.com</a></p>
-
-                <h3>🕒 Horaires d'accueil</h3>
-                <p>Lundi - Vendredi : 7h30 - 17h30<br>Samedi : 8h00 - 12h00</p>
+        <div class="contact-grid">
+            <!-- Informations de contact -->
+            <div class="contact-infos">
+                <h2>📋 Nos coordonnées</h2>
+                
+                <div class="info-block">
+                    <div class="info-icon">📍</div>
+                    <div class="info-content">
+                        <h3>Adresse</h3>
+                        <p>547 rue de Pala, Secteur 25<br>Bobo-Dioulasso, Burkina Faso</p>
+                        <p class="info-small">BP: 598 Bobo-Dioulasso 01</p>
+                    </div>
+                </div>
+                
+                <div class="info-block">
+                    <div class="info-icon">📞</div>
+                    <div class="info-content">
+                        <h3>Téléphone</h3>
+                        <p>
+                            <a href="tel:+22620972897">20 97 28 97</a><br>
+                            <a href="tel:+22657521929">57 52 19 29</a>
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="info-block">
+                    <div class="info-icon">📱</div>
+                    <div class="info-content">
+                        <h3>WhatsApp</h3>
+                        <p><a href="https://wa.me/22666605890" target="_blank">+226 66 60 58 90</a></p>
+                    </div>
+                </div>
+                
+                <div class="info-block">
+                    <div class="info-icon">✉️</div>
+                    <div class="info-content">
+                        <h3>Email</h3>
+                        <p><a href="mailto:centredsj@gmail.com">centredsj@gmail.com</a></p>
+                    </div>
+                </div>
+                
+                <div class="info-block">
+                    <div class="info-icon">⏰</div>
+                    <div class="info-content">
+                        <h3>Horaires d'ouverture</h3>
+                        <p>Lundi - Vendredi: 8h00 - 17h00<br>Samedi: 9h00 - 12h00</p>
+                    </div>
+                </div>
+                
+                <!-- Carte Google Maps -->
+                <div class="map-container">
+                    <h3>📍 Nous trouver</h3>
+                    <iframe 
+                        src="https://maps.google.com/maps?q=Bobo-Dioulasso+Secteur+25+547+rue+de+Pala&t=&z=15&ie=UTF8&iwloc=&output=embed" 
+                        width="100%" 
+                        height="200" 
+                        style="border:0; border-radius: 12px;" 
+                        allowfullscreen="" 
+                        loading="lazy">
+                    </iframe>
+                </div>
             </div>
-
-            <!-- Formulaire -->
-            <div class="contact-form">
-                <h3>Envoyer un message</h3>
-                <form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
+            
+            <!-- Formulaire de contact -->
+            <div class="contact-formulaire">
+                <div class="form-header">
+                    <h2>✉️ Envoyez-nous un message</h2>
+                    <p>Remplissez le formulaire ci-dessous, nous vous répondrons dans les meilleurs délais.</p>
+                </div>
+                
+                <?php if ( isset( $_GET['success'] ) && $_GET['success'] === '1' ) : ?>
+                    <div class="alert alert-success">
+                        <span class="alert-icon">✅</span>
+                        <div class="alert-content">
+                            <strong>Message envoyé !</strong> Merci de nous avoir contactés. Nous vous répondrons sous 48h.
+                        </div>
+                    </div>
+                <?php elseif ( isset( $_GET['error'] ) ) : ?>
+                    <div class="alert alert-error">
+                        <span class="alert-icon">❌</span>
+                        <div class="alert-content">
+                            <?php
+                            $error = $_GET['error'];
+                            if ( $error === 'missing' ) echo '<strong>Champs manquants</strong><br>Veuillez remplir tous les champs obligatoires.';
+                            elseif ( $error === 'send' ) echo '<strong>Erreur d\'envoi</strong><br>Veuillez réessayer ou nous contacter par WhatsApp.';
+                            else echo '<strong>Erreur</strong><br>Une erreur est survenue. Veuillez réessayer.';
+                            ?>
+                        </div>
+                    </div>
+                <?php endif; ?>
+                
+                <form class="form-contact" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" method="post">
                     <input type="hidden" name="action" value="dsj_contact_form">
                     <?php wp_nonce_field( 'dsj_contact_nonce', '_wpnonce' ); ?>
                     
-                    <label for="cf-nom">Nom complet *</label>
-                    <input type="text" id="cf-nom" name="cf_nom" required>
-
-                    <label for="cf-contact">Email ou Téléphone *</label>
-                    <input type="text" id="cf-contact" name="cf_contact" required>
-
-                    <label for="cf-sujet">Sujet</label>
-                    <select id="cf-sujet" name="cf_sujet">
-                        <option value="general">Demande générale</option>
-                        <option value="formation">Inscription formation</option>
-                        <option value="hebergement">Réservation hébergement</option>
-                        <option value="partenariat">Partenariat / Don</option>
-                    </select>
-
-                    <label for="cf-message">Message *</label>
-                    <textarea id="cf-message" name="cf_message" rows="5" required></textarea>
-
-                    <button type="submit" class="btn btn-primary">Envoyer</button>
-                    <p class="small">Nous répondons sous 48h ouvrées.</p>
+                    <div class="form-group">
+                        <label for="cf_nom">👤 Nom complet <span class="required">*</span></label>
+                        <input type="text" id="cf_nom" name="cf_nom" class="form-control" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="cf_contact">📞 Email ou Téléphone <span class="required">*</span></label>
+                        <input type="text" id="cf_contact" name="cf_contact" class="form-control" placeholder="exemple@email.com ou 20 97 28 97" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="cf_sujet">📝 Sujet <span class="required">*</span></label>
+                        <select id="cf_sujet" name="cf_sujet" class="form-control" required>
+                            <option value="general">Information générale</option>
+                            <option value="formation">Inscription formation</option>
+                            <option value="reservation">Réservation hébergement</option>
+                            <option value="don">Soutien / Don</option>
+                            <option value="partenariat">Partenariat</option>
+                            <option value="autre">Autre</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="cf_message">💬 Message <span class="required">*</span></label>
+                        <textarea id="cf_message" name="cf_message" class="form-control" rows="5" required></textarea>
+                    </div>
+                    
+                    <div class="form-footer">
+                        <button type="submit" class="btn-submit">
+                            <span class="btn-icon">✉️</span>
+                            Envoyer le message
+                        </button>
+                    </div>
                 </form>
+                
+                <div class="contact-alternatif">
+                    <p>Ou contactez-nous directement sur <strong>WhatsApp</strong> :</p>
+                    <a href="https://wa.me/22666605890" class="btn btn-whatsapp" target="_blank">
+                        💬 Écrire sur WhatsApp
+                    </a>
+                </div>
             </div>
         </div>
     </div>
 </section>
-
-<!-- Google Maps (lazy load pour 3G) -->
-<section class="map-section">
-    <div class="container">
-        <div class="map-wrapper">
-            <div class="map-placeholder" id="map-placeholder">
-                <p>🗺️ Carte du Domaine Saint Joseph</p>
-                <button class="btn btn-small" onclick="loadGoogleMap()">Afficher la carte</button>
-            </div>
-            <iframe 
-                id="google-map"
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3902.1234!2d-4.2987!3d11.1789!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xec370f6f8c8b8a1%3A0x8b8c8d8e8f909192!2sBobo-Dioulasso%2C%20Burkina%20Faso!5e0!3m2!1sfr!2sbf!4v1234567890"
-                loading="lazy"
-                referrerpolicy="no-referrer-when-downgrade"
-                style="border:0; width:100%; height:400px; display:none;"
-                allowfullscreen>
-            </iframe>
-        </div>
-    </div>
-</section>
-
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-    function loadGoogleMap() {
-        const placeholder = document.getElementById('map-placeholder');
-        const iframe = document.getElementById('google-map');
-        if (placeholder && iframe) {
-            placeholder.style.display = 'none';
-            iframe.style.display = 'block';
-        }
-    }
-    window.loadGoogleMap = loadGoogleMap;
-});
-</script>
 
 <?php get_footer(); ?>
