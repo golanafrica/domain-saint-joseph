@@ -173,7 +173,68 @@
         .menu-toggle.active span:nth-child(3) { transform: rotate(-45deg) translate(7px, -6px); }
     </style>
 </head>
-<body <?php body_class(); ?>>
+<body <?php body_class(); ?>
+
+
+<!-- BANDEAU D'URGENCE DÉFILANT - VERSION UNIVERSEL -->
+<?php if ( get_theme_mod( 'urgence_active', false ) ) : 
+    $urgence_lien = get_theme_mod( 'urgence_lien', '/nous-soutenir' );
+    $urgence_bouton = get_theme_mod( 'urgence_bouton_texte', 'Je participe' );
+    $urgence_couleur = get_theme_mod( 'urgence_couleur', '#e74c3c' );
+    $urgence_icone = get_theme_mod( 'urgence_icone', '🚨' );
+    $urgence_vitesse = get_theme_mod( 'urgence_vitesse', 'normal' );
+    
+    // Récupérer les messages non vides
+    $messages = [];
+    for ( $i = 1; $i <= 5; $i++ ) {
+        $msg = get_theme_mod( "urgence_message_{$i}", '' );
+        if ( ! empty( $msg ) ) {
+            $messages[] = $msg;
+        }
+    }
+    
+    // Messages par défaut
+    if ( empty( $messages ) ) {
+        $messages = [
+            '👧 Parrainez une jeune fille pour sa formation',
+            '🏗️ Aidez-nous à construire de nouvelles salles',
+            '💛 Votre don change des vies',
+        ];
+    }
+    
+    // Vitesse d'animation
+    $animation_duration = '15s';
+    if ( $urgence_vitesse === 'lent' ) $animation_duration = '25s';
+    if ( $urgence_vitesse === 'rapide' ) $animation_duration = '10s';
+    
+    // Sérialiser les messages pour JavaScript
+    $messages_json = json_encode($messages);
+?>
+<div class="urgence-banner" style="background: <?php echo esc_attr( $urgence_couleur ); ?>;" data-messages='<?php echo esc_attr( $messages_json ); ?>' data-speed="<?php echo esc_attr( $animation_duration ); ?>">
+    <div class="container">
+        <div class="urgence-content">
+            <div class="urgence-icone-fixe"><?php echo esc_html( $urgence_icone ); ?></div>
+            
+            <div class="marquee-wrapper">
+                <div class="marquee-track" id="marqueeTrack">
+                    <?php foreach ( $messages as $message ) : ?>
+                        <span class="marquee-message"><?php echo esc_html( $message ); ?></span>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+            
+            <a href="<?php echo esc_url( $urgence_lien ); ?>" class="urgence-bouton">
+                <?php echo esc_html( $urgence_bouton ); ?> →
+            </a>
+            <button class="urgence-close" aria-label="Fermer" onclick="this.closest('.urgence-banner').style.display='none';">✕</button>
+        </div>
+    </div>
+</div>
+<?php endif; ?>
+    
+
+
+
 <?php wp_body_open(); ?>
 
 <!-- Skip to content link -->

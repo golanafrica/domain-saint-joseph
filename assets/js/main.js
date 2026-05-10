@@ -122,3 +122,62 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
+
+// ========================================
+// BANDEAU D'URGENCE DÉFILANT
+// ========================================
+
+function initUrgenceMarquee() {
+    const banner = document.querySelector('.urgence-banner');
+    if (!banner) return;
+    
+    const track = banner.querySelector('.marquee-track');
+    const wrapper = banner.querySelector('.marquee-wrapper');
+    const speed = banner.getAttribute('data-speed') || '15s';
+    
+    // Ne pas animer sur mobile (largeur < 769px)
+    if (window.innerWidth < 769) return;
+    
+    if (track && wrapper) {
+        // Cloner les messages pour un défilement infini
+        const messages = track.querySelectorAll('.marquee-message');
+        if (messages.length > 0) {
+            // Remplacer le contenu par le double pour l'effet infini
+            const originalHTML = track.innerHTML;
+            track.innerHTML = originalHTML + originalHTML;
+            
+            // Calculer la largeur totale
+            const totalWidth = track.scrollWidth / 2;
+            
+            // Position de départ
+            let position = 0;
+            
+            // Animation avec requestAnimationFrame pour un défilement fluide
+            let startTime = null;
+            const duration = parseFloat(speed) * 1000; // Convertir en ms
+            
+            function animate(currentTime) {
+                if (!startTime) startTime = currentTime;
+                const elapsed = currentTime - startTime;
+                const progress = (elapsed % duration) / duration;
+                position = -progress * totalWidth;
+                track.style.transform = `translateX(${position}px)`;
+                requestAnimationFrame(animate);
+            }
+            
+            requestAnimationFrame(animate);
+        }
+    }
+}
+
+// Lancer au chargement et au redimensionnement
+document.addEventListener('DOMContentLoaded', initUrgenceMarquee);
+window.addEventListener('resize', function() {
+    // Réinitialiser au redimensionnement
+    const track = document.querySelector('.marquee-track');
+    if (track) {
+        track.style.transform = '';
+        // Relancer après un court délai
+        setTimeout(initUrgenceMarquee, 100);
+    }
+});

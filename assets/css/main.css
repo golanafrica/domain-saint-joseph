@@ -733,6 +733,7 @@ img {
     color: #555;
 }
 
+/* APRÈS - Version corrigée */
 .card-description {
     font-size: 0.85rem;
     color: #555;
@@ -741,9 +742,9 @@ img {
     display: -webkit-box;
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
+    line-clamp: 3;  /* Ajout de la version standard */
     overflow: hidden;
 }
-
 /* Badges de disponibilité */
 .card-badge {
     position: absolute;
@@ -4399,4 +4400,420 @@ section:not(.hero-section):not(.page-header):not(.cta-home-section) .btn-seconda
 section:not(.hero-section):not(.page-header):not(.cta-home-section) .btn-secondary:hover {
     background: var(--clr-primary, #1A5276);
     color: white;
+}
+
+/* ========================================
+   BANDEAU D'URGENCE DÉFILANT
+   ======================================== */
+
+.urgence-banner {
+    position: relative;
+    padding: 10px 0;
+    color: white;
+    font-weight: 500;
+    z-index: 1001;
+    animation: slideDown 0.5s ease-out;
+    overflow: hidden;
+}
+
+@keyframes slideDown {
+    from {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.urgence-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+/* Icône fixe à gauche */
+.urgence-icone-fixe {
+    font-size: 1.3rem;
+    background: rgba(255, 255, 255, 0.2);
+    width: 34px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+/* Wrapper du défilement */
+.marquee-wrapper {
+    flex: 1;
+    overflow: hidden;
+    white-space: nowrap;
+    position: relative;
+}
+
+.marquee-track {
+    display: inline-block;
+    white-space: nowrap;
+    animation: marqueeScroll var(--duration, 15s) linear infinite;
+}
+
+.marquee-message {
+    display: inline-block;
+    padding: 0 40px;
+    font-size: 0.95rem;
+}
+
+/* Animation de défilement */
+@keyframes marqueeScroll {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
+/* Pause au survol */
+.marquee-wrapper:hover .marquee-track {
+    animation-play-state: paused;
+}
+
+/* Bouton */
+.urgence-bouton {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    padding: 8px 20px;
+    border-radius: 50px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.urgence-bouton:hover {
+    background: rgba(255, 255, 255, 0.35);
+    transform: translateX(3px);
+    color: white;
+}
+
+/* Bouton fermeture */
+.urgence-close {
+    background: rgba(0, 0, 0, 0.2);
+    border: none;
+    color: white;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+}
+
+.urgence-close:hover {
+    background: rgba(0, 0, 0, 0.4);
+    transform: scale(1.1);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .urgence-content {
+        flex-direction: column;
+        text-align: center;
+        gap: 10px;
+    }
+    
+    .marquee-wrapper {
+        width: 100%;
+        white-space: normal;
+    }
+    
+    .marquee-track {
+        animation: none;
+        white-space: normal;
+        text-align: center;
+    }
+    
+    .marquee-message {
+        display: block;
+        padding: 5px 0;
+        white-space: normal;
+    }
+    
+    .urgence-bouton {
+        white-space: normal;
+    }
+    
+    .urgence-close {
+        position: absolute;
+        top: 5px;
+        right: 10px;
+    }
+}
+
+/* ========================================
+   BANDEAU D'URGENCE - VERSION RESPONSIVE
+   ======================================== */
+
+.urgence-banner {
+    position: relative;
+    padding: 10px 0;
+    color: white;
+    font-weight: 500;
+    z-index: 1001;
+    animation: slideDown 0.5s ease-out;
+    overflow: hidden;
+}
+
+@keyframes slideDown {
+    from {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.urgence-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+/* Icône fixe */
+.urgence-icone-fixe {
+    font-size: 1.2rem;
+    background: rgba(255, 255, 255, 0.2);
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+/* Wrapper pour le défilement */
+.marquee-wrapper {
+    flex: 1;
+    overflow: hidden;
+    position: relative;
+}
+
+.marquee-track {
+    display: flex;
+    white-space: nowrap;
+    will-change: transform;
+}
+
+.marquee-message {
+    display: inline-block;
+    padding: 0 30px;
+    font-size: 0.9rem;
+    white-space: nowrap;
+}
+
+/* Bouton */
+.urgence-bouton {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    padding: 8px 18px;
+    border-radius: 50px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+    flex-shrink: 0;
+    font-size: 0.85rem;
+}
+
+.urgence-bouton:hover {
+    background: rgba(255, 255, 255, 0.35);
+    transform: translateX(3px);
+    color: white;
+}
+
+/* Bouton fermeture */
+.urgence-close {
+    background: rgba(0, 0, 0, 0.2);
+    border: none;
+    color: white;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+}
+
+.urgence-close:hover {
+    background: rgba(0, 0, 0, 0.4);
+    transform: scale(1.1);
+}
+
+/* Pause au survol (desktop seulement) */
+@media (min-width: 769px) {
+    .marquee-wrapper:hover .marquee-track {
+        animation-play-state: paused;
+    }
+}
+
+/* ===== VERSION MOBILE ===== */
+@media (max-width: 768px) {
+    .urgence-banner {
+        padding: 8px 0;
+    }
+    
+    .urgence-content {
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+    
+    .urgence-icone-fixe {
+        width: 28px;
+        height: 28px;
+        font-size: 1rem;
+    }
+    
+    /* Sur mobile, affichage vertical des messages */
+    .marquee-wrapper {
+        width: 100%;
+        order: 1;
+    }
+    
+    .marquee-track {
+        display: flex;
+        flex-direction: column;
+        white-space: normal;
+        animation: none !important;
+    }
+    
+    .marquee-message {
+        display: block;
+        white-space: normal;
+        text-align: center;
+        padding: 6px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    .marquee-message:last-child {
+        border-bottom: none;
+    }
+    
+    .urgence-bouton {
+        order: 2;
+        width: calc(50% - 5px);
+        justify-content: center;
+        padding: 8px 12px;
+        font-size: 0.8rem;
+    }
+    
+    .urgence-close {
+        order: 3;
+        position: absolute;
+        top: 5px;
+        right: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .urgence-bouton {
+        width: 100%;
+    }
+    
+    .marquee-message {
+        font-size: 0.8rem;
+        padding: 5px 0;
+    }
+}
+
+
+/* ========================================
+   SECTION AIDE URGENCE (ACCUEIL)
+   ======================================== */
+
+.aide-urgence {
+    background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+}
+
+.aide-urgence-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px;
+}
+
+.aide-card {
+    background: white;
+    padding: 35px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease;
+    text-align: center;
+}
+
+.aide-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+}
+
+.aide-card-icon {
+    font-size: 3.5rem;
+    margin-bottom: 20px;
+}
+
+.aide-card h3 {
+    font-size: 1.5rem;
+    color: var(--clr-primary, #1A5276);
+    margin-bottom: 15px;
+}
+
+.aide-card p {
+    color: #555;
+    margin-bottom: 20px;
+    line-height: 1.6;
+}
+
+.aide-list {
+    text-align: left;
+    list-style: none;
+    margin: 20px 0;
+    padding: 0;
+}
+
+.aide-list li {
+    padding: 8px 0;
+    color: #666;
+}
+
+@media (max-width: 768px) {
+    .aide-urgence-grid {
+        grid-template-columns: 1fr;
+        gap: 25px;
+    }
+    
+    .aide-card {
+        padding: 25px;
+    }
 }

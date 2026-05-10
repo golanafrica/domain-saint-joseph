@@ -247,6 +247,55 @@ get_header(); ?>
         </div>
     </section>
 
+
+<!-- ===== SECTION APPEL À L'AIDE - PARRAINAGE & CONSTRUCTION ===== -->
+<?php if ( get_theme_mod( 'aide_accueil_active', true ) ) : ?>
+<section class="aide-urgence section-padding">
+    <div class="container">
+        <div class="aide-urgence-grid">
+            
+            <!-- Carte Parrainage -->
+            <div class="aide-card">
+                <div class="aide-card-icon"><?php echo get_theme_mod( 'aide_parrainage_icone', '👧' ); ?></div>
+                <h3><?php echo get_theme_mod( 'aide_parrainage_titre', 'Parrainez une jeune fille' ); ?></h3>
+                <p><?php echo wp_kses_post( get_theme_mod( 'aide_parrainage_texte', 'Pour seulement <strong>50 000 F CFA par mois</strong>, vous offrez une formation technique complète à une jeune fille.' ) ); ?></p>
+                <ul class="aide-list">
+                    <?php for ( $i = 1; $i <= 3; $i++ ) : 
+                        $avantage = get_theme_mod( "aide_parrainage_avantage_{$i}", '' );
+                        if ( ! empty( $avantage ) ) : ?>
+                            <li><?php echo esc_html( $avantage ); ?></li>
+                        <?php endif; 
+                    endfor; ?>
+                </ul>
+                <a href="<?php echo esc_url( get_theme_mod( 'aide_parrainage_lien', '/nous-soutenir' ) ); ?>" class="btn btn-primary">
+                    <?php echo esc_html( get_theme_mod( 'aide_parrainage_bouton', 'Je parraine' ) ); ?> →
+                </a>
+            </div>
+            
+            <!-- Carte Construction -->
+            <div class="aide-card">
+                <div class="aide-card-icon"><?php echo get_theme_mod( 'aide_construction_icone', '🏗️' ); ?></div>
+                <h3><?php echo get_theme_mod( 'aide_construction_titre', 'Construisons ensemble' ); ?></h3>
+                <p><?php echo wp_kses_post( get_theme_mod( 'aide_construction_texte', 'Nous avons besoin de <strong>nouvelles salles de formation</strong> pour accueillir plus de jeunes filles.' ) ); ?></p>
+                <ul class="aide-list">
+                    <?php for ( $i = 1; $i <= 3; $i++ ) : 
+                        $besoin = get_theme_mod( "aide_construction_besoin_{$i}", '' );
+                        if ( ! empty( $besoin ) ) : ?>
+                            <li><?php echo esc_html( $besoin ); ?></li>
+                        <?php endif; 
+                    endfor; ?>
+                </ul>
+                <a href="<?php echo esc_url( get_theme_mod( 'aide_construction_lien', '/nous-soutenir' ) ); ?>" class="btn btn-primary">
+                    <?php echo esc_html( get_theme_mod( 'aide_construction_bouton', 'Je contribue' ) ); ?> →
+                </a>
+            </div>
+            
+        </div>
+    </div>
+</section>
+<?php endif; ?>
+
+
     <!-- ===== SECTION RESTAURANT ===== -->
 <section class="home-restaurant section-padding bg-light">
     <div class="container">
