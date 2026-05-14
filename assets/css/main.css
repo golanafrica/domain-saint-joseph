@@ -85,6 +85,8 @@ section.section-padding + section.section-padding {
     }
 }
 
+
+
 /* ========================================
  * 2. HEADER & NAVIGATION
  * ======================================== */
@@ -101,6 +103,8 @@ section.section-padding + section.section-padding {
     justify-content: space-between;
     padding: 1rem 0;
 }
+
+
 
 .logo-text { color: var(--clr-white); font-size: 1.3rem; font-weight: 700; }
 .logo-tagline { font-size: 0.7rem; color: rgba(255, 255, 255, 0.7); }
@@ -422,6 +426,66 @@ section.section-padding + section.section-padding {
     .footer-whatsapp { width: auto; min-width: 200px; justify-content: center; padding: 10px 16px; font-size: 0.8rem; }
     .footer-newsletter input { padding: 12px 14px; font-size: 0.85rem; }
     .footer-newsletter button { padding: 0 16px; font-size: 1rem; }
+}
+
+/* ========================================
+ * FOOTER - RÉSEAUX SOCIAUX (ICÔNES SVG)
+ * ======================================== */
+
+.footer-social {
+    display: flex;
+    gap: 12px;
+    margin-top: 15px;
+    flex-wrap: wrap;
+}
+
+/* Style des liens sociaux */
+.social-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    text-decoration: none;
+    
+    /* IMPORTANT : 'color' contrôle la couleur de l'SVG (stroke="currentColor") */
+    color: var(--clr-white); 
+    
+    transition: all var(--transition);
+}
+
+/* Effet au survol */
+.social-link:hover {
+    background: var(--clr-accent);      /* Fond doré */
+    color: var(--clr-primary) !important;          /* L'icône devient bleu foncé */
+    transform: translateY(-3px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Ajustement de la taille de l'SVG */
+.social-link svg {
+    width: 18px;
+    height: 18px;
+    transition: transform 0.3s ease;
+}
+
+/* Petit zoom sur l'icône au survol */
+.social-link:hover svg {
+    transform: scale(1.1);
+}
+
+/* Responsive : Centrage et taille tactile */
+@media (max-width: 768px) {
+    .footer-social {
+        justify-content: center; /* Centre les icônes sur mobile */
+        margin-top: 20px;
+    }
+    .social-link {
+        width: 44px;   /* Zone de clic plus grande (standard tactile 44px) */
+        height: 44px;
+    }
 }
 
 /* ========================================
@@ -936,6 +1000,23 @@ section:not(.hero-section):not(.page-header):not(.cta-home-section) .btn-seconda
     margin: 0;
     flex-grow: 1; /* ← Pousse le contenu pour aligner les cartes */
 }
+
+.valeur-icon {
+    background: var(--clr-bleu-clair);
+    color: var(--clr-primary);
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    margin-bottom: 20px;
+    transition: transform var(--transition);
+}
+
+.valeur-card:hover .valeur-icon {
+    transform: rotate(15deg) scale(1.1);
+    background: var(--clr-accent);
+    color: var(--clr-white);
+}
+
 
 /* Responsive mobile */
 @media (max-width: 768px) {
@@ -1655,6 +1736,45 @@ textarea.form-control { resize: vertical; min-height: 100px; }
 .temoignage-author strong { color: var(--clr-primary); }
 
 /* ========================================
+ * TÉMOIGNAGES - AUTEUR
+ * ======================================== */
+.temoignage-author {
+    margin-top: 20px;
+    padding-top: 12px;
+    border-top: 2px solid var(--clr-accent, #D4AC0D); /* Ligne dorée subtile */
+    text-align: right;
+}
+
+.temoignage-author strong {
+    display: block;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--clr-primary, #1A5276);
+    letter-spacing: 0.2px;
+    line-height: 1.4;
+}
+
+/* Petit tiret décoratif avant le nom */
+.temoignage-author strong::before {
+    content: '— ';
+    color: var(--clr-accent, #D4AC0D);
+    font-weight: 400;
+    margin-right: 4px;
+}
+
+/* Responsive mobile */
+@media (max-width: 768px) {
+    .temoignage-author {
+        margin-top: 15px;
+        padding-top: 10px;
+        text-align: left; /* Plus naturel sur mobile */
+    }
+    .temoignage-author strong {
+        font-size: 0.85rem;
+    }
+}
+
+/* ========================================
  * 15. PAGES SPÉCIFIQUES
  * ======================================== */
 
@@ -2247,6 +2367,9 @@ textarea.form-control { resize: vertical; min-height: 100px; }
     .site-header [class*="whatsapp"] { width: auto !important; height: auto !important; padding: 8px 12px !important; border-radius: 50px !important; }
     .site-header [class*="whatsapp"]::before, .site-header [class*="whatsapp"]::after { display: none !important; }
 }
+
+
+
 
 /* ========================================
  * 18. PAGE ACCUEIL - SECTIONS SPÉCIFIQUES

@@ -295,7 +295,7 @@
 
             <!-- Menu burger (mobile) -->
             <button class="menu-toggle" 
-                    aria-label="<?php esc_attr_e( 'Menu', 'domaine-saint-joseph' ); ?>" 
+                    aria-label="<?php echo esc_attr__( 'Menu', 'domaine-saint-joseph' ); ?>" 
                     aria-expanded="false">
                 <span></span>
                 <span></span>
