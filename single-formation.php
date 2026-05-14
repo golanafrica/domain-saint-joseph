@@ -23,7 +23,7 @@ get_header(); ?>
                 </div>
             </div>
             <div class="header-wave">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 120">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 120" preserveAspectRatio="none">
                     <path fill="#ffffff" fill-opacity="1" d="M0,64L80,58.7C160,53,320,43,480,48C640,53,800,75,960,80C1120,85,1280,75,1360,69.3L1440,64L1440,120L1360,120C1280,120,1120,120,960,120C800,120,640,120,480,120C320,120,160,120,80,120L0,120Z"></path>
                 </svg>
             </div>
@@ -36,9 +36,14 @@ get_header(); ?>
                     <!-- Colonne image -->
                     <div class="formation-single-image">
                         <?php if ( has_post_thumbnail() ) : ?>
-                            <?php the_post_thumbnail( 'large', [ 'class' => 'img-responsive' ] ); ?>
+                            <?php the_post_thumbnail( 'large', [ 
+                                'class' => 'img-responsive',
+                                'loading' => 'lazy'
+                            ] ); ?>
                         <?php else : ?>
-                            <img src="<?php echo get_template_directory_uri(); ?>/assets/images/placeholder-formation.jpg" alt="Image de la formation">
+                            <img src="<?php echo get_template_directory_uri(); ?>/assets/images/placeholder-formation.jpg" 
+                                 alt="Image de la formation"
+                                 loading="lazy">
                         <?php endif; ?>
                     </div>
                     
@@ -100,8 +105,10 @@ get_header(); ?>
                         </div>
                         
                         <div class="inscription-cta">
-                            <a href="https://wa.me/<?php echo get_theme_mod( 'whatsapp', '22666605890' ); ?>?text=Bonjour,%20je%20souhaite%20m'inscrire%20à%20la%20formation%20<?php echo urlencode( get_the_title() ); ?>" 
-                               class="btn btn-primary btn-large" target="_blank">
+                            <a href="https://wa.me/<?php echo get_theme_mod( 'whatsapp', '22666605890' ); ?>?text=<?php echo urlencode( 'Bonjour, je souhaite m\'inscrire à la formation ' . get_the_title() ); ?>" 
+                               class="btn btn-primary btn-large" 
+                               target="_blank"
+                               rel="noopener noreferrer">
                                💬 S'inscrire par WhatsApp
                             </a>
                             <a href="<?php echo esc_url( home_url( '/contact' ) ); ?>" class="btn btn-outline btn-large">
@@ -118,6 +125,19 @@ get_header(); ?>
                         <?php the_content(); ?>
                     </div>
                 </div>
+                
+                <!-- Badges de la formation (si tu as des catégories ou tags) -->
+                <?php 
+                $terms = get_the_terms( get_the_ID(), 'formation_category' );
+                if ( $terms && ! is_wp_error( $terms ) ) : 
+                ?>
+                <div class="formation-badges">
+                    <?php foreach ( $terms as $term ) : ?>
+                        <span class="formation-badge"><?php echo esc_html( $term->name ); ?></span>
+                    <?php endforeach; ?>
+                </div>
+                <?php endif; ?>
+                
             </div>
         </section>
         

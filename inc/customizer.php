@@ -467,258 +467,405 @@ function dsj_customize_register( $wp_customize ) {
         ]
     ] );
 
+    // ========================================
+    // SECTION: CONTENU PAGE NOUS SOUTENIR (RENDU MODIFIABLE)
+    // ========================================
+    $wp_customize->add_section( 'dsj_soutenir_contenu', [
+        'title'    => __( '📝 Contenu - Page Nous soutenir', 'domaine-saint-joseph' ),
+        'priority' => 96,
+        'description' => __( 'Personnalisez les textes et montants de la page Nous soutenir', 'domaine-saint-joseph' ),
+    ] );
+
+    // --- Section besoins urgents ---
+    $wp_customize->add_setting( 'besoins_urgents_titre', [
+        'default' => 'Besoin immédiat',
+        'sanitize_callback' => 'sanitize_text_field',
+    ] );
+    $wp_customize->add_control( 'besoins_urgents_titre', [
+        'label' => __( 'Titre - Besoins urgents', 'domaine-saint-joseph' ),
+        'section' => 'dsj_soutenir_contenu',
+        'type' => 'text',
+    ] );
+
+    $wp_customize->add_setting( 'besoins_urgents_texte', [
+        'default' => 'Nous recherchons 5 ordinateurs portables pour notre laboratoire informatique.',
+        'sanitize_callback' => 'sanitize_textarea_field',
+    ] );
+    $wp_customize->add_control( 'besoins_urgents_texte', [
+        'label' => __( 'Texte - Besoins urgents', 'domaine-saint-joseph' ),
+        'section' => 'dsj_soutenir_contenu',
+        'type' => 'textarea',
+    ] );
+
+    $wp_customize->add_setting( 'besoins_urgents_objectif', [
+        'default' => '5 ordinateurs (2 collectés)',
+        'sanitize_callback' => 'sanitize_text_field',
+    ] );
+    $wp_customize->add_control( 'besoins_urgents_objectif', [
+        'label' => __( 'Objectif / Progression - Besoins urgents', 'domaine-saint-joseph' ),
+        'section' => 'dsj_soutenir_contenu',
+        'type' => 'text',
+    ] );
+
+    $wp_customize->add_setting( 'besoins_urgents_progress', [
+        'default' => '40',
+        'sanitize_callback' => 'absint',
+    ] );
+    $wp_customize->add_control( 'besoins_urgents_progress', [
+        'label' => __( 'Pourcentage de progression (0-100)', 'domaine-saint-joseph' ),
+        'section' => 'dsj_soutenir_contenu',
+        'type' => 'number',
+        'input_attrs' => [ 'min' => 0, 'max' => 100 ],
+    ] );
+
+    // --- Section Pourquoi soutenir ---
+    $wp_customize->add_setting( 'soutenir_texte_intro', [
+        'default' => 'Depuis 2022, le Domaine Saint Joseph accompagne des dizaines de jeunes filles vers l\'autonomie grâce à la formation technique et offre un lieu d\'accueil bienveillant aux voyageurs et familles.',
+        'sanitize_callback' => 'sanitize_textarea_field',
+    ] );
+    $wp_customize->add_control( 'soutenir_texte_intro', [
+        'label' => __( 'Texte d\'introduction - Pourquoi soutenir', 'domaine-saint-joseph' ),
+        'section' => 'dsj_soutenir_contenu',
+        'type' => 'textarea',
+    ] );
+
+    // --- Montants suggérés ---
+    $wp_customize->add_setting( 'montants_suggeres', [
+        'default' => '5 000 F,10 000 F,25 000 F,50 000 F,Autre',
+        'sanitize_callback' => 'sanitize_text_field',
+    ] );
+    $wp_customize->add_control( 'montants_suggeres', [
+        'label' => __( 'Montants suggérés (séparés par des virgules)', 'domaine-saint-joseph' ),
+        'section' => 'dsj_soutenir_contenu',
+        'type' => 'text',
+    ] );
+
+    // --- Prix parrainage ---
+    $wp_customize->add_setting( 'parrainage_prix', [
+        'default' => '50 000 F CFA / mois',
+        'sanitize_callback' => 'sanitize_text_field',
+    ] );
+    $wp_customize->add_control( 'parrainage_prix', [
+        'label' => __( 'Prix du parrainage', 'domaine-saint-joseph' ),
+        'section' => 'dsj_soutenir_contenu',
+        'type' => 'text',
+    ] );
+
+    // --- Texte transparence ---
+    $wp_customize->add_setting( 'transparence_texte', [
+        'default' => 'Chaque contribution est utilisée conformément à la mission du centre. Un reçu ou un accusé de réception vous est envoyé. Les rapports d\'activité annuels sont disponibles sur demande.',
+        'sanitize_callback' => 'sanitize_textarea_field',
+    ] );
+    $wp_customize->add_control( 'transparence_texte', [
+        'label' => __( 'Texte de transparence', 'domaine-saint-joseph' ),
+        'section' => 'dsj_soutenir_contenu',
+        'type' => 'textarea',
+    ] );
+
+    // --- Message final CTA ---
+    $wp_customize->add_setting( 'cta_final_titre', [
+        'default' => 'Prêt à faire la différence ?',
+        'sanitize_callback' => 'sanitize_text_field',
+    ] );
+    $wp_customize->add_control( 'cta_final_titre', [
+        'label' => __( 'Titre - CTA final', 'domaine-saint-joseph' ),
+        'section' => 'dsj_soutenir_contenu',
+        'type' => 'text',
+    ] );
+
+    $wp_customize->add_setting( 'cta_final_texte', [
+        'default' => 'Votre don, petit ou grand, change des vies.',
+        'sanitize_callback' => 'sanitize_text_field',
+    ] );
+    $wp_customize->add_control( 'cta_final_texte', [
+        'label' => __( 'Texte - CTA final', 'domaine-saint-joseph' ),
+        'section' => 'dsj_soutenir_contenu',
+        'type' => 'text',
+    ] );
 
     // ========================================
-// SECTION: BANDEAU D'URGENCE (PAGE TOP BAR)
-// ========================================
-$wp_customize->add_section( 'dsj_urgence', [
-    'title'    => __( '🚨 Bandeau d\'urgence (défilant)', 'domaine-saint-joseph' ),
-    'priority' => 25,
-    'description' => __( 'Affichez plusieurs messages qui défilent en haut du site', 'domaine-saint-joseph' ),
-]);
+    // SECTION: BANDEAU D'URGENCE (PAGE TOP BAR)
+    // ========================================
+    $wp_customize->add_section( 'dsj_urgence', [
+        'title'    => __( '🚨 Bandeau d\'urgence (défilant)', 'domaine-saint-joseph' ),
+        'priority' => 25,
+        'description' => __( 'Affichez plusieurs messages qui défilent en haut du site', 'domaine-saint-joseph' ),
+    ] );
 
-// Activer/désactiver le bandeau
-$wp_customize->add_setting( 'urgence_active', [
-    'default' => false,
-    'sanitize_callback' => 'wp_validate_boolean',
-]);
-$wp_customize->add_control( 'urgence_active', [
-    'label' => __( '✅ Activer le bandeau d\'urgence', 'domaine-saint-joseph' ),
-    'section' => 'dsj_urgence',
-    'type' => 'checkbox',
-]);
+    // Activer/désactiver le bandeau
+    $wp_customize->add_setting( 'urgence_active', [
+        'default' => false,
+        'sanitize_callback' => 'wp_validate_boolean',
+    ] );
+    $wp_customize->add_control( 'urgence_active', [
+        'label' => __( '✅ Activer le bandeau d\'urgence', 'domaine-saint-joseph' ),
+        'section' => 'dsj_urgence',
+        'type' => 'checkbox',
+    ] );
 
-// Vitesse de défilement
-$wp_customize->add_setting( 'urgence_vitesse', [
-    'default' => 'normal',
-    'sanitize_callback' => 'sanitize_text_field',
-]);
-$wp_customize->add_control( 'urgence_vitesse', [
-    'label' => __( 'Vitesse de défilement', 'domaine-saint-joseph' ),
-    'section' => 'dsj_urgence',
-    'type' => 'select',
-    'choices' => [
-        'lent' => '🐢 Lente (20s)',
-        'normal' => '⏩ Normale (15s)',
-        'rapide' => '🐇 Rapide (10s)',
-    ],
-]);
-
-// Messages défilants (répéteur)
-for ( $i = 1; $i <= 5; $i++ ) {
-    $wp_customize->add_setting( "urgence_message_{$i}", [
-        'default' => $i === 1 ? '👧 Parrainez une jeune fille pour sa formation' : '',
+    // Vitesse de défilement
+    $wp_customize->add_setting( 'urgence_vitesse', [
+        'default' => 'normal',
         'sanitize_callback' => 'sanitize_text_field',
-    ]);
-    $wp_customize->add_control( "urgence_message_{$i}", [
-        'label' => sprintf( __( 'Message %d', 'domaine-saint-joseph' ), $i ),
+    ] );
+    $wp_customize->add_control( 'urgence_vitesse', [
+        'label' => __( 'Vitesse de défilement', 'domaine-saint-joseph' ),
+        'section' => 'dsj_urgence',
+        'type' => 'select',
+        'choices' => [
+            'lent' => '🐢 Lente (20s)',
+            'normal' => '⏩ Normale (15s)',
+            'rapide' => '🐇 Rapide (10s)',
+        ],
+    ] );
+
+    // Messages défilants (répéteur)
+    for ( $i = 1; $i <= 5; $i++ ) {
+        $wp_customize->add_setting( "urgence_message_{$i}", [
+            'default' => $i === 1 ? '👧 Parrainez une jeune fille pour sa formation' : '',
+            'sanitize_callback' => 'sanitize_text_field',
+        ] );
+        $wp_customize->add_control( "urgence_message_{$i}", [
+            'label' => sprintf( __( 'Message %d', 'domaine-saint-joseph' ), $i ),
+            'section' => 'dsj_urgence',
+            'type' => 'text',
+            'input_attrs' => [ 'placeholder' => 'Entrez votre message...' ],
+        ] );
+    }
+
+    // Lien du bouton
+    $wp_customize->add_setting( 'urgence_lien', [
+        'default' => '/nous-soutenir',
+        'sanitize_callback' => 'esc_url_raw',
+    ] );
+    $wp_customize->add_control( 'urgence_lien', [
+        'label' => __( 'Lien du bouton', 'domaine-saint-joseph' ),
+        'section' => 'dsj_urgence',
+        'type' => 'url',
+    ] );
+
+    // Texte du bouton
+    $wp_customize->add_setting( 'urgence_bouton_texte', [
+        'default' => 'Je participe',
+        'sanitize_callback' => 'sanitize_text_field',
+    ] );
+    $wp_customize->add_control( 'urgence_bouton_texte', [
+        'label' => __( 'Texte du bouton', 'domaine-saint-joseph' ),
         'section' => 'dsj_urgence',
         'type' => 'text',
-        'input_attrs' => [ 'placeholder' => 'Entrez votre message...' ],
-    ]);
-}
+    ] );
 
-// Lien du bouton
-$wp_customize->add_setting( 'urgence_lien', [
-    'default' => '/nous-soutenir',
-    'sanitize_callback' => 'esc_url_raw',
-]);
-$wp_customize->add_control( 'urgence_lien', [
-    'label' => __( 'Lien du bouton', 'domaine-saint-joseph' ),
-    'section' => 'dsj_urgence',
-    'type' => 'url',
-]);
+    // Couleur du bandeau
+    $wp_customize->add_setting( 'urgence_couleur', [
+        'default' => '#e74c3c',
+        'sanitize_callback' => 'sanitize_hex_color',
+    ] );
+    $wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'urgence_couleur', [
+        'label' => __( 'Couleur du bandeau', 'domaine-saint-joseph' ),
+        'section' => 'dsj_urgence',
+    ] ) );
 
-// Texte du bouton
-$wp_customize->add_setting( 'urgence_bouton_texte', [
-    'default' => 'Je participe',
-    'sanitize_callback' => 'sanitize_text_field',
-]);
-$wp_customize->add_control( 'urgence_bouton_texte', [
-    'label' => __( 'Texte du bouton', 'domaine-saint-joseph' ),
-    'section' => 'dsj_urgence',
-    'type' => 'text',
-]);
-
-// Couleur du bandeau
-$wp_customize->add_setting( 'urgence_couleur', [
-    'default' => '#e74c3c',
-    'sanitize_callback' => 'sanitize_hex_color',
-]);
-$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'urgence_couleur', [
-    'label' => __( 'Couleur du bandeau', 'domaine-saint-joseph' ),
-    'section' => 'dsj_urgence',
-]));
-
-// Icône
-$wp_customize->add_setting( 'urgence_icone', [
-    'default' => '🚨',
-    'sanitize_callback' => 'sanitize_text_field',
-]);
-$wp_customize->add_control( 'urgence_icone', [
-    'label' => __( 'Icône (emoji)', 'domaine-saint-joseph' ),
-    'section' => 'dsj_urgence',
-    'type' => 'text',
-    'input_attrs' => [ 'placeholder' => '🚨' ],
-]);
-
-
-// ========================================
-// SECTION: APPEL À L'AIDE (ACCUEIL)
-// ========================================
-$wp_customize->add_section( 'dsj_aide_accueil', [
-    'title'    => __( '🤝 Appel à l\'aide - Page Accueil', 'domaine-saint-joseph' ),
-    'priority' => 85,
-    'description' => __( 'Personnalisez la section appel à l\'aide (parrainage et construction)', 'domaine-saint-joseph' ),
-]);
-
-// Activer/désactiver la section
-$wp_customize->add_setting( 'aide_accueil_active', [
-    'default' => true,
-    'sanitize_callback' => 'wp_validate_boolean',
-]);
-$wp_customize->add_control( 'aide_accueil_active', [
-    'label' => __( '✅ Activer la section appel à l\'aide', 'domaine-saint-joseph' ),
-    'section' => 'dsj_aide_accueil',
-    'type' => 'checkbox',
-]);
-
-// ===== CARTE PARRAINAGE =====
-$wp_customize->add_setting( 'aide_parrainage_icone', [
-    'default' => '👧',
-    'sanitize_callback' => 'sanitize_text_field',
-]);
-$wp_customize->add_control( 'aide_parrainage_icone', [
-    'label' => __( 'Icône Parrainage', 'domaine-saint-joseph' ),
-    'section' => 'dsj_aide_accueil',
-    'type' => 'text',
-]);
-
-$wp_customize->add_setting( 'aide_parrainage_titre', [
-    'default' => 'Parrainez une jeune fille',
-    'sanitize_callback' => 'sanitize_text_field',
-]);
-$wp_customize->add_control( 'aide_parrainage_titre', [
-    'label' => __( 'Titre Parrainage', 'domaine-saint-joseph' ),
-    'section' => 'dsj_aide_accueil',
-    'type' => 'text',
-]);
-
-$wp_customize->add_setting( 'aide_parrainage_texte', [
-    'default' => 'Pour seulement <strong>50 000 F CFA par mois</strong>, vous offrez une formation technique complète à une jeune fille.',
-    'sanitize_callback' => 'wp_kses_post',
-]);
-$wp_customize->add_control( 'aide_parrainage_texte', [
-    'label' => __( 'Texte Parrainage', 'domaine-saint-joseph' ),
-    'section' => 'dsj_aide_accueil',
-    'type' => 'textarea',
-]);
-
-// Avantages Parrainage (répéteur)
-for ( $i = 1; $i <= 3; $i++ ) {
-    $wp_customize->add_setting( "aide_parrainage_avantage_{$i}", [
-        'default' => $i === 1 ? '✅ Formation de qualité' : ( $i === 2 ? '✅ Matériel pédagogique fourni' : '✅ Suivi personnalisé' ),
+    // Icône
+    $wp_customize->add_setting( 'urgence_icone', [
+        'default' => '🚨',
         'sanitize_callback' => 'sanitize_text_field',
-    ]);
-    $wp_customize->add_control( "aide_parrainage_avantage_{$i}", [
-        'label' => sprintf( __( 'Avantage %d (Parrainage)', 'domaine-saint-joseph' ), $i ),
-        'section' => 'dsj_aide_accueil',
+    ] );
+    $wp_customize->add_control( 'urgence_icone', [
+        'label' => __( 'Icône (emoji)', 'domaine-saint-joseph' ),
+        'section' => 'dsj_urgence',
         'type' => 'text',
-    ]);
-}
-
-$wp_customize->add_setting( 'aide_parrainage_bouton', [
-    'default' => 'Je parraine',
-    'sanitize_callback' => 'sanitize_text_field',
-]);
-$wp_customize->add_control( 'aide_parrainage_bouton', [
-    'label' => __( 'Texte du bouton Parrainage', 'domaine-saint-joseph' ),
-    'section' => 'dsj_aide_accueil',
-    'type' => 'text',
-]);
-
-$wp_customize->add_setting( 'aide_parrainage_lien', [
-    'default' => '/nous-soutenir',
-    'sanitize_callback' => 'esc_url_raw',
-]);
-$wp_customize->add_control( 'aide_parrainage_lien', [
-    'label' => __( 'Lien du bouton Parrainage', 'domaine-saint-joseph' ),
-    'section' => 'dsj_aide_accueil',
-    'type' => 'url',
-]);
-
-// ===== CARTE CONSTRUCTION =====
-$wp_customize->add_setting( 'aide_construction_icone', [
-    'default' => '🏗️',
-    'sanitize_callback' => 'sanitize_text_field',
-]);
-$wp_customize->add_control( 'aide_construction_icone', [
-    'label' => __( 'Icône Construction', 'domaine-saint-joseph' ),
-    'section' => 'dsj_aide_accueil',
-    'type' => 'text',
-]);
-
-$wp_customize->add_setting( 'aide_construction_titre', [
-    'default' => 'Construisons ensemble',
-    'sanitize_callback' => 'sanitize_text_field',
-]);
-$wp_customize->add_control( 'aide_construction_titre', [
-    'label' => __( 'Titre Construction', 'domaine-saint-joseph' ),
-    'section' => 'dsj_aide_accueil',
-    'type' => 'text',
-]);
-
-$wp_customize->add_setting( 'aide_construction_texte', [
-    'default' => 'Nous avons besoin de <strong>nouvelles salles de formation</strong> pour accueillir plus de jeunes filles.',
-    'sanitize_callback' => 'wp_kses_post',
-]);
-$wp_customize->add_control( 'aide_construction_texte', [
-    'label' => __( 'Texte Construction', 'domaine-saint-joseph' ),
-    'section' => 'dsj_aide_accueil',
-    'type' => 'textarea',
-]);
-
-// Besoins Construction (répéteur)
-for ( $i = 1; $i <= 3; $i++ ) {
-    $wp_customize->add_setting( "aide_construction_besoin_{$i}", [
-        'default' => $i === 1 ? '🏫 Salles de classe supplémentaires' : ( $i === 2 ? '💻 Laboratoire informatique' : '✂️ Atelier de couture agrandi' ),
-        'sanitize_callback' => 'sanitize_text_field',
-    ]);
-    $wp_customize->add_control( "aide_construction_besoin_{$i}", [
-        'label' => sprintf( __( 'Besoin %d (Construction)', 'domaine-saint-joseph' ), $i ),
-        'section' => 'dsj_aide_accueil',
-        'type' => 'text',
-    ]);
-}
-
-$wp_customize->add_setting( 'aide_construction_bouton', [
-    'default' => 'Je contribue',
-    'sanitize_callback' => 'sanitize_text_field',
-]);
-$wp_customize->add_control( 'aide_construction_bouton', [
-    'label' => __( 'Texte du bouton Construction', 'domaine-saint-joseph' ),
-    'section' => 'dsj_aide_accueil',
-    'type' => 'text',
-]);
-
-$wp_customize->add_setting( 'aide_construction_lien', [
-    'default' => '/nous-soutenir',
-    'sanitize_callback' => 'esc_url_raw',
-]);
-$wp_customize->add_control( 'aide_construction_lien', [
-    'label' => __( 'Lien du bouton Construction', 'domaine-saint-joseph' ),
-    'section' => 'dsj_aide_accueil',
-    'type' => 'url',
-]);
-
-
+        'input_attrs' => [ 'placeholder' => '🚨' ],
+    ] );
 
     // ========================================
-    // SECTION HERO - PAGE RESTAURANT (NOUVEAU)
+    // SECTION: APPEL À L'AIDE (ACCUEIL)
+    // ========================================
+    $wp_customize->add_section( 'dsj_aide_accueil', [
+        'title'    => __( '🤝 Appel à l\'aide - Page Accueil', 'domaine-saint-joseph' ),
+        'priority' => 85,
+        'description' => __( 'Personnalisez la section appel à l\'aide (parrainage et construction)', 'domaine-saint-joseph' ),
+    ] );
+
+    // Activer/désactiver la section
+    $wp_customize->add_setting( 'aide_accueil_active', [
+        'default' => true,
+        'sanitize_callback' => 'wp_validate_boolean',
+    ] );
+    $wp_customize->add_control( 'aide_accueil_active', [
+        'label' => __( '✅ Activer la section appel à l\'aide', 'domaine-saint-joseph' ),
+        'section' => 'dsj_aide_accueil',
+        'type' => 'checkbox',
+    ] );
+
+    // ===== CARTE PARRAINAGE =====
+    $wp_customize->add_setting( 'aide_parrainage_icone', [
+        'default' => '👧',
+        'sanitize_callback' => 'sanitize_text_field',
+    ] );
+    $wp_customize->add_control( 'aide_parrainage_icone', [
+        'label' => __( 'Icône Parrainage', 'domaine-saint-joseph' ),
+        'section' => 'dsj_aide_accueil',
+        'type' => 'text',
+    ] );
+
+    $wp_customize->add_setting( 'aide_parrainage_titre', [
+        'default' => 'Parrainez une jeune fille',
+        'sanitize_callback' => 'sanitize_text_field',
+    ] );
+    $wp_customize->add_control( 'aide_parrainage_titre', [
+        'label' => __( 'Titre Parrainage', 'domaine-saint-joseph' ),
+        'section' => 'dsj_aide_accueil',
+        'type' => 'text',
+    ] );
+
+    $wp_customize->add_setting( 'aide_parrainage_texte', [
+        'default' => 'Pour seulement <strong>50 000 F CFA par mois</strong>, vous offrez une formation technique complète à une jeune fille.',
+        'sanitize_callback' => 'wp_kses_post',
+    ] );
+    $wp_customize->add_control( 'aide_parrainage_texte', [
+        'label' => __( 'Texte Parrainage', 'domaine-saint-joseph' ),
+        'section' => 'dsj_aide_accueil',
+        'type' => 'textarea',
+    ] );
+
+    // Avantages Parrainage (répéteur)
+    for ( $i = 1; $i <= 3; $i++ ) {
+        $wp_customize->add_setting( "aide_parrainage_avantage_{$i}", [
+            'default' => $i === 1 ? '✅ Formation de qualité' : ( $i === 2 ? '✅ Matériel pédagogique fourni' : '✅ Suivi personnalisé' ),
+            'sanitize_callback' => 'sanitize_text_field',
+        ] );
+        $wp_customize->add_control( "aide_parrainage_avantage_{$i}", [
+            'label' => sprintf( __( 'Avantage %d (Parrainage)', 'domaine-saint-joseph' ), $i ),
+            'section' => 'dsj_aide_accueil',
+            'type' => 'text',
+        ] );
+    }
+
+    $wp_customize->add_setting( 'aide_parrainage_bouton', [
+        'default' => 'Je parraine',
+        'sanitize_callback' => 'sanitize_text_field',
+    ] );
+    $wp_customize->add_control( 'aide_parrainage_bouton', [
+        'label' => __( 'Texte du bouton Parrainage', 'domaine-saint-joseph' ),
+        'section' => 'dsj_aide_accueil',
+        'type' => 'text',
+    ] );
+
+    $wp_customize->add_setting( 'aide_parrainage_lien', [
+        'default' => '/nous-soutenir',
+        'sanitize_callback' => 'esc_url_raw',
+    ] );
+    $wp_customize->add_control( 'aide_parrainage_lien', [
+        'label' => __( 'Lien du bouton Parrainage', 'domaine-saint-joseph' ),
+        'section' => 'dsj_aide_accueil',
+        'type' => 'url',
+    ] );
+
+    // ===== CARTE CONSTRUCTION =====
+    $wp_customize->add_setting( 'aide_construction_icone', [
+        'default' => '🏗️',
+        'sanitize_callback' => 'sanitize_text_field',
+    ] );
+    $wp_customize->add_control( 'aide_construction_icone', [
+        'label' => __( 'Icône Construction', 'domaine-saint-joseph' ),
+        'section' => 'dsj_aide_accueil',
+        'type' => 'text',
+    ] );
+
+    $wp_customize->add_setting( 'aide_construction_titre', [
+        'default' => 'Construisons ensemble',
+        'sanitize_callback' => 'sanitize_text_field',
+    ] );
+    $wp_customize->add_control( 'aide_construction_titre', [
+        'label' => __( 'Titre Construction', 'domaine-saint-joseph' ),
+        'section' => 'dsj_aide_accueil',
+        'type' => 'text',
+    ] );
+
+    $wp_customize->add_setting( 'aide_construction_texte', [
+        'default' => 'Nous avons besoin de <strong>nouvelles salles de formation</strong> pour accueillir plus de jeunes filles.',
+        'sanitize_callback' => 'wp_kses_post',
+    ] );
+    $wp_customize->add_control( 'aide_construction_texte', [
+        'label' => __( 'Texte Construction', 'domaine-saint-joseph' ),
+        'section' => 'dsj_aide_accueil',
+        'type' => 'textarea',
+    ] );
+
+    // Besoins Construction (répéteur)
+    for ( $i = 1; $i <= 3; $i++ ) {
+        $wp_customize->add_setting( "aide_construction_besoin_{$i}", [
+            'default' => $i === 1 ? '🏫 Salles de classe supplémentaires' : ( $i === 2 ? '💻 Laboratoire informatique' : '✂️ Atelier de couture agrandi' ),
+            'sanitize_callback' => 'sanitize_text_field',
+        ] );
+        $wp_customize->add_control( "aide_construction_besoin_{$i}", [
+            'label' => sprintf( __( 'Besoin %d (Construction)', 'domaine-saint-joseph' ), $i ),
+            'section' => 'dsj_aide_accueil',
+            'type' => 'text',
+        ] );
+    }
+
+    $wp_customize->add_setting( 'aide_construction_bouton', [
+        'default' => 'Je contribue',
+        'sanitize_callback' => 'sanitize_text_field',
+    ] );
+    $wp_customize->add_control( 'aide_construction_bouton', [
+        'label' => __( 'Texte du bouton Construction', 'domaine-saint-joseph' ),
+        'section' => 'dsj_aide_accueil',
+        'type' => 'text',
+    ] );
+
+    $wp_customize->add_setting( 'aide_construction_lien', [
+        'default' => '/nous-soutenir',
+        'sanitize_callback' => 'esc_url_raw',
+    ] );
+    $wp_customize->add_control( 'aide_construction_lien', [
+        'label' => __( 'Lien du bouton Construction', 'domaine-saint-joseph' ),
+        'section' => 'dsj_aide_accueil',
+        'type' => 'url',
+    ] );
+
+    // ========================================
+// SECTION: HISTOIRE (ACCUEIL)
+// ========================================
+$wp_customize->add_section( 'dsj_histoire', [
+    'title'    => __( '📖 Histoire - Page Accueil', 'domaine-saint-joseph' ),
+    'priority' => 86,
+] );
+
+$wp_customize->add_setting( 'histoire_texte', [
+    'default' => 'Le Domaine Saint Joseph a été créé en <strong>2022</strong>. Ce centre est une expression du charisme des <strong>Travailleuses Missionnaires de l\'Immaculée</strong>.',
+    'sanitize_callback' => 'wp_kses_post',
+] );
+$wp_customize->add_control( 'histoire_texte', [
+    'label' => __( 'Texte de la section Histoire', 'domaine-saint-joseph' ),
+    'section' => 'dsj_histoire',
+    'type' => 'textarea',
+] );
+
+// ========================================
+// SECTION: HORAIRES RESTAURANT
+// ========================================
+$wp_customize->add_section( 'dsj_restaurant_horaires', [
+    'title'    => __( '🍳 Horaires Restaurant', 'domaine-saint-joseph' ),
+    'priority' => 97,
+] );
+
+$wp_customize->add_setting( 'restaurant_petitdej', [ 'default' => '7h00 - 9h30', 'sanitize_callback' => 'sanitize_text_field' ] );
+$wp_customize->add_control( 'restaurant_petitdej', [ 'label' => 'Petit-déjeuner', 'section' => 'dsj_restaurant_horaires', 'type' => 'text' ] );
+
+$wp_customize->add_setting( 'restaurant_dejeuner', [ 'default' => '12h00 - 14h30', 'sanitize_callback' => 'sanitize_text_field' ] );
+$wp_customize->add_control( 'restaurant_dejeuner', [ 'label' => 'Déjeuner', 'section' => 'dsj_restaurant_horaires', 'type' => 'text' ] );
+
+$wp_customize->add_setting( 'restaurant_diner', [ 'default' => '19h00 - 21h30', 'sanitize_callback' => 'sanitize_text_field' ] );
+$wp_customize->add_control( 'restaurant_diner', [ 'label' => 'Dîner', 'section' => 'dsj_restaurant_horaires', 'type' => 'text' ] );
+
+    // ========================================
+    // SECTION HERO - PAGE RESTAURANT
     // ========================================
     $wp_customize->add_section( 'dsj_hero_restaurant', [
         'title'    => __( '🍽️ Hero - Page Restaurant', 'domaine-saint-joseph' ),
-        'priority' => 96,
+        'priority' => 97,
         'description' => __( 'Personnalisez le bandeau de la page Restaurant', 'domaine-saint-joseph' ),
     ] );
 

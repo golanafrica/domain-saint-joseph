@@ -118,3 +118,22 @@ register_taxonomy( 'categorie_menu', 'menu', [
     'show_in_rest' => false,
     'rewrite' => [ 'slug' => 'categorie-menu' ],
 ]);
+
+// ── Témoignages ──
+register_post_type( 'temoignage', [
+    'labels' => [
+        'name' => __( 'Témoignages', 'domaine-saint-joseph' ),
+        'singular_name' => __( 'Témoignage', 'domaine-saint-joseph' ),
+        'add_new' => __( 'Ajouter un témoignage', 'domaine-saint-joseph' ),
+        'add_new_item' => __( 'Nouveau témoignage', 'domaine-saint-joseph' ),
+        'edit_item' => __( 'Modifier le témoignage', 'domaine-saint-joseph' ),
+        'view_item' => __( 'Voir le témoignage', 'domaine-saint-joseph' ),
+        'all_items' => __( 'Tous les témoignages', 'domaine-saint-joseph' ),
+    ],
+    'public' => true,
+    'has_archive' => false,
+    'supports' => [ 'title', 'editor' ],
+    'menu_icon' => 'dashicons-testimonial',
+    'show_in_rest' => false,
+    'menu_position' => 9,
+]);

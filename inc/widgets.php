@@ -32,9 +32,13 @@ if ( ! class_exists( 'DSJ_Hero_Widget' ) ) {
             $bouton2_texte = ! empty( $instance['bouton2_texte'] ) ? $instance['bouton2_texte'] : '';
             $bouton2_lien = ! empty( $instance['bouton2_lien'] ) ? $instance['bouton2_lien'] : '';
             $overlay_opacity = ! empty( $instance['overlay_opacity'] ) ? $instance['overlay_opacity'] : '0.7';
+            
+            // Style inline pour garantir l'affichage mobile
+            $bg_style = ! empty( $image_url ) ? 'background-image: url(' . esc_url( $image_url ) . '); background-size: cover; background-position: center;' : '';
+            $fallback_bg = empty( $image_url ) ? 'background: linear-gradient(135deg, var(--clr-primary, #1A5276) 0%, #1a3c5e 100%);' : '';
             ?>
             
-            <div class="custom-hero" style="background-image: url('<?php echo esc_url( $image_url ); ?>');">
+            <div class="custom-hero" style="<?php echo esc_attr( $bg_style . $fallback_bg ); ?>">
                 <div class="hero-overlay" style="background: rgba(26, 60, 94, <?php echo esc_attr( $overlay_opacity ); ?>);"></div>
                 <div class="hero-content-wrapper">
                     <div class="container">
@@ -50,24 +54,18 @@ if ( ! class_exists( 'DSJ_Hero_Widget' ) ) {
                             <?php endif; ?>
                             
                             <div class="hero-buttons">
-    <?php 
-    // Bouton 1 - toujours affiché si existe
-    if ( ! empty( $bouton1_texte ) && ! empty( $bouton1_lien ) ) : ?>
-        <a href="<?php echo esc_url( $bouton1_lien ); ?>" class="btn btn-primary btn-large">
-            <?php echo esc_html( $bouton1_texte ); ?>
-        </a>
-    <?php endif; ?>
-    
-    <?php 
-    // Bouton 2 - vérification explicite
-    if ( ! empty( $bouton2_texte ) && ! empty( $bouton2_lien ) ) : ?>
-        <a href="<?php echo esc_url( $bouton2_lien ); ?>" class="btn btn-secondary btn-large">
-            <?php echo esc_html( $bouton2_texte ); ?>
-        </a>
-    <?php else : ?>
-        <!-- Bouton 2 non configuré: texte="<?php echo esc_attr($bouton2_texte); ?>" lien="<?php echo esc_attr($bouton2_lien); ?>" -->
-    <?php endif; ?>
-</div>
+                                <?php if ( ! empty( $bouton1_texte ) && ! empty( $bouton1_lien ) ) : ?>
+                                    <a href="<?php echo esc_url( $bouton1_lien ); ?>" class="btn btn-primary btn-large">
+                                        <?php echo esc_html( $bouton1_texte ); ?>
+                                    </a>
+                                <?php endif; ?>
+                                
+                                <?php if ( ! empty( $bouton2_texte ) && ! empty( $bouton2_lien ) ) : ?>
+                                    <a href="<?php echo esc_url( $bouton2_lien ); ?>" class="btn btn-secondary btn-large">
+                                        <?php echo esc_html( $bouton2_texte ); ?>
+                                    </a>
+                                <?php endif; ?>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -101,6 +99,8 @@ if ( ! class_exists( 'DSJ_Hero_Widget' ) ) {
                 .dsj-widget-field select { width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; }
                 .dsj-widget-field .description { font-size: 11px; color: #666; margin-top: 3px; }
                 .image-preview { margin-top: 10px; max-width: 100%; border-radius: 4px; }
+                .dsj-widget-field hr { margin: 15px 0; }
+                .dsj-widget-field h4 { margin: 0 0 10px; color: #1A5276; }
             </style>
             
             <div class="dsj-widget-field">
@@ -147,25 +147,28 @@ if ( ! class_exists( 'DSJ_Hero_Widget' ) ) {
                     <option value="0.7" <?php selected( $overlay_opacity, '0.7' ); ?>>Forte (70%)</option>
                     <option value="0.9" <?php selected( $overlay_opacity, '0.9' ); ?>>Très forte (90%)</option>
                 </select>
+                <div class="description">Plus l'opacité est forte, plus le texte est lisible</div>
             </div>
             
             <hr>
-            <h4>🔘 Bouton 1</h4>
+            <h4>🔘 Bouton 1 (principal)</h4>
             <div class="dsj-widget-field">
                 <label for="<?php echo $this->get_field_id( 'bouton1_texte' ); ?>">Texte :</label>
                 <input class="widefat" id="<?php echo $this->get_field_id( 'bouton1_texte' ); ?>" 
                        name="<?php echo $this->get_field_name( 'bouton1_texte' ); ?>" 
                        type="text" value="<?php echo esc_attr( $bouton1_texte ); ?>">
+                <div class="description">Ex: 🎓 Nos formations</div>
             </div>
             <div class="dsj-widget-field">
                 <label for="<?php echo $this->get_field_id( 'bouton1_lien' ); ?>">Lien :</label>
                 <input class="widefat" id="<?php echo $this->get_field_id( 'bouton1_lien' ); ?>" 
                        name="<?php echo $this->get_field_name( 'bouton1_lien' ); ?>" 
-                       type="url" value="<?php echo esc_url( $bouton1_lien ); ?>">
+                       type="url" value="<?php echo esc_url( $bouton1_lien ); ?>" placeholder="https://...">
+                <div class="description">Ex: /formations, /contact, https://...</div>
             </div>
             
             <hr>
-            <h4>🔘 Bouton 2</h4>
+            <h4>🔘 Bouton 2 (secondaire)</h4>
             <div class="dsj-widget-field">
                 <label for="<?php echo $this->get_field_id( 'bouton2_texte' ); ?>">Texte :</label>
                 <input class="widefat" id="<?php echo $this->get_field_id( 'bouton2_texte' ); ?>" 
@@ -176,7 +179,7 @@ if ( ! class_exists( 'DSJ_Hero_Widget' ) ) {
                 <label for="<?php echo $this->get_field_id( 'bouton2_lien' ); ?>">Lien :</label>
                 <input class="widefat" id="<?php echo $this->get_field_id( 'bouton2_lien' ); ?>" 
                        name="<?php echo $this->get_field_name( 'bouton2_lien' ); ?>" 
-                       type="url" value="<?php echo esc_url( $bouton2_lien ); ?>">
+                       type="url" value="<?php echo esc_url( $bouton2_lien ); ?>" placeholder="https://...">
             </div>
             <?php
         }
@@ -192,6 +195,21 @@ if ( ! class_exists( 'DSJ_Hero_Widget' ) ) {
             $instance['bouton2_texte'] = sanitize_text_field( $new_instance['bouton2_texte'] );
             $instance['bouton2_lien'] = esc_url_raw( $new_instance['bouton2_lien'] );
             $instance['overlay_opacity'] = sanitize_text_field( $new_instance['overlay_opacity'] );
+            
+            // Forcer les valeurs par défaut si vides (optionnel)
+            if ( empty( $instance['bouton1_texte'] ) ) {
+                $instance['bouton1_texte'] = '🎓 Nos formations';
+            }
+            if ( empty( $instance['bouton1_lien'] ) ) {
+                $instance['bouton1_lien'] = '/formations';
+            }
+            if ( empty( $instance['bouton2_texte'] ) ) {
+                $instance['bouton2_texte'] = '🏠 Maison d\'accueil';
+            }
+            if ( empty( $instance['bouton2_lien'] ) ) {
+                $instance['bouton2_lien'] = '/maison-accueil';
+            }
+            
             return $instance;
         }
     }
