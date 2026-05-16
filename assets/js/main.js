@@ -42,14 +42,12 @@
             menuToggle.setAttribute('aria-expanded', isOpen);
             document.body.style.overflow = isOpen ? 'hidden' : '';
             
-            // Focus management pour accessibilité
             if (isOpen) {
                 const firstLink = navMenu.querySelector('a');
                 if (firstLink) firstLink.focus();
             }
         });
         
-        // Fermer au clic sur un lien
         navMenu.querySelectorAll('a').forEach(link => {
             link.addEventListener('click', function() {
                 navMenu.classList.remove('is-open');
@@ -59,7 +57,6 @@
             });
         });
         
-        // Fermer au scroll (mobile uniquement)
         if (utils.isMobile()) {
             window.addEventListener('scroll', utils.throttle(() => {
                 if (navMenu.classList.contains('is-open')) {
@@ -71,7 +68,6 @@
             }, 200));
         }
         
-        // Fermer avec Échap
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape' && navMenu.classList.contains('is-open')) {
                 navMenu.classList.remove('is-open');
@@ -284,23 +280,6 @@
         }, 250));
     }
 
-    // ── ANIMATIONS HERO ──
-    function initHeroAnimations() {
-        const heroContent = document.querySelector('.hero-content, .hero-inner');
-        const heroWave = document.querySelector('.hero-wave');
-        
-        if (heroContent) {
-            setTimeout(() => heroContent.classList.add('hero-animated'), 200);
-        }
-        
-        if (heroWave && !utils.isMobile()) {
-            window.addEventListener('scroll', utils.throttle(() => {
-                const scrolled = window.pageYOffset;
-                heroWave.style.transform = `translateY(${scrolled * 0.2}px)`;
-            }, 16));
-        }
-    }
-
     // ── LAZY LOAD FALLBACK ──
     function initLazyLoadFallback() {
         if ('loading' in HTMLImageElement.prototype) return;
@@ -333,7 +312,7 @@
         images.forEach(img => observer.observe(img));
     }
 
-    // ── FILTRES GALERIE (optionnel) ──
+    // ── FILTRES GALERIE ──
     function initGalleryFilters() {
         const filterButtons = document.querySelectorAll('.filter-btn');
         const galleryItems = document.querySelectorAll('.galerie-item');
@@ -363,6 +342,125 @@
         });
     }
 
+    // ========================================
+    // HERO SLIDER - VERSION SIMPLE ET EFFICACE
+    // ========================================
+    function initHeroSlider() {
+        const slider = document.querySelector('.hero-slider');
+        if (!slider) return;
+        
+        const slides = Array.from(document.querySelectorAll('.hero-slide'));
+        const dots = Array.from(document.querySelectorAll('.slider-dot'));
+        const prevBtn = document.querySelector('.slider-prev');
+        const nextBtn = document.querySelector('.slider-next');
+        
+        if (slides.length === 0) return;
+        
+        let currentIndex = 0;
+        let interval;
+        let isTransitioning = false;
+        const speed = parseInt(slider.dataset.speed) || 5000;
+        
+        // Trouver l'index du slide actif
+        slides.forEach((slide, i) => {
+            if (slide.classList.contains('active')) {
+                currentIndex = i;
+            }
+        });
+        
+        // Masquer tous les slides sauf l'actif
+        function showSlide(index) {
+            if (isTransitioning || index === currentIndex) return;
+            isTransitioning = true;
+            
+            const currentSlide = slides[currentIndex];
+            const nextSlide = slides[index];
+            
+            // Afficher le prochain slide
+            nextSlide.style.display = 'block';
+            nextSlide.style.opacity = '0';
+            
+            // Animation de transition
+            setTimeout(() => {
+                currentSlide.style.opacity = '0';
+                currentSlide.style.zIndex = '1';
+                currentSlide.classList.remove('active');
+                
+                nextSlide.style.opacity = '1';
+                nextSlide.style.zIndex = '2';
+                nextSlide.classList.add('active');
+                
+                setTimeout(() => {
+                    currentSlide.style.display = 'none';
+                    isTransitioning = false;
+                }, 800);
+            }, 50);
+            
+            // Mettre à jour les dots
+            dots.forEach((dot, i) => {
+                dot.classList.toggle('active', i === index);
+            });
+            
+            currentIndex = index;
+        }
+        
+        function nextSlide() {
+            let newIndex = currentIndex + 1;
+            if (newIndex >= slides.length) newIndex = 0;
+            showSlide(newIndex);
+            resetInterval();
+        }
+        
+        function prevSlide() {
+            let newIndex = currentIndex - 1;
+            if (newIndex < 0) newIndex = slides.length - 1;
+            showSlide(newIndex);
+            resetInterval();
+        }
+        
+        function resetInterval() {
+            if (interval) clearInterval(interval);
+            interval = setInterval(nextSlide, speed);
+        }
+        
+        // S'assurer que le premier slide est visible
+        slides[currentIndex].style.display = 'block';
+        slides[currentIndex].style.opacity = '1';
+        slides[currentIndex].style.zIndex = '2';
+        
+        // Event listeners
+        if (prevBtn) prevBtn.addEventListener('click', () => { prevSlide(); resetInterval(); });
+        if (nextBtn) nextBtn.addEventListener('click', () => { nextSlide(); resetInterval(); });
+        
+        dots.forEach((dot, i) => {
+            dot.addEventListener('click', () => { showSlide(i); resetInterval(); });
+        });
+        
+        // Pause au survol
+        slider.addEventListener('mouseenter', () => { if (interval) clearInterval(interval); });
+        slider.addEventListener('mouseleave', resetInterval);
+        
+        // Démarrer l'autoplay
+        resetInterval();
+    }
+
+    // ── ANIMATIONS HERO ──
+    function initHeroAnimations() {
+        const heroContent = document.querySelector('.hero-content, .hero-inner');
+        const heroWave = document.querySelector('.hero-wave');
+        
+        if (heroContent) {
+            setTimeout(() => heroContent.classList.add('hero-animated'), 200);
+        }
+        
+        if (heroWave && !utils.isMobile()) {
+            window.addEventListener('scroll', utils.throttle(() => {
+                const scrolled = window.pageYOffset;
+                heroWave.style.transform = `translateY(${scrolled * 0.2}px)`;
+            }, 16));
+        }
+    }
+
     // ── INITIALISATION GÉNÉRALE ──
     function init() {
         initMobileMenu();
@@ -370,6 +468,7 @@
         initStatsObserver();
         initGalleryLightbox();
         initFlashInfoMarquee();
+        initHeroSlider();
         initHeroAnimations();
         initLazyLoadFallback();
         initGalleryFilters();

@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html <?php language_attributes(); ?>>
 <head>
+    <!-- Préchargement de la première image du slider -->
+<?php if ( get_theme_mod( 'hero_slider_active', false ) ) : 
+    $first_image = get_theme_mod( 'hero_slide_1_image' );
+    if ( $first_image ) : ?>
+        <link rel="preload" as="image" href="<?php echo esc_url( $first_image ); ?>" fetchpriority="high">
+    <?php endif; 
+endif; ?>
     <meta charset="<?php bloginfo( 'charset' ); ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">

@@ -133,6 +133,677 @@ section.section-padding + section.section-padding {
 .menu-toggle.active span:nth-child(3) { transform: rotate(-45deg) translate(7px, -6px); }
 
 /* ========================================
+   HERO SLIDER (CARROUSEL) - CORRIGÉ FINAL
+   ======================================== */
+
+.hero-slider {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+}
+
+.hero-slides-container {
+    position: relative;
+    width: 100%;
+    min-height: 90vh;
+}
+
+.hero-slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    min-height: 90vh;
+    background-size: cover;
+    background-position: center;
+    opacity: 0;
+    transition: opacity 0.8s ease-in-out;
+    z-index: 1;
+}
+
+.hero-slide.active {
+    opacity: 1;
+    z-index: 2;
+}
+
+.hero-slide .hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1;
+}
+
+.hero-slide .hero-content-wrapper {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    min-height: 90vh;
+    display: flex;
+    align-items: center;
+}
+
+.hero-slide .hero-content {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.hero-slide.active .hero-content {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ===== STYLES DESKTOP ===== */
+.hero-slide .hero-title {
+    color: white !important;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    font-size: 3.5rem !important;
+    font-weight: 800 !important;
+    line-height: 1.2 !important;
+    margin-bottom: 20px !important;
+}
+
+.hero-slide .hero-subtitle {
+    color: white !important;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+    font-size: 1.2rem !important;
+    line-height: 1.5 !important;
+    margin-bottom: 30px !important;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.hero-slide .hero-badge {
+    color: var(--clr-accent, #D4AC0D) !important;
+    background: rgba(0, 0, 0, 0.3);
+    display: inline-block;
+    padding: 8px 20px;
+    border-radius: 50px;
+    font-size: 0.9rem;
+    margin-bottom: 20px;
+}
+
+/* ===== BOUTONS HERO ===== */
+.hero-slide .hero-buttons {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.hero-slide .hero-buttons .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 14px 35px;
+    font-size: 1rem;
+    font-weight: 700;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    cursor: pointer;
+    min-width: 200px;
+}
+
+.hero-slide .hero-buttons .btn-primary {
+    background: #25D366;
+    color: white;
+    border: none;
+}
+
+.hero-slide .hero-buttons .btn-primary:hover {
+    background: #128C7E;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(37, 211, 102, 0.3);
+}
+
+.hero-slide .hero-buttons .btn-secondary {
+    background: transparent;
+    border: 2px solid white;
+    color: white;
+}
+
+.hero-slide .hero-buttons .btn-secondary:hover {
+    background: white;
+    color: var(--clr-primary, #1A5276);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(255, 255, 255, 0.3);
+}
+
+/* Boutons de navigation */
+.slider-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.4);
+    color: white;
+    border: none;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 2rem;
+    z-index: 10;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.slider-btn:hover {
+    background: var(--clr-accent, #D4AC0D);
+    color: var(--clr-primary, #1A5276);
+}
+
+.slider-prev {
+    left: 20px;
+}
+
+.slider-next {
+    right: 20px;
+}
+
+/* Dots de navigation */
+.slider-dots {
+    position: absolute;
+    bottom: 30px;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    z-index: 10;
+}
+
+.slider-dot {
+    width: 12px;
+    height: 12px;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.slider-dot.active {
+    background: var(--clr-accent, #D4AC0D);
+    width: 30px;
+    border-radius: 10px;
+}
+
+/* ===== RESPONSIVE MOBILE ===== */
+@media (max-width: 992px) {
+    .hero-slide .hero-title {
+        font-size: 2.5rem !important;
+    }
+    
+    .hero-slide .hero-subtitle {
+        font-size: 1.1rem !important;
+    }
+}
+
+@media (max-width: 768px) {
+    /* Masquer les flèches sur mobile */
+    .slider-btn {
+        display: none !important;
+    }
+    
+    /* Ajuster la hauteur */
+    .hero-slides-container,
+    .hero-slide {
+        min-height: 80vh;
+    }
+    
+    .hero-slide .hero-content-wrapper {
+        min-height: 80vh;
+    }
+    
+    /* Titre mobile */
+    .hero-slide .hero-title {
+        font-size: 1.8rem !important;
+        line-height: 1.3 !important;
+        padding: 0 15px !important;
+        margin-bottom: 15px !important;
+    }
+    
+    /* Sous-titre mobile */
+    .hero-slide .hero-subtitle {
+        font-size: 0.9rem !important;
+        line-height: 1.4 !important;
+        padding: 0 20px !important;
+        margin-bottom: 25px !important;
+    }
+    
+    /* Badge mobile */
+    .hero-slide .hero-badge {
+        font-size: 0.7rem !important;
+        padding: 5px 15px !important;
+        margin-bottom: 15px !important;
+    }
+    
+    /* Boutons mobile - espacés ! */
+    .hero-slide .hero-buttons {
+        flex-direction: column !important;
+        align-items: center !important;
+        gap: 15px !important;
+        padding: 0 20px !important;
+    }
+    
+    .hero-slide .hero-buttons .btn {
+        width: 100% !important;
+        max-width: 280px !important;
+        padding: 12px 20px !important;
+        font-size: 0.9rem !important;
+        min-width: auto !important;
+    }
+    
+    /* Dots plus petits */
+    .slider-dots {
+        bottom: 20px;
+        gap: 8px;
+    }
+    
+    .slider-dot {
+        width: 8px;
+        height: 8px;
+    }
+    
+    .slider-dot.active {
+        width: 20px;
+    }
+    
+    /* Overlay plus foncé pour lisibilité */
+    .hero-slide .hero-overlay {
+        background: rgba(0, 0, 0, 0.65) !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-slide .hero-title {
+        font-size: 1.5rem !important;
+    }
+    
+    .hero-slide .hero-subtitle {
+        font-size: 0.85rem !important;
+        padding: 0 15px !important;
+    }
+    
+    .hero-slide .hero-badge {
+        font-size: 0.65rem !important;
+        padding: 4px 12px !important;
+    }
+    
+    .hero-slide .hero-buttons {
+        gap: 12px !important;
+    }
+    
+    .hero-slide .hero-buttons .btn {
+        max-width: 250px !important;
+        padding: 10px 16px !important;
+        font-size: 0.85rem !important;
+    }
+}
+
+/* Fallback pour lisibilité */
+.hero-slide .hero-title,
+.hero-slide .hero-subtitle,
+.hero-slide .hero-badge {
+    position: relative;
+    z-index: 3;
+}
+
+/* ========================================
+   HERO SLIDER (CARROUSEL) - CORRIGÉ FINAL
+   ======================================== */
+
+.hero-slider {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    min-height: 90vh;
+    background: linear-gradient(135deg, var(--clr-primary, #1A5276) 0%, #1a3c5e 100%);
+}
+
+.hero-slides-container {
+    position: relative;
+    width: 100%;
+    min-height: 90vh;
+}
+
+.hero-slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    min-height: 90vh;
+    background-size: cover;
+    background-position: center;
+    opacity: 0;
+    transition: opacity 0.8s ease-in-out;
+    z-index: 1;
+}
+
+/* Premier slide visible immédiatement */
+.hero-slide:first-child {
+    opacity: 1;
+    z-index: 2;
+}
+
+.hero-slide.active {
+    opacity: 1;
+    z-index: 2;
+}
+
+.hero-slide .hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1;
+}
+
+.hero-slide .hero-content-wrapper {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    min-height: 90vh;
+    display: flex;
+    align-items: center;
+}
+
+.hero-slide .hero-content {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.hero-slide.active .hero-content {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ===== STYLES DESKTOP ===== */
+.hero-slide .hero-title {
+    color: white !important;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    font-size: 3.5rem !important;
+    font-weight: 800 !important;
+    line-height: 1.2 !important;
+    margin-bottom: 20px !important;
+}
+
+.hero-slide .hero-subtitle {
+    color: white !important;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+    font-size: 1.2rem !important;
+    line-height: 1.5 !important;
+    margin-bottom: 30px !important;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.hero-slide .hero-badge {
+    color: var(--clr-accent, #D4AC0D) !important;
+    background: rgba(0, 0, 0, 0.3);
+    display: inline-block;
+    padding: 8px 20px;
+    border-radius: 50px;
+    font-size: 0.9rem;
+    margin-bottom: 20px;
+}
+
+/* ===== BOUTONS HERO ===== */
+.hero-slide .hero-buttons {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.hero-slide .hero-buttons .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 14px 35px;
+    font-size: 1rem;
+    font-weight: 700;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    cursor: pointer;
+    min-width: 200px;
+}
+
+.hero-slide .hero-buttons .btn-primary {
+    background: #25D366;
+    color: white;
+    border: none;
+}
+
+.hero-slide .hero-buttons .btn-primary:hover {
+    background: #128C7E;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(37, 211, 102, 0.3);
+}
+
+.hero-slide .hero-buttons .btn-secondary {
+    background: transparent;
+    border: 2px solid white;
+    color: white;
+}
+
+.hero-slide .hero-buttons .btn-secondary:hover {
+    background: white;
+    color: var(--clr-primary, #1A5276);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(255, 255, 255, 0.3);
+}
+
+/* Boutons de navigation */
+.slider-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.4);
+    color: white;
+    border: none;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 2rem;
+    z-index: 10;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.slider-btn:hover {
+    background: var(--clr-accent, #D4AC0D);
+    color: var(--clr-primary, #1A5276);
+}
+
+.slider-prev {
+    left: 20px;
+}
+
+.slider-next {
+    right: 20px;
+}
+
+/* Dots de navigation */
+.slider-dots {
+    position: absolute;
+    bottom: 30px;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    z-index: 10;
+}
+
+.slider-dot {
+    width: 12px;
+    height: 12px;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.slider-dot.active {
+    background: var(--clr-accent, #D4AC0D);
+    width: 30px;
+    border-radius: 10px;
+}
+
+/* ===== RESPONSIVE MOBILE ===== */
+@media (max-width: 992px) {
+    .hero-slide .hero-title {
+        font-size: 2.5rem !important;
+    }
+    
+    .hero-slide .hero-subtitle {
+        font-size: 1.1rem !important;
+    }
+}
+
+@media (max-width: 768px) {
+    /* Masquer les flèches sur mobile */
+    .slider-btn {
+        display: none !important;
+    }
+    
+    /* Ajuster la hauteur */
+    .hero-slides-container,
+    .hero-slide {
+        min-height: 80vh;
+    }
+    
+    .hero-slide .hero-content-wrapper {
+        min-height: 80vh;
+    }
+    
+    /* Titre mobile */
+    .hero-slide .hero-title {
+        font-size: 1.8rem !important;
+        line-height: 1.3 !important;
+        padding: 0 15px !important;
+        margin-bottom: 15px !important;
+    }
+    
+    /* Sous-titre mobile */
+    .hero-slide .hero-subtitle {
+        font-size: 0.9rem !important;
+        line-height: 1.4 !important;
+        padding: 0 20px !important;
+        margin-bottom: 25px !important;
+    }
+    
+    /* Badge mobile */
+    .hero-slide .hero-badge {
+        font-size: 0.7rem !important;
+        padding: 5px 15px !important;
+        margin-bottom: 15px !important;
+    }
+    
+    /* Boutons mobile - espacés */
+    .hero-slide .hero-buttons {
+        flex-direction: column !important;
+        align-items: center !important;
+        gap: 15px !important;
+        padding: 0 20px !important;
+    }
+    
+    .hero-slide .hero-buttons .btn {
+        width: 100% !important;
+        max-width: 280px !important;
+        padding: 12px 20px !important;
+        font-size: 0.9rem !important;
+        min-width: auto !important;
+    }
+    
+    /* Dots plus petits */
+    .slider-dots {
+        bottom: 20px;
+        gap: 8px;
+    }
+    
+    .slider-dot {
+        width: 8px;
+        height: 8px;
+    }
+    
+    .slider-dot.active {
+        width: 20px;
+    }
+    
+    /* Overlay plus foncé pour lisibilité */
+    .hero-slide .hero-overlay {
+        background: rgba(0, 0, 0, 0.65) !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-slide .hero-title {
+        font-size: 1.5rem !important;
+    }
+    
+    .hero-slide .hero-subtitle {
+        font-size: 0.85rem !important;
+        padding: 0 15px !important;
+    }
+    
+    .hero-slide .hero-badge {
+        font-size: 0.65rem !important;
+        padding: 4px 12px !important;
+    }
+    
+    .hero-slide .hero-buttons {
+        gap: 12px !important;
+    }
+    
+    .hero-slide .hero-buttons .btn {
+        max-width: 250px !important;
+        padding: 10px 16px !important;
+        font-size: 0.85rem !important;
+    }
+}
+
+/* Fallback pour lisibilité */
+.hero-slide .hero-title,
+.hero-slide .hero-subtitle,
+.hero-slide .hero-badge {
+    position: relative;
+    z-index: 3;
+}
+/* Masquer les slides non actifs immédiatement */
+.hero-slide:not(.active) {
+    display: none;
+}
+
+/* Le premier slide doit être visible */
+.hero-slide.active {
+    display: block;
+}
+
+/* ========================================
  * 3. BOUTON WHATSAPP — HEADER
  * ======================================== */
 .site-header .btn-whatsapp {

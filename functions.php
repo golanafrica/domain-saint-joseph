@@ -126,7 +126,30 @@ add_filter( 'wp_get_attachment_image_attributes', function( $attr ) {
     return $attr;
 });
 
-// ── Handlers de formulaires (conservés & sécurisés) ──
+// ========================================
+// FONCTIONS HELPER - CONTACT ET WHATSAPP
+// ========================================
+
+// Récupérer le numéro WhatsApp
+function dsj_get_whatsapp() {
+    return get_theme_mod( 'whatsapp', '22666605890' );
+}
+
+// Récupérer le téléphone
+function dsj_get_phone() {
+    return get_theme_mod( 'dsj_phone', '(+226) 20 97 28 97' );
+}
+
+// Récupérer l'email
+function dsj_get_email() {
+    return get_theme_mod( 'dsj_email', 'centredsj@gmail.com' );
+}
+
+// ========================================
+// HANDLERS DE FORMULAIRES
+// ========================================
+
+// Formulaire de contact
 add_action( 'admin_post_dsj_contact_form', 'dsj_handle_contact_form' );
 add_action( 'admin_post_nopriv_dsj_contact_form', 'dsj_handle_contact_form' );
 
@@ -144,7 +167,7 @@ function dsj_handle_contact_form() {
         exit;
     }
     
-    $to = 'centredsj@gmail.com';
+    $to = dsj_get_email();
     $subject = sprintf( '[DSJ] %s - %s', ucfirst( $sujet ), $nom );
     $body = "Nouveau message :\n\nNom: $nom\nContact: $contact\nSujet: $sujet\nMessage:\n$message\n---\nEnvoyé depuis: " . home_url();
     $headers = [ 'Content-Type: text/plain; charset=UTF-8', 'Reply-To: ' . $contact ];
@@ -154,6 +177,7 @@ function dsj_handle_contact_form() {
     exit;
 }
 
+// Formulaire de réservation hébergement
 add_action( 'admin_post_dsj_reservation_form', 'dsj_handle_reservation_form' );
 add_action( 'admin_post_nopriv_dsj_reservation_form', 'dsj_handle_reservation_form' );
 
@@ -173,7 +197,7 @@ function dsj_handle_reservation_form() {
         exit;
     }
     
-    $to = 'centredsj@gmail.com';
+    $to = dsj_get_email();
     $subject = '[DSJ] Réservation - ' . $nom;
     $body = "Nouvelle réservation :\n\nNom: $nom\nContact: $contact\nArrivée: $arrivee\nDépart: $depart\nType: $type\nMessage: $message";
     $headers = [ 'Content-Type: text/plain; charset=UTF-8', 'Reply-To: ' . $contact ];
@@ -183,69 +207,7 @@ function dsj_handle_reservation_form() {
     exit;
 }
 
-// ── Création d'un rôle "Soeur" si inexistant ──
-function dsj_add_roles() {
-    if ( ! get_role( 'soeur' ) ) {
-        add_role( 'soeur', __( 'Sœur', 'domaine-saint-joseph' ), [
-            'read' => true,
-            'edit_posts' => true,
-            'edit_published_posts' => true,
-            'upload_files' => true,
-            'publish_posts' => true,
-            'delete_posts' => true,
-            'edit_formation' => true,
-            'edit_published_formation' => true,
-            'publish_formation' => true,
-            'delete_formation' => true,
-            'edit_hebergement' => true,
-            'edit_published_hebergement' => true,
-            'publish_hebergement' => true,
-        ] );
-    }
-}
-add_action( 'after_switch_theme', 'dsj_add_roles' );
-
-// ── Helper pour obtenir le numéro WhatsApp ──
-function dsj_get_whatsapp() {
-    return get_theme_mod( 'whatsapp', '22666605890' );
-}
-
-// ── Helper pour obtenir l'email ──
-function dsj_get_email() {
-    return get_theme_mod( 'dsj_email', 'centredsj@gmail.com' );
-}
-
-// ── Helper pour obtenir le téléphone ──
-function dsj_get_phone() {
-    return get_theme_mod( 'dsj_phone', '(+226) 20 97 28 97' );
-}
-
-// Forcer l'utilisation du template single-hebergement.php
-function dsj_force_hebergement_template( $template ) {
-    if ( is_singular( 'hebergement' ) ) {
-        $custom_template = get_template_directory() . '/single-hebergement.php';
-        if ( file_exists( $custom_template ) ) {
-            return $custom_template;
-        }
-    }
-    return $template;
-}
-add_filter( 'template_include', 'dsj_force_hebergement_template', 99 );
-
-// Charger les scripts pour l'uploader d'images dans les widgets
-function dsj_admin_widget_scripts() {
-    // Charger l'uploader de média WordPress
-    wp_enqueue_media();
-    wp_enqueue_script(
-        'dsj-widget-uploader',
-        get_template_directory_uri() . '/assets/js/widget-uploader.js',
-        array( 'jquery' ),
-        '1.0',
-        true
-    );
-}
-add_action( 'admin_enqueue_scripts', 'dsj_admin_widget_scripts' );
-// Handler pour la réservation restaurant
+// Formulaire de réservation restaurant
 add_action( 'admin_post_dsj_restaurant_reservation', 'dsj_handle_restaurant_reservation' );
 add_action( 'admin_post_nopriv_dsj_restaurant_reservation', 'dsj_handle_restaurant_reservation' );
 
@@ -267,7 +229,7 @@ function dsj_handle_restaurant_reservation() {
         exit;
     }
     
-    $to = 'centredsj@gmail.com';
+    $to = dsj_get_email();
     $subject = '[DSJ] Réservation Restaurant - ' . $nom;
     $body = "Nouvelle réservation restaurant :\n\n";
     $body .= "Nom: $nom\n";
@@ -285,3 +247,62 @@ function dsj_handle_restaurant_reservation() {
     wp_safe_redirect( home_url( $sent ? '/restaurant?resa_success=1' : '/restaurant?resa_error=send' ) );
     exit;
 }
+
+// ========================================
+// RÔLES & PERMISSIONS
+// ========================================
+
+// Création d'un rôle "Soeur" si inexistant
+function dsj_add_roles() {
+    if ( ! get_role( 'soeur' ) ) {
+        add_role( 'soeur', __( 'Sœur', 'domaine-saint-joseph' ), [
+            'read' => true,
+            'edit_posts' => true,
+            'edit_published_posts' => true,
+            'upload_files' => true,
+            'publish_posts' => true,
+            'delete_posts' => true,
+            'edit_formation' => true,
+            'edit_published_formation' => true,
+            'publish_formation' => true,
+            'delete_formation' => true,
+            'edit_hebergement' => true,
+            'edit_published_hebergement' => true,
+            'publish_hebergement' => true,
+        ] );
+    }
+}
+add_action( 'after_switch_theme', 'dsj_add_roles' );
+
+// ========================================
+// FORCER LES TEMPLATES
+// ========================================
+
+// Forcer l'utilisation du template single-hebergement.php
+function dsj_force_hebergement_template( $template ) {
+    if ( is_singular( 'hebergement' ) ) {
+        $custom_template = get_template_directory() . '/single-hebergement.php';
+        if ( file_exists( $custom_template ) ) {
+            return $custom_template;
+        }
+    }
+    return $template;
+}
+add_filter( 'template_include', 'dsj_force_hebergement_template', 99 );
+
+// ========================================
+// ADMIN SCRIPTS
+// ========================================
+
+// Charger les scripts pour l'uploader d'images dans les widgets
+function dsj_admin_widget_scripts() {
+    wp_enqueue_media();
+    wp_enqueue_script(
+        'dsj-widget-uploader',
+        get_template_directory_uri() . '/assets/js/widget-uploader.js',
+        array( 'jquery' ),
+        '1.0',
+        true
+    );
+}
+add_action( 'admin_enqueue_scripts', 'dsj_admin_widget_scripts' );

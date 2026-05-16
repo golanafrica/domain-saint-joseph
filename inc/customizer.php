@@ -860,6 +860,85 @@ $wp_customize->add_control( 'restaurant_dejeuner', [ 'label' => 'Déjeuner', 'se
 $wp_customize->add_setting( 'restaurant_diner', [ 'default' => '19h00 - 21h30', 'sanitize_callback' => 'sanitize_text_field' ] );
 $wp_customize->add_control( 'restaurant_diner', [ 'label' => 'Dîner', 'section' => 'dsj_restaurant_horaires', 'type' => 'text' ] );
 
+// ========================================
+// SECTION: HERO SLIDER (ACCUEIL)
+// ========================================
+$wp_customize->add_section( 'dsj_hero_slider', [
+    'title'    => __( '🎠 Hero Slider - Page Accueil', 'domaine-saint-joseph' ),
+    'priority' => 5,
+    'description' => __( 'Activez le slider et ajoutez jusqu\'à 5 slides', 'domaine-saint-joseph' ),
+] );
+
+// Activer le slider
+$wp_customize->add_setting( 'hero_slider_active', [
+    'default' => false,
+    'sanitize_callback' => 'wp_validate_boolean',
+] );
+$wp_customize->add_control( 'hero_slider_active', [
+    'label' => __( '✅ Activer le slider Hero', 'domaine-saint-joseph' ),
+    'section' => 'dsj_hero_slider',
+    'type' => 'checkbox',
+] );
+
+// Vitesse du slider
+$wp_customize->add_setting( 'hero_slider_speed', [
+    'default' => '5000',
+    'sanitize_callback' => 'absint',
+] );
+$wp_customize->add_control( 'hero_slider_speed', [
+    'label' => __( '⏱️ Vitesse du slider (ms)', 'domaine-saint-joseph' ),
+    'section' => 'dsj_hero_slider',
+    'type' => 'select',
+    'choices' => [
+        '3000' => 'Rapide (3s)',
+        '5000' => 'Normal (5s)',
+        '7000' => 'Lent (7s)',
+        '10000' => 'Très lent (10s)',
+    ],
+] );
+
+// Slides (5 slides max)
+for ( $i = 1; $i <= 5; $i++ ) {
+    $wp_customize->add_setting( "hero_slide_{$i}_image", [
+        'default' => '',
+        'sanitize_callback' => 'esc_url_raw',
+    ] );
+    $wp_customize->add_control( new WP_Customize_Image_Control( $wp_customize, "hero_slide_{$i}_image", [
+        'label'    => sprintf( __( 'Slide %d - Image', 'domaine-saint-joseph' ), $i ),
+        'section'  => 'dsj_hero_slider',
+    ] ) );
+    
+    $wp_customize->add_setting( "hero_slide_{$i}_titre", [
+        'default' => $i === 1 ? 'Former les jeunes filles, accueillir avec compassion' : '',
+        'sanitize_callback' => 'wp_kses_post',
+    ] );
+    $wp_customize->add_control( "hero_slide_{$i}_titre", [
+        'label'    => sprintf( __( 'Slide %d - Titre', 'domaine-saint-joseph' ), $i ),
+        'section'  => 'dsj_hero_slider',
+        'type'     => 'text',
+    ] );
+    
+    $wp_customize->add_setting( "hero_slide_{$i}_soustitre", [
+        'default' => $i === 1 ? 'Centre de formation technique & Maison d\'accueil Bobo-Dioulasso, Burkina Faso — depuis 2022' : '',
+        'sanitize_callback' => 'sanitize_textarea_field',
+    ] );
+    $wp_customize->add_control( "hero_slide_{$i}_soustitre", [
+        'label'    => sprintf( __( 'Slide %d - Sous-titre', 'domaine-saint-joseph' ), $i ),
+        'section'  => 'dsj_hero_slider',
+        'type'     => 'textarea',
+    ] );
+    
+    $wp_customize->add_setting( "hero_slide_{$i}_badge", [
+        'default' => $i === 1 ? '✝ Travailleuses Missionnaires de l\'Immaculée' : '',
+        'sanitize_callback' => 'sanitize_text_field',
+    ] );
+    $wp_customize->add_control( "hero_slide_{$i}_badge", [
+        'label'    => sprintf( __( 'Slide %d - Badge', 'domaine-saint-joseph' ), $i ),
+        'section'  => 'dsj_hero_slider',
+        'type'     => 'text',
+    ] );
+}
+
     // ========================================
     // SECTION HERO - PAGE RESTAURANT
     // ========================================

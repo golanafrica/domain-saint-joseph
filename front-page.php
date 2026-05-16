@@ -7,12 +7,71 @@ get_header(); ?>
 
 <main id="main" class="site-main">
     
-    <!-- ===== HERO SECTION (déjà ok — gradient bleu) ===== -->
-    <?php if ( is_active_sidebar( 'hero-area' ) ) : ?>
+    <!-- ===== HERO SLIDER OPTIMISÉ ===== -->
+    <?php if ( get_theme_mod( 'hero_slider_active', false ) ) : 
+        $slides = [];
+        for ( $i = 1; $i <= 5; $i++ ) {
+            $image = get_theme_mod( "hero_slide_{$i}_image" );
+            if ( $image ) {
+                $slides[] = [
+                    'image' => $image,
+                    'titre' => get_theme_mod( "hero_slide_{$i}_titre", '' ),
+                    'soustitre' => get_theme_mod( "hero_slide_{$i}_soustitre", '' ),
+                    'badge' => get_theme_mod( "hero_slide_{$i}_badge", '' ),
+                ];
+            }
+        }
+        
+        if ( ! empty( $slides ) ) : ?>
+            <div class="hero-slider" data-speed="<?php echo get_theme_mod( 'hero_slider_speed', '5000' ); ?>">
+                <div class="hero-slides-container">
+                    <?php foreach ( $slides as $index => $slide ) : ?>
+                        <div class="hero-slide <?php echo $index === 0 ? 'active' : ''; ?>" 
+                             style="background-image: url(<?php echo esc_url( $slide['image'] ); ?>); 
+                                    <?php echo $index !== 0 ? 'display: none;' : ''; ?>">
+                            <div class="hero-overlay" style="background: rgba(26, 60, 94, 0.5);"></div>
+                            <div class="hero-content-wrapper">
+                                <div class="container">
+                                    <div class="hero-content <?php echo $index === 0 ? 'active' : ''; ?>">
+                                        <?php if ( $slide['badge'] ) : ?>
+                                            <span class="hero-badge"><?php echo esc_html( $slide['badge'] ); ?></span>
+                                        <?php endif; ?>
+                                        
+                                        <h1 class="hero-title"><?php echo wp_kses_post( $slide['titre'] ); ?></h1>
+                                        
+                                        <?php if ( $slide['soustitre'] ) : ?>
+                                            <p class="hero-subtitle"><?php echo esc_html( $slide['soustitre'] ); ?></p>
+                                        <?php endif; ?>
+                                        
+                                        <div class="hero-buttons">
+                                            <a href="<?php echo esc_url( home_url( '/formation' ) ); ?>" class="btn btn-primary btn-large">🎓 Nos formations</a>
+                                            <a href="<?php echo esc_url( home_url( '/maison-daccueil' ) ); ?>" class="btn btn-secondary btn-large">🏠 Découvrir l'accueil</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+                
+                <!-- Navigation -->
+                <button class="slider-btn slider-prev" aria-label="Précédent">‹</button>
+                <button class="slider-btn slider-next" aria-label="Suivant">›</button>
+                
+                <div class="slider-dots">
+                    <?php foreach ( $slides as $index => $slide ) : ?>
+                        <span class="slider-dot <?php echo $index === 0 ? 'active' : ''; ?>" data-index="<?php echo $index; ?>"></span>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+            
+        <?php endif; ?>
+    <?php elseif ( is_active_sidebar( 'hero-area' ) ) : ?>
         <div class="hero-widget-container">
             <?php dynamic_sidebar( 'hero-area' ); ?>
         </div>
     <?php else : ?>
+        <!-- Hero par défaut (sans slider) -->
         <section class="custom-hero default-hero" style="background: linear-gradient(135deg, var(--clr-primary, #1A5276) 0%, #1a3c5e 100%);">
             <div class="hero-overlay" style="background: rgba(26, 60, 94, 0.5);"></div>
             <div class="hero-content-wrapper">
@@ -28,15 +87,11 @@ get_header(); ?>
                     </div>
                 </div>
             </div>
-            <div class="hero-wave">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 120">
-                    <path fill="#ffffff" fill-opacity="1" d="M0,64L80,58.7C160,53,320,43,480,48C640,53,800,75,960,80C1120,85,1280,75,1360,69.3L1440,64L1440,120L1360,120C1280,120,1120,120,960,120C800,120,640,120,480,120C320,120,160,120,80,120L0,120Z"></path>
-                </svg>
-            </div>
+            
         </section>
     <?php endif; ?>
 
-    <!-- ===== NOTRE HISTOIRE → bg-bleu-clair ===== -->
+    <!-- ===== NOTRE HISTOIRE ===== -->
     <?php 
     $histoire_texte = get_theme_mod('histoire_texte', 'Le Domaine Saint Joseph a été créé en <strong>2022</strong>. Ce centre est une expression du charisme des <strong>Travailleuses Missionnaires de l\'Immaculée</strong>.');
     ?>
@@ -53,7 +108,7 @@ get_header(); ?>
         </div>
     </section>
 
-    <!-- ===== STATISTIQUES → bg-gris (déjà géré par .stats-section) ===== -->
+    <!-- ===== STATISTIQUES ===== -->
     <section class="stats-section bg-gris">
         <div class="container">
             <div class="stats-grid">
@@ -77,7 +132,7 @@ get_header(); ?>
         </div>
     </section>
 
-    <!-- ===== NOS FORMATIONS → bg-blanc ===== -->
+    <!-- ===== NOS FORMATIONS ===== -->
     <section class="home-formations section-padding bg-blanc">
         <div class="container">
             <div class="section-header">
@@ -151,7 +206,7 @@ get_header(); ?>
         </div>
     </section>
 
-    <!-- ===== LA MAISON D'ACCUEIL → bg-vert-menthe ===== -->
+    <!-- ===== LA MAISON D'ACCUEIL ===== -->
     <section class="home-maison-presentation section-padding bg-vert-menthe">
         <div class="container">
             <div class="section-header">
@@ -173,7 +228,7 @@ get_header(); ?>
         </div>
     </section>
 
-    <!-- ===== NOS HÉBERGEMENTS → bg-gris ===== -->
+    <!-- ===== NOS HÉBERGEMENTS ===== -->
     <section class="home-hebergements section-padding bg-gris">
         <div class="container">
             <div class="section-header">
@@ -249,7 +304,7 @@ get_header(); ?>
         </div>
     </section>
 
-    <!-- ===== SECTION APPEL À L'AIDE → bg-creme ===== -->
+    <!-- ===== SECTION APPEL À L'AIDE ===== -->
     <?php if ( get_theme_mod( 'aide_accueil_active', true ) ) : ?>
     <section class="aide-urgence section-padding bg-creme">
         <div class="container">
@@ -320,7 +375,7 @@ get_header(); ?>
     </section>
     <?php endif; ?>
 
-    <!-- ===== SECTION RESTAURANT → bg-blanc ===== -->
+    <!-- ===== SECTION RESTAURANT ===== -->
     <section class="home-restaurant section-padding bg-blanc">
         <div class="container">
             <div class="section-header">
@@ -352,7 +407,7 @@ get_header(); ?>
         </div>
     </section>
 
-    <!-- ===== NOS VALEURS → bg-creme ===== -->
+    <!-- ===== NOS VALEURS ===== -->
     <section class="valeurs-section section-padding bg-creme">
         <div class="container">
             <div class="section-header">
@@ -397,7 +452,7 @@ get_header(); ?>
         </div>
     </section>
 
-    <!-- ===== GALERIE → bg-gris ===== -->
+    <!-- ===== GALERIE ===== -->
     <?php
     $galerie = new WP_Query( [
         'post_type' => 'galerie',
@@ -440,7 +495,7 @@ get_header(); ?>
     wp_reset_postdata();
     endif; ?>
 
-    <!-- ===== TÉMOIGNAGES → bg-blanc ===== -->
+    <!-- ===== TÉMOIGNAGES ===== -->
     <?php
     $temoignages = new WP_Query( [
         'post_type' => 'temoignage',
@@ -477,7 +532,7 @@ get_header(); ?>
     wp_reset_postdata();
     endif; ?>
 
-    <!-- ===== CTA FINAL → déjà ok (gradient bleu) ===== -->
+    <!-- ===== CTA FINAL ===== -->
     <section class="cta-home-section section-padding bg-primaire">
         <div class="container">
             <div class="cta-content">
