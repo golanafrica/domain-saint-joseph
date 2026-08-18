@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 /**
  * Widgets personnalisés pour le thème
  * Domaine Saint Joseph

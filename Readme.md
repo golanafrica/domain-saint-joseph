@@ -1,4 +1,4 @@
-﻿markdown
+markdown
 # 🏛️ Domaine Saint Joseph — Thème WordPress
 
 **Centre de formation technique & Maison d'accueil**  

@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 /**
  * Page d'accueil — Avec palette de couleurs discrète
  */

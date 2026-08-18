@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html <?php language_attributes(); ?>>
 <head>
     <!-- Préchargement de la première image du slider -->

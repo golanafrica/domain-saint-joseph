@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 /**
  * Template pour l'affichage d'une formation individuelle
  */

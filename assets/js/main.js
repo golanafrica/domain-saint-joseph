@@ -1,4 +1,4 @@
-﻿/* ========================================
+/* ========================================
    DOMAINE SAINT JOSEPH — JavaScript Principal
    Optimisé 3G, accessible, performant
    ======================================== */
