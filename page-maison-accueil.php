@@ -1,20 +1,18 @@
 <?php
-/*
-Template Name: Maison d'Accueil
-*/
+/**
+ * Template Name: Maison d'Accueil
+ */
 get_header(); ?>
 
 <!-- HERO SECTION -->
-<!-- HERO SECTION -->
 <?php
 $hero_image     = get_theme_mod( 'hero_maison_image' );
-$hero_badge     = get_theme_mod( 'hero_maison_badge', '? Nos hébergements' );
+$hero_badge     = get_theme_mod( 'hero_maison_badge', '&#127968; Nos hébergements' );
 $hero_titre     = get_theme_mod( 'hero_maison_titre', 'Maison d\'Accueil' );
 $hero_soustitre = get_theme_mod( 'hero_maison_soustitre', 'Un lieu de repos, de ressourcement et de rencontres' );
 ?>
 
 <section class="page-header maison-accueil-header">
-
     <div class="page-photo-zone"
          <?php if ( $hero_image ) : ?>
          style="background-image: url('<?php echo esc_url( $hero_image ); ?>');"
@@ -26,16 +24,15 @@ $hero_soustitre = get_theme_mod( 'hero_maison_soustitre', 'Un lieu de repos, de 
         <h1 class="header-title"><?php echo esc_html( $hero_titre ); ?></h1>
         <div class="header-divider">
             <span class="divider-line"></span>
-            <span class="divider-icon">?</span>
+            <span class="divider-icon">&#9962;</span>
             <span class="divider-line"></span>
         </div>
         <p class="header-subtitle"><?php echo esc_html( $hero_soustitre ); ?></p>
         <div class="header-buttons">
-            <a href="#nos-chambres" class="btn-scroll">? Découvrir nos chambres</a>
-            <a href="#reservation" class="btn-scroll btn-outline">? Réserver maintenant</a>
+            <a href="#nos-chambres" class="btn-scroll">&#128270; Découvrir nos chambres</a>
+            <a href="#reservation" class="btn-scroll btn-outline">&#128197; Réserver maintenant</a>
         </div>
     </div>
-
 </section>
 
 <!-- CONTENU ÉDITABLE (Gutenberg) -->
@@ -53,7 +50,7 @@ $hero_soustitre = get_theme_mod( 'hero_maison_soustitre', 'Un lieu de repos, de 
 <section class="maison-presentation section-padding bg-light">
     <div class="container">
         <div class="section-header">
-            <span class="section-badge">? Un lieu pour tous</span>
+            <span class="section-badge">&#127968; Un lieu pour tous</span>
             <h2 class="section-title">La Maison d'Accueil</h2>
             <div class="section-divider"></div>
         </div>
@@ -64,12 +61,12 @@ $hero_soustitre = get_theme_mod( 'hero_maison_soustitre', 'Un lieu de repos, de 
         <div class="services-list">
             <h3>Nos espaces sont disponibles pour :</h3>
             <div class="services-grid">
-                <div class="service-item">?? Retraites, récollections</div>
-                <div class="service-item">? Événements</div>
-                <div class="service-item">??????? Réunions de famille</div>
-                <div class="service-item">? Sessions de travail</div>
-                <div class="service-item">? Conférences</div>
-                <div class="service-item">? Journées d'étude</div>
+                <div class="service-item">&#128332; Retraites, récollections</div>
+                <div class="service-item">&#127881; Événements</div>
+                <div class="service-item">&#128104;&#8205;&#128105;&#8205;&#128103;&#8205;&#128102; Réunions de famille</div>
+                <div class="service-item">&#128188; Sessions de travail</div>
+                <div class="service-item">&#128218; Conférences</div>
+                <div class="service-item">&#128214; Journées d'étude</div>
             </div>
         </div>
     </div>
@@ -79,42 +76,42 @@ $hero_soustitre = get_theme_mod( 'hero_maison_soustitre', 'Un lieu de repos, de 
 <section class="equipements-section section-padding">
     <div class="container">
         <div class="section-header">
-            <span class="section-badge">?? Nos équipements</span>
+            <span class="section-badge">&#128295; Nos équipements</span>
             <h2 class="section-title">Le Centre est doté</h2>
             <div class="section-divider"></div>
         </div>
         
         <div class="equipements-grid">
             <div class="equipement-item">
-                <span class="equipement-icon">??</span>
+                <span class="equipement-icon">&#127744;</span>
                 <span class="equipement-name">Chambres ventilées</span>
             </div>
             <div class="equipement-item">
-                <span class="equipement-icon">??</span>
+                <span class="equipement-icon">&#10052;</span>
                 <span class="equipement-name">Chambres climatisées</span>
             </div>
             <div class="equipement-item">
-                <span class="equipement-icon">?</span>
+                <span class="equipement-icon">&#128524;</span>
                 <span class="equipement-name">Cadre de recueillement</span>
             </div>
             <div class="equipement-item">
-                <span class="equipement-icon">?</span>
+                <span class="equipement-icon">&#9962;</span>
                 <span class="equipement-name">Chapelle</span>
             </div>
             <div class="equipement-item">
-                <span class="equipement-icon">?</span>
+                <span class="equipement-icon">&#127897;</span>
                 <span class="equipement-name">Salle de conférence</span>
             </div>
             <div class="equipement-item">
-                <span class="equipement-icon">?</span>
+                <span class="equipement-icon">&#128218;</span>
                 <span class="equipement-name">Salles de formation</span>
             </div>
             <div class="equipement-item">
-                <span class="equipement-icon">?</span>
+                <span class="equipement-icon">&#128187;</span>
                 <span class="equipement-name">Cadre de travail</span>
             </div>
             <div class="equipement-item">
-                <span class="equipement-icon">??</span>
+                <span class="equipement-icon">&#127869;</span>
                 <span class="equipement-name">Salle à manger</span>
             </div>
         </div>
@@ -125,7 +122,7 @@ $hero_soustitre = get_theme_mod( 'hero_maison_soustitre', 'Un lieu de repos, de 
 <section id="nos-chambres" class="nos-chambres section-padding bg-light">
     <div class="container">
         <div class="section-header">
-            <span class="section-badge">? Notre espace</span>
+            <span class="section-badge">&#127968; Notre espace</span>
             <h2 class="section-title">Nos Chambres</h2>
             <div class="section-divider"></div>
             <p class="section-subtitle">Des chambres confortables pour votre séjour</p>
@@ -148,7 +145,7 @@ $hero_soustitre = get_theme_mod( 'hero_maison_soustitre', 'Un lieu de repos, de 
                                 <?php if ( has_post_thumbnail() ) : 
                                     the_post_thumbnail( 'card-thumb' );
                                 else : ?>
-                                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300'%3E%3Crect width='400' height='300' fill='%23f0f0f0'/%3E%3Ctext x='200' y='160' font-size='18' text-anchor='middle' fill='%23999' font-family='Arial'%3E? Chambre%3C/text%3E%3C/svg%3E" 
+                                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300'%3E%3Crect width='400' height='300' fill='%23f0f0f0'/%3E%3Ctext x='200' y='160' font-size='18' text-anchor='middle' fill='%23999' font-family='Arial'%3E%F0%9F%8F%A0 Chambre%3C/text%3E%3C/svg%3E" 
                                          alt="<?php the_title_attribute(); ?>"
                                          style="width:100%; height:200px; object-fit:cover;">
                                 <?php endif; ?>
@@ -174,11 +171,11 @@ $hero_soustitre = get_theme_mod( 'hero_maison_soustitre', 'Un lieu de repos, de 
                             
                             <div class="card-meta">
                                 <?php if ( $capacite ) : ?>
-                                    <span class="meta-item">? <?php echo esc_html( $capacite ); ?> pers.</span>
+                                    <span class="meta-item">&#128101; <?php echo esc_html( $capacite ); ?> pers.</span>
                                 <?php endif; ?>
                                 
                                 <?php if ( $prix_nuit ) : ?>
-                                    <span class="meta-item">? <?php echo esc_html( $prix_nuit ); ?> F/nuit</span>
+                                    <span class="meta-item">&#128176; <?php echo esc_html( $prix_nuit ); ?> F/nuit</span>
                                 <?php endif; ?>
                             </div>
                             
@@ -193,7 +190,7 @@ $hero_soustitre = get_theme_mod( 'hero_maison_soustitre', 'Un lieu de repos, de 
                             </div>
                             
                             <a href="<?php the_permalink(); ?>" class="btn-link">
-                                Voir les détails ?
+                                Voir les détails &#8594;
                             </a>
                         </div>
                     </div>
@@ -210,7 +207,7 @@ $hero_soustitre = get_theme_mod( 'hero_maison_soustitre', 'Un lieu de repos, de 
 <section id="reservation" class="reservation section-padding">
     <div class="container">
         <div class="reservation-header">
-            <span class="reservation-badge">? Réservation</span>
+            <span class="reservation-badge">&#128197; Réservation</span>
             <h2 class="reservation-title">Demander une Réservation</h2>
             <div class="reservation-divider"></div>
             <p class="reservation-subtitle">Remplissez ce formulaire et nous vous répondrons sous 48h</p>
@@ -218,19 +215,21 @@ $hero_soustitre = get_theme_mod( 'hero_maison_soustitre', 'Un lieu de repos, de 
         
         <?php if ( isset( $_GET['success'] ) && $_GET['success'] === '1' ) : ?>
             <div class="alert alert-success">
-                <span class="alert-icon">?</span>
+                <span class="alert-icon">&#9989;</span>
                 <div class="alert-content">
                     <strong>Merci !</strong> Votre demande a bien été envoyée. Nous vous répondrons sous 48h par WhatsApp ou email.
                 </div>
             </div>
         <?php elseif ( isset( $_GET['error'] ) ) : ?>
             <div class="alert alert-error">
-                <span class="alert-icon">?</span>
+                <span class="alert-icon">&#10060;</span>
                 <div class="alert-content">
                     <?php
-                    $error = $_GET['error'];
+                    $error = $_GET['error'] ?? '';
                     if ( $error === 'missing' ) echo '<strong>Champs manquants</strong><br>Veuillez remplir tous les champs obligatoires.';
                     elseif ( $error === 'send' ) echo '<strong>Erreur d\'envoi</strong><br>Veuillez réessayer ou nous contacter par WhatsApp.';
+                    elseif ( $error === 'rate_limit' ) echo '<strong>Trop de messages</strong><br>Veuillez attendre quelques minutes avant de réessayer.';
+                    elseif ( $error === 'invalid_contact' ) echo '<strong>Contact invalide</strong><br>Veuillez entrer un email ou numéro de téléphone valide.';
                     else echo '<strong>Erreur</strong><br>Une erreur est survenue. Veuillez réessayer.';
                     ?>
                 </div>
@@ -241,10 +240,17 @@ $hero_soustitre = get_theme_mod( 'hero_maison_soustitre', 'Un lieu de repos, de 
             <input type="hidden" name="action" value="dsj_reservation_form">
             <?php wp_nonce_field( 'dsj_reservation_nonce', '_wpnonce' ); ?>
             
+            <!-- Honeypot anti-spam (invisible pour les humains) -->
+            <div style="position: absolute; left: -9999px;" aria-hidden="true">
+                <label>Ne pas remplir ce champ
+                    <input type="text" name="dsj_hp_field" tabindex="-1" autocomplete="off">
+                </label>
+            </div>
+            
             <div class="form-grid">
                 <div class="form-group">
                     <label for="nom">
-                        <span class="label-icon">?</span>
+                        <span class="label-icon">&#128100;</span>
                         Nom complet <span class="required">*</span>
                     </label>
                     <input type="text" id="nom" name="nom" class="form-control" placeholder="Votre nom et prénom" required>
@@ -253,7 +259,7 @@ $hero_soustitre = get_theme_mod( 'hero_maison_soustitre', 'Un lieu de repos, de 
                 
                 <div class="form-group">
                     <label for="contact">
-                        <span class="label-icon">?</span>
+                        <span class="label-icon">&#128222;</span>
                         Email ou Téléphone <span class="required">*</span>
                     </label>
                     <input type="text" id="contact" name="contact" class="form-control" placeholder="exemple@email.com ou +226 XX XX XX XX" required>
@@ -264,7 +270,7 @@ $hero_soustitre = get_theme_mod( 'hero_maison_soustitre', 'Un lieu de repos, de 
             <div class="form-grid form-grid-3">
                 <div class="form-group">
                     <label for="arrivee">
-                        <span class="label-icon">?</span>
+                        <span class="label-icon">&#128197;</span>
                         Date d'arrivée <span class="required">*</span>
                     </label>
                     <input type="date" id="arrivee" name="arrivee" class="form-control" required>
@@ -273,7 +279,7 @@ $hero_soustitre = get_theme_mod( 'hero_maison_soustitre', 'Un lieu de repos, de 
                 
                 <div class="form-group">
                     <label for="depart">
-                        <span class="label-icon">?</span>
+                        <span class="label-icon">&#128197;</span>
                         Date de départ <span class="required">*</span>
                     </label>
                     <input type="date" id="depart" name="depart" class="form-control" required>
@@ -282,7 +288,7 @@ $hero_soustitre = get_theme_mod( 'hero_maison_soustitre', 'Un lieu de repos, de 
                 
                 <div class="form-group">
                     <label for="type">
-                        <span class="label-icon">?</span>
+                        <span class="label-icon">&#127968;</span>
                         Type de chambre
                     </label>
                     <div class="select-wrapper">
@@ -297,7 +303,7 @@ $hero_soustitre = get_theme_mod( 'hero_maison_soustitre', 'Un lieu de repos, de 
                                 wp_reset_postdata();
                             endif; ?>
                         </select>
-                        <span class="select-arrow">?</span>
+                        <span class="select-arrow">&#9660;</span>
                     </div>
                     <span class="input-border"></span>
                 </div>
@@ -305,7 +311,7 @@ $hero_soustitre = get_theme_mod( 'hero_maison_soustitre', 'Un lieu de repos, de 
             
             <div class="form-group full-width">
                 <label for="message">
-                    <span class="label-icon">?</span>
+                    <span class="label-icon">&#128172;</span>
                     Besoins particuliers
                 </label>
                 <textarea id="message" name="message" class="form-control" rows="4" placeholder="Ex: régime alimentaire, accès PMR, besoins spécifiques..."></textarea>
@@ -314,11 +320,11 @@ $hero_soustitre = get_theme_mod( 'hero_maison_soustitre', 'Un lieu de repos, de 
             
             <div class="form-footer">
                 <button type="submit" class="btn-submit">
-                    <span class="btn-icon">??</span>
+                    <span class="btn-icon">&#9993;</span>
                     Envoyer ma demande
                 </button>
                 <p class="form-note">
-                    <span class="note-icon">?</span>
+                    <span class="note-icon">&#128274;</span>
                     Nous vous répondrons sous 48h par WhatsApp ou email
                 </p>
             </div>
