@@ -7,7 +7,7 @@ get_header(); ?>
 <!-- HERO SECTION -->
 <?php
 $hero_image     = get_theme_mod( 'hero_contact_image' );
-$hero_badge     = get_theme_mod( 'hero_contact_badge', '📞 Restons connectés' );
+$hero_badge     = get_theme_mod( 'hero_contact_badge', '? Restons connectés' );
 $hero_titre     = get_theme_mod( 'hero_contact_titre', 'Contactez-nous' );
 $hero_soustitre = get_theme_mod( 'hero_contact_soustitre', 'Une question ? Une demande d\'information ? Nous sommes à votre écoute.' );
 ?>
@@ -23,7 +23,7 @@ $hero_soustitre = get_theme_mod( 'hero_contact_soustitre', 'Une question ? Une d
         <h1 class="header-title"><?php echo esc_html( $hero_titre ); ?></h1>
         <div class="header-divider">
             <span class="divider-line"></span>
-            <span class="divider-icon">✉️</span>
+            <span class="divider-icon">??</span>
             <span class="divider-line"></span>
         </div>
         <p class="header-subtitle"><?php echo esc_html( $hero_soustitre ); ?></p>
@@ -36,10 +36,10 @@ $hero_soustitre = get_theme_mod( 'hero_contact_soustitre', 'Une question ? Une d
         <div class="contact-grid">
             <!-- Informations de contact -->
             <div class="contact-infos">
-                <h2>📋 Nos coordonnées</h2>
+                <h2>? Nos coordonnées</h2>
                 
                 <div class="info-block">
-                    <div class="info-icon">📍</div>
+                    <div class="info-icon">?</div>
                     <div class="info-content">
                         <h3>Adresse</h3>
                         <p>547 rue de Pala, Secteur 25<br>Bobo-Dioulasso, Burkina Faso</p>
@@ -48,7 +48,7 @@ $hero_soustitre = get_theme_mod( 'hero_contact_soustitre', 'Une question ? Une d
                 </div>
                 
                 <div class="info-block">
-                    <div class="info-icon">📞</div>
+                    <div class="info-icon">?</div>
                     <div class="info-content">
                         <h3>Téléphone</h3>
                         <p>
@@ -59,7 +59,7 @@ $hero_soustitre = get_theme_mod( 'hero_contact_soustitre', 'Une question ? Une d
                 </div>
                 
                 <div class="info-block">
-                    <div class="info-icon">📱</div>
+                    <div class="info-icon">?</div>
                     <div class="info-content">
                         <h3>WhatsApp</h3>
                         <p><a href="https://wa.me/22666605890" target="_blank">+226 66 60 58 90</a></p>
@@ -67,7 +67,7 @@ $hero_soustitre = get_theme_mod( 'hero_contact_soustitre', 'Une question ? Une d
                 </div>
                 
                 <div class="info-block">
-                    <div class="info-icon">✉️</div>
+                    <div class="info-icon">??</div>
                     <div class="info-content">
                         <h3>Email</h3>
                         <p><a href="mailto:centredsj@gmail.com">centredsj@gmail.com</a></p>
@@ -75,7 +75,7 @@ $hero_soustitre = get_theme_mod( 'hero_contact_soustitre', 'Une question ? Une d
                 </div>
                 
                 <div class="info-block">
-                    <div class="info-icon">⏰</div>
+                    <div class="info-icon">?</div>
                     <div class="info-content">
                         <h3>Horaires d'ouverture</h3>
                         <p>Lundi - Vendredi: 8h00 - 17h00<br>Samedi: 9h00 - 12h00</p>
@@ -84,7 +84,7 @@ $hero_soustitre = get_theme_mod( 'hero_contact_soustitre', 'Une question ? Une d
                 
                 <!-- Carte Google Maps -->
                 <div class="map-container">
-                    <h3>📍 Nous trouver</h3>
+                    <h3>? Nous trouver</h3>
                     <iframe 
                         src="https://maps.google.com/maps?q=Bobo-Dioulasso+Secteur+25+547+rue+de+Pala&t=&z=15&ie=UTF8&iwloc=&output=embed" 
                         width="100%" 
@@ -99,20 +99,20 @@ $hero_soustitre = get_theme_mod( 'hero_contact_soustitre', 'Une question ? Une d
             <!-- Formulaire de contact -->
             <div class="contact-formulaire">
                 <div class="form-header">
-                    <h2>✉️ Envoyez-nous un message</h2>
+                    <h2>?? Envoyez-nous un message</h2>
                     <p>Remplissez le formulaire ci-dessous, nous vous répondrons dans les meilleurs délais.</p>
                 </div>
                 
                 <?php if ( isset( $_GET['success'] ) && $_GET['success'] === '1' ) : ?>
                     <div class="alert alert-success">
-                        <span class="alert-icon">✅</span>
+                        <span class="alert-icon">?</span>
                         <div class="alert-content">
                             <strong>Message envoyé !</strong> Merci de nous avoir contactés. Nous vous répondrons sous 48h.
                         </div>
                     </div>
                 <?php elseif ( isset( $_GET['error'] ) ) : ?>
                     <div class="alert alert-error">
-                        <span class="alert-icon">❌</span>
+                        <span class="alert-icon">?</span>
                         <div class="alert-content">
                             <?php
                             $error = $_GET['error'];
@@ -129,17 +129,17 @@ $hero_soustitre = get_theme_mod( 'hero_contact_soustitre', 'Une question ? Une d
                     <?php wp_nonce_field( 'dsj_contact_nonce', '_wpnonce' ); ?>
                     
                     <div class="form-group">
-                        <label for="cf_nom">👤 Nom complet <span class="required">*</span></label>
+                        <label for="cf_nom">? Nom complet <span class="required">*</span></label>
                         <input type="text" id="cf_nom" name="cf_nom" class="form-control" required>
                     </div>
                     
                     <div class="form-group">
-                        <label for="cf_contact">📞 Email ou Téléphone <span class="required">*</span></label>
+                        <label for="cf_contact">? Email ou Téléphone <span class="required">*</span></label>
                         <input type="text" id="cf_contact" name="cf_contact" class="form-control" placeholder="exemple@email.com ou 20 97 28 97" required>
                     </div>
                     
                     <div class="form-group">
-                        <label for="cf_sujet">📝 Sujet <span class="required">*</span></label>
+                        <label for="cf_sujet">? Sujet <span class="required">*</span></label>
                         <select id="cf_sujet" name="cf_sujet" class="form-control" required>
                             <option value="general">Information générale</option>
                             <option value="formation">Inscription formation</option>
@@ -151,13 +151,13 @@ $hero_soustitre = get_theme_mod( 'hero_contact_soustitre', 'Une question ? Une d
                     </div>
                     
                     <div class="form-group">
-                        <label for="cf_message">💬 Message <span class="required">*</span></label>
+                        <label for="cf_message">? Message <span class="required">*</span></label>
                         <textarea id="cf_message" name="cf_message" class="form-control" rows="5" required></textarea>
                     </div>
                     
                     <div class="form-footer">
                         <button type="submit" class="btn-submit">
-                            <span class="btn-icon">✉️</span>
+                            <span class="btn-icon">??</span>
                             Envoyer le message
                         </button>
                     </div>
@@ -166,7 +166,7 @@ $hero_soustitre = get_theme_mod( 'hero_contact_soustitre', 'Une question ? Une d
                 <div class="contact-alternatif">
                     <p>Ou contactez-nous directement sur <strong>WhatsApp</strong> :</p>
                     <a href="https://wa.me/22666605890" class="btn btn-whatsapp" target="_blank">
-                        💬 Écrire sur WhatsApp
+                        ? Écrire sur WhatsApp
                     </a>
                 </div>
             </div>

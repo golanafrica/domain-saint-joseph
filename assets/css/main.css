@@ -1,12 +1,12 @@
 /*
  * ========================================
- * DOMAIN SAINT JOSEPH — FEUILLE DE STYLE PRINCIPALE
+ * DOMAIN SAINT JOSEPH ? FEUILLE DE STYLE PRINCIPALE
  * ========================================
  * 
- * 📋 DESCRIPTION : Styles CSS pour le thème WordPress "college-filles-bf"
- * 🎨 PALETTE : --clr-primary: #1A5276 | --clr-accent: #D4AC0D
- * 📱 BREAKPOINTS : Desktop >992px | Tablette 768-992px | Mobile <768px | Petit mobile <480px
- * 🔧 MAINTENANCE : Utiliser les variables CSS, commenter les sections complexes
+ * ? DESCRIPTION : Styles CSS pour le thème WordPress "college-filles-bf"
+ * ? PALETTE : --clr-primary: #1A5276 | --clr-accent: #D4AC0D
+ * ? BREAKPOINTS : Desktop >992px | Tablette 768-992px | Mobile <768px | Petit mobile <480px
+ * ? MAINTENANCE : Utiliser les variables CSS, commenter les sections complexes
  */
 
 /* ========================================
@@ -43,7 +43,7 @@ img { max-width: 100%; height: auto; display: block; }
 .container { max-width: var(--container); margin: 0 auto; padding: 0 1.5rem; }
 
 /* ========================================
- * FONDS DE SECTION — PALETTE DISCRÈTE
+ * FONDS DE SECTION ? PALETTE DISCRÈTE
  * ======================================== */
 
 /* Couleurs de fond subtiles pour rythmer visuellement */
@@ -72,7 +72,7 @@ section.section-padding + section.section-padding {
 }
 
 /* ========================================
- * VIEW TRANSITIONS — ANIMATIONS SUBTILES
+ * VIEW TRANSITIONS ? ANIMATIONS SUBTILES
  * ======================================== */
 
 /* Animations de transition entre pages/sections */
@@ -135,7 +135,7 @@ section.section-padding + section.section-padding {
 
 
 /* ========================================
-   HERO SLIDER — PHOTO LIBRE + BANDE BAS
+   HERO SLIDER ? PHOTO LIBRE + BANDE BAS
    ======================================== */
 
 .hero-slider {
@@ -171,7 +171,7 @@ section.section-padding + section.section-padding {
     z-index: 2;
 }
 
-/* Pas d'overlay — photo libre */
+/* Pas d'overlay ? photo libre */
 .hero-slide .hero-overlay {
     display: none;
 }
@@ -202,7 +202,7 @@ section.section-padding + section.section-padding {
 .slider-prev { left: 16px; }
 .slider-next { right: 16px; }
 
-/* Dots — centrés en bas de la photo */
+/* Dots ? centrés en bas de la photo */
 .slider-dots {
     position: absolute;
     bottom: 16px;
@@ -227,7 +227,7 @@ section.section-padding + section.section-padding {
     border-radius: 8px;
 }
 
-/* ── BANDE DE LÉGENDE SOUS LA PHOTO (slider) ── */
+/* ?? BANDE DE LÉGENDE SOUS LA PHOTO (slider) ?? */
 .hero-caption-band {
     background: var(--clr-primary, #1A5276);
     padding: 22px 40px;
@@ -315,7 +315,7 @@ section.section-padding + section.section-padding {
     }
 }
 
-/* ── RESPONSIVE MOBILE — SLIDER ── */
+/* ?? RESPONSIVE MOBILE ? SLIDER ?? */
 @media (max-width: 768px) {
     .hero-slides-container {
         height: 65vw;
@@ -481,7 +481,7 @@ section.section-padding + section.section-padding {
     transform: translateY(-2px);
 }
 
-/* Responsive mobile — hero custom */
+/* Responsive mobile ? hero custom */
 @media (max-width: 768px) {
     .custom-hero .photo-zone {
         height: 65vw;
@@ -654,7 +654,7 @@ section.section-padding + section.section-padding {
     transform: translateY(-2px);
 }
 
-/* Responsive mobile — pages internes */
+/* Responsive mobile ? pages internes */
 @media (max-width: 768px) {
     .page-header .page-photo-zone {
         height: 55vw;
@@ -1405,7 +1405,7 @@ section.section-padding + section.section-padding {
     animation-delay: 0.3s;
 }
 /* ========================================
- * 3. BOUTON WHATSAPP — HEADER
+ * 3. BOUTON WHATSAPP ? HEADER
  * ======================================== */
 .site-header .btn-whatsapp {
     display: inline-flex !important; align-items: center !important; justify-content: center !important;
@@ -1425,7 +1425,7 @@ section.section-padding + section.section-padding {
 .site-header .btn-whatsapp-text { display: inline-block !important; font-size: 0.85rem !important; }
 
 /* ========================================
- * 4. MENU MOBILE — RESPONSIVE
+ * 4. MENU MOBILE ? RESPONSIVE
  * ======================================== */
 @media (max-width: 768px) {
     .header-inner { flex-wrap: nowrap; position: relative; gap: 8px; }
@@ -1481,7 +1481,7 @@ section.section-padding + section.section-padding {
 }
 
 /* ========================================
- * CORRECTION MOBILE — POSITION BURGER À DROITE
+ * CORRECTION MOBILE ? POSITION BURGER À DROITE
  * ======================================== */
 
 @media (max-width: 768px) {
@@ -1495,21 +1495,21 @@ section.section-padding + section.section-padding {
         padding: 0.8rem 1rem !important;
     }
     
-    /* Logo — reste à gauche, ne prend pas tout l'espace */
+    /* Logo ? reste à gauche, ne prend pas tout l'espace */
     .site-logo {
         flex: 0 0 auto !important;
         margin-right: 0 !important;
         order: 1 !important;
     }
     
-    /* Bouton WhatsApp — après le logo, avant le burger */
+    /* Bouton WhatsApp ? après le logo, avant le burger */
     .site-header .btn-whatsapp {
         order: 2 !important;
         margin: 0 8px 0 0 !important;
         flex-shrink: 0 !important;
     }
     
-    /* Menu burger — TOUJOURS à l'extrême droite */
+    /* Menu burger ? TOUJOURS à l'extrême droite */
     .menu-toggle {
         order: 3 !important;
         margin-left: auto !important; /* Pousse le burger à droite */
@@ -1519,7 +1519,7 @@ section.section-padding + section.section-padding {
         right: 0 !important;
     }
     
-    /* Navigation — cachée par défaut, pleine largeur */
+    /* Navigation ? cachée par défaut, pleine largeur */
     .site-nav {
         order: 4 !important;
         position: absolute !important;
@@ -1531,11 +1531,11 @@ section.section-padding + section.section-padding {
 }
 
 /* ========================================
- * CORRECTION MOBILE — ESPACEMENT LOGO / WHATSAPP
+ * CORRECTION MOBILE ? ESPACEMENT LOGO / WHATSAPP
  * ======================================== */
 
 @media (max-width: 768px) {
-    /* Conteneur header — réorganisation */
+    /* Conteneur header ? réorganisation */
     .header-inner {
         display: flex !important;
         align-items: center !important;
@@ -1546,21 +1546,21 @@ section.section-padding + section.section-padding {
         gap: 0 !important; /* Supprime les gaps par défaut */
     }
     
-    /* Logo — reste à gauche, ne prend pas tout l'espace */
+    /* Logo ? reste à gauche, ne prend pas tout l'espace */
     .site-logo {
         flex: 0 0 auto !important;
-        margin-right: 8px !important; /* ← ESPACEMENT après le logo */
+        margin-right: 8px !important; /* ? ESPACEMENT après le logo */
         order: 1 !important;
     }
     
-    /* Bouton WhatsApp — après le logo, avant le burger */
+    /* Bouton WhatsApp ? après le logo, avant le burger */
     .site-header .btn-whatsapp {
         order: 2 !important;
-        margin: 0 8px !important; /* ← ESPACEMENT autour */
+        margin: 0 8px !important; /* ? ESPACEMENT autour */
         flex-shrink: 0 !important;
     }
     
-    /* Menu burger — TOUJOURS à l'extrême droite */
+    /* Menu burger ? TOUJOURS à l'extrême droite */
     .menu-toggle {
         order: 3 !important;
         margin-left: 0 !important;
@@ -1568,7 +1568,7 @@ section.section-padding + section.section-padding {
         flex-shrink: 0 !important;
     }
     
-    /* Navigation — cachée par défaut, pleine largeur */
+    /* Navigation ? cachée par défaut, pleine largeur */
     .site-nav {
         order: 4 !important;
         position: absolute !important;
@@ -1580,7 +1580,7 @@ section.section-padding + section.section-padding {
 }
 
 /* ========================================
- * 5. FOOTER — PIED DE PAGE
+ * 5. FOOTER ? PIED DE PAGE
  * ======================================== */
 .footer-wave { position: relative; top: -5px; line-height: 0; }
 .footer-wave svg { width: 100%; height: 50px; }
@@ -1818,11 +1818,11 @@ section:not(.hero-section):not(.page-header):not(.cta-home-section) .btn-seconda
 .section-subtitle { color: #666; font-size: 1rem; }
 
 /* ========================================
- * 8. HERO / PAGE HEADER — CORRIGÉ
+ * 8. HERO / PAGE HEADER ? CORRIGÉ
  * ======================================== */
 
 /* ========================================
- * HEADER BUTTONS — SCROLL & OUTLINE
+ * HEADER BUTTONS ? SCROLL & OUTLINE
  * ======================================== */
 
 /* Conteneur des boutons dans le header */
@@ -1834,7 +1834,7 @@ section:not(.hero-section):not(.page-header):not(.cta-home-section) .btn-seconda
     margin-top: 30px;
 }
 
-/* Bouton scroll — style primaire */
+/* Bouton scroll ? style primaire */
 .btn-scroll {
     display: inline-flex;
     align-items: center;
@@ -1859,7 +1859,7 @@ section:not(.hero-section):not(.page-header):not(.cta-home-section) .btn-seconda
     color: var(--clr-primary, #1A5276);
 }
 
-/* Bouton scroll — version outline (contour) */
+/* Bouton scroll ? version outline (contour) */
 .btn-scroll.btn-outline {
     background: transparent;
     color: var(--clr-white);
@@ -1875,7 +1875,7 @@ section:not(.hero-section):not(.page-header):not(.cta-home-section) .btn-seconda
 }
 
 /* ========================================
- * RESPONSIVE — HEADER BUTTONS
+ * RESPONSIVE ? HEADER BUTTONS
  * ======================================== */
 
 /* Tablettes & Mobile (< 768px) */
@@ -1988,7 +1988,7 @@ section:not(.hero-section):not(.page-header):not(.cta-home-section) .btn-seconda
 .card-badge.complet { background: #dc3545; }
 
 /* ========================================
- * 10. CARTES VALEURS — OPTIMISÉ
+ * 10. CARTES VALEURS ? OPTIMISÉ
  * ======================================== */
 
 .valeurs-grid {
@@ -2001,7 +2001,7 @@ section:not(.hero-section):not(.page-header):not(.cta-home-section) .btn-seconda
 .valeur-card {
     background: var(--clr-white);
     border-radius: 16px;
-    padding: 35px 25px; /* ← Padding généreux pour aérer */
+    padding: 35px 25px; /* ? Padding généreux pour aérer */
     text-align: center;
     box-shadow: var(--shadow);
     transition: all var(--transition);
@@ -2015,17 +2015,17 @@ section:not(.hero-section):not(.page-header):not(.cta-home-section) .btn-seconda
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
 }
 
-/* Icône/Emoji — centrage parfait */
+/* Icône/Emoji ? centrage parfait */
 .valeur-icon {
     font-size: 3rem;
-    line-height: 1; /* ← Évite le décalage vertical des emojis */
+    line-height: 1; /* ? Évite le décalage vertical des emojis */
     margin-bottom: 20px;
     display: flex;
     align-items: center;
     justify-content: center;
     width: 80px;
     height: 80px;
-    background: rgba(212, 172, 13, 0.1); /* ← Fond subtil doré */
+    background: rgba(212, 172, 13, 0.1); /* ? Fond subtil doré */
     border-radius: 50%;
     color: var(--clr-primary);
 }
@@ -2042,7 +2042,7 @@ section:not(.hero-section):not(.page-header):not(.cta-home-section) .btn-seconda
     font-size: 0.95rem;
     line-height: 1.5;
     margin: 0;
-    flex-grow: 1; /* ← Pousse le contenu pour aligner les cartes */
+    flex-grow: 1; /* ? Pousse le contenu pour aligner les cartes */
 }
 
 .valeur-icon {
@@ -2083,7 +2083,7 @@ section:not(.hero-section):not(.page-header):not(.cta-home-section) .btn-seconda
 
 @media (max-width: 480px) {
     .valeurs-grid {
-        grid-template-columns: repeat(2, 1fr); /* ← 2 colonnes sur petit mobile */
+        grid-template-columns: repeat(2, 1fr); /* ? 2 colonnes sur petit mobile */
         gap: 20px;
     }
     .valeur-card {
@@ -2141,7 +2141,7 @@ section:not(.hero-section):not(.page-header):not(.cta-home-section) .btn-seconda
 @media (hover: hover) { .galerie-item:hover .galerie-icon { transform: scale(1); } }
 
 /* ========================================
- * LIGHTBOX — CORRIGÉ & OPTIMISÉ
+ * LIGHTBOX ? CORRIGÉ & OPTIMISÉ
  * ======================================== */
 
 /* Conteneur principal de la lightbox */
@@ -2164,7 +2164,7 @@ section:not(.hero-section):not(.page-header):not(.cta-home-section) .btn-seconda
     transition: opacity 0.3s ease, visibility 0.3s ease;
 }
 
-/* Lightbox active — affichée */
+/* Lightbox active ? affichée */
 .lightbox.active {
     display: flex !important; /* Force l'affichage */
     opacity: 1;
@@ -2554,7 +2554,7 @@ section:not(.hero-section):not(.page-header):not(.cta-home-section) .btn-seconda
 }
 
 /* ========================================
- * GALERIE — FIX URGENT (Haute spécificité)
+ * GALERIE ? FIX URGENT (Haute spécificité)
  * ======================================== */
 
 /* Force l'application des styles .galerie-item */
@@ -2569,7 +2569,7 @@ div.galerie-grid > div.galerie-item {
     display: block !important;
 }
 
-/* Lien galerie — prend tout l'espace */
+/* Lien galerie ? prend tout l'espace */
 div.galerie-grid a.galerie-link {
     display: block !important;
     width: 100% !important;
@@ -2578,7 +2578,7 @@ div.galerie-grid a.galerie-link {
     text-decoration: none !important;
 }
 
-/* Image — couverture parfaite */
+/* Image ? couverture parfaite */
 div.galerie-grid a.galerie-link img.galerie-image {
     width: 100% !important;
     height: 100% !important;
@@ -2587,7 +2587,7 @@ div.galerie-grid a.galerie-link img.galerie-image {
     transition: transform 0.5s ease !important;
 }
 
-/* Overlay — masque sombre + icône */
+/* Overlay ? masque sombre + icône */
 div.galerie-item div.galerie-overlay {
     position: absolute !important;
     inset: 0 !important;
@@ -2800,7 +2800,7 @@ textarea.form-control { resize: vertical; min-height: 100px; }
 
 /* Petit tiret décoratif avant le nom */
 .temoignage-author strong::before {
-    content: '— ';
+    content: '? ';
     color: var(--clr-accent, #D4AC0D);
     font-weight: 400;
     margin-right: 4px;
@@ -3054,7 +3054,7 @@ textarea.form-control { resize: vertical; min-height: 100px; }
 .aide-card p { color: #555; margin-bottom: 20px; line-height: 1.6; flex-grow: 1; }
 .aide-list { text-align: left; list-style: none; margin: 15px 0 20px; padding: 0; }
 .aide-list li { padding: 6px 0; color: #666; font-size: 0.9rem; display: flex; align-items: center; gap: 8px; }
-.aide-list li::before { content: "✓"; color: var(--clr-accent); font-weight: bold; }
+.aide-list li::before { content: "?"; color: var(--clr-accent); font-weight: bold; }
 .aide-card .btn-primary { margin-top: auto; align-self: center; width: 100%; }
 
 .aide-texte-supplementaire { background: #f0f4f8; padding: 25px; border-radius: 16px; margin-top: 20px; }
@@ -3442,7 +3442,7 @@ textarea.form-control { resize: vertical; min-height: 100px; }
 .restaurant-cta-home { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; }
 
 /* ========================================
- * CTA HOME SECTION — OPTIMISÉ
+ * CTA HOME SECTION ? OPTIMISÉ
  * ======================================== */
 
 .cta-home-section {
@@ -3501,7 +3501,7 @@ textarea.form-control { resize: vertical; min-height: 100px; }
     flex-wrap: wrap;
 }
 
-/* Bouton primaire — doré */
+/* Bouton primaire ? doré */
 .cta-buttons .btn-primary {
     background: var(--clr-accent, #D4AC0D);
     color: var(--clr-primary, #1A5276);
@@ -3524,7 +3524,7 @@ textarea.form-control { resize: vertical; min-height: 100px; }
     box-shadow: 0 8px 25px rgba(212, 172, 13, 0.3);
 }
 
-/* Bouton WhatsApp — VERT, texte visible */
+/* Bouton WhatsApp ? VERT, texte visible */
 .cta-buttons .btn-whatsapp {
     background: #25D366 !important;
     color: var(--clr-white) !important;
@@ -3665,7 +3665,7 @@ a:focus-visible, .btn:focus-visible, .galerie-link:focus-visible { outline: 3px 
     z-index: 0;
 }
 
-/* Grille des features — 3 colonnes desktop */
+/* Grille des features ? 3 colonnes desktop */
 .features-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -3782,7 +3782,7 @@ a:focus-visible, .btn:focus-visible, .galerie-link:focus-visible { outline: 3px 
 }
 
 /* ========================================
- * RESPONSIVE — TABLETTES & MOBILE
+ * RESPONSIVE ? TABLETTES & MOBILE
  * ======================================== */
 
 /* Tablettes (max 992px) : 2 colonnes */
@@ -3866,7 +3866,7 @@ a:focus-visible, .btn:focus-visible, .galerie-link:focus-visible { outline: 3px 
 }
 
 /* ========================================
- * SECTION CTA FORMATION — OPTIMISÉ
+ * SECTION CTA FORMATION ? OPTIMISÉ
  * ======================================== */
 
 .cta-formation {
@@ -3931,7 +3931,7 @@ a:focus-visible, .btn:focus-visible, .galerie-link:focus-visible { outline: 3px 
     flex-wrap: wrap;
 }
 
-/* Bouton primaire — doré */
+/* Bouton primaire ? doré */
 .cta-formation .btn-primary {
     background: var(--clr-accent, #D4AC0D);
     color: var(--clr-primary, #1A5276);
@@ -3954,7 +3954,7 @@ a:focus-visible, .btn:focus-visible, .galerie-link:focus-visible { outline: 3px 
     box-shadow: 0 8px 25px rgba(212, 172, 13, 0.3);
 }
 
-/* Bouton WhatsApp — VERT, texte visible */
+/* Bouton WhatsApp ? VERT, texte visible */
 .cta-formation .btn-whatsapp {
     background: #25D366 !important;
     color: var(--clr-white) !important;
@@ -4268,20 +4268,20 @@ a:focus-visible, .btn:focus-visible, .galerie-link:focus-visible { outline: 3px 
  * FIN DU FICHIER
  * ======================================== */
 /*
- * ✅ Checklist avant déploiement :
+ * ? Checklist avant déploiement :
  * - [ ] Tester sur Chrome, Firefox, Safari, Edge
  * - [ ] Vérifier mobile (375px, 414px)
  * - [ ] Tester accessibilité (contraste, focus)
  * - [ ] Vérifier performances (Lighthouse > 90)
  * - [ ] Valider W3C CSS Validator
  *
- * 🔄 Pour ajouter une section :
+ * ? Pour ajouter une section :
  * 1. Créer un bloc commenté avec titre
  * 2. Utiliser les variables CSS existantes
  * 3. Ajouter les media queries si responsive
  * 4. Tester mobile-first
  *
- * 📞 Support : ifbburkina@gmail.com
+ * ? Support : ifbburkina@gmail.com
  */
 
 

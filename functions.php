@@ -1,14 +1,15 @@
 <?php
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-// ── Chargement conditionnel des modules ──
+// ?? Chargement conditionnel des modules ??
 $inc = get_template_directory() . '/inc';
 if ( file_exists( $inc . '/cpt.php' ) ) require_once $inc . '/cpt.php';
 if ( file_exists( $inc . '/customizer.php' ) ) require_once $inc . '/customizer.php';
 if ( file_exists( $inc . '/metaboxes.php' ) ) require_once $inc . '/metaboxes.php';
 if ( file_exists( $inc . '/widgets.php' ) ) require_once $inc . '/widgets.php';
+if ( file_exists( $inc . '/admin-dashboard.php' ) ) require_once $inc . '/admin-dashboard.php';
 
-// ── Configuration de base ──
+// ?? Configuration de base ??
 function dsj_setup() {
     add_theme_support( 'post-thumbnails' );
     add_theme_support( 'title-tag' );
@@ -32,7 +33,7 @@ function dsj_setup() {
 }
 add_action( 'after_setup_theme', 'dsj_setup' );
 
-// ── Enregistrement des zones de widgets ──
+// ?? Enregistrement des zones de widgets ??
 function dsj_widgets_init() {
     register_sidebar( [
         'name'          => __( 'Zone Hero - Bandeau principal', 'domaine-saint-joseph' ),
@@ -73,7 +74,7 @@ function dsj_widgets_init() {
 }
 add_action( 'widgets_init', 'dsj_widgets_init' );
 
-// ── Chargement des assets optimisés ──
+// ?? Chargement des assets optimisés ??
 function dsj_assets() {
     wp_enqueue_style( 'dsj-main', get_template_directory_uri() . '/assets/css/main.css', [], '1.0' );
     wp_enqueue_script( 'dsj-main', get_template_directory_uri() . '/assets/js/main.js', [], '1.0', true );
@@ -108,7 +109,7 @@ function dsj_assets() {
 }
 add_action( 'wp_enqueue_scripts', 'dsj_assets' );
 
-// ── Optimisations 3G ──
+// ?? Optimisations 3G ??
 function dsj_performance() {
     remove_action( 'wp_head', 'print_emoji_detection_script', 7 );
     remove_action( 'wp_print_styles', 'print_emoji_styles' );
@@ -255,7 +256,7 @@ function dsj_handle_restaurant_reservation() {
 // Création d'un rôle "Soeur" si inexistant
 function dsj_add_roles() {
     if ( ! get_role( 'soeur' ) ) {
-        add_role( 'soeur', __( 'Sœur', 'domaine-saint-joseph' ), [
+        add_role( 'soeur', __( 'S?ur', 'domaine-saint-joseph' ), [
             'read' => true,
             'edit_posts' => true,
             'edit_published_posts' => true,

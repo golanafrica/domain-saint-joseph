@@ -21,7 +21,7 @@
                 
                 <!-- Horaires d'ouverture intégrés -->
                 <div class="footer-hours">
-                    <span class="hours-icon">🕒</span>
+                    <span class="hours-icon">?</span>
                     <div>
                         <strong>Horaires d'ouverture</strong>
                         <small>Lun-Ven: 8h00 - 17h00</small>
@@ -54,27 +54,27 @@
 
             <!-- Colonne 2 - Contact -->
             <div class="footer-col">
-                <h4>📞 Contact</h4>
+                <h4>? Contact</h4>
                 <ul class="footer-contact">
                     <li>
-                        <span class="contact-icon">📍</span>
+                        <span class="contact-icon">?</span>
                         <span>547 rue de Pala, Secteur 25<br>Bobo-Dioulasso, Burkina Faso</span>
                     </li>
                     <li>
-                        <span class="contact-icon">📞</span>
+                        <span class="contact-icon">?</span>
                         <span>
                             <a href="tel:+22620972897">20 97 28 97</a> / 
                             <a href="tel:+22657521929">57 52 19 29</a>
                         </span>
                     </li>
                     <li>
-                        <span class="contact-icon">📱</span>
+                        <span class="contact-icon">?</span>
                         <a href="https://wa.me/22666605890" target="_blank" rel="noopener noreferrer">
                             WhatsApp: 66 60 58 90
                         </a>
                     </li>
                     <li>
-                        <span class="contact-icon">✉️</span>
+                        <span class="contact-icon">??</span>
                         <a href="mailto:centredsj@gmail.com">centredsj@gmail.com</a>
                     </li>
                 </ul>
@@ -82,21 +82,21 @@
 
             <!-- Colonne 3 - Liens rapides -->
             <div class="footer-col">
-                <h4>🔗 Liens rapides</h4>
+                <h4>? Liens rapides</h4>
                 <ul class="footer-menu">
-                    <li><a href="<?php echo esc_url( home_url( '/formation' ) ); ?>">🎓 Nos formations</a></li>
-                    <li><a href="<?php echo esc_url( home_url( '/maison-daccueil' ) ); ?>">🏠 Maison d'accueil</a></li>
-                    <li><a href="<?php echo esc_url( home_url( '/restaurant' ) ); ?>">🍽️ Restaurant</a></li>
-                    <li><a href="<?php echo esc_url( home_url( '/a-propos' ) ); ?>">🙏 À propos</a></li>
-                    <li><a href="<?php echo esc_url( home_url( '/galerie' ) ); ?>">📸 Galerie</a></li>
-                    <li><a href="<?php echo esc_url( home_url( '/nous-soutenir' ) ); ?>">💛 Nous soutenir</a></li>
-                    <li><a href="<?php echo esc_url( home_url( '/contact' ) ); ?>">📞 Contact</a></li>
+                    <li><a href="<?php echo esc_url( home_url( '/formation' ) ); ?>">? Nos formations</a></li>
+                    <li><a href="<?php echo esc_url( home_url( '/maison-daccueil' ) ); ?>">? Maison d'accueil</a></li>
+                    <li><a href="<?php echo esc_url( home_url( '/restaurant' ) ); ?>">?? Restaurant</a></li>
+                    <li><a href="<?php echo esc_url( home_url( '/a-propos' ) ); ?>">? À propos</a></li>
+                    <li><a href="<?php echo esc_url( home_url( '/galerie' ) ); ?>">? Galerie</a></li>
+                    <li><a href="<?php echo esc_url( home_url( '/nous-soutenir' ) ); ?>">? Nous soutenir</a></li>
+                    <li><a href="<?php echo esc_url( home_url( '/contact' ) ); ?>">? Contact</a></li>
                 </ul>
             </div>
 
             <!-- Colonne 4 - Newsletter -->
             <div class="footer-col">
-                <h4>📧 Restez connectés</h4>
+                <h4>? Restez connectés</h4>
                 <p class="newsletter-text">Recevez nos actualités, événements et offres spéciales.</p>
                 
                 <form class="footer-newsletter" action="#" method="post" onsubmit="return false;">
@@ -109,11 +109,11 @@
                     </button>
                 </form>
                 
-                <p class="newsletter-note">📱 Suivez-nous aussi sur WhatsApp pour l'actualité du centre.</p>
+                <p class="newsletter-note">? Suivez-nous aussi sur WhatsApp pour l'actualité du centre.</p>
                 
                 <!-- Bouton WhatsApp dans le footer -->
                 <a href="https://wa.me/22666605890" class="footer-whatsapp" target="_blank" rel="noopener noreferrer">
-                    <span class="footer-whatsapp-icon">💬</span>
+                    <span class="footer-whatsapp-icon">?</span>
                     <span>Nous contacter</span>
                 </a>
             </div>
@@ -122,7 +122,7 @@
         <div class="footer-bottom">
             <div class="footer-bottom-content">
                 <p>
-                    &copy; <?php echo date( 'Y' ); ?> Domaine Saint Joseph — 
+                    &copy; <?php echo date( 'Y' ); ?> Domaine Saint Joseph ? 
                     Travailleuses Missionnaires de l'Immaculée
                 </p>
                 <p class="footer-credits">

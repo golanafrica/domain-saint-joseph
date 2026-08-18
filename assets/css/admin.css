@@ -1,0 +1,413 @@
+/* ========================================
+* DASHBOARD ADMIN - DOMAINE SAINT JOSEPH
+* ======================================== */
+
+.dsj-dashboard {
+    max-width: 1400px;
+    margin: 0;
+    padding: 0 20px 40px;
+}
+
+.dsj-dashboard h1 {
+    color: #1A5276;
+    font-size: 2rem;
+    margin: 0 0 8px;
+    font-weight: 700;
+}
+
+.dsj-dashboard h2 {
+    color: #1A5276;
+    font-size: 1.5rem;
+    margin: 0 0 20px;
+    padding-bottom: 10px;
+    border-bottom: 3px solid #D4AC0D;
+    display: inline-block;
+}
+
+/* En-tête */
+.dsj-dashboard-header {
+    background: linear-gradient(135deg, #1A5276 0%, #0f2a40 100%);
+    color: white;
+    padding: 30px;
+    border-radius: 16px;
+    margin-bottom: 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+    box-shadow: 0 10px 30px rgba(26, 82, 118, 0.15);
+}
+
+.dsj-welcome h1 {
+    color: white;
+    margin-bottom: 8px;
+}
+
+.dsj-welcome-subtitle {
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 1.05rem;
+    margin: 0;
+}
+
+.dsj-quick-stats {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.dsj-stat-badge {
+    background: rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(10px);
+    padding: 12px 20px;
+    border-radius: 12px;
+    text-align: center;
+    min-width: 90px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.dsj-stat-number {
+    display: block;
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: #D4AC0D;
+    line-height: 1;
+    margin-bottom: 4px;
+}
+
+.dsj-stat-label {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.85);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Sections */
+.dsj-section {
+    background: white;
+    padding: 30px;
+    border-radius: 16px;
+    margin-bottom: 25px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+/* Actions rapides */
+.dsj-quick-actions {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.dsj-action-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 25px 20px;
+    background: #f8f9fa;
+    border-radius: 14px;
+    text-decoration: none;
+    color: #2C3E50;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+    text-align: center;
+}
+
+.dsj-action-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+    border-color: #D4AC0D;
+    color: #1A5276;
+}
+
+.dsj-action-icon {
+    font-size: 2.5rem;
+    margin-bottom: 12px;
+}
+
+.dsj-action-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #1A5276;
+    margin-bottom: 6px;
+    display: block;
+}
+
+.dsj-action-desc {
+    font-size: 0.8rem;
+    color: #666;
+    line-height: 1.4;
+}
+
+/* Gestion des contenus */
+.dsj-content-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.dsj-content-card {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 18px 20px;
+    background: white;
+    border: 2px solid #e8e8e8;
+    border-radius: 12px;
+    text-decoration: none;
+    color: #2C3E50;
+    transition: all 0.3s ease;
+}
+
+.dsj-content-card:hover {
+    border-color: #1A5276;
+    background: #f0f7fc;
+    transform: translateX(5px);
+    color: #1A5276;
+}
+
+.dsj-content-icon {
+    font-size: 1.8rem;
+    flex-shrink: 0;
+}
+
+.dsj-content-info {
+    flex: 1;
+}
+
+.dsj-content-info h3 {
+    margin: 0 0 3px;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #1A5276;
+}
+
+.dsj-content-info p {
+    margin: 0;
+    font-size: 0.85rem;
+    color: #666;
+}
+
+.dsj-content-arrow {
+    font-size: 1.3rem;
+    color: #D4AC0D;
+    transition: transform 0.3s ease;
+}
+
+.dsj-content-card:hover .dsj-content-arrow {
+    transform: translateX(5px);
+}
+
+/* Personnalisation */
+.dsj-customize-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.dsj-customize-card {
+    padding: 25px 20px;
+    background: #fef9ee;
+    border: 2px solid #f5e9c8;
+    border-radius: 12px;
+    text-decoration: none;
+    color: #2C3E50;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.dsj-customize-card:hover {
+    background: #D4AC0D;
+    border-color: #D4AC0D;
+    color: #1A5276;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(212, 172, 13, 0.2);
+}
+
+.dsj-customize-icon {
+    font-size: 2rem;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.dsj-customize-card h3 {
+    margin: 0 0 5px;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #1A5276;
+}
+
+.dsj-customize-card p {
+    margin: 0;
+    font-size: 0.8rem;
+    color: #666;
+    line-height: 1.4;
+}
+
+.dsj-customize-card:hover h3,
+.dsj-customize-card:hover p {
+    color: #1A5276;
+}
+
+/* Guide */
+.dsj-guide-section {
+    background: #f0f7fc;
+    border: 2px solid #d6e9f7;
+}
+
+.dsj-guide-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.dsj-guide-item {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    border-left: 4px solid #1A5276;
+}
+
+.dsj-guide-item h3 {
+    margin: 0 0 12px;
+    font-size: 1.05rem;
+    color: #1A5276;
+}
+
+.dsj-guide-item ol,
+.dsj-guide-item ul {
+    margin: 0;
+    padding-left: 20px;
+    color: #444;
+    line-height: 1.7;
+    font-size: 0.9rem;
+}
+
+.dsj-guide-item li {
+    margin-bottom: 6px;
+}
+
+.dsj-guide-item strong {
+    color: #1A5276;
+}
+
+.dsj-guide-tip {
+    background: #fff3cd;
+    border-left-color: #D4AC0D;
+}
+
+/* Support */
+.dsj-support-section {
+    background: linear-gradient(135deg, #fef9ee 0%, #fff5e6 100%);
+    border: 2px solid #f5e9c8;
+}
+
+.dsj-support-content p {
+    font-size: 1.05rem;
+    color: #444;
+    margin-bottom: 20px;
+}
+
+.dsj-support-contacts {
+    display: flex;
+    gap: 30px;
+    flex-wrap: wrap;
+}
+
+.dsj-support-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: white;
+    padding: 15px 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.dsj-support-icon {
+    font-size: 1.8rem;
+}
+
+.dsj-support-item strong {
+    color: #1A5276;
+    display: block;
+    margin-bottom: 2px;
+}
+
+.dsj-support-item a {
+    color: #2C3E50;
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+
+.dsj-support-item a:hover {
+    color: #D4AC0D;
+    text-decoration: underline;
+}
+
+/* Responsive */
+@media (max-width: 782px) {
+    .dsj-dashboard {
+        padding: 0 10px 30px;
+    }
+
+    .dsj-dashboard-header {
+        flex-direction: column;
+        text-align: center;
+        padding: 20px;
+    }
+
+    .dsj-quick-stats {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .dsj-section {
+        padding: 20px 15px;
+    }
+
+    .dsj-quick-actions {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+
+    .dsj-action-card {
+        padding: 15px 10px;
+    }
+
+    .dsj-action-icon {
+        font-size: 2rem;
+    }
+
+    .dsj-action-title {
+        font-size: 0.85rem;
+    }
+
+    .dsj-content-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .dsj-customize-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .dsj-guide-content {
+        grid-template-columns: 1fr;
+    }
+
+    .dsj-support-contacts {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .dsj-dashboard h1 {
+        font-size: 1.5rem;
+    }
+
+    .dsj-dashboard h2 {
+        font-size: 1.2rem;
+    }
+}

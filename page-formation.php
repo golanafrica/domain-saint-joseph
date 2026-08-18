@@ -7,7 +7,7 @@ get_header(); ?>
 <!-- HERO SECTION -->
 <?php
 $hero_image     = get_theme_mod( 'hero_formation_image' );
-$hero_badge     = get_theme_mod( 'hero_formation_badge', '🎓 Formation professionnelle' );
+$hero_badge     = get_theme_mod( 'hero_formation_badge', '? Formation professionnelle' );
 $hero_titre     = get_theme_mod( 'hero_formation_titre', 'Nos Formations' );
 $hero_soustitre = get_theme_mod( 'hero_formation_soustitre', 'Des compétences concrètes pour l\'autonomie des jeunes filles' );
 ?>
@@ -25,7 +25,7 @@ $hero_soustitre = get_theme_mod( 'hero_formation_soustitre', 'Des compétences c
         <h1 class="header-title"><?php echo esc_html( $hero_titre ); ?></h1>
         <div class="header-divider">
             <span class="divider-line"></span>
-            <span class="divider-icon">📚</span>
+            <span class="divider-icon">?</span>
             <span class="divider-line"></span>
         </div>
         <p class="header-subtitle"><?php echo esc_html( $hero_soustitre ); ?></p>
@@ -58,7 +58,7 @@ $hero_soustitre = get_theme_mod( 'hero_formation_soustitre', 'Des compétences c
                             </div>
                         <?php else : ?>
                             <div class="card-image">
-                                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300'%3E%3Crect width='400' height='300' fill='%23f0f0f0'/%3E%3Ctext x='200' y='160' font-size='18' text-anchor='middle' fill='%23999' font-family='Arial'%3E🎓 Formation%3C/text%3E%3C/svg%3E" 
+                                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300'%3E%3Crect width='400' height='300' fill='%23f0f0f0'/%3E%3Ctext x='200' y='160' font-size='18' text-anchor='middle' fill='%23999' font-family='Arial'%3E? Formation%3C/text%3E%3C/svg%3E" 
                                      alt="<?php the_title_attribute(); ?>"
                                      style="width:100%; height:200px; object-fit:cover;">
                             </div>
@@ -76,11 +76,11 @@ $hero_soustitre = get_theme_mod( 'hero_formation_soustitre', 'Des compétences c
                             
                             <div class="card-meta">
                                 <?php if ( $duree ) : ?>
-                                    <span class="meta-item">📅 <?php echo esc_html( $duree ); ?></span>
+                                    <span class="meta-item">? <?php echo esc_html( $duree ); ?></span>
                                 <?php endif; ?>
                                 
                                 <?php if ( $prix ) : ?>
-                                    <span class="meta-item">💰 <?php echo esc_html( $prix ); ?></span>
+                                    <span class="meta-item">? <?php echo esc_html( $prix ); ?></span>
                                 <?php endif; ?>
                             </div>
                             
@@ -96,15 +96,15 @@ $hero_soustitre = get_theme_mod( 'hero_formation_soustitre', 'Des compétences c
                             
                             <?php if ( $niveau ) : ?>
                                 <div class="formation-niveau">
-                                    <span class="niveau-badge">📚 Niveau: <?php echo esc_html( $niveau ); ?></span>
+                                    <span class="niveau-badge">? Niveau: <?php echo esc_html( $niveau ); ?></span>
                                 </div>
                             <?php endif; ?>
                             
                             <div class="formation-footer">
-                                <a href="<?php the_permalink(); ?>" class="btn-link">En savoir plus →</a>
+                                <a href="<?php the_permalink(); ?>" class="btn-link">En savoir plus ?</a>
                                 <a href="https://wa.me/<?php echo get_theme_mod( 'whatsapp', '22666605890' ); ?>?text=Bonjour,%20je%20suis%20intéressée%20par%20la%20formation%20<?php echo urlencode( get_the_title() ); ?>" 
                                    class="btn-whatsapp-small" target="_blank">
-                                   💬 S'inscrire
+                                   ? S'inscrire
                                 </a>
                             </div>
                         </div>
@@ -124,24 +124,24 @@ $hero_soustitre = get_theme_mod( 'hero_formation_soustitre', 'Des compétences c
 <section class="pourquoi-section section-padding bg-light">
     <div class="container">
         <div class="section-header">
-            <span class="section-badge">⭐ Pourquoi nous choisir</span>
+            <span class="section-badge">? Pourquoi nous choisir</span>
             <h2 class="section-title">Une formation de qualité</h2>
             <div class="section-divider"></div>
         </div>
         
         <div class="features-grid">
             <div class="feature-card">
-                <div class="feature-icon">👩‍🏫</div>
+                <div class="feature-icon">???</div>
                 <h3>Formatrices expérimentées</h3>
                 <p>Des professionnelles passionnées qui vous accompagnent tout au long de votre formation.</p>
             </div>
             <div class="feature-card">
-                <div class="feature-icon">🏆</div>
+                <div class="feature-icon">?</div>
                 <h3>Certification reconnue</h3>
                 <p>Un diplôme valorisable sur le marché du travail local.</p>
             </div>
             <div class="feature-card">
-                <div class="feature-icon">🤝</div>
+                <div class="feature-icon">?</div>
                 <h3>Accompagnement personnalisé</h3>
                 <p>Un suivi individuel pour garantir votre réussite.</p>
             </div>
@@ -156,10 +156,10 @@ $hero_soustitre = get_theme_mod( 'hero_formation_soustitre', 'Des compétences c
             <h2>Prête à commencer votre formation ?</h2>
             <p>Contactez-nous dès aujourd'hui pour plus d'informations ou pour vous inscrire.</p>
             <div class="cta-buttons">
-                <a href="<?php echo esc_url( home_url( '/contact' ) ); ?>" class="btn btn-primary">📞 Nous contacter</a>
+                <a href="<?php echo esc_url( home_url( '/contact' ) ); ?>" class="btn btn-primary">? Nous contacter</a>
                 <a href="https://wa.me/<?php echo get_theme_mod( 'whatsapp', '22666605890' ); ?>?text=Bonjour,%20je%20souhaite%20des%20informations%20sur%20les%20formations" 
                    class="btn btn-whatsapp" target="_blank">
-                   💬 WhatsApp
+                   ? WhatsApp
                 </a>
             </div>
         </div>

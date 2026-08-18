@@ -46,19 +46,19 @@ get_header(); ?>
                                 
                                 <div class="card-meta">
                                     <?php if ( $capacite ) : ?>
-                                        <span class="meta-item">👥 <?php echo esc_html( $capacite ); ?> pers.</span>
+                                        <span class="meta-item">? <?php echo esc_html( $capacite ); ?> pers.</span>
                                     <?php endif; ?>
                                     
                                     <?php if ( $prix_nuit ) : ?>
-                                        <span class="meta-item">💰 <?php echo esc_html( $prix_nuit ); ?> F/nuit</span>
+                                        <span class="meta-item">? <?php echo esc_html( $prix_nuit ); ?> F/nuit</span>
                                     <?php endif; ?>
                                     
                                     <?php if ( $dispo ) : ?>
                                         <span class="meta-item">
                                             <?php 
-                                            if ( $dispo === 'disponible' ) echo '✅ Disponible';
-                                            elseif ( $dispo === 'sur_reservation' ) echo '📞 Sur réservation';
-                                            else echo '❌ Complet';
+                                            if ( $dispo === 'disponible' ) echo '? Disponible';
+                                            elseif ( $dispo === 'sur_reservation' ) echo '? Sur réservation';
+                                            else echo '? Complet';
                                             ?>
                                         </span>
                                     <?php endif; ?>
@@ -76,7 +76,7 @@ get_header(); ?>
                                 </div>
                                 
                                 <a href="<?php the_permalink(); ?>" class="btn-link">
-                                    Voir les détails →
+                                    Voir les détails ?
                                 </a>
                             </div>
                         </div>
@@ -86,8 +86,8 @@ get_header(); ?>
                         <?php 
                         the_posts_pagination( [
                             'mid_size' => 2,
-                            'prev_text' => '← Précédent',
-                            'next_text' => 'Suivant →',
+                            'prev_text' => '? Précédent',
+                            'next_text' => 'Suivant ?',
                         ] ); 
                         ?>
                     </div>

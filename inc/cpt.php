@@ -1,12 +1,12 @@
 <?php
 /**
- * Custom Post Types — Formations, Hébergements, Galerie
+ * Custom Post Types ? Formations, Hébergements, Galerie
  * Domaine Saint Joseph
  */
 
 function dsj_register_cpts() {
     
-    // ── Formations ──
+    // ?? Formations ??
     register_post_type( 'formation', [
         'labels' => [
             'name' => __( 'Formations', 'domaine-saint-joseph' ),
@@ -26,7 +26,7 @@ function dsj_register_cpts() {
         'menu_position' => 5,
     ]);
 
-    // ── Hébergements ──
+    // ?? Hébergements ??
     register_post_type( 'hebergement', [
         'labels' => [
             'name' => __( 'Hébergements', 'domaine-saint-joseph' ),
@@ -46,7 +46,7 @@ function dsj_register_cpts() {
         'menu_position' => 6,
     ]);
 
-    // ── Galerie ──
+    // ?? Galerie ??
     register_post_type( 'galerie', [
         'labels' => [
             'name' => __( 'Galerie', 'domaine-saint-joseph' ),
@@ -66,7 +66,7 @@ function dsj_register_cpts() {
         'menu_position' => 7,
     ]);
 
-    // ── Taxonomie Catégories Galerie ──
+    // ?? Taxonomie Catégories Galerie ??
     register_taxonomy( 'categorie_galerie', 'galerie', [
         'labels' => [
             'name' => __( 'Catégories Galerie', 'domaine-saint-joseph' ),
@@ -84,7 +84,7 @@ function dsj_register_cpts() {
 add_action( 'init', 'dsj_register_cpts' );
 
 
-// ── Restaurant / Menu ──
+// ?? Restaurant / Menu ??
 register_post_type( 'menu', [
     'labels' => [
         'name' => __( 'Menus Restaurant', 'domaine-saint-joseph' ),
@@ -104,7 +104,7 @@ register_post_type( 'menu', [
     'menu_position' => 8,
 ]);
 
-// ── Taxonomie Catégories de plats ──
+// ?? Taxonomie Catégories de plats ??
 register_taxonomy( 'categorie_menu', 'menu', [
     'labels' => [
         'name' => __( 'Catégories de plats', 'domaine-saint-joseph' ),
@@ -119,7 +119,7 @@ register_taxonomy( 'categorie_menu', 'menu', [
     'rewrite' => [ 'slug' => 'categorie-menu' ],
 ]);
 
-// ── Témoignages ──
+// ?? Témoignages ??
 register_post_type( 'temoignage', [
     'labels' => [
         'name' => __( 'Témoignages', 'domaine-saint-joseph' ),

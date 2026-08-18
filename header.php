@@ -215,7 +215,7 @@ endif; ?>
     $urgence_lien = get_theme_mod( 'urgence_lien', '/nous-soutenir' );
     $urgence_bouton = get_theme_mod( 'urgence_bouton_texte', 'Je participe' );
     $urgence_couleur = get_theme_mod( 'urgence_couleur', '#e74c3c' );
-    $urgence_icone = get_theme_mod( 'urgence_icone', '📢' );
+    $urgence_icone = get_theme_mod( 'urgence_icone', '?' );
     $urgence_vitesse = get_theme_mod( 'urgence_vitesse', 'normal' );
     
     $messages = [];
@@ -228,9 +228,9 @@ endif; ?>
     
     if ( empty( $messages ) ) {
         $messages = [
-            '📢 Nouvelle formation en informatique - inscriptions ouvertes !',
-            '🏗️ Appel aux dons pour la construction de nouvelles salles',
-            '👧 Devenez parrain d\'une jeune fille - 50 000 F/mois',
+            '? Nouvelle formation en informatique - inscriptions ouvertes !',
+            '?? Appel aux dons pour la construction de nouvelles salles',
+            '? Devenez parrain d\'une jeune fille - 50 000 F/mois',
         ];
     }
     
@@ -258,11 +258,11 @@ endif; ?>
             
             <?php if ( $urgence_bouton && $urgence_lien ) : ?>
                 <a href="<?php echo esc_url( $urgence_lien ); ?>" class="flash-info-button">
-                    <?php echo esc_html( $urgence_bouton ); ?> →
+                    <?php echo esc_html( $urgence_bouton ); ?> ?
                 </a>
             <?php endif; ?>
             
-            <button class="flash-info-close" aria-label="Fermer" onclick="this.closest('.flash-info-banner').style.display='none';">✕</button>
+            <button class="flash-info-close" aria-label="Fermer" onclick="this.closest('.flash-info-banner').style.display='none';">?</button>
         </div>
     </div>
 </div>
@@ -276,9 +276,9 @@ endif; ?>
 <div class="top-bar">
     <div class="container">
         <div class="top-bar-content">
-            <span class="top-bar-text">📞 <?php echo dsj_get_phone(); ?></span>
-            <span class="top-bar-text">✉️ <?php echo dsj_get_email(); ?></span>
-            <span class="top-bar-text">📍 Secteur 25, Bobo-Dioulasso</span>
+            <span class="top-bar-text">? <?php echo dsj_get_phone(); ?></span>
+            <span class="top-bar-text">?? <?php echo dsj_get_email(); ?></span>
+            <span class="top-bar-text">? Secteur 25, Bobo-Dioulasso</span>
         </div>
     </div>
 </div>
@@ -326,7 +326,7 @@ endif; ?>
                target="_blank" 
                rel="noopener noreferrer nofollow"
                aria-label="<?php esc_attr_e( 'Contactez-nous sur WhatsApp', 'domaine-saint-joseph' ); ?>">
-                <span class="btn-whatsapp-icon">💬</span>
+                <span class="btn-whatsapp-icon">?</span>
                 <span class="btn-whatsapp-text">WhatsApp</span>
             </a>
         </div>

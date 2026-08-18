@@ -6,20 +6,20 @@
 
 function dsj_customize_register( $wp_customize ) {
     
-    // ── SECTION : STATISTIQUES HERO ──
+    // ?? SECTION : STATISTIQUES HERO ??
     $wp_customize->add_section( 'dsj_stats', [
-        'title'    => __( '📊 Statistiques Hero', 'domaine-saint-joseph' ),
+        'title'    => __( '? Statistiques Hero', 'domaine-saint-joseph' ),
         'priority' => 30,
         'description' => __( 'Modifiez les chiffres sous le bandeau principal', 'domaine-saint-joseph' ),
     ]);
     
     $stats = [
-        ['id' => 'stat1_nb', 'def' => '2022', 'label' => 'Statistique 1 — Nombre'],
-        ['id' => 'stat1_lbl', 'def' => 'Fondé en', 'label' => 'Statistique 1 — Label'],
-        ['id' => 'stat2_nb', 'def' => '3+', 'label' => 'Statistique 2 — Nombre'],
-        ['id' => 'stat2_lbl', 'def' => 'Filières', 'label' => 'Statistique 2 — Label'],
-        ['id' => 'stat3_nb', 'def' => '100%', 'label' => 'Statistique 3 — Nombre'],
-        ['id' => 'stat3_lbl', 'def' => 'Dédié aux femmes', 'label' => 'Statistique 3 — Label'],
+        ['id' => 'stat1_nb', 'def' => '2022', 'label' => 'Statistique 1 ? Nombre'],
+        ['id' => 'stat1_lbl', 'def' => 'Fondé en', 'label' => 'Statistique 1 ? Label'],
+        ['id' => 'stat2_nb', 'def' => '3+', 'label' => 'Statistique 2 ? Nombre'],
+        ['id' => 'stat2_lbl', 'def' => 'Filières', 'label' => 'Statistique 2 ? Label'],
+        ['id' => 'stat3_nb', 'def' => '100%', 'label' => 'Statistique 3 ? Nombre'],
+        ['id' => 'stat3_lbl', 'def' => 'Dédié aux femmes', 'label' => 'Statistique 3 ? Label'],
     ];
     
     foreach ( $stats as $s ) {
@@ -35,9 +35,9 @@ function dsj_customize_register( $wp_customize ) {
         ]);
     }
 
-    // ── SECTION : CONTACT & WHATSAPP ──
+    // ?? SECTION : CONTACT & WHATSAPP ??
     $wp_customize->add_section( 'dsj_contact', [
-        'title'    => __( '📞 Contact & WhatsApp', 'domaine-saint-joseph' ),
+        'title'    => __( '? Contact & WhatsApp', 'domaine-saint-joseph' ),
         'priority' => 40,
         'description' => __( 'Ces informations apparaîtront dans le footer et les boutons', 'domaine-saint-joseph' ),
     ]);
@@ -73,9 +73,9 @@ function dsj_customize_register( $wp_customize ) {
         'type' => 'email' 
     ]);
 
-    // ── SECTION : COULEURS ──
+    // ?? SECTION : COULEURS ??
     $wp_customize->add_section( 'dsj_colors', [
-        'title'    => __( '🎨 Couleurs', 'domaine-saint-joseph' ),
+        'title'    => __( '? Couleurs', 'domaine-saint-joseph' ),
         'priority' => 50,
         'description' => __( 'Personnalisez les couleurs du site', 'domaine-saint-joseph' ),
     ]);
@@ -100,9 +100,9 @@ function dsj_customize_register( $wp_customize ) {
         'section' => 'dsj_colors' 
     ]));
 
-    // ── SECTION : CTA "NOUS SOUTENIR" ──
+    // ?? SECTION : CTA "NOUS SOUTENIR" ??
     $wp_customize->add_section( 'dsj_cta', [
-        'title'    => __( '🎯 Appel à l\'action', 'domaine-saint-joseph' ),
+        'title'    => __( '? Appel à l\'action', 'domaine-saint-joseph' ),
         'priority' => 60,
     ]);
     
@@ -140,7 +140,7 @@ function dsj_customize_register( $wp_customize ) {
     // SECTION: MISSION (À PROPOS)
     // ========================================
     $wp_customize->add_section( 'dsj_mission', [
-        'title'    => __( '🎯 Mission - Page À propos', 'domaine-saint-joseph' ),
+        'title'    => __( '? Mission - Page À propos', 'domaine-saint-joseph' ),
         'priority' => 80,
     ] );
 
@@ -190,12 +190,12 @@ function dsj_customize_register( $wp_customize ) {
     // SECTION: ÉQUIPE (À PROPOS)
     // ========================================
     $wp_customize->add_section( 'dsj_equipe', [
-        'title'    => __( '👥 Équipe - Page À propos', 'domaine-saint-joseph' ),
+        'title'    => __( '? Équipe - Page À propos', 'domaine-saint-joseph' ),
         'priority' => 81,
     ] );
 
     // Membre 1
-    $wp_customize->add_setting( 'equipe_1_nom', [ 'default' => 'Sœur Marie-Bernadette', 'sanitize_callback' => 'sanitize_text_field' ] );
+    $wp_customize->add_setting( 'equipe_1_nom', [ 'default' => 'S?ur Marie-Bernadette', 'sanitize_callback' => 'sanitize_text_field' ] );
     $wp_customize->add_control( 'equipe_1_nom', [ 'label' => 'Membre 1 - Nom', 'section' => 'dsj_equipe', 'type' => 'text' ] );
 
     $wp_customize->add_setting( 'equipe_1_fonction', [ 'default' => 'Supérieure de la communauté', 'sanitize_callback' => 'sanitize_text_field' ] );
@@ -212,7 +212,7 @@ function dsj_customize_register( $wp_customize ) {
     ] ) );
 
     // Membre 2
-    $wp_customize->add_setting( 'equipe_2_nom', [ 'default' => 'Sœur Thérèse', 'sanitize_callback' => 'sanitize_text_field' ] );
+    $wp_customize->add_setting( 'equipe_2_nom', [ 'default' => 'S?ur Thérèse', 'sanitize_callback' => 'sanitize_text_field' ] );
     $wp_customize->add_control( 'equipe_2_nom', [ 'label' => 'Membre 2 - Nom', 'section' => 'dsj_equipe', 'type' => 'text' ] );
 
     $wp_customize->add_setting( 'equipe_2_fonction', [ 'default' => 'Responsable des formations', 'sanitize_callback' => 'sanitize_text_field' ] );
@@ -229,7 +229,7 @@ function dsj_customize_register( $wp_customize ) {
     ] ) );
 
     // Membre 3
-    $wp_customize->add_setting( 'equipe_3_nom', [ 'default' => 'Sœur Claire', 'sanitize_callback' => 'sanitize_text_field' ] );
+    $wp_customize->add_setting( 'equipe_3_nom', [ 'default' => 'S?ur Claire', 'sanitize_callback' => 'sanitize_text_field' ] );
     $wp_customize->add_control( 'equipe_3_nom', [ 'label' => 'Membre 3 - Nom', 'section' => 'dsj_equipe', 'type' => 'text' ] );
 
     $wp_customize->add_setting( 'equipe_3_fonction', [ 'default' => 'Responsable de l\'accueil', 'sanitize_callback' => 'sanitize_text_field' ] );
@@ -251,12 +251,12 @@ function dsj_customize_register( $wp_customize ) {
 
     // Section Hero - Page Formation
     $wp_customize->add_section( 'dsj_hero_formation', [
-        'title'    => __( '🎓 Hero - Page Formation', 'domaine-saint-joseph' ),
+        'title'    => __( '? Hero - Page Formation', 'domaine-saint-joseph' ),
         'priority' => 90,
         'description' => __( 'Personnalisez le bandeau de la page Formation', 'domaine-saint-joseph' ),
     ] );
 
-    $wp_customize->add_setting( 'hero_formation_badge', [ 'default' => '🎓 Formation professionnelle', 'sanitize_callback' => 'sanitize_text_field' ] );
+    $wp_customize->add_setting( 'hero_formation_badge', [ 'default' => '? Formation professionnelle', 'sanitize_callback' => 'sanitize_text_field' ] );
     $wp_customize->add_control( 'hero_formation_badge', [ 'label' => 'Badge', 'section' => 'dsj_hero_formation', 'type' => 'text' ] );
 
     $wp_customize->add_setting( 'hero_formation_titre', [ 'default' => 'Nos Formations', 'sanitize_callback' => 'sanitize_text_field' ] );
@@ -287,12 +287,12 @@ function dsj_customize_register( $wp_customize ) {
 
     // Section Hero - Page Maison d'Accueil
     $wp_customize->add_section( 'dsj_hero_maison', [
-        'title'    => __( '🏠 Hero - Page Maison d\'Accueil', 'domaine-saint-joseph' ),
+        'title'    => __( '? Hero - Page Maison d\'Accueil', 'domaine-saint-joseph' ),
         'priority' => 91,
         'description' => __( 'Personnalisez le bandeau de la page Maison d\'Accueil', 'domaine-saint-joseph' ),
     ] );
 
-    $wp_customize->add_setting( 'hero_maison_badge', [ 'default' => '🏠 Nos hébergements', 'sanitize_callback' => 'sanitize_text_field' ] );
+    $wp_customize->add_setting( 'hero_maison_badge', [ 'default' => '? Nos hébergements', 'sanitize_callback' => 'sanitize_text_field' ] );
     $wp_customize->add_control( 'hero_maison_badge', [ 'label' => 'Badge', 'section' => 'dsj_hero_maison', 'type' => 'text' ] );
 
     $wp_customize->add_setting( 'hero_maison_titre', [ 'default' => 'Maison d\'Accueil', 'sanitize_callback' => 'sanitize_text_field' ] );
@@ -323,12 +323,12 @@ function dsj_customize_register( $wp_customize ) {
 
     // Section Hero - Page À propos
     $wp_customize->add_section( 'dsj_hero_apropos', [
-        'title'    => __( '🙏 Hero - Page À propos', 'domaine-saint-joseph' ),
+        'title'    => __( '? Hero - Page À propos', 'domaine-saint-joseph' ),
         'priority' => 92,
         'description' => __( 'Personnalisez le bandeau de la page À propos', 'domaine-saint-joseph' ),
     ] );
 
-    $wp_customize->add_setting( 'hero_apropos_badge', [ 'default' => '🙏 Notre histoire', 'sanitize_callback' => 'sanitize_text_field' ] );
+    $wp_customize->add_setting( 'hero_apropos_badge', [ 'default' => '? Notre histoire', 'sanitize_callback' => 'sanitize_text_field' ] );
     $wp_customize->add_control( 'hero_apropos_badge', [ 'label' => 'Badge', 'section' => 'dsj_hero_apropos', 'type' => 'text' ] );
 
     $wp_customize->add_setting( 'hero_apropos_titre', [ 'default' => 'À propos de nous', 'sanitize_callback' => 'sanitize_text_field' ] );
@@ -359,12 +359,12 @@ function dsj_customize_register( $wp_customize ) {
 
     // Section Hero - Page Contact
     $wp_customize->add_section( 'dsj_hero_contact', [
-        'title'    => __( '📞 Hero - Page Contact', 'domaine-saint-joseph' ),
+        'title'    => __( '? Hero - Page Contact', 'domaine-saint-joseph' ),
         'priority' => 93,
         'description' => __( 'Personnalisez le bandeau de la page Contact', 'domaine-saint-joseph' ),
     ] );
 
-    $wp_customize->add_setting( 'hero_contact_badge', [ 'default' => '📞 Restons connectés', 'sanitize_callback' => 'sanitize_text_field' ] );
+    $wp_customize->add_setting( 'hero_contact_badge', [ 'default' => '? Restons connectés', 'sanitize_callback' => 'sanitize_text_field' ] );
     $wp_customize->add_control( 'hero_contact_badge', [ 'label' => 'Badge', 'section' => 'dsj_hero_contact', 'type' => 'text' ] );
 
     $wp_customize->add_setting( 'hero_contact_titre', [ 'default' => 'Contactez-nous', 'sanitize_callback' => 'sanitize_text_field' ] );
@@ -395,12 +395,12 @@ function dsj_customize_register( $wp_customize ) {
 
     // Section Hero - Page Galerie
     $wp_customize->add_section( 'dsj_hero_galerie', [
-        'title'    => __( '📸 Hero - Page Galerie', 'domaine-saint-joseph' ),
+        'title'    => __( '? Hero - Page Galerie', 'domaine-saint-joseph' ),
         'priority' => 94,
         'description' => __( 'Personnalisez le bandeau de la page Galerie', 'domaine-saint-joseph' ),
     ] );
 
-    $wp_customize->add_setting( 'hero_galerie_badge', [ 'default' => '📸 Souvenirs et moments', 'sanitize_callback' => 'sanitize_text_field' ] );
+    $wp_customize->add_setting( 'hero_galerie_badge', [ 'default' => '? Souvenirs et moments', 'sanitize_callback' => 'sanitize_text_field' ] );
     $wp_customize->add_control( 'hero_galerie_badge', [ 'label' => 'Badge', 'section' => 'dsj_hero_galerie', 'type' => 'text' ] );
 
     $wp_customize->add_setting( 'hero_galerie_titre', [ 'default' => 'Notre Galerie', 'sanitize_callback' => 'sanitize_text_field' ] );
@@ -433,12 +433,12 @@ function dsj_customize_register( $wp_customize ) {
     // SECTION HERO - PAGE NOUS SOUTENIR
     // ========================================
     $wp_customize->add_section( 'dsj_hero_soutenir', [
-        'title'    => __( '🤝 Hero - Page Nous soutenir', 'domaine-saint-joseph' ),
+        'title'    => __( '? Hero - Page Nous soutenir', 'domaine-saint-joseph' ),
         'priority' => 95,
         'description' => __( 'Personnalisez le bandeau de la page Nous soutenir', 'domaine-saint-joseph' ),
     ] );
 
-    $wp_customize->add_setting( 'hero_soutenir_badge', [ 'default' => '🤝 Votre soutien compte', 'sanitize_callback' => 'sanitize_text_field' ] );
+    $wp_customize->add_setting( 'hero_soutenir_badge', [ 'default' => '? Votre soutien compte', 'sanitize_callback' => 'sanitize_text_field' ] );
     $wp_customize->add_control( 'hero_soutenir_badge', [ 'label' => 'Badge', 'section' => 'dsj_hero_soutenir', 'type' => 'text' ] );
 
     $wp_customize->add_setting( 'hero_soutenir_titre', [ 'default' => 'Soutenez Notre Mission', 'sanitize_callback' => 'sanitize_text_field' ] );
@@ -471,7 +471,7 @@ function dsj_customize_register( $wp_customize ) {
     // SECTION: CONTENU PAGE NOUS SOUTENIR (RENDU MODIFIABLE)
     // ========================================
     $wp_customize->add_section( 'dsj_soutenir_contenu', [
-        'title'    => __( '📝 Contenu - Page Nous soutenir', 'domaine-saint-joseph' ),
+        'title'    => __( '? Contenu - Page Nous soutenir', 'domaine-saint-joseph' ),
         'priority' => 96,
         'description' => __( 'Personnalisez les textes et montants de la page Nous soutenir', 'domaine-saint-joseph' ),
     ] );
@@ -587,7 +587,7 @@ function dsj_customize_register( $wp_customize ) {
     // SECTION: BANDEAU D'URGENCE (PAGE TOP BAR)
     // ========================================
     $wp_customize->add_section( 'dsj_urgence', [
-        'title'    => __( '🚨 Bandeau d\'urgence (défilant)', 'domaine-saint-joseph' ),
+        'title'    => __( '? Bandeau d\'urgence (défilant)', 'domaine-saint-joseph' ),
         'priority' => 25,
         'description' => __( 'Affichez plusieurs messages qui défilent en haut du site', 'domaine-saint-joseph' ),
     ] );
@@ -598,7 +598,7 @@ function dsj_customize_register( $wp_customize ) {
         'sanitize_callback' => 'wp_validate_boolean',
     ] );
     $wp_customize->add_control( 'urgence_active', [
-        'label' => __( '✅ Activer le bandeau d\'urgence', 'domaine-saint-joseph' ),
+        'label' => __( '? Activer le bandeau d\'urgence', 'domaine-saint-joseph' ),
         'section' => 'dsj_urgence',
         'type' => 'checkbox',
     ] );
@@ -613,16 +613,16 @@ function dsj_customize_register( $wp_customize ) {
         'section' => 'dsj_urgence',
         'type' => 'select',
         'choices' => [
-            'lent' => '🐢 Lente (20s)',
-            'normal' => '⏩ Normale (15s)',
-            'rapide' => '🐇 Rapide (10s)',
+            'lent' => '? Lente (20s)',
+            'normal' => '? Normale (15s)',
+            'rapide' => '? Rapide (10s)',
         ],
     ] );
 
     // Messages défilants (répéteur)
     for ( $i = 1; $i <= 5; $i++ ) {
         $wp_customize->add_setting( "urgence_message_{$i}", [
-            'default' => $i === 1 ? '👧 Parrainez une jeune fille pour sa formation' : '',
+            'default' => $i === 1 ? '? Parrainez une jeune fille pour sa formation' : '',
             'sanitize_callback' => 'sanitize_text_field',
         ] );
         $wp_customize->add_control( "urgence_message_{$i}", [
@@ -667,21 +667,21 @@ function dsj_customize_register( $wp_customize ) {
 
     // Icône
     $wp_customize->add_setting( 'urgence_icone', [
-        'default' => '🚨',
+        'default' => '?',
         'sanitize_callback' => 'sanitize_text_field',
     ] );
     $wp_customize->add_control( 'urgence_icone', [
         'label' => __( 'Icône (emoji)', 'domaine-saint-joseph' ),
         'section' => 'dsj_urgence',
         'type' => 'text',
-        'input_attrs' => [ 'placeholder' => '🚨' ],
+        'input_attrs' => [ 'placeholder' => '?' ],
     ] );
 
     // ========================================
     // SECTION: APPEL À L'AIDE (ACCUEIL)
     // ========================================
     $wp_customize->add_section( 'dsj_aide_accueil', [
-        'title'    => __( '🤝 Appel à l\'aide - Page Accueil', 'domaine-saint-joseph' ),
+        'title'    => __( '? Appel à l\'aide - Page Accueil', 'domaine-saint-joseph' ),
         'priority' => 85,
         'description' => __( 'Personnalisez la section appel à l\'aide (parrainage et construction)', 'domaine-saint-joseph' ),
     ] );
@@ -692,14 +692,14 @@ function dsj_customize_register( $wp_customize ) {
         'sanitize_callback' => 'wp_validate_boolean',
     ] );
     $wp_customize->add_control( 'aide_accueil_active', [
-        'label' => __( '✅ Activer la section appel à l\'aide', 'domaine-saint-joseph' ),
+        'label' => __( '? Activer la section appel à l\'aide', 'domaine-saint-joseph' ),
         'section' => 'dsj_aide_accueil',
         'type' => 'checkbox',
     ] );
 
     // ===== CARTE PARRAINAGE =====
     $wp_customize->add_setting( 'aide_parrainage_icone', [
-        'default' => '👧',
+        'default' => '?',
         'sanitize_callback' => 'sanitize_text_field',
     ] );
     $wp_customize->add_control( 'aide_parrainage_icone', [
@@ -731,7 +731,7 @@ function dsj_customize_register( $wp_customize ) {
     // Avantages Parrainage (répéteur)
     for ( $i = 1; $i <= 3; $i++ ) {
         $wp_customize->add_setting( "aide_parrainage_avantage_{$i}", [
-            'default' => $i === 1 ? '✅ Formation de qualité' : ( $i === 2 ? '✅ Matériel pédagogique fourni' : '✅ Suivi personnalisé' ),
+            'default' => $i === 1 ? '? Formation de qualité' : ( $i === 2 ? '? Matériel pédagogique fourni' : '? Suivi personnalisé' ),
             'sanitize_callback' => 'sanitize_text_field',
         ] );
         $wp_customize->add_control( "aide_parrainage_avantage_{$i}", [
@@ -763,7 +763,7 @@ function dsj_customize_register( $wp_customize ) {
 
     // ===== CARTE CONSTRUCTION =====
     $wp_customize->add_setting( 'aide_construction_icone', [
-        'default' => '🏗️',
+        'default' => '??',
         'sanitize_callback' => 'sanitize_text_field',
     ] );
     $wp_customize->add_control( 'aide_construction_icone', [
@@ -795,7 +795,7 @@ function dsj_customize_register( $wp_customize ) {
     // Besoins Construction (répéteur)
     for ( $i = 1; $i <= 3; $i++ ) {
         $wp_customize->add_setting( "aide_construction_besoin_{$i}", [
-            'default' => $i === 1 ? '🏫 Salles de classe supplémentaires' : ( $i === 2 ? '💻 Laboratoire informatique' : '✂️ Atelier de couture agrandi' ),
+            'default' => $i === 1 ? '? Salles de classe supplémentaires' : ( $i === 2 ? '? Laboratoire informatique' : '?? Atelier de couture agrandi' ),
             'sanitize_callback' => 'sanitize_text_field',
         ] );
         $wp_customize->add_control( "aide_construction_besoin_{$i}", [
@@ -829,7 +829,7 @@ function dsj_customize_register( $wp_customize ) {
 // SECTION: HISTOIRE (ACCUEIL)
 // ========================================
 $wp_customize->add_section( 'dsj_histoire', [
-    'title'    => __( '📖 Histoire - Page Accueil', 'domaine-saint-joseph' ),
+    'title'    => __( '? Histoire - Page Accueil', 'domaine-saint-joseph' ),
     'priority' => 86,
 ] );
 
@@ -847,7 +847,7 @@ $wp_customize->add_control( 'histoire_texte', [
 // SECTION: HORAIRES RESTAURANT
 // ========================================
 $wp_customize->add_section( 'dsj_restaurant_horaires', [
-    'title'    => __( '🍳 Horaires Restaurant', 'domaine-saint-joseph' ),
+    'title'    => __( '? Horaires Restaurant', 'domaine-saint-joseph' ),
     'priority' => 97,
 ] );
 
@@ -864,7 +864,7 @@ $wp_customize->add_control( 'restaurant_diner', [ 'label' => 'Dîner', 'section'
 // SECTION: HERO SLIDER (ACCUEIL)
 // ========================================
 $wp_customize->add_section( 'dsj_hero_slider', [
-    'title'    => __( '🎠 Hero Slider - Page Accueil', 'domaine-saint-joseph' ),
+    'title'    => __( '? Hero Slider - Page Accueil', 'domaine-saint-joseph' ),
     'priority' => 5,
     'description' => __( 'Activez le slider et ajoutez jusqu\'à 5 slides', 'domaine-saint-joseph' ),
 ] );
@@ -875,7 +875,7 @@ $wp_customize->add_setting( 'hero_slider_active', [
     'sanitize_callback' => 'wp_validate_boolean',
 ] );
 $wp_customize->add_control( 'hero_slider_active', [
-    'label' => __( '✅ Activer le slider Hero', 'domaine-saint-joseph' ),
+    'label' => __( '? Activer le slider Hero', 'domaine-saint-joseph' ),
     'section' => 'dsj_hero_slider',
     'type' => 'checkbox',
 ] );
@@ -886,7 +886,7 @@ $wp_customize->add_setting( 'hero_slider_speed', [
     'sanitize_callback' => 'absint',
 ] );
 $wp_customize->add_control( 'hero_slider_speed', [
-    'label' => __( '⏱️ Vitesse du slider (ms)', 'domaine-saint-joseph' ),
+    'label' => __( '?? Vitesse du slider (ms)', 'domaine-saint-joseph' ),
     'section' => 'dsj_hero_slider',
     'type' => 'select',
     'choices' => [
@@ -919,7 +919,7 @@ for ( $i = 1; $i <= 5; $i++ ) {
     ] );
     
     $wp_customize->add_setting( "hero_slide_{$i}_soustitre", [
-        'default' => $i === 1 ? 'Centre de formation technique & Maison d\'accueil Bobo-Dioulasso, Burkina Faso — depuis 2022' : '',
+        'default' => $i === 1 ? 'Centre de formation technique & Maison d\'accueil Bobo-Dioulasso, Burkina Faso ? depuis 2022' : '',
         'sanitize_callback' => 'sanitize_textarea_field',
     ] );
     $wp_customize->add_control( "hero_slide_{$i}_soustitre", [
@@ -929,7 +929,7 @@ for ( $i = 1; $i <= 5; $i++ ) {
     ] );
     
     $wp_customize->add_setting( "hero_slide_{$i}_badge", [
-        'default' => $i === 1 ? '✝ Travailleuses Missionnaires de l\'Immaculée' : '',
+        'default' => $i === 1 ? '? Travailleuses Missionnaires de l\'Immaculée' : '',
         'sanitize_callback' => 'sanitize_text_field',
     ] );
     $wp_customize->add_control( "hero_slide_{$i}_badge", [
@@ -943,12 +943,12 @@ for ( $i = 1; $i <= 5; $i++ ) {
     // SECTION HERO - PAGE RESTAURANT
     // ========================================
     $wp_customize->add_section( 'dsj_hero_restaurant', [
-        'title'    => __( '🍽️ Hero - Page Restaurant', 'domaine-saint-joseph' ),
+        'title'    => __( '?? Hero - Page Restaurant', 'domaine-saint-joseph' ),
         'priority' => 97,
         'description' => __( 'Personnalisez le bandeau de la page Restaurant', 'domaine-saint-joseph' ),
     ] );
 
-    $wp_customize->add_setting( 'hero_restaurant_badge', [ 'default' => '🍽️ Notre cuisine', 'sanitize_callback' => 'sanitize_text_field' ] );
+    $wp_customize->add_setting( 'hero_restaurant_badge', [ 'default' => '?? Notre cuisine', 'sanitize_callback' => 'sanitize_text_field' ] );
     $wp_customize->add_control( 'hero_restaurant_badge', [ 'label' => 'Badge', 'section' => 'dsj_hero_restaurant', 'type' => 'text' ] );
 
     $wp_customize->add_setting( 'hero_restaurant_titre', [ 'default' => 'Restaurant', 'sanitize_callback' => 'sanitize_text_field' ] );

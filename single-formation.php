@@ -13,11 +13,11 @@ get_header(); ?>
         <section class="page-header formation-single-header">
             <div class="container">
                 <div class="header-content">
-                    <span class="header-badge">🎓 Formation professionnelle</span>
+                    <span class="header-badge">? Formation professionnelle</span>
                     <h1 class="header-title"><?php the_title(); ?></h1>
                     <div class="header-divider">
                         <span class="divider-line"></span>
-                        <span class="divider-icon">📚</span>
+                        <span class="divider-icon">?</span>
                         <span class="divider-line"></span>
                     </div>
                 </div>
@@ -50,7 +50,7 @@ get_header(); ?>
                     <!-- Colonne infos -->
                     <div class="formation-single-infos">
                         <div class="infos-card">
-                            <h3>📋 Détails de la formation</h3>
+                            <h3>? Détails de la formation</h3>
                             
                             <?php 
                             $duree = get_post_meta( get_the_ID(), '_dsj_duree', true );
@@ -63,42 +63,42 @@ get_header(); ?>
                             
                             <?php if ( $duree ) : ?>
                             <div class="info-row">
-                                <span class="info-label">📅 Durée :</span>
+                                <span class="info-label">? Durée :</span>
                                 <span class="info-value"><?php echo esc_html( $duree ); ?></span>
                             </div>
                             <?php endif; ?>
                             
                             <?php if ( $prix ) : ?>
                             <div class="info-row">
-                                <span class="info-label">💰 Prix :</span>
+                                <span class="info-label">? Prix :</span>
                                 <span class="info-value"><?php echo esc_html( $prix ); ?></span>
                             </div>
                             <?php endif; ?>
                             
                             <?php if ( $niveau ) : ?>
                             <div class="info-row">
-                                <span class="info-label">📚 Niveau requis :</span>
+                                <span class="info-label">? Niveau requis :</span>
                                 <span class="info-value"><?php echo esc_html( $niveau ); ?></span>
                             </div>
                             <?php endif; ?>
                             
                             <?php if ( $places ) : ?>
                             <div class="info-row">
-                                <span class="info-label">👥 Places disponibles :</span>
+                                <span class="info-label">? Places disponibles :</span>
                                 <span class="info-value"><?php echo esc_html( $places ); ?></span>
                             </div>
                             <?php endif; ?>
                             
                             <?php if ( $formateur ) : ?>
                             <div class="info-row">
-                                <span class="info-label">👩‍🏫 Formatrice :</span>
+                                <span class="info-label">??? Formatrice :</span>
                                 <span class="info-value"><?php echo esc_html( $formateur ); ?></span>
                             </div>
                             <?php endif; ?>
                             
                             <?php if ( $horaires ) : ?>
                             <div class="info-row">
-                                <span class="info-label">⏰ Horaires :</span>
+                                <span class="info-label">? Horaires :</span>
                                 <span class="info-value"><?php echo esc_html( $horaires ); ?></span>
                             </div>
                             <?php endif; ?>
@@ -109,10 +109,10 @@ get_header(); ?>
                                class="btn btn-primary btn-large" 
                                target="_blank"
                                rel="noopener noreferrer">
-                               💬 S'inscrire par WhatsApp
+                               ? S'inscrire par WhatsApp
                             </a>
                             <a href="<?php echo esc_url( home_url( '/contact' ) ); ?>" class="btn btn-outline btn-large">
-                               📞 Demander un renseignement
+                               ? Demander un renseignement
                             </a>
                         </div>
                     </div>
@@ -120,7 +120,7 @@ get_header(); ?>
                 
                 <!-- Description complète -->
                 <div class="formation-description">
-                    <h3>📖 Description de la formation</h3>
+                    <h3>? Description de la formation</h3>
                     <div class="content">
                         <?php the_content(); ?>
                     </div>

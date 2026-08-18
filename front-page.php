@@ -1,6 +1,6 @@
 <?php
 /**
- * Page d'accueil — Avec palette de couleurs discrète
+ * Page d'accueil ? Avec palette de couleurs discrète
  */
 
 get_header(); ?>
@@ -23,7 +23,7 @@ get_header(); ?>
     if ( ! empty( $slides ) ) : ?>
         <div class="hero-slider" data-speed="<?php echo esc_attr( get_theme_mod( 'hero_slider_speed', '5000' ) ); ?>">
 
-            <!-- Photos uniquement — sans overlay -->
+            <!-- Photos uniquement ? sans overlay -->
             <div class="hero-slides-container">
                 <?php foreach ( $slides as $index => $slide ) : ?>
                     <div class="hero-slide <?php echo $index === 0 ? 'active' : ''; ?>"
@@ -58,8 +58,8 @@ get_header(); ?>
                     <?php endif; ?>
                 </div>
                 <div class="hero-buttons">
-                    <a href="<?php echo esc_url( home_url( '/formation' ) ); ?>" class="btn btn-primary">🎓 Nos formations</a>
-                    <a href="<?php echo esc_url( home_url( '/maison-daccueil' ) ); ?>" class="btn btn-secondary">🏠 Découvrir l'accueil</a>
+                    <a href="<?php echo esc_url( home_url( '/formation' ) ); ?>" class="btn btn-primary">? Nos formations</a>
+                    <a href="<?php echo esc_url( home_url( '/maison-daccueil' ) ); ?>" class="btn btn-secondary">? Découvrir l'accueil</a>
                 </div>
             </div>
 
@@ -88,19 +88,19 @@ get_header(); ?>
         <div class="photo-zone"></div>
         <div class="hero-caption-band">
             <div class="hero-caption-text">
-                <span class="hero-badge">✝ Travailleuses Missionnaires de l'Immaculée</span>
+                <span class="hero-badge">? Travailleuses Missionnaires de l'Immaculée</span>
                 <h1 class="hero-title">
                     Former les jeunes filles,
                     <span class="hero-highlight">accueillir avec compassion</span>
                 </h1>
                 <p class="hero-subtitle">
-                    Centre de formation technique & Maison d'accueil —
+                    Centre de formation technique & Maison d'accueil ?
                     Bobo-Dioulasso, Burkina Faso, depuis 2022
                 </p>
             </div>
             <div class="hero-buttons">
-                <a href="<?php echo esc_url( home_url( '/formation' ) ); ?>" class="btn btn-primary">🎓 Nos formations</a>
-                <a href="<?php echo esc_url( home_url( '/maison-daccueil' ) ); ?>" class="btn btn-secondary">🏠 Découvrir l'accueil</a>
+                <a href="<?php echo esc_url( home_url( '/formation' ) ); ?>" class="btn btn-primary">? Nos formations</a>
+                <a href="<?php echo esc_url( home_url( '/maison-daccueil' ) ); ?>" class="btn btn-secondary">? Découvrir l'accueil</a>
             </div>
         </div>
     </div>
@@ -113,7 +113,7 @@ get_header(); ?>
     <section class="home-histoire section-padding bg-bleu-clair">
         <div class="container">
             <div class="section-header">
-                <span class="section-badge">📖 Notre histoire</span>
+                <span class="section-badge">? Notre histoire</span>
                 <h2 class="section-title">Le Domaine Saint Joseph</h2>
                 <div class="section-divider"></div>
             </div>
@@ -151,7 +151,7 @@ get_header(); ?>
     <section class="home-formations section-padding bg-blanc">
         <div class="container">
             <div class="section-header">
-                <span class="section-badge">🎓 Excellence académique</span>
+                <span class="section-badge">? Excellence académique</span>
                 <h2 class="section-title">Nos Formations</h2>
                 <div class="section-divider"></div>
                 <p class="section-subtitle">Des filières concrètes pour l'autonomie des jeunes filles</p>
@@ -175,7 +175,7 @@ get_header(); ?>
                                 </div>
                             <?php else : ?>
                                 <div class="card-image">
-                                    <div class="card-icon-placeholder">🎓</div>
+                                    <div class="card-icon-placeholder">?</div>
                                 </div>
                             <?php endif; ?>
                             
@@ -189,11 +189,11 @@ get_header(); ?>
                                 
                                 <div class="card-meta">
                                     <?php if ( $duree ) : ?>
-                                        <span class="meta-item">📅 <?php echo esc_html( $duree ); ?></span>
+                                        <span class="meta-item">? <?php echo esc_html( $duree ); ?></span>
                                     <?php endif; ?>
                                     
                                     <?php if ( $prix ) : ?>
-                                        <span class="meta-item">💰 <?php echo esc_html( $prix ); ?></span>
+                                        <span class="meta-item">? <?php echo esc_html( $prix ); ?></span>
                                     <?php endif; ?>
                                 </div>
                                 
@@ -202,7 +202,7 @@ get_header(); ?>
                                 </div>
                                 
                                 <div class="card-footer">
-                                    <a href="<?php the_permalink(); ?>" class="btn-link">En savoir plus →</a>
+                                    <a href="<?php the_permalink(); ?>" class="btn-link">En savoir plus ?</a>
                                 </div>
                             </div>
                         </div>
@@ -225,19 +225,19 @@ get_header(); ?>
     <section class="home-maison-presentation section-padding bg-vert-menthe">
         <div class="container">
             <div class="section-header">
-                <span class="section-badge">🏡 Ouverte à tous</span>
+                <span class="section-badge">? Ouverte à tous</span>
                 <h2 class="section-title">La Maison d'Accueil</h2>
                 <div class="section-divider"></div>
             </div>
             <div class="maison-content">
                 <p>La Maison d'Accueil a pour but l'autoprise en charge du Centre pour soutenir la formation.</p>
                 <div class="services-list-home">
-                    <div class="service-home-item">🕊️ Retraites, récollections</div>
-                    <div class="service-home-item">🎉 Événements</div>
-                    <div class="service-home-item">👨‍👩‍👧‍👦 Réunions de famille</div>
-                    <div class="service-home-item">💼 Sessions de travail</div>
-                    <div class="service-home-item">📊 Conférences</div>
-                    <div class="service-home-item">📚 Journées d'étude</div>
+                    <div class="service-home-item">?? Retraites, récollections</div>
+                    <div class="service-home-item">? Événements</div>
+                    <div class="service-home-item">??????? Réunions de famille</div>
+                    <div class="service-home-item">? Sessions de travail</div>
+                    <div class="service-home-item">? Conférences</div>
+                    <div class="service-home-item">? Journées d'étude</div>
                 </div>
             </div>
         </div>
@@ -247,7 +247,7 @@ get_header(); ?>
     <section class="home-hebergements section-padding bg-gris">
         <div class="container">
             <div class="section-header">
-                <span class="section-badge">🏠 Lieu d'accueil</span>
+                <span class="section-badge">? Lieu d'accueil</span>
                 <h2 class="section-title">Nos Hébergements</h2>
                 <div class="section-divider"></div>
                 <p class="section-subtitle">Un cadre paisible pour votre séjour</p>
@@ -274,7 +274,7 @@ get_header(); ?>
                             <?php else : ?>
                                 <div class="card-image">
                                     <a href="<?php the_permalink(); ?>">
-                                        <div class="card-icon-placeholder">🏠</div>
+                                        <div class="card-icon-placeholder">?</div>
                                     </a>
                                 </div>
                             <?php endif; ?>
@@ -289,11 +289,11 @@ get_header(); ?>
                                 
                                 <div class="card-meta">
                                     <?php if ( $capacite ) : ?>
-                                        <span class="meta-item">👥 <?php echo esc_html( $capacite ); ?> pers.</span>
+                                        <span class="meta-item">? <?php echo esc_html( $capacite ); ?> pers.</span>
                                     <?php endif; ?>
                                     
                                     <?php if ( $prix_nuit ) : ?>
-                                        <span class="meta-item">💰 <?php echo esc_html( $prix_nuit ); ?>/nuit</span>
+                                        <span class="meta-item">? <?php echo esc_html( $prix_nuit ); ?>/nuit</span>
                                     <?php endif; ?>
                                 </div>
                                 
@@ -301,7 +301,7 @@ get_header(); ?>
                                     <?php echo wp_trim_words( get_the_excerpt() ?: get_the_content(), 12, '...' ); ?>
                                 </div>
                                 
-                                <a href="<?php the_permalink(); ?>" class="btn-link">Voir les détails →</a>
+                                <a href="<?php the_permalink(); ?>" class="btn-link">Voir les détails ?</a>
                             </div>
                         </div>
                     <?php endwhile;
@@ -324,7 +324,7 @@ get_header(); ?>
     <section class="aide-urgence section-padding bg-creme">
         <div class="container">
             <div class="section-header">
-                <span class="section-badge">🤝 Soutenez notre mission</span>
+                <span class="section-badge">? Soutenez notre mission</span>
                 <h2 class="section-title">Comment nous aider ?</h2>
                 <div class="section-divider"></div>
                 <p class="section-subtitle">Votre générosité change des vies</p>
@@ -333,7 +333,7 @@ get_header(); ?>
             <div class="aide-urgence-grid">
                 <!-- Carte Parrainage -->
                 <div class="aide-card">
-                    <div class="aide-card-icon"><?php echo get_theme_mod( 'aide_parrainage_icone', '👧' ); ?></div>
+                    <div class="aide-card-icon"><?php echo get_theme_mod( 'aide_parrainage_icone', '?' ); ?></div>
                     <h3><?php echo get_theme_mod( 'aide_parrainage_titre', 'Parrainez une jeune fille' ); ?></h3>
                     <p><?php echo wp_kses_post( get_theme_mod( 'aide_parrainage_texte', 'Pour seulement <strong>50 000 F CFA par mois</strong>, vous offrez une formation technique complète à une jeune fille.' ) ); ?></p>
                     <ul class="aide-list">
@@ -345,13 +345,13 @@ get_header(); ?>
                         endfor; ?>
                     </ul>
                     <a href="<?php echo esc_url( get_theme_mod( 'aide_parrainage_lien', '/nous-soutenir' ) ); ?>" class="btn btn-primary">
-                        <?php echo esc_html( get_theme_mod( 'aide_parrainage_bouton', 'Je parraine' ) ); ?> →
+                        <?php echo esc_html( get_theme_mod( 'aide_parrainage_bouton', 'Je parraine' ) ); ?> ?
                     </a>
                 </div>
                 
                 <!-- Carte Construction -->
                 <div class="aide-card">
-                    <div class="aide-card-icon"><?php echo get_theme_mod( 'aide_construction_icone', '🏗️' ); ?></div>
+                    <div class="aide-card-icon"><?php echo get_theme_mod( 'aide_construction_icone', '??' ); ?></div>
                     <h3><?php echo get_theme_mod( 'aide_construction_titre', 'Construisons ensemble' ); ?></h3>
                     <p><?php echo wp_kses_post( get_theme_mod( 'aide_construction_texte', 'Nous avons besoin de <strong>nouvelles salles de formation</strong> pour accueillir plus de jeunes filles.' ) ); ?></p>
                     <ul class="aide-list">
@@ -363,28 +363,28 @@ get_header(); ?>
                         endfor; ?>
                     </ul>
                     <a href="<?php echo esc_url( get_theme_mod( 'aide_construction_lien', '/nous-soutenir' ) ); ?>" class="btn btn-primary">
-                        <?php echo esc_html( get_theme_mod( 'aide_construction_bouton', 'Je contribue' ) ); ?> →
+                        <?php echo esc_html( get_theme_mod( 'aide_construction_bouton', 'Je contribue' ) ); ?> ?
                     </a>
                 </div>
                 
                 <!-- Carte Dons -->
                 <div class="aide-card">
-                    <div class="aide-card-icon">💛</div>
+                    <div class="aide-card-icon">?</div>
                     <h3>Faire un don</h3>
                     <p>Votre don, petit ou grand, soutient la formation des jeunes filles et l'entretien du centre.</p>
                     <ul class="aide-list">
-                        <li>✅ Don ponctuel ou mensuel</li>
-                        <li>✅ Reçu fiscal sur demande</li>
-                        <li>✅ 100% dédié à la mission</li>
+                        <li>? Don ponctuel ou mensuel</li>
+                        <li>? Reçu fiscal sur demande</li>
+                        <li>? 100% dédié à la mission</li>
                     </ul>
                     <a href="<?php echo esc_url( home_url( '/nous-soutenir' ) ); ?>" class="btn btn-primary">
-                        💛 Je donne →</a>
+                        ? Je donne ?</a>
                 </div>
             </div>
             
             <div class="aide-texte-supplementaire text-center mt-4">
-                <p>📞 Un doute ? Contactez-nous par WhatsApp pour toute question sur les dons ou parrainages.</p>
-                <a href="https://wa.me/<?php echo get_theme_mod( 'whatsapp', '22666605890' ); ?>" class="btn btn-whatsapp" target="_blank">💬 Nous contacter</a>
+                <p>? Un doute ? Contactez-nous par WhatsApp pour toute question sur les dons ou parrainages.</p>
+                <a href="https://wa.me/<?php echo get_theme_mod( 'whatsapp', '22666605890' ); ?>" class="btn btn-whatsapp" target="_blank">? Nous contacter</a>
             </div>
         </div>
     </section>
@@ -394,7 +394,7 @@ get_header(); ?>
     <section class="home-restaurant section-padding bg-blanc">
         <div class="container">
             <div class="section-header">
-                <span class="section-badge">🍽️ Table d'hôte</span>
+                <span class="section-badge">?? Table d'hôte</span>
                 <h2 class="section-title">Notre Restaurant</h2>
                 <div class="section-divider"></div>
                 <p class="section-subtitle">Cuisine locale et internationale, préparée avec amour</p>
@@ -403,7 +403,7 @@ get_header(); ?>
             <div class="restaurant-preview">
                 <div class="restaurant-info">
                     <div class="horaires-restaurant">
-                        <h3>🍳 Horaires</h3>
+                        <h3>? Horaires</h3>
                         <?php 
                         $petitdej = get_theme_mod('restaurant_petitdej', '7h00 - 9h30');
                         $dejeuner = get_theme_mod('restaurant_dejeuner', '12h00 - 14h30');
@@ -414,8 +414,8 @@ get_header(); ?>
                         <p><strong>Dîner :</strong> <?php echo esc_html( $diner ); ?></p>
                     </div>
                     <div class="restaurant-cta-home">
-                        <a href="<?php echo esc_url( home_url( '/restaurant' ) ); ?>" class="btn btn-primary">🍽️ Découvrir la carte</a>
-                        <a href="<?php echo esc_url( home_url( '/restaurant#reservation-restaurant' ) ); ?>" class="btn btn-secondary">📅 Réserver une table</a>
+                        <a href="<?php echo esc_url( home_url( '/restaurant' ) ); ?>" class="btn btn-primary">?? Découvrir la carte</a>
+                        <a href="<?php echo esc_url( home_url( '/restaurant#reservation-restaurant' ) ); ?>" class="btn btn-secondary">? Réserver une table</a>
                     </div>
                 </div>
             </div>
@@ -426,7 +426,7 @@ get_header(); ?>
     <section class="valeurs-section section-padding bg-creme">
         <div class="container">
             <div class="section-header">
-                <span class="section-badge">⭐ Nos fondamentaux</span>
+                <span class="section-badge">? Nos fondamentaux</span>
                 <h2 class="section-title">Nos Valeurs</h2>
                 <div class="section-divider"></div>
                 <p class="section-subtitle">Ce qui nous guide au quotidien</p>
@@ -434,32 +434,32 @@ get_header(); ?>
             
             <div class="valeurs-grid">
                 <div class="valeur-card">
-                    <div class="valeur-icon">🤝</div>
+                    <div class="valeur-icon">?</div>
                     <h3>Respect</h3>
                     <p>De chaque personne humaine dans sa dignité</p>
                 </div>
                 <div class="valeur-card">
-                    <div class="valeur-icon">💎</div>
+                    <div class="valeur-icon">?</div>
                     <h3>Honnêteté</h3>
                     <p>Dans toutes nos relations et engagements</p>
                 </div>
                 <div class="valeur-card">
-                    <div class="valeur-icon">❤️</div>
+                    <div class="valeur-icon">??</div>
                     <h3>Compassion</h3>
                     <p>Envers les plus vulnérables</p>
                 </div>
                 <div class="valeur-card">
-                    <div class="valeur-icon">🌿</div>
+                    <div class="valeur-icon">?</div>
                     <h3>Partage</h3>
                     <p>Des savoirs, ressources et expériences</p>
                 </div>
                 <div class="valeur-card">
-                    <div class="valeur-icon">📐</div>
+                    <div class="valeur-icon">?</div>
                     <h3>Rigueur</h3>
                     <p>Dans le travail sérieux et bien accompli</p>
                 </div>
                 <div class="valeur-card">
-                    <div class="valeur-icon">⭐</div>
+                    <div class="valeur-icon">?</div>
                     <h3>Excellence</h3>
                     <p>Toujours viser le meilleur de soi-même</p>
                 </div>
@@ -480,7 +480,7 @@ get_header(); ?>
     <section class="home-galerie section-padding bg-gris">
         <div class="container">
             <div class="section-header">
-                <span class="section-badge">📸 En images</span>
+                <span class="section-badge">? En images</span>
                 <h2 class="section-title">Galerie</h2>
                 <div class="section-divider"></div>
                 <p class="section-subtitle">Découvrez notre cadre de vie</p>
@@ -493,7 +493,7 @@ get_header(); ?>
                             <a href="<?php the_permalink(); ?>" class="galerie-link">
                                 <?php the_post_thumbnail( 'gallery-thumb' ); ?>
                                 <div class="galerie-overlay">
-                                    <span class="galerie-icon">🔍</span>
+                                    <span class="galerie-icon">?</span>
                                 </div>
                             </a>
                         <?php endif; ?>
@@ -523,7 +523,7 @@ get_header(); ?>
     <section class="temoignages-section section-padding bg-blanc">
         <div class="container">
             <div class="section-header">
-                <span class="section-badge">💬 Ils parlent de nous</span>
+                <span class="section-badge">? Ils parlent de nous</span>
                 <h2 class="section-title">Témoignages</h2>
                 <div class="section-divider"></div>
             </div>
@@ -554,8 +554,8 @@ get_header(); ?>
                 <h2><?php echo get_theme_mod( 'cta_title', 'Soutenez notre mission' ); ?></h2>
                 <p><?php echo get_theme_mod( 'cta_text', 'Votre contribution permet de former les leaders de demain. Parrainez une jeune fille ou faites un don pour soutenir le Domaine Saint Joseph.' ); ?></p>
                 <div class="cta-buttons">
-                    <a href="<?php echo esc_url( home_url( get_theme_mod( 'cta_button_url', '/nous-soutenir' ) ) ); ?>" class="btn btn-primary btn-large">💛 Nous soutenir</a>
-                    <a href="https://wa.me/<?php echo get_theme_mod( 'whatsapp', '22666605890' ); ?>" class="btn btn-whatsapp btn-large" target="_blank">📱 WhatsApp</a>
+                    <a href="<?php echo esc_url( home_url( get_theme_mod( 'cta_button_url', '/nous-soutenir' ) ) ); ?>" class="btn btn-primary btn-large">? Nous soutenir</a>
+                    <a href="https://wa.me/<?php echo get_theme_mod( 'whatsapp', '22666605890' ); ?>" class="btn btn-whatsapp btn-large" target="_blank">? WhatsApp</a>
                 </div>
             </div>
         </div>
