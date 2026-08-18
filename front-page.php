@@ -6,91 +6,106 @@
 get_header(); ?>
 
 <main id="main" class="site-main">
-    
-    <!-- ===== HERO SLIDER OPTIMISÉ ===== -->
-    <?php if ( get_theme_mod( 'hero_slider_active', false ) ) : 
-        $slides = [];
-        for ( $i = 1; $i <= 5; $i++ ) {
-            $image = get_theme_mod( "hero_slide_{$i}_image" );
-            if ( $image ) {
-                $slides[] = [
-                    'image' => $image,
-                    'titre' => get_theme_mod( "hero_slide_{$i}_titre", '' ),
-                    'soustitre' => get_theme_mod( "hero_slide_{$i}_soustitre", '' ),
-                    'badge' => get_theme_mod( "hero_slide_{$i}_badge", '' ),
-                ];
-            }
+   <!-- ===== HERO SLIDER OPTIMISÉ ===== -->
+<?php if ( get_theme_mod( 'hero_slider_active', false ) ) :
+    $slides = [];
+    for ( $i = 1; $i <= 5; $i++ ) {
+        $image = get_theme_mod( "hero_slide_{$i}_image" );
+        if ( $image ) {
+            $slides[] = [
+                'image'     => $image,
+                'titre'     => get_theme_mod( "hero_slide_{$i}_titre", '' ),
+                'soustitre' => get_theme_mod( "hero_slide_{$i}_soustitre", '' ),
+            ];
         }
-        
-        if ( ! empty( $slides ) ) : ?>
-            <div class="hero-slider" data-speed="<?php echo get_theme_mod( 'hero_slider_speed', '5000' ); ?>">
-                <div class="hero-slides-container">
-                    <?php foreach ( $slides as $index => $slide ) : ?>
-                        <div class="hero-slide <?php echo $index === 0 ? 'active' : ''; ?>" 
-                             style="background-image: url(<?php echo esc_url( $slide['image'] ); ?>); 
-                                    <?php echo $index !== 0 ? 'display: none;' : ''; ?>">
-                            <div class="hero-overlay" style="background: rgba(26, 60, 94, 0.5);"></div>
-                            <div class="hero-content-wrapper">
-                                <div class="container">
-                                    <div class="hero-content <?php echo $index === 0 ? 'active' : ''; ?>">
-                                        <?php if ( $slide['badge'] ) : ?>
-                                            <span class="hero-badge"><?php echo esc_html( $slide['badge'] ); ?></span>
-                                        <?php endif; ?>
-                                        
-                                        <h1 class="hero-title"><?php echo wp_kses_post( $slide['titre'] ); ?></h1>
-                                        
-                                        <?php if ( $slide['soustitre'] ) : ?>
-                                            <p class="hero-subtitle"><?php echo esc_html( $slide['soustitre'] ); ?></p>
-                                        <?php endif; ?>
-                                        
-                                        <div class="hero-buttons">
-                                            <a href="<?php echo esc_url( home_url( '/formation' ) ); ?>" class="btn btn-primary btn-large">🎓 Nos formations</a>
-                                            <a href="<?php echo esc_url( home_url( '/maison-daccueil' ) ); ?>" class="btn btn-secondary btn-large">🏠 Découvrir l'accueil</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    <?php endforeach; ?>
-                </div>
-                
-                <!-- Navigation -->
-                <button class="slider-btn slider-prev" aria-label="Précédent">‹</button>
-                <button class="slider-btn slider-next" aria-label="Suivant">›</button>
-                
+    }
+
+    if ( ! empty( $slides ) ) : ?>
+        <div class="hero-slider" data-speed="<?php echo esc_attr( get_theme_mod( 'hero_slider_speed', '5000' ) ); ?>">
+
+            <!-- Photos uniquement — sans overlay -->
+            <div class="hero-slides-container">
+                <?php foreach ( $slides as $index => $slide ) : ?>
+                    <div class="hero-slide <?php echo $index === 0 ? 'active' : ''; ?>"
+                         style="background-image: url('<?php echo esc_url( $slide['image'] ); ?>');
+                                <?php echo $index !== 0 ? 'display:none;' : ''; ?>">
+                    </div>
+                <?php endforeach; ?>
+
+                <!-- Flèches -->
+                <button class="slider-btn slider-prev" aria-label="Précédent">&#8249;</button>
+                <button class="slider-btn slider-next" aria-label="Suivant">&#8250;</button>
+
+                <!-- Dots -->
                 <div class="slider-dots">
                     <?php foreach ( $slides as $index => $slide ) : ?>
-                        <span class="slider-dot <?php echo $index === 0 ? 'active' : ''; ?>" data-index="<?php echo $index; ?>"></span>
+                        <span class="slider-dot <?php echo $index === 0 ? 'active' : ''; ?>"
+                              data-index="<?php echo $index; ?>"></span>
                     <?php endforeach; ?>
                 </div>
             </div>
-            
-        <?php endif; ?>
-    <?php elseif ( is_active_sidebar( 'hero-area' ) ) : ?>
-        <div class="hero-widget-container">
-            <?php dynamic_sidebar( 'hero-area' ); ?>
-        </div>
-    <?php else : ?>
-        <!-- Hero par défaut (sans slider) -->
-        <section class="custom-hero default-hero" style="background: linear-gradient(135deg, var(--clr-primary, #1A5276) 0%, #1a3c5e 100%);">
-            <div class="hero-overlay" style="background: rgba(26, 60, 94, 0.5);"></div>
-            <div class="hero-content-wrapper">
-                <div class="container">
-                    <div class="hero-content">
-                        <span class="hero-badge">✝ Travailleuses Missionnaires de l'Immaculée</span>
-                        <h1 class="hero-title">Former les jeunes filles,<br><span class="hero-highlight">accueillir avec compassion</span></h1>
-                        <p class="hero-subtitle">Centre de formation technique & Maison d'accueil<br>Bobo-Dioulasso, Burkina Faso — depuis 2022</p>
-                        <div class="hero-buttons">
-                            <a href="<?php echo esc_url( home_url( '/formation' ) ); ?>" class="btn btn-primary btn-large">🎓 Nos formations</a>
-                            <a href="<?php echo esc_url( home_url( '/maison-daccueil' ) ); ?>" class="btn btn-secondary btn-large">🏠 Découvrir l'accueil</a>
-                        </div>
-                    </div>
+
+            <!-- Bande légende -->
+            <div class="hero-caption-band">
+                <div class="hero-caption-text">
+                    <h1 class="hero-title" id="hero-caption-title">
+                        <?php echo wp_kses_post( $slides[0]['titre'] ); ?>
+                    </h1>
+                    <?php if ( $slides[0]['soustitre'] ) : ?>
+                        <p class="hero-subtitle" id="hero-caption-subtitle">
+                            <?php echo esc_html( $slides[0]['soustitre'] ); ?>
+                        </p>
+                    <?php endif; ?>
+                </div>
+                <div class="hero-buttons">
+                    <a href="<?php echo esc_url( home_url( '/formation' ) ); ?>" class="btn btn-primary">🎓 Nos formations</a>
+                    <a href="<?php echo esc_url( home_url( '/maison-daccueil' ) ); ?>" class="btn btn-secondary">🏠 Découvrir l'accueil</a>
                 </div>
             </div>
-            
-        </section>
+
+        </div>
+
+        <!-- Données slides pour le JS -->
+        <script>
+        var heroSlideData = <?php echo wp_json_encode( array_map( function( $s ) {
+            return [
+                'titre'     => wp_strip_all_tags( $s['titre'] ),
+                'soustitre' => $s['soustitre'],
+            ];
+        }, $slides ) ); ?>;
+        </script>
+
     <?php endif; ?>
 
+<?php elseif ( is_active_sidebar( 'hero-area' ) ) : ?>
+    <div class="hero-widget-container">
+        <?php dynamic_sidebar( 'hero-area' ); ?>
+    </div>
+
+<?php else : ?>
+    <!-- Hero par défaut sans slider -->
+    <div class="custom-hero">
+        <div class="photo-zone"></div>
+        <div class="hero-caption-band">
+            <div class="hero-caption-text">
+                <span class="hero-badge">✝ Travailleuses Missionnaires de l'Immaculée</span>
+                <h1 class="hero-title">
+                    Former les jeunes filles,
+                    <span class="hero-highlight">accueillir avec compassion</span>
+                </h1>
+                <p class="hero-subtitle">
+                    Centre de formation technique & Maison d'accueil —
+                    Bobo-Dioulasso, Burkina Faso, depuis 2022
+                </p>
+            </div>
+            <div class="hero-buttons">
+                <a href="<?php echo esc_url( home_url( '/formation' ) ); ?>" class="btn btn-primary">🎓 Nos formations</a>
+                <a href="<?php echo esc_url( home_url( '/maison-daccueil' ) ); ?>" class="btn btn-secondary">🏠 Découvrir l'accueil</a>
+            </div>
+        </div>
+    </div>
+<?php endif; ?>
+ 
     <!-- ===== NOTRE HISTOIRE ===== -->
     <?php 
     $histoire_texte = get_theme_mod('histoire_texte', 'Le Domaine Saint Joseph a été créé en <strong>2022</strong>. Ce centre est une expression du charisme des <strong>Travailleuses Missionnaires de l\'Immaculée</strong>.');
