@@ -4059,6 +4059,211 @@ a:focus-visible, .btn:focus-visible, .galerie-link:focus-visible { outline: 3px 
     }
 }
 
+
+
+/* ========================================
+* PAGE GÉNÉRIQUE & ARCHIVE FORMATION
+* ======================================== */
+.page-content-wrapper {
+    max-width: 900px;
+    margin: 0 auto;
+    font-size: 1.05rem;
+    line-height: 1.8;
+    color: #444;
+}
+
+.page-content-wrapper h2 {
+    font-size: 1.8rem;
+    color: var(--clr-primary, #1A5276);
+    margin: 2rem 0 1rem;
+    position: relative;
+    padding-left: 15px;
+}
+
+.page-content-wrapper h2::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 5px;
+    bottom: 5px;
+    width: 4px;
+    background: var(--clr-accent, #D4AC0D);
+    border-radius: 2px;
+}
+
+.page-content-wrapper h3 {
+    font-size: 1.4rem;
+    color: var(--clr-primary, #1A5276);
+    margin: 1.8rem 0 0.8rem;
+}
+
+.page-content-wrapper p {
+    margin-bottom: 1.2rem;
+}
+
+.page-content-wrapper ul,
+.page-content-wrapper ol {
+    margin: 1rem 0 1.5rem 2rem;
+}
+
+.page-content-wrapper li {
+    margin-bottom: 0.5rem;
+}
+
+.page-content-wrapper blockquote {
+    border-left: 4px solid var(--clr-accent, #D4AC0D);
+    background: #f8f9fa;
+    padding: 1.5rem 2rem;
+    margin: 2rem 0;
+    border-radius: 8px;
+    font-style: italic;
+    color: #555;
+}
+
+.page-content-wrapper img {
+    border-radius: 12px;
+    margin: 1.5rem 0;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+.page-content-wrapper a {
+    color: var(--clr-primary, #1A5276);
+    text-decoration: underline;
+    text-decoration-color: var(--clr-accent, #D4AC0D);
+    text-underline-offset: 3px;
+}
+
+.page-content-wrapper a:hover {
+    color: var(--clr-accent, #D4AC0D);
+}
+
+/* Header générique */
+.generic-header .page-photo-zone {
+    background: linear-gradient(135deg, var(--clr-primary, #1A5276) 0%, #1a3c5e 100%);
+}
+
+/* CTA Page */
+.cta-page-content {
+    text-align: center;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.cta-page-content h2 {
+    font-size: 1.8rem;
+    color: var(--clr-primary, #1A5276);
+    margin-bottom: 15px;
+}
+
+.cta-page-content p {
+    color: #666;
+    margin-bottom: 25px;
+    font-size: 1.05rem;
+}
+
+/* Bouton WhatsApp small (archive formation) */
+.btn-whatsapp-small {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: #25D366;
+    color: white;
+    padding: 6px 14px;
+    border-radius: 50px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.btn-whatsapp-small:hover {
+    background: #128C7E;
+    transform: translateY(-2px);
+    color: white;
+}
+
+/* Niveau badge */
+.formation-niveau {
+    margin-top: 10px;
+}
+
+.niveau-badge {
+    display: inline-block;
+    background: rgba(26, 82, 118, 0.1);
+    color: var(--clr-primary, #1A5276);
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+/* Pagination */
+.pagination {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.pagination .page-numbers {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 40px;
+    height: 40px;
+    padding: 0 12px;
+    background: white;
+    color: var(--clr-primary, #1A5276);
+    border: 2px solid #e0e0e0;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.pagination .page-numbers.current,
+.pagination .page-numbers:hover {
+    background: var(--clr-accent, #D4AC0D);
+    border-color: var(--clr-accent, #D4AC0D);
+    color: var(--clr-primary, #1A5276);
+}
+
+/* Formation footer */
+.formation-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    margin-top: 15px;
+    flex-wrap: wrap;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .page-content-wrapper {
+        font-size: 1rem;
+    }
+
+    .page-content-wrapper h2 {
+        font-size: 1.5rem;
+    }
+
+    .cta-page-content h2 {
+        font-size: 1.4rem;
+    }
+
+    .formation-footer {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .formation-footer .btn-link,
+    .formation-footer .btn-whatsapp-small {
+        text-align: center;
+        justify-content: center;
+    }
+}
+
 /* ========================================
  * FIN DU FICHIER
  * ======================================== */
@@ -4078,3 +4283,5 @@ a:focus-visible, .btn:focus-visible, .galerie-link:focus-visible { outline: 3px 
  *
  * 📞 Support : ifbburkina@gmail.com
  */
+
+
