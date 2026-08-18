@@ -1,4 +1,4 @@
-jQuery(document).ready(function($) {
+﻿jQuery(document).ready(function($) {
     // Pour chaque bouton d'upload d'image
     $(document).on('click', '.upload-image-btn', function(e) {
         e.preventDefault();

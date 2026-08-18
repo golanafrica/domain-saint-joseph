@@ -1,4 +1,4 @@
-CONTEXT.MD — Domaine Saint Joseph
+﻿CONTEXT.MD — Domaine Saint Joseph
 Fichier de contexte unique pour développeur ou IA
 📋 Instructions : Colle ce fichier entier dans une nouvelle conversation Claude pour reprendre le projet exactement là où il en est.
 🎯 Résumé du projet en une phrase

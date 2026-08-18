@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 /**
  * Archive pour les hébergements (liste)
  */

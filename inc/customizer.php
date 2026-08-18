@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 /**
  * Options du thème via Apparence > Personnaliser
  * Domaine Saint Joseph

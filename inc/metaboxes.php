@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 /**
  * Metaboxes personnalisées pour Formations, Hébergements et Restaurant
  * Domaine Saint Joseph

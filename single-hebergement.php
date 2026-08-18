@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 /**
  * Template pour l'affichage d'un hébergement individuel
  */
