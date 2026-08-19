@@ -1,12 +1,12 @@
 <?php
 /**
- * Custom Post Types ? Formations, Hébergements, Galerie
+ * Custom Post Types &#8212; Formations, H&#233;bergements, Galerie
  * Domaine Saint Joseph
  */
 
 function dsj_register_cpts() {
     
-    // ?? Formations ??
+    // &#127891; Formations &#127891;
     register_post_type( 'formation', [
         'labels' => [
             'name' => __( 'Formations', 'domaine-saint-joseph' ),
@@ -26,16 +26,16 @@ function dsj_register_cpts() {
         'menu_position' => 5,
     ]);
 
-    // ?? Hébergements ??
+    // &#127968; H&#233;bergements &#127968;
     register_post_type( 'hebergement', [
         'labels' => [
-            'name' => __( 'Hébergements', 'domaine-saint-joseph' ),
-            'singular_name' => __( 'Hébergement', 'domaine-saint-joseph' ),
-            'add_new' => __( 'Ajouter un hébergement', 'domaine-saint-joseph' ),
-            'add_new_item' => __( 'Nouvel hébergement', 'domaine-saint-joseph' ),
-            'edit_item' => __( "Modifier l'hébergement", 'domaine-saint-joseph' ),
-            'view_item' => __( "Voir l'hébergement", 'domaine-saint-joseph' ),
-            'all_items' => __( 'Tous les hébergements', 'domaine-saint-joseph' ),
+            'name' => __( 'H&#233;bergements', 'domaine-saint-joseph' ),
+            'singular_name' => __( 'H&#233;bergement', 'domaine-saint-joseph' ),
+            'add_new' => __( 'Ajouter un h&#233;bergement', 'domaine-saint-joseph' ),
+            'add_new_item' => __( 'Nouvel h&#233;bergement', 'domaine-saint-joseph' ),
+            'edit_item' => __( "Modifier l'h&#233;bergement", 'domaine-saint-joseph' ),
+            'view_item' => __( "Voir l'h&#233;bergement", 'domaine-saint-joseph' ),
+            'all_items' => __( 'Tous les h&#233;bergements', 'domaine-saint-joseph' ),
         ],
         'public' => true,
         'has_archive' => true,
@@ -46,7 +46,7 @@ function dsj_register_cpts() {
         'menu_position' => 6,
     ]);
 
-    // ?? Galerie ??
+    // &#128248; Galerie &#128248;
     register_post_type( 'galerie', [
         'labels' => [
             'name' => __( 'Galerie', 'domaine-saint-joseph' ),
@@ -66,14 +66,14 @@ function dsj_register_cpts() {
         'menu_position' => 7,
     ]);
 
-    // ?? Taxonomie Catégories Galerie ??
+    // &#128193; Taxonomie Cat&#233;gories Galerie &#128193;
     register_taxonomy( 'categorie_galerie', 'galerie', [
         'labels' => [
-            'name' => __( 'Catégories Galerie', 'domaine-saint-joseph' ),
-            'singular_name' => __( 'Catégorie', 'domaine-saint-joseph' ),
-            'add_new_item' => __( 'Ajouter une catégorie', 'domaine-saint-joseph' ),
-            'edit_item' => __( 'Modifier la catégorie', 'domaine-saint-joseph' ),
-            'all_items' => __( 'Toutes les catégories', 'domaine-saint-joseph' ),
+            'name' => __( 'Cat&#233;gories Galerie', 'domaine-saint-joseph' ),
+            'singular_name' => __( 'Cat&#233;gorie', 'domaine-saint-joseph' ),
+            'add_new_item' => __( 'Ajouter une cat&#233;gorie', 'domaine-saint-joseph' ),
+            'edit_item' => __( 'Modifier la cat&#233;gorie', 'domaine-saint-joseph' ),
+            'all_items' => __( 'Toutes les cat&#233;gories', 'domaine-saint-joseph' ),
         ],
         'public' => true,
         'hierarchical' => true,
@@ -84,7 +84,7 @@ function dsj_register_cpts() {
 add_action( 'init', 'dsj_register_cpts' );
 
 
-// ?? Restaurant / Menu ??
+// &#127869; Restaurant / Menu &#127869;
 register_post_type( 'menu', [
     'labels' => [
         'name' => __( 'Menus Restaurant', 'domaine-saint-joseph' ),
@@ -104,14 +104,14 @@ register_post_type( 'menu', [
     'menu_position' => 8,
 ]);
 
-// ?? Taxonomie Catégories de plats ??
+// &#128193; Taxonomie Cat&#233;gories de plats &#128193;
 register_taxonomy( 'categorie_menu', 'menu', [
     'labels' => [
-        'name' => __( 'Catégories de plats', 'domaine-saint-joseph' ),
-        'singular_name' => __( 'Catégorie', 'domaine-saint-joseph' ),
-        'add_new_item' => __( 'Ajouter une catégorie', 'domaine-saint-joseph' ),
-        'edit_item' => __( 'Modifier la catégorie', 'domaine-saint-joseph' ),
-        'all_items' => __( 'Toutes les catégories', 'domaine-saint-joseph' ),
+        'name' => __( 'Cat&#233;gories de plats', 'domaine-saint-joseph' ),
+        'singular_name' => __( 'Cat&#233;gorie', 'domaine-saint-joseph' ),
+        'add_new_item' => __( 'Ajouter une cat&#233;gorie', 'domaine-saint-joseph' ),
+        'edit_item' => __( 'Modifier la cat&#233;gorie', 'domaine-saint-joseph' ),
+        'all_items' => __( 'Toutes les cat&#233;gories', 'domaine-saint-joseph' ),
     ],
     'public' => true,
     'hierarchical' => true,
@@ -119,16 +119,16 @@ register_taxonomy( 'categorie_menu', 'menu', [
     'rewrite' => [ 'slug' => 'categorie-menu' ],
 ]);
 
-// ?? Témoignages ??
+// &#128172; T&#233;moignages &#128172;
 register_post_type( 'temoignage', [
     'labels' => [
-        'name' => __( 'Témoignages', 'domaine-saint-joseph' ),
-        'singular_name' => __( 'Témoignage', 'domaine-saint-joseph' ),
-        'add_new' => __( 'Ajouter un témoignage', 'domaine-saint-joseph' ),
-        'add_new_item' => __( 'Nouveau témoignage', 'domaine-saint-joseph' ),
-        'edit_item' => __( 'Modifier le témoignage', 'domaine-saint-joseph' ),
-        'view_item' => __( 'Voir le témoignage', 'domaine-saint-joseph' ),
-        'all_items' => __( 'Tous les témoignages', 'domaine-saint-joseph' ),
+        'name' => __( 'T&#233;moignages', 'domaine-saint-joseph' ),
+        'singular_name' => __( 'T&#233;moignage', 'domaine-saint-joseph' ),
+        'add_new' => __( 'Ajouter un t&#233;moignage', 'domaine-saint-joseph' ),
+        'add_new_item' => __( 'Nouveau t&#233;moignage', 'domaine-saint-joseph' ),
+        'edit_item' => __( 'Modifier le t&#233;moignage', 'domaine-saint-joseph' ),
+        'view_item' => __( 'Voir le t&#233;moignage', 'domaine-saint-joseph' ),
+        'all_items' => __( 'Tous les t&#233;moignages', 'domaine-saint-joseph' ),
     ],
     'public' => true,
     'has_archive' => false,

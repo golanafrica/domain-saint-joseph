@@ -1,10 +1,10 @@
 <?php
 /**
- * Widgets personnalisés pour le thème
+ * Widgets personnalis&#233;s pour le th&#232;me
  * Domaine Saint Joseph
  */
 
-// Vérifier si la classe n'existe pas déjà
+// V&#233;rifier si la classe n'existe pas d&#233;j&#224;
 if ( ! class_exists( 'DSJ_Hero_Widget' ) ) {
 
     class DSJ_Hero_Widget extends WP_Widget {
@@ -12,7 +12,7 @@ if ( ! class_exists( 'DSJ_Hero_Widget' ) ) {
         public function __construct() {
             parent::__construct(
                 'dsj_hero_widget',
-                __( '? Bandeau Hero DSJ', 'domaine-saint-joseph' ),
+                __( '&#127775; Bandeau Hero DSJ', 'domaine-saint-joseph' ),
                 [ 
                     'description' => __( 'Widget pour le bandeau principal avec image, texte et boutons', 'domaine-saint-joseph' ),
                     'classname' => 'dsj-hero-widget'
@@ -80,13 +80,13 @@ if ( ! class_exists( 'DSJ_Hero_Widget' ) ) {
         }
         
         public function form( $instance ) {
-            $badge = ! empty( $instance['badge'] ) ? $instance['badge'] : '? Domaine Saint Joseph - Bobo-Dioulasso';
+            $badge = ! empty( $instance['badge'] ) ? $instance['badge'] : '&#9962; Domaine Saint Joseph - Bobo-Dioulasso';
             $titre = ! empty( $instance['titre'] ) ? $instance['titre'] : 'Former les jeunes filles, accueillir avec compassion';
-            $sous_titre = ! empty( $instance['sous_titre'] ) ? $instance['sous_titre'] : 'Centre de formation technique & Maison d\'accueil\nBobo-Dioulasso, Burkina Faso';
+            $sous_titre = ! empty( $instance['sous_titre'] ) ? $instance['sous_titre'] : "Centre de formation technique & Maison d'accueil\nBobo-Dioulasso, Burkina Faso";
             $image_url = ! empty( $instance['image_url'] ) ? $instance['image_url'] : '';
-            $bouton1_texte = ! empty( $instance['bouton1_texte'] ) ? $instance['bouton1_texte'] : '? Nos formations';
+            $bouton1_texte = ! empty( $instance['bouton1_texte'] ) ? $instance['bouton1_texte'] : '&#127891; Nos formations';
             $bouton1_lien = ! empty( $instance['bouton1_lien'] ) ? $instance['bouton1_lien'] : '/formations';
-            $bouton2_texte = ! empty( $instance['bouton2_texte'] ) ? $instance['bouton2_texte'] : '? Maison d\'accueil';
+            $bouton2_texte = ! empty( $instance['bouton2_texte'] ) ? $instance['bouton2_texte'] : '&#127968; Maison d\'accueil';
             $bouton2_lien = ! empty( $instance['bouton2_lien'] ) ? $instance['bouton2_lien'] : '/maison-accueil';
             $overlay_opacity = ! empty( $instance['overlay_opacity'] ) ? $instance['overlay_opacity'] : '0.7';
             ?>
@@ -104,7 +104,7 @@ if ( ! class_exists( 'DSJ_Hero_Widget' ) ) {
             </style>
             
             <div class="dsj-widget-field">
-                <label for="<?php echo $this->get_field_id( 'badge' ); ?>">?? Badge :</label>
+                <label for="<?php echo $this->get_field_id( 'badge' ); ?>">&#127991;&#65039; Badge :</label>
                 <input class="widefat" id="<?php echo $this->get_field_id( 'badge' ); ?>" 
                        name="<?php echo $this->get_field_name( 'badge' ); ?>" 
                        type="text" value="<?php echo esc_attr( $badge ); ?>">
@@ -112,25 +112,25 @@ if ( ! class_exists( 'DSJ_Hero_Widget' ) ) {
             </div>
             
             <div class="dsj-widget-field">
-                <label for="<?php echo $this->get_field_id( 'titre' ); ?>">? Titre principal :</label>
+                <label for="<?php echo $this->get_field_id( 'titre' ); ?>">&#128221; Titre principal :</label>
                 <textarea class="widefat" id="<?php echo $this->get_field_id( 'titre' ); ?>" 
                           name="<?php echo $this->get_field_name( 'titre' ); ?>" rows="3"><?php echo esc_textarea( $titre ); ?></textarea>
-                <div class="description">Utilisez &lt;br&gt; pour les retours à la ligne</div>
+                <div class="description">Utilisez &lt;br&gt; pour les retours &#224; la ligne</div>
             </div>
             
             <div class="dsj-widget-field">
-                <label for="<?php echo $this->get_field_id( 'sous_titre' ); ?>">? Sous-titre :</label>
+                <label for="<?php echo $this->get_field_id( 'sous_titre' ); ?>">&#128196; Sous-titre :</label>
                 <textarea class="widefat" id="<?php echo $this->get_field_id( 'sous_titre' ); ?>" 
                           name="<?php echo $this->get_field_name( 'sous_titre' ); ?>" rows="3"><?php echo esc_textarea( $sous_titre ); ?></textarea>
             </div>
             
             <div class="dsj-widget-field">
-                <label for="<?php echo $this->get_field_id( 'image_url' ); ?>">?? Image de fond :</label>
+                <label for="<?php echo $this->get_field_id( 'image_url' ); ?>">&#128444;&#65039; Image de fond :</label>
                 <input class="widefat" id="<?php echo $this->get_field_id( 'image_url' ); ?>" 
                        name="<?php echo $this->get_field_name( 'image_url' ); ?>" 
                        type="url" value="<?php echo esc_url( $image_url ); ?>" placeholder="https://...">
                 <div class="description">
-                    <button type="button" class="button upload-image-btn">? Choisir une image</button>
+                    <button type="button" class="button upload-image-btn">&#128247; Choisir une image</button>
                     <span> ou collez une URL</span>
                 </div>
                 <?php if ( $image_url ) : ?>
@@ -139,25 +139,25 @@ if ( ! class_exists( 'DSJ_Hero_Widget' ) ) {
             </div>
             
             <div class="dsj-widget-field">
-                <label for="<?php echo $this->get_field_id( 'overlay_opacity' ); ?>">? Opacité :</label>
+                <label for="<?php echo $this->get_field_id( 'overlay_opacity' ); ?>">&#127912; Opacit&#233; :</label>
                 <select id="<?php echo $this->get_field_id( 'overlay_opacity' ); ?>" 
                         name="<?php echo $this->get_field_name( 'overlay_opacity' ); ?>">
-                    <option value="0.3" <?php selected( $overlay_opacity, '0.3' ); ?>>Légère (30%)</option>
+                    <option value="0.3" <?php selected( $overlay_opacity, '0.3' ); ?>>L&#233;g&#232;re (30%)</option>
                     <option value="0.5" <?php selected( $overlay_opacity, '0.5' ); ?>>Moyenne (50%)</option>
                     <option value="0.7" <?php selected( $overlay_opacity, '0.7' ); ?>>Forte (70%)</option>
-                    <option value="0.9" <?php selected( $overlay_opacity, '0.9' ); ?>>Très forte (90%)</option>
+                    <option value="0.9" <?php selected( $overlay_opacity, '0.9' ); ?>>Tr&#232;s forte (90%)</option>
                 </select>
-                <div class="description">Plus l'opacité est forte, plus le texte est lisible</div>
+                <div class="description">Plus l'opacit&#233; est forte, plus le texte est lisible</div>
             </div>
             
             <hr>
-            <h4>? Bouton 1 (principal)</h4>
+            <h4>&#128280; Bouton 1 (principal)</h4>
             <div class="dsj-widget-field">
                 <label for="<?php echo $this->get_field_id( 'bouton1_texte' ); ?>">Texte :</label>
                 <input class="widefat" id="<?php echo $this->get_field_id( 'bouton1_texte' ); ?>" 
                        name="<?php echo $this->get_field_name( 'bouton1_texte' ); ?>" 
                        type="text" value="<?php echo esc_attr( $bouton1_texte ); ?>">
-                <div class="description">Ex: ? Nos formations</div>
+                <div class="description">Ex: &#127891; Nos formations</div>
             </div>
             <div class="dsj-widget-field">
                 <label for="<?php echo $this->get_field_id( 'bouton1_lien' ); ?>">Lien :</label>
@@ -168,7 +168,7 @@ if ( ! class_exists( 'DSJ_Hero_Widget' ) ) {
             </div>
             
             <hr>
-            <h4>? Bouton 2 (secondaire)</h4>
+            <h4>&#128280; Bouton 2 (secondaire)</h4>
             <div class="dsj-widget-field">
                 <label for="<?php echo $this->get_field_id( 'bouton2_texte' ); ?>">Texte :</label>
                 <input class="widefat" id="<?php echo $this->get_field_id( 'bouton2_texte' ); ?>" 
@@ -196,15 +196,15 @@ if ( ! class_exists( 'DSJ_Hero_Widget' ) ) {
             $instance['bouton2_lien'] = esc_url_raw( $new_instance['bouton2_lien'] );
             $instance['overlay_opacity'] = sanitize_text_field( $new_instance['overlay_opacity'] );
             
-            // Forcer les valeurs par défaut si vides (optionnel)
+            // Forcer les valeurs par d&#233;faut si vides (optionnel)
             if ( empty( $instance['bouton1_texte'] ) ) {
-                $instance['bouton1_texte'] = '? Nos formations';
+                $instance['bouton1_texte'] = '&#127891; Nos formations';
             }
             if ( empty( $instance['bouton1_lien'] ) ) {
                 $instance['bouton1_lien'] = '/formations';
             }
             if ( empty( $instance['bouton2_texte'] ) ) {
-                $instance['bouton2_texte'] = '? Maison d\'accueil';
+                $instance['bouton2_texte'] = '&#127968; Maison d\'accueil';
             }
             if ( empty( $instance['bouton2_lien'] ) ) {
                 $instance['bouton2_lien'] = '/maison-accueil';
