@@ -8,7 +8,7 @@ get_header(); ?>
 <!-- HERO SECTION -->
 <?php
 $hero_image     = get_theme_mod( 'hero_soutenir_image' );
-$hero_badge     = get_theme_mod( 'hero_soutenir_badge', '? Votre soutien compte' );
+$hero_badge     = get_theme_mod( 'hero_soutenir_badge', '&#128157; Votre soutien compte' );
 $hero_titre     = get_theme_mod( 'hero_soutenir_titre', 'Soutenez Notre Mission' );
 $hero_soustitre = get_theme_mod( 'hero_soutenir_soustitre', 'Votre générosité forme une jeune fille, accueille une famille et fait vivre le charisme des Travailleuses Missionnaires' );
 ?>
@@ -20,11 +20,11 @@ $hero_soustitre = get_theme_mod( 'hero_soutenir_soustitre', 'Votre générosité
          <?php endif; ?>>
     </div>
     <div class="header-caption-band">
-        <span class="header-badge"><?php echo esc_html( $hero_badge ); ?></span>
+        <span class="header-badge"><?php echo $hero_badge; ?></span>
         <h1 class="header-title"><?php echo esc_html( $hero_titre ); ?></h1>
         <div class="header-divider">
             <span class="divider-line"></span>
-            <span class="divider-icon">?</span>
+            <span class="divider-icon">&#128157;</span>
             <span class="divider-line"></span>
         </div>
         <p class="header-subtitle"><?php echo esc_html( $hero_soustitre ); ?></p>
@@ -41,7 +41,7 @@ $besoins_progress = get_theme_mod('besoins_urgents_progress', '40');
 <section class="besoins-urgents section-padding">
     <div class="container">
         <div class="besoins-urgents-content">
-            <div class="besoins-urgents-icon">?</div>
+            <div class="besoins-urgents-icon">&#128680;</div>
             <h2><?php echo esc_html( $besoins_titre ); ?></h2>
             <p><?php echo esc_html( $besoins_texte ); ?></p>
             <div class="progress-bar">
@@ -50,7 +50,7 @@ $besoins_progress = get_theme_mod('besoins_urgents_progress', '40');
                 </div>
             </div>
             <p class="montant-objectif"><?php echo esc_html( $besoins_objectif ); ?></p>
-            <a href="/contact" class="btn btn-primary">Contribuer ?</a>
+            <a href="<?php echo esc_url( home_url( '/contact' ) ); ?>" class="btn btn-primary">Contribuer &#8594;</a>
         </div>
     </div>
 </section>
@@ -62,7 +62,7 @@ $soutenir_texte_intro = get_theme_mod('soutenir_texte_intro', 'Depuis 2022, le D
 <section class="pourquoi-soutenir section-padding">
     <div class="container">
         <div class="section-header">
-            <span class="section-badge">? Pourquoi donner ?</span>
+            <span class="section-badge">&#128161; Pourquoi donner ?</span>
             <h2 class="section-title">Pourquoi votre soutien compte ?</h2>
             <div class="section-divider"></div>
         </div>
@@ -71,21 +71,21 @@ $soutenir_texte_intro = get_theme_mod('soutenir_texte_intro', 'Depuis 2022, le D
             <p>Votre contribution permet de :</p>
             <div class="pourquoi-list">
                 <div class="pourquoi-item">
-                    <span class="pourquoi-icon">?</span>
+                    <span class="pourquoi-icon">&#127891;</span>
                     <div>
                         <h3>Financer une inscription</h3>
                         <p>Frais de scolarité, matériel de couture/informatique</p>
                     </div>
                 </div>
                 <div class="pourquoi-item">
-                    <span class="pourquoi-icon">?</span>
+                    <span class="pourquoi-icon">&#128736;</span>
                     <div>
                         <h3>Entretenir les locaux</h3>
                         <p>Chambres, chapelle, salles de formation</p>
                     </div>
                 </div>
                 <div class="pourquoi-item">
-                    <span class="pourquoi-icon">?</span>
+                    <span class="pourquoi-icon">&#129309;</span>
                     <div>
                         <h3>Accompagner les plus fragiles</h3>
                         <p>Bourses sociales, hébergement d'urgence</p>
@@ -105,14 +105,14 @@ $parrainage_prix = get_theme_mod('parrainage_prix', '50 000 F CFA / mois');
 <section class="modalites-section section-padding bg-light">
     <div class="container">
         <div class="section-header">
-            <span class="section-badge">? Comment contribuer ?</span>
+            <span class="section-badge">&#128176; Comment contribuer ?</span>
             <h2 class="section-title">Modalités de contribution</h2>
             <div class="section-divider"></div>
         </div>
         
         <div class="modalites-grid">
             <div class="modalite-card">
-                <div class="modalite-icon">?</div>
+                <div class="modalite-icon">&#128176;</div>
                 <h3>Don Financier</h3>
                 <p>Un don ponctuel ou mensuel pour soutenir les frais de fonctionnement et les bourses.</p>
                 <div class="montants-suggeres">
@@ -120,24 +120,24 @@ $parrainage_prix = get_theme_mod('parrainage_prix', '50 000 F CFA / mois');
                         <span class="montant"><?php echo esc_html( trim( $montant ) ); ?></span>
                     <?php endforeach; ?>
                 </div>
-                <a href="#paiement" class="btn-link">Voir les moyens de paiement ?</a>
+                <a href="#paiement" class="btn-link">Voir les moyens de paiement &#8594;</a>
             </div>
             
             <div class="modalite-card">
-                <div class="modalite-icon">?</div>
+                <div class="modalite-icon">&#128103;</div>
                 <h3>Parrainage Élève</h3>
                 <p>Parrainez une jeune fille pour toute sa formation. Suivi régulier et rapport d'activité.</p>
                 <p class="prix-parrainage"><strong><?php echo esc_html( $parrainage_prix ); ?></strong></p>
-                <a href="<?php echo esc_url( home_url( '/contact' ) ); ?>?sujet=parrainage" class="btn btn-primary btn-small">? Je parraine</a>
-                <a href="#paiement" class="btn-link">Voir les moyens de paiement ?</a>
+                <a href="<?php echo esc_url( home_url( '/contact' ) ); ?>?sujet=parrainage" class="btn btn-primary btn-small">&#128157; Je parraine</a>
+                <a href="#paiement" class="btn-link">Voir les moyens de paiement &#8594;</a>
             </div>
             
             <div class="modalite-card">
-                <div class="modalite-icon">?</div>
+                <div class="modalite-icon">&#127873;</div>
                 <h3>Don Matériel</h3>
                 <p>Machines à coudre, ordinateurs, livres, matériel de construction ou denrées alimentaires.</p>
-                <a href="<?php echo esc_url( home_url( '/contact' ) ); ?>?sujet=don-materiel" class="btn btn-primary btn-small">? Proposer un don</a>
-                <a href="#paiement" class="btn-link">Voir les besoins ?</a>
+                <a href="<?php echo esc_url( home_url( '/contact' ) ); ?>?sujet=don-materiel" class="btn btn-primary btn-small">&#127873; Proposer un don</a>
+                <a href="#paiement" class="btn-link">Voir les besoins &#8594;</a>
             </div>
         </div>
     </div>
@@ -147,7 +147,7 @@ $parrainage_prix = get_theme_mod('parrainage_prix', '50 000 F CFA / mois');
 <section id="paiement" class="paiement-section section-padding">
     <div class="container">
         <div class="section-header">
-            <span class="section-badge">? Options de paiement</span>
+            <span class="section-badge">&#128179; Options de paiement</span>
             <h2 class="section-title">Moyens de Paiement</h2>
             <div class="section-divider"></div>
             <p class="section-subtitle">Sécurité et simplicité adaptées au contexte local</p>
@@ -155,7 +155,7 @@ $parrainage_prix = get_theme_mod('parrainage_prix', '50 000 F CFA / mois');
         
         <div class="paiement-grid">
             <div class="paiement-card">
-                <div class="paiement-icon">?</div>
+                <div class="paiement-icon">&#128241;</div>
                 <h3>Mobile Money</h3>
                 <ul class="paiement-list">
                     <li><strong>Orange Money :</strong> <span>+226 <?php echo esc_html( dsj_get_whatsapp() ); ?></span></li>
@@ -166,7 +166,7 @@ $parrainage_prix = get_theme_mod('parrainage_prix', '50 000 F CFA / mois');
             </div>
             
             <div class="paiement-card">
-                <div class="paiement-icon">?</div>
+                <div class="paiement-icon">&#127974;</div>
                 <h3>Virement Bancaire</h3>
                 <p>Pour les dons institutionnels ou internationaux :</p>
                 <ul class="paiement-list">
@@ -174,16 +174,16 @@ $parrainage_prix = get_theme_mod('parrainage_prix', '50 000 F CFA / mois');
                     <li><strong>IBAN / RIB :</strong> Sur demande</li>
                     <li><strong>Titulaire :</strong> Domaine Saint Joseph</li>
                 </ul>
-                <p class="paiement-note">? Demandez le RIB complet par WhatsApp.</p>
+                <p class="paiement-note">&#128172; Demandez le RIB complet par WhatsApp.</p>
             </div>
         </div>
         
         <div class="paiement-cta">
             <a href="https://wa.me/<?php echo esc_attr( dsj_get_whatsapp() ); ?>?text=Bonjour,%20je%20souhaite%20faire%20un%20don%20au%20Domaine%20Saint%20Joseph.%20Merci%20de%20me%20guider." class="btn btn-primary btn-large" target="_blank">
-                ? Confirmer mon don par WhatsApp
+                &#128172; Confirmer mon don par WhatsApp
             </a>
             <a href="<?php echo esc_url( home_url( '/contact' ) ); ?>?sujet=don" class="btn btn-secondary btn-large">
-                ? Formulaire de contact
+                &#128233; Formulaire de contact
             </a>
         </div>
     </div>
@@ -193,7 +193,7 @@ $parrainage_prix = get_theme_mod('parrainage_prix', '50 000 F CFA / mois');
 <section class="temoignages-donateurs section-padding bg-light">
     <div class="container">
         <div class="section-header">
-            <span class="section-badge">? Ils témoignent</span>
+            <span class="section-badge">&#128172; Ils témoignent</span>
             <h2 class="section-title">Ils nous soutiennent</h2>
             <div class="section-divider"></div>
         </div>
@@ -227,7 +227,7 @@ $parrainage_prix = get_theme_mod('parrainage_prix', '50 000 F CFA / mois');
                         Chaque don, même modeste, est une semence d'espérance. Il ne s'agit pas seulement de donner de l'argent, mais de croire en l'avenir de nos jeunes filles.
                     </div>
                     <div class="temoignage-author">
-                        <strong>S?ur Responsable, Domaine Saint Joseph</strong>
+                        <strong>S&#339;ur Responsable, Domaine Saint Joseph</strong>
                     </div>
                 </div>
             <?php endif; ?>
@@ -242,7 +242,7 @@ $transparence_texte = get_theme_mod('transparence_texte', 'Chaque contribution e
 <section class="transparence-section section-padding">
     <div class="container">
         <div class="section-header">
-            <span class="section-badge">? Notre engagement</span>
+            <span class="section-badge">&#128274; Notre engagement</span>
             <h2 class="section-title">Transparence</h2>
             <div class="section-divider"></div>
         </div>
@@ -264,8 +264,8 @@ $cta_final_texte = get_theme_mod('cta_final_texte', 'Votre don, petit ou grand, 
             <h2><?php echo esc_html( $cta_final_titre ); ?></h2>
             <p><?php echo esc_html( $cta_final_texte ); ?></p>
             <div class="cta-final-buttons">
-                <a href="#paiement" class="btn btn-primary btn-large">? Je donne maintenant</a>
-                <a href="https://wa.me/<?php echo esc_attr( dsj_get_whatsapp() ); ?>" class="btn btn-whatsapp btn-large" target="_blank">? Parler sur WhatsApp</a>
+                <a href="#paiement" class="btn btn-primary btn-large">&#128155; Je donne maintenant</a>
+                <a href="https://wa.me/<?php echo esc_attr( dsj_get_whatsapp() ); ?>" class="btn btn-whatsapp btn-large" target="_blank">&#128241; Parler sur WhatsApp</a>
             </div>
         </div>
     </div>

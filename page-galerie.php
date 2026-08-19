@@ -7,7 +7,7 @@ get_header(); ?>
 <!-- HERO SECTION -->
 <?php
 $hero_image     = get_theme_mod( 'hero_galerie_image' );
-$hero_badge     = get_theme_mod( 'hero_galerie_badge', '? Souvenirs et moments' );
+$hero_badge     = get_theme_mod( 'hero_galerie_badge', '&#128248; Souvenirs et moments' );
 $hero_titre     = get_theme_mod( 'hero_galerie_titre', 'Notre Galerie' );
 $hero_soustitre = get_theme_mod( 'hero_galerie_soustitre', 'Découvrez notre cadre de vie, nos formations et nos événements en images' );
 ?>
@@ -21,24 +21,22 @@ $hero_soustitre = get_theme_mod( 'hero_galerie_soustitre', 'Découvrez notre cad
              <?php endif; ?>>
         </div>
         <div class="header-caption-band">
-            <span class="header-badge"><?php echo esc_html( $hero_badge ); ?></span>
+            <span class="header-badge"><?php echo $hero_badge; ?></span>
             <h1 class="header-title"><?php echo esc_html( $hero_titre ); ?></h1>
             <div class="header-divider">
                 <span class="divider-line"></span>
-                <span class="divider-icon">?</span>
+                <span class="divider-icon">&#128248;</span>
                 <span class="divider-line"></span>
             </div>
             <p class="header-subtitle"><?php echo esc_html( $hero_soustitre ); ?></p>
         </div>
     </section>
 
-   
-
     <!-- FILTRES DE CATÉGORIES -->
     <section class="galerie-filters section-padding">
         <div class="container">
             <div class="filter-buttons">
-                <button class="filter-btn active" data-filter="all">? Toutes les photos</button>
+                <button class="filter-btn active" data-filter="all">&#128248; Toutes les photos</button>
                 <?php
                 // Récupérer toutes les catégories de la galerie
                 $categories = get_terms( [
@@ -48,7 +46,7 @@ $hero_soustitre = get_theme_mod( 'hero_galerie_soustitre', 'Découvrez notre cad
                 
                 if ( ! empty( $categories ) && ! is_wp_error( $categories ) ) {
                     foreach ( $categories as $category ) {
-                        echo '<button class="filter-btn" data-filter="' . esc_attr( $category->slug ) . '">? ' . esc_html( $category->name ) . '</button>';
+                        echo '<button class="filter-btn" data-filter="' . esc_attr( $category->slug ) . '">&#128248; ' . esc_html( $category->name ) . '</button>';
                     }
                 }
                 ?>
@@ -85,7 +83,7 @@ $hero_soustitre = get_theme_mod( 'hero_galerie_soustitre', 'Découvrez notre cad
                                     <a href="<?php echo esc_url( wp_get_attachment_image_url( get_post_thumbnail_id(), 'large' ) ); ?>" class="galerie-link" data-lightbox="galerie">
                                         <?php the_post_thumbnail( 'medium', [ 'class' => 'galerie-image', 'loading' => 'lazy' ] ); ?>
                                         <div class="galerie-overlay">
-                                            <span class="galerie-icon">?</span>
+                                            <span class="galerie-icon">&#128269;</span>
                                             <div class="galerie-caption">
                                                 <h3><?php the_title(); ?></h3>
                                                 <?php if ( has_excerpt() ) : ?>
@@ -106,7 +104,7 @@ $hero_soustitre = get_theme_mod( 'hero_galerie_soustitre', 'Découvrez notre cad
                 <?php else : ?>
                     <div class="no-content" style="text-align: center; padding: 60px;">
                         <p>Aucune photo dans la galerie pour le moment. Revenez bientôt !</p>
-                        <p>? <a href="/contact">Contactez-nous</a> pour partager vos souvenirs.</p>
+                        <p>&#128231; <a href="<?php echo esc_url( home_url( '/contact' ) ); ?>">Contactez-nous</a> pour partager vos souvenirs.</p>
                     </div>
                 <?php 
                 endif;
@@ -123,8 +121,8 @@ $hero_soustitre = get_theme_mod( 'hero_galerie_soustitre', 'Découvrez notre cad
                 <h2>Vous avez visité le Domaine Saint Joseph ?</h2>
                 <p>Partagez vos photos avec nous ou venez découvrir notre cadre exceptionnel !</p>
                 <div class="cta-buttons">
-                    <a href="/contact" class="btn btn-primary btn-large">? Nous contacter</a>
-                    <a href="https://wa.me/<?php echo dsj_get_whatsapp(); ?>" class="btn btn-whatsapp btn-large" target="_blank">? WhatsApp</a>
+                    <a href="<?php echo esc_url( home_url( '/contact' ) ); ?>" class="btn btn-primary btn-large">&#128231; Nous contacter</a>
+                    <a href="https://wa.me/<?php echo dsj_get_whatsapp(); ?>" class="btn btn-whatsapp btn-large" target="_blank">&#128241; WhatsApp</a>
                 </div>
             </div>
         </div>
