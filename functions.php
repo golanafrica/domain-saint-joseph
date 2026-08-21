@@ -1,7 +1,14 @@
 <?php
+/**
+ * Functions du thème Domaine Saint Joseph
+ * Version production - Phase 1 terminée
+ */
+
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-// ── Chargement conditionnel des modules ──
+// ════════════════════════════════════════════════════════════════
+// CHARGEMENT CONDITIONNEL DES MODULES
+// ════════════════════════════════════════════════════════════════
 $inc = get_template_directory() . '/inc';
 if ( file_exists( $inc . '/cpt.php' ) ) require_once $inc . '/cpt.php';
 if ( file_exists( $inc . '/customizer.php' ) ) require_once $inc . '/customizer.php';
@@ -10,7 +17,9 @@ if ( file_exists( $inc . '/widgets.php' ) ) require_once $inc . '/widgets.php';
 if ( file_exists( $inc . '/admin-dashboard.php' ) ) require_once $inc . '/admin-dashboard.php';
 if ( file_exists( $inc . '/form-security.php' ) ) require_once $inc . '/form-security.php';
 
-// ── Configuration de base ──
+// ════════════════════════════════════════════════════════════════
+// CONFIGURATION DE BASE DU THÈME
+// ════════════════════════════════════════════════════════════════
 function dsj_setup() {
     add_theme_support( 'post-thumbnails' );
     add_theme_support( 'title-tag' );
@@ -34,7 +43,9 @@ function dsj_setup() {
 }
 add_action( 'after_setup_theme', 'dsj_setup' );
 
-// ── Enregistrement des zones de widgets ──
+// ════════════════════════════════════════════════════════════════
+// ENREGISTREMENT DES ZONES DE WIDGETS
+// ════════════════════════════════════════════════════════════════
 function dsj_widgets_init() {
     register_sidebar( [
         'name'          => __( 'Zone Hero - Bandeau principal', 'domaine-saint-joseph' ),
@@ -76,11 +87,9 @@ function dsj_widgets_init() {
 add_action( 'widgets_init', 'dsj_widgets_init' );
 
 // ════════════════════════════════════════════════════════════════
-// ✅ CORRECTION 1.1 : CACHE-BUSTING AVEC filemtime()
+// CHARGEMENT DES ASSETS AVEC CACHE-BUSTING (filemtime)
 // ════════════════════════════════════════════════════════════════
 function dsj_assets() {
-    // ✅ Cache-busting : utilise la date de modification du fichier
-    // Force le navigateur à recharger CSS/JS à chaque modification
     $style_file  = get_template_directory() . '/assets/css/main.css';
     $script_file = get_template_directory() . '/assets/js/main.js';
     
@@ -90,7 +99,7 @@ function dsj_assets() {
     wp_enqueue_style( 'dsj-main', get_template_directory_uri() . '/assets/css/main.css', [], $style_version );
     wp_enqueue_script( 'dsj-main', get_template_directory_uri() . '/assets/js/main.js', [], $script_version, true );
     
-    // Ajouter les couleurs personnalisées dynamiquement
+    // Couleurs personnalisées dynamiques
     $primary_color = get_theme_mod( 'primary_color', '#1A5276' );
     $accent_color = get_theme_mod( 'accent_color', '#D4AC0D' );
     $custom_css = "
@@ -121,20 +130,17 @@ function dsj_assets() {
 add_action( 'wp_enqueue_scripts', 'dsj_assets' );
 
 // ════════════════════════════════════════════════════════════════
-// ✅ CORRECTION 1.2 : FIX LAZY LOADING (suppression contradiction)
+// OPTIMISATIONS DE PERFORMANCE
 // ════════════════════════════════════════════════════════════════
 function dsj_performance() {
     remove_action( 'wp_head', 'print_emoji_detection_script', 7 );
     remove_action( 'wp_print_styles', 'print_emoji_styles' );
     remove_action( 'wp_head', 'wp_oembed_add_discovery_links' );
     remove_action( 'wp_head', 'wp_oembed_add_host_js' );
-    
-    // ❌ SUPPRIMÉ : add_filter( 'wp_lazy_loading_enabled', '__return_false' );
-    // Ce filtre cassait le lazy loading natif de WordPress
 }
 add_action( 'init', 'dsj_performance' );
 
-// Ce filtre reste actif : force loading="lazy" et decoding="async"
+// Force lazy loading sur les images
 add_filter( 'wp_get_attachment_image_attributes', function( $attr ) {
     if ( ! isset( $attr['loading'] ) ) {
         $attr['loading'] = 'lazy';
@@ -144,12 +150,11 @@ add_filter( 'wp_get_attachment_image_attributes', function( $attr ) {
 });
 
 // ════════════════════════════════════════════════════════════════
-// ✅ CORRECTION 1.3 : CONFIGURATION SMTP
+// CONFIGURATION SMTP (via Customizer)
 // ════════════════════════════════════════════════════════════════
 function dsj_configure_smtp( $phpmailer ) {
     $host = get_theme_mod( 'smtp_host', '' );
     
-    // Si aucun hôte SMTP configuré, on laisse wp_mail() utiliser mail() natif
     if ( empty( $host ) ) {
         return;
     }
@@ -162,24 +167,11 @@ function dsj_configure_smtp( $phpmailer ) {
     $phpmailer->Password   = get_theme_mod( 'smtp_pass', '' );
     $phpmailer->SMTPSecure = get_theme_mod( 'smtp_encryption', 'tls' );
     
-    // Email expéditeur
     $from_email = get_theme_mod( 'smtp_from_email', get_theme_mod( 'dsj_email', 'centredsj@gmail.com' ) );
     $from_name  = get_theme_mod( 'smtp_from_name', 'Domaine Saint Joseph' );
     $phpmailer->setFrom( $from_email, $from_name );
 }
 add_action( 'phpmailer_init', 'dsj_configure_smtp' );
-
-// ════════════════════════════════════════════════════════════════
-// 🔧 DEBUG SMTP TEMPORAIRE (À RETIRER APRÈS TEST)
-// ════════════════════════════════════════════════════════════════
-add_action( 'phpmailer_init', function( $phpmailer ) {
-    if ( ! get_theme_mod( 'smtp_host', '' ) ) return;
-    
-    $phpmailer->SMTPDebug = 2;
-    $phpmailer->Debugoutput = function( $str, $level ) {
-        error_log( "SMTP DEBUG [$level]: $str" );
-    };
-}, 999 );
 
 // ════════════════════════════════════════════════════════════════
 // FONCTIONS HELPER - CONTACT ET WHATSAPP
@@ -198,7 +190,7 @@ function dsj_get_email() {
 }
 
 // ════════════════════════════════════════════════════════════════
-// HANDLERS DE FORMULAIRES SÉCURISÉS
+// HANDLER FORMULAIRE DE CONTACT
 // ════════════════════════════════════════════════════════════════
 
 function dsj_handle_contact_form() {
@@ -247,16 +239,15 @@ function dsj_handle_contact_form() {
     
     $sent = wp_mail( $to, $subject, $body, $headers );
     
-    // 🔧 Log pour debug
-    if ( ! $sent ) {
-        error_log( "DSJ Contact Form: wp_mail() a échoué pour $to" );
-    }
-    
     wp_safe_redirect( home_url( $sent ? '/contact?success=1' : '/contact?error=send' ) );
     exit;
 }
 add_action( 'admin_post_dsj_contact_form', 'dsj_handle_contact_form' );
 add_action( 'admin_post_nopriv_dsj_contact_form', 'dsj_handle_contact_form' );
+
+// ════════════════════════════════════════════════════════════════
+// HANDLER FORMULAIRE DE RÉSERVATION HÉBERGEMENT
+// ════════════════════════════════════════════════════════════════
 
 function dsj_handle_reservation_form() {
     if ( ! isset( $_POST['_wpnonce'] ) || ! wp_verify_nonce( $_POST['_wpnonce'], 'dsj_reservation_nonce' ) ) {
@@ -312,6 +303,10 @@ function dsj_handle_reservation_form() {
 }
 add_action( 'admin_post_dsj_reservation_form', 'dsj_handle_reservation_form' );
 add_action( 'admin_post_nopriv_dsj_reservation_form', 'dsj_handle_reservation_form' );
+
+// ════════════════════════════════════════════════════════════════
+// HANDLER FORMULAIRE DE RÉSERVATION RESTAURANT
+// ════════════════════════════════════════════════════════════════
 
 function dsj_handle_restaurant_reservation() {
     if ( ! isset( $_POST['_wpnonce'] ) || ! wp_verify_nonce( $_POST['_wpnonce'], 'dsj_restaurant_nonce' ) ) {
@@ -371,32 +366,100 @@ add_action( 'admin_post_dsj_restaurant_reservation', 'dsj_handle_restaurant_rese
 add_action( 'admin_post_nopriv_dsj_restaurant_reservation', 'dsj_handle_restaurant_reservation' );
 
 // ════════════════════════════════════════════════════════════════
-// RÔLES & PERMISSIONS
+// RÔLES & PERMISSIONS - RÔLE SOEUR (avec toutes les capacités)
 // ════════════════════════════════════════════════════════════════
 
 function dsj_add_roles() {
-    if ( ! get_role( 'soeur' ) ) {
-        add_role( 'soeur', __( 'Sœur', 'domaine-saint-joseph' ), [
-            'read' => true,
-            'edit_posts' => true,
-            'edit_published_posts' => true,
-            'upload_files' => true,
-            'publish_posts' => true,
-            'delete_posts' => true,
-            'edit_formation' => true,
-            'edit_published_formation' => true,
-            'publish_formation' => true,
-            'delete_formation' => true,
-            'edit_hebergement' => true,
-            'edit_published_hebergement' => true,
-            'publish_hebergement' => true,
-        ] );
-    }
+    remove_role( 'soeur' );
+    
+    add_role( 'soeur', __( 'Sœur', 'domaine-saint-joseph' ), [
+        // Capacités de base WordPress
+        'read'                        => true,
+        'edit_posts'                  => true,
+        'edit_published_posts'        => true,
+        'delete_posts'                => true,
+        'delete_published_posts'      => true,
+        'publish_posts'               => true,
+        'upload_files'                => true,
+
+        // Capacités CPT Formation
+        'edit_formation'              => true,
+        'edit_formations'             => true,
+        'edit_others_formations'      => true,
+        'edit_published_formation'    => true,
+        'edit_published_formations'   => true,
+        'delete_formation'            => true,
+        'delete_formations'           => true,
+        'delete_published_formation'  => true,
+        'delete_published_formations' => true,
+        'publish_formation'           => true,
+        'publish_formations'          => true,
+        'read_formation'              => true,
+
+        // Capacités CPT Hébergement
+        'edit_hebergement'              => true,
+        'edit_hebergements'             => true,
+        'edit_others_hebergements'      => true,
+        'edit_published_hebergement'    => true,
+        'edit_published_hebergements'   => true,
+        'delete_hebergement'            => true,
+        'delete_hebergements'           => true,
+        'delete_published_hebergement'  => true,
+        'delete_published_hebergements' => true,
+        'publish_hebergement'           => true,
+        'publish_hebergements'          => true,
+        'read_hebergement'              => true,
+
+        // Capacités CPT Menu (Restaurant)
+        'edit_menu'              => true,
+        'edit_menus'             => true,
+        'edit_others_menus'      => true,
+        'edit_published_menu'    => true,
+        'edit_published_menus'   => true,
+        'delete_menu'            => true,
+        'delete_menus'           => true,
+        'delete_published_menu'  => true,
+        'delete_published_menus' => true,
+        'publish_menu'           => true,
+        'publish_menus'          => true,
+        'read_menu'              => true,
+
+        // Capacités CPT Galerie
+        'edit_galerie'              => true,
+        'edit_galeries'             => true,
+        'edit_others_galeries'      => true,
+        'edit_published_galerie'    => true,
+        'edit_published_galeries'   => true,
+        'delete_galerie'            => true,
+        'delete_galeries'           => true,
+        'delete_published_galerie'  => true,
+        'delete_published_galeries' => true,
+        'publish_galerie'           => true,
+        'publish_galeries'          => true,
+        'read_galerie'              => true,
+
+        // Capacités CPT Témoignage
+        'edit_temoignage'              => true,
+        'edit_temoignages'             => true,
+        'edit_others_temoignages'      => true,
+        'edit_published_temoignage'    => true,
+        'edit_published_temoignages'   => true,
+        'delete_temoignage'            => true,
+        'delete_temoignages'           => true,
+        'delete_published_temoignage'  => true,
+        'delete_published_temoignages' => true,
+        'publish_temoignage'           => true,
+        'publish_temoignages'          => true,
+        'read_temoignage'              => true,
+
+        // Capacités Taxonomies
+        'manage_categories' => true,
+    ] );
 }
 add_action( 'after_switch_theme', 'dsj_add_roles' );
 
 // ════════════════════════════════════════════════════════════════
-// FORCER LES TEMPLATES
+// FORCER LES TEMPLATES POUR LES CPT
 // ════════════════════════════════════════════════════════════════
 
 function dsj_force_hebergement_template( $template ) {
@@ -411,7 +474,7 @@ function dsj_force_hebergement_template( $template ) {
 add_filter( 'template_include', 'dsj_force_hebergement_template', 99 );
 
 // ════════════════════════════════════════════════════════════════
-// ADMIN SCRIPTS
+// ADMIN SCRIPTS (uploader widget)
 // ════════════════════════════════════════════════════════════════
 
 function dsj_admin_widget_scripts() {
