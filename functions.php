@@ -75,11 +75,22 @@ function dsj_widgets_init() {
 }
 add_action( 'widgets_init', 'dsj_widgets_init' );
 
-// ── Chargement des assets optimisés ──
+// ════════════════════════════════════════════════════════════════
+// ✅ CORRECTION 1.1 : CACHE-BUSTING AVEC filemtime()
+// ════════════════════════════════════════════════════════════════
 function dsj_assets() {
-    wp_enqueue_style( 'dsj-main', get_template_directory_uri() . '/assets/css/main.css', [], '1.0' );
-    wp_enqueue_script( 'dsj-main', get_template_directory_uri() . '/assets/js/main.js', [], '1.0', true );
+    // ✅ Cache-busting : utilise la date de modification du fichier
+    // Force le navigateur à recharger CSS/JS à chaque modification
+    $style_file  = get_template_directory() . '/assets/css/main.css';
+    $script_file = get_template_directory() . '/assets/js/main.js';
     
+    $style_version  = file_exists( $style_file ) ? filemtime( $style_file ) : '1.0';
+    $script_version = file_exists( $script_file ) ? filemtime( $script_file ) : '1.0';
+    
+    wp_enqueue_style( 'dsj-main', get_template_directory_uri() . '/assets/css/main.css', [], $style_version );
+    wp_enqueue_script( 'dsj-main', get_template_directory_uri() . '/assets/js/main.js', [], $script_version, true );
+    
+    // Ajouter les couleurs personnalisées dynamiquement
     $primary_color = get_theme_mod( 'primary_color', '#1A5276' );
     $accent_color = get_theme_mod( 'accent_color', '#D4AC0D' );
     $custom_css = "
@@ -109,16 +120,21 @@ function dsj_assets() {
 }
 add_action( 'wp_enqueue_scripts', 'dsj_assets' );
 
-// ── Optimisations 3G ──
+// ════════════════════════════════════════════════════════════════
+// ✅ CORRECTION 1.2 : FIX LAZY LOADING (suppression contradiction)
+// ════════════════════════════════════════════════════════════════
 function dsj_performance() {
     remove_action( 'wp_head', 'print_emoji_detection_script', 7 );
     remove_action( 'wp_print_styles', 'print_emoji_styles' );
     remove_action( 'wp_head', 'wp_oembed_add_discovery_links' );
     remove_action( 'wp_head', 'wp_oembed_add_host_js' );
-    add_filter( 'wp_lazy_loading_enabled', '__return_false' );
+    
+    // ❌ SUPPRIMÉ : add_filter( 'wp_lazy_loading_enabled', '__return_false' );
+    // Ce filtre cassait le lazy loading natif de WordPress
 }
 add_action( 'init', 'dsj_performance' );
 
+// Ce filtre reste actif : force loading="lazy" et decoding="async"
 add_filter( 'wp_get_attachment_image_attributes', function( $attr ) {
     if ( ! isset( $attr['loading'] ) ) {
         $attr['loading'] = 'lazy';
@@ -127,9 +143,47 @@ add_filter( 'wp_get_attachment_image_attributes', function( $attr ) {
     return $attr;
 });
 
-// ========================================
+// ════════════════════════════════════════════════════════════════
+// ✅ CORRECTION 1.3 : CONFIGURATION SMTP
+// ════════════════════════════════════════════════════════════════
+function dsj_configure_smtp( $phpmailer ) {
+    $host = get_theme_mod( 'smtp_host', '' );
+    
+    // Si aucun hôte SMTP configuré, on laisse wp_mail() utiliser mail() natif
+    if ( empty( $host ) ) {
+        return;
+    }
+    
+    $phpmailer->isSMTP();
+    $phpmailer->Host       = $host;
+    $phpmailer->SMTPAuth   = true;
+    $phpmailer->Port       = get_theme_mod( 'smtp_port', 587 );
+    $phpmailer->Username   = get_theme_mod( 'smtp_user', '' );
+    $phpmailer->Password   = get_theme_mod( 'smtp_pass', '' );
+    $phpmailer->SMTPSecure = get_theme_mod( 'smtp_encryption', 'tls' );
+    
+    // Email expéditeur
+    $from_email = get_theme_mod( 'smtp_from_email', get_theme_mod( 'dsj_email', 'centredsj@gmail.com' ) );
+    $from_name  = get_theme_mod( 'smtp_from_name', 'Domaine Saint Joseph' );
+    $phpmailer->setFrom( $from_email, $from_name );
+}
+add_action( 'phpmailer_init', 'dsj_configure_smtp' );
+
+// ════════════════════════════════════════════════════════════════
+// 🔧 DEBUG SMTP TEMPORAIRE (À RETIRER APRÈS TEST)
+// ════════════════════════════════════════════════════════════════
+add_action( 'phpmailer_init', function( $phpmailer ) {
+    if ( ! get_theme_mod( 'smtp_host', '' ) ) return;
+    
+    $phpmailer->SMTPDebug = 2;
+    $phpmailer->Debugoutput = function( $str, $level ) {
+        error_log( "SMTP DEBUG [$level]: $str" );
+    };
+}, 999 );
+
+// ════════════════════════════════════════════════════════════════
 // FONCTIONS HELPER - CONTACT ET WHATSAPP
-// ========================================
+// ════════════════════════════════════════════════════════════════
 
 function dsj_get_whatsapp() {
     return get_theme_mod( 'whatsapp', '22666605890' );
@@ -143,22 +197,21 @@ function dsj_get_email() {
     return get_theme_mod( 'dsj_email', 'centredsj@gmail.com' );
 }
 
-// ========================================
-// HANDLERS DE FORMULAIRES SECURISES
-// ========================================
+// ════════════════════════════════════════════════════════════════
+// HANDLERS DE FORMULAIRES SÉCURISÉS
+// ════════════════════════════════════════════════════════════════
 
-// Formulaire de contact
 function dsj_handle_contact_form() {
     if ( ! isset( $_POST['_wpnonce'] ) || ! wp_verify_nonce( $_POST['_wpnonce'], 'dsj_contact_nonce' ) ) {
-        wp_die( 'Erreur de securite', 'Domaine Saint Joseph', [ 'response' => 403 ] );
+        wp_die( 'Erreur de sécurité', 'Domaine Saint Joseph', [ 'response' => 403 ] );
     }
     
-    if ( ! dsj_check_honeypot() ) {
+    if ( function_exists( 'dsj_check_honeypot' ) && ! dsj_check_honeypot() ) {
         wp_safe_redirect( home_url( '/contact?success=1' ) );
         exit;
     }
     
-    if ( ! dsj_check_rate_limit( 'contact' ) ) {
+    if ( function_exists( 'dsj_check_rate_limit' ) && ! dsj_check_rate_limit( 'contact' ) ) {
         wp_safe_redirect( home_url( '/contact?error=rate_limit' ) );
         exit;
     }
@@ -173,42 +226,49 @@ function dsj_handle_contact_form() {
         exit;
     }
     
-    if ( ! dsj_validate_contact( $contact ) ) {
+    if ( function_exists( 'dsj_validate_contact' ) && ! dsj_validate_contact( $contact ) ) {
         wp_safe_redirect( home_url( '/contact?error=invalid_contact' ) );
         exit;
     }
     
-    dsj_save_message( 'contact', [
-        'nom'     => $nom,
-        'contact' => $contact,
-        'sujet'   => $sujet,
-        'message' => $message,
-    ]);
+    if ( function_exists( 'dsj_save_message' ) ) {
+        dsj_save_message( 'contact', [
+            'nom'     => $nom,
+            'contact' => $contact,
+            'sujet'   => $sujet,
+            'message' => $message,
+        ]);
+    }
     
     $to      = dsj_get_email();
     $subject = sprintf( '[DSJ] %s - %s', ucfirst( $sujet ), $nom );
-    $body    = "Nouveau message :\n\nNom: $nom\nContact: $contact\nSujet: $sujet\nMessage:\n$message\n---\nEnvoye depuis: " . home_url();
+    $body    = "Nouveau message :\n\nNom: $nom\nContact: $contact\nSujet: $sujet\nMessage:\n$message\n---\nEnvoyé depuis: " . home_url();
     $headers = [ 'Content-Type: text/plain; charset=UTF-8', 'Reply-To: ' . $contact ];
-    wp_mail( $to, $subject, $body, $headers );
     
-    wp_safe_redirect( home_url( '/contact?success=1' ) );
+    $sent = wp_mail( $to, $subject, $body, $headers );
+    
+    // 🔧 Log pour debug
+    if ( ! $sent ) {
+        error_log( "DSJ Contact Form: wp_mail() a échoué pour $to" );
+    }
+    
+    wp_safe_redirect( home_url( $sent ? '/contact?success=1' : '/contact?error=send' ) );
     exit;
 }
 add_action( 'admin_post_dsj_contact_form', 'dsj_handle_contact_form' );
 add_action( 'admin_post_nopriv_dsj_contact_form', 'dsj_handle_contact_form' );
 
-// Formulaire de reservation hebergement
 function dsj_handle_reservation_form() {
     if ( ! isset( $_POST['_wpnonce'] ) || ! wp_verify_nonce( $_POST['_wpnonce'], 'dsj_reservation_nonce' ) ) {
-        wp_die( 'Erreur de securite', 'Domaine Saint Joseph', [ 'response' => 403 ] );
+        wp_die( 'Erreur de sécurité', 'Domaine Saint Joseph', [ 'response' => 403 ] );
     }
     
-    if ( ! dsj_check_honeypot() ) {
+    if ( function_exists( 'dsj_check_honeypot' ) && ! dsj_check_honeypot() ) {
         wp_safe_redirect( home_url( '/maison-accueil?success=1' ) );
         exit;
     }
     
-    if ( ! dsj_check_rate_limit( 'reservation' ) ) {
+    if ( function_exists( 'dsj_check_rate_limit' ) && ! dsj_check_rate_limit( 'reservation' ) ) {
         wp_safe_redirect( home_url( '/maison-accueil?error=rate_limit' ) );
         exit;
     }
@@ -225,44 +285,45 @@ function dsj_handle_reservation_form() {
         exit;
     }
     
-    if ( ! dsj_validate_contact( $contact ) ) {
+    if ( function_exists( 'dsj_validate_contact' ) && ! dsj_validate_contact( $contact ) ) {
         wp_safe_redirect( home_url( '/maison-accueil?error=invalid_contact' ) );
         exit;
     }
     
-    dsj_save_message( 'reservation', [
-        'nom'            => $nom,
-        'contact'        => $contact,
-        'arrivee'        => $arrivee,
-        'depart'         => $depart,
-        'type_chambre'   => $type,
-        'message'        => $message,
-    ]);
+    if ( function_exists( 'dsj_save_message' ) ) {
+        dsj_save_message( 'reservation', [
+            'nom'            => $nom,
+            'contact'        => $contact,
+            'arrivee'        => $arrivee,
+            'depart'         => $depart,
+            'type_chambre'   => $type,
+            'message'        => $message,
+        ]);
+    }
     
     $to      = dsj_get_email();
-    $subject = '[DSJ] Reservation - ' . $nom;
-    $body    = "Nouvelle reservation :\n\nNom: $nom\nContact: $contact\nArrivee: $arrivee\nDepart: $depart\nType: $type\nMessage: $message";
+    $subject = '[DSJ] Réservation - ' . $nom;
+    $body    = "Nouvelle réservation :\n\nNom: $nom\nContact: $contact\nArrivée: $arrivee\nDépart: $depart\nType: $type\nMessage: $message";
     $headers = [ 'Content-Type: text/plain; charset=UTF-8', 'Reply-To: ' . $contact ];
-    wp_mail( $to, $subject, $body, $headers );
+    $sent = wp_mail( $to, $subject, $body, $headers );
     
-    wp_safe_redirect( home_url( '/maison-accueil?success=1' ) );
+    wp_safe_redirect( home_url( $sent ? '/maison-accueil?success=1' : '/maison-accueil?error=send' ) );
     exit;
 }
 add_action( 'admin_post_dsj_reservation_form', 'dsj_handle_reservation_form' );
 add_action( 'admin_post_nopriv_dsj_reservation_form', 'dsj_handle_reservation_form' );
 
-// Formulaire de reservation restaurant
 function dsj_handle_restaurant_reservation() {
     if ( ! isset( $_POST['_wpnonce'] ) || ! wp_verify_nonce( $_POST['_wpnonce'], 'dsj_restaurant_nonce' ) ) {
-        wp_die( 'Erreur de securite', 'Domaine Saint Joseph', [ 'response' => 403 ] );
+        wp_die( 'Erreur de sécurité', 'Domaine Saint Joseph', [ 'response' => 403 ] );
     }
     
-    if ( ! dsj_check_honeypot() ) {
+    if ( function_exists( 'dsj_check_honeypot' ) && ! dsj_check_honeypot() ) {
         wp_safe_redirect( home_url( '/restaurant?resa_success=1' ) );
         exit;
     }
     
-    if ( ! dsj_check_rate_limit( 'restaurant' ) ) {
+    if ( function_exists( 'dsj_check_rate_limit' ) && ! dsj_check_rate_limit( 'restaurant' ) ) {
         wp_safe_redirect( home_url( '/restaurant?resa_error=rate_limit' ) );
         exit;
     }
@@ -280,40 +341,42 @@ function dsj_handle_restaurant_reservation() {
         exit;
     }
     
-    if ( ! dsj_validate_contact( $contact ) ) {
+    if ( function_exists( 'dsj_validate_contact' ) && ! dsj_validate_contact( $contact ) ) {
         wp_safe_redirect( home_url( '/restaurant?resa_error=invalid_contact' ) );
         exit;
     }
     
-    dsj_save_message( 'restaurant', [
-        'nom'       => $nom,
-        'contact'   => $contact,
-        'date'      => $date,
-        'heure'     => $heure,
-        'personnes' => $personnes,
-        'occasion'  => $occasion,
-        'message'   => $message,
-    ]);
+    if ( function_exists( 'dsj_save_message' ) ) {
+        dsj_save_message( 'restaurant', [
+            'nom'       => $nom,
+            'contact'   => $contact,
+            'date'      => $date,
+            'heure'     => $heure,
+            'personnes' => $personnes,
+            'occasion'  => $occasion,
+            'message'   => $message,
+        ]);
+    }
     
     $to      = dsj_get_email();
-    $subject = '[DSJ] Reservation Restaurant - ' . $nom;
-    $body    = "Nouvelle reservation restaurant :\n\nNom: $nom\nContact: $contact\nDate: $date\nHeure: $heure\nPersonnes: $personnes\nOccasion: $occasion\nMessage: $message\n---\nEnvoye depuis: " . home_url();
+    $subject = '[DSJ] Réservation Restaurant - ' . $nom;
+    $body    = "Nouvelle réservation restaurant :\n\nNom: $nom\nContact: $contact\nDate: $date\nHeure: $heure\nPersonnes: $personnes\nOccasion: $occasion\nMessage: $message\n---\nEnvoyé depuis: " . home_url();
     $headers = [ 'Content-Type: text/plain; charset=UTF-8', 'Reply-To: ' . $contact ];
-    wp_mail( $to, $subject, $body, $headers );
+    $sent = wp_mail( $to, $subject, $body, $headers );
     
-    wp_safe_redirect( home_url( '/restaurant?resa_success=1' ) );
+    wp_safe_redirect( home_url( $sent ? '/restaurant?resa_success=1' : '/restaurant?resa_error=send' ) );
     exit;
 }
 add_action( 'admin_post_dsj_restaurant_reservation', 'dsj_handle_restaurant_reservation' );
 add_action( 'admin_post_nopriv_dsj_restaurant_reservation', 'dsj_handle_restaurant_reservation' );
 
-// ========================================
-// ROLES & PERMISSIONS
-// ========================================
+// ════════════════════════════════════════════════════════════════
+// RÔLES & PERMISSIONS
+// ════════════════════════════════════════════════════════════════
 
 function dsj_add_roles() {
     if ( ! get_role( 'soeur' ) ) {
-        add_role( 'soeur', __( 'Soeur', 'domaine-saint-joseph' ), [
+        add_role( 'soeur', __( 'Sœur', 'domaine-saint-joseph' ), [
             'read' => true,
             'edit_posts' => true,
             'edit_published_posts' => true,
@@ -332,9 +395,9 @@ function dsj_add_roles() {
 }
 add_action( 'after_switch_theme', 'dsj_add_roles' );
 
-// ========================================
+// ════════════════════════════════════════════════════════════════
 // FORCER LES TEMPLATES
-// ========================================
+// ════════════════════════════════════════════════════════════════
 
 function dsj_force_hebergement_template( $template ) {
     if ( is_singular( 'hebergement' ) ) {
@@ -347,9 +410,9 @@ function dsj_force_hebergement_template( $template ) {
 }
 add_filter( 'template_include', 'dsj_force_hebergement_template', 99 );
 
-// ========================================
+// ════════════════════════════════════════════════════════════════
 // ADMIN SCRIPTS
-// ========================================
+// ════════════════════════════════════════════════════════════════
 
 function dsj_admin_widget_scripts() {
     wp_enqueue_media();
