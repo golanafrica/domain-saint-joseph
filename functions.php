@@ -1,7 +1,7 @@
 <?php
 /**
  * Functions du thème Domaine Saint Joseph
- * Version production - Phase 2 + Collaboration totale
+ * Version production - Phase 3 (Simplification admin + accès Customizer/Widgets)
  */
 
 if ( ! defined( 'ABSPATH' ) ) exit;
@@ -99,7 +99,6 @@ function dsj_assets() {
     wp_enqueue_style( 'dsj-main', get_template_directory_uri() . '/assets/css/main.css', [], $style_version );
     wp_enqueue_script( 'dsj-main', get_template_directory_uri() . '/assets/js/main.js', [], $script_version, true );
     
-    // Couleurs personnalisées dynamiques
     $primary_color = get_theme_mod( 'primary_color', '#1A5276' );
     $accent_color = get_theme_mod( 'accent_color', '#D4AC0D' );
     $custom_css = "
@@ -140,7 +139,6 @@ function dsj_performance() {
 }
 add_action( 'init', 'dsj_performance' );
 
-// Force lazy loading sur les images
 add_filter( 'wp_get_attachment_image_attributes', function( $attr ) {
     if ( ! isset( $attr['loading'] ) ) {
         $attr['loading'] = 'lazy';
@@ -366,25 +364,24 @@ add_action( 'admin_post_dsj_restaurant_reservation', 'dsj_handle_restaurant_rese
 add_action( 'admin_post_nopriv_dsj_restaurant_reservation', 'dsj_handle_restaurant_reservation' );
 
 // ════════════════════════════════════════════════════════════════
-// RÔLES & PERMISSIONS - RÔLE SOEUR (COLLABORATION TOTALE)
+// RÔLES & PERMISSIONS - RÔLE SOEUR (COLLABORATION TOTALE + CUSTOMIZER)
 // ════════════════════════════════════════════════════════════════
-// Les sœurs peuvent : créer, modifier, publier, supprimer
-// LEURS contenus ET ceux créés par l'admin ou d'autres sœurs.
 
 function dsj_add_roles() {
     remove_role( 'soeur' );
     
     add_role( 'soeur', __( 'Sœur', 'domaine-saint-joseph' ), [
-        // ── Capacités de base WordPress (avec collaboration totale) ──
+        // ── Capacités de base WordPress ──
         'read'                        => true,
         'edit_posts'                  => true,
         'edit_published_posts'        => true,
-        'edit_others_posts'           => true,  // ✅ NOUVEAU : Modifier TOUTES les publications
+        'edit_others_posts'           => true,
         'delete_posts'                => true,
         'delete_published_posts'      => true,
-        'delete_others_posts'         => true,  // ✅ NOUVEAU : Supprimer TOUTES les publications
+        'delete_others_posts'         => true,
         'publish_posts'               => true,
-        'upload_files'                => true,
+        'upload_files'                => true,      // 🖼 Médiathèque
+        'edit_theme_options'          => true,      // ✅ NOUVEAU : Customizer + Widgets + Menus
 
         // ── Capacités CPT Formation ──
         'edit_formation'              => true,
@@ -394,7 +391,7 @@ function dsj_add_roles() {
         'edit_published_formations'   => true,
         'delete_formation'            => true,
         'delete_formations'           => true,
-        'delete_others_formations'    => true,  // ✅ NOUVEAU
+        'delete_others_formations'    => true,
         'delete_published_formation'  => true,
         'delete_published_formations' => true,
         'publish_formation'           => true,
@@ -409,7 +406,7 @@ function dsj_add_roles() {
         'edit_published_hebergements'   => true,
         'delete_hebergement'            => true,
         'delete_hebergements'           => true,
-        'delete_others_hebergements'    => true,  // ✅ NOUVEAU
+        'delete_others_hebergements'    => true,
         'delete_published_hebergement'  => true,
         'delete_published_hebergements' => true,
         'publish_hebergement'           => true,
@@ -424,7 +421,7 @@ function dsj_add_roles() {
         'edit_published_menus'   => true,
         'delete_menu'            => true,
         'delete_menus'           => true,
-        'delete_others_menus'    => true,  // ✅ NOUVEAU
+        'delete_others_menus'    => true,
         'delete_published_menu'  => true,
         'delete_published_menus' => true,
         'publish_menu'           => true,
@@ -439,7 +436,7 @@ function dsj_add_roles() {
         'edit_published_galeries'   => true,
         'delete_galerie'            => true,
         'delete_galeries'           => true,
-        'delete_others_galeries'    => true,  // ✅ NOUVEAU
+        'delete_others_galeries'    => true,
         'delete_published_galerie'  => true,
         'delete_published_galeries' => true,
         'publish_galerie'           => true,
@@ -454,7 +451,7 @@ function dsj_add_roles() {
         'edit_published_temoignages'   => true,
         'delete_temoignage'            => true,
         'delete_temoignages'           => true,
-        'delete_others_temoignages'    => true,  // ✅ NOUVEAU
+        'delete_others_temoignages'    => true,
         'delete_published_temoignage'  => true,
         'delete_published_temoignages' => true,
         'publish_temoignage'           => true,
@@ -617,3 +614,336 @@ function dsj_limit_blocks( $allowed_blocks, $editor_context ) {
     ];
 }
 add_filter( 'allowed_block_types_all', 'dsj_limit_blocks', 10, 2 );
+
+
+// ╔════════════════════════════════════════════════════════════════╗
+// ║              PHASE 3 : SIMPLIFICATION ADMIN POUR SŒURS        ║
+// ╚════════════════════════════════════════════════════════════════╝
+
+// ════════════════════════════════════════════════════════════════
+// 3.1 NETTOYER LE MENU ADMIN POUR LES SŒURS
+// ════════════════════════════════════════════════════════════════
+// Les sœurs voient :
+// - Apparence > Personnaliser, Widgets (mais pas Thèmes, Éditeur, Menus)
+// - Médiathèque (upload_files)
+// - Tous les CPT
+// - Pages
+
+function dsj_simplify_admin_for_soeur() {
+    // Les admins voient tout
+    if ( current_user_can( 'manage_options' ) ) {
+        return;
+    }
+    
+    // Menus principaux à cacher complètement
+    remove_menu_page( 'tools.php' );           // Outils
+    remove_menu_page( 'plugins.php' );         // Extensions
+    remove_menu_page( 'options-general.php' ); // Réglages
+    remove_menu_page( 'edit-comments.php' );   // Commentaires
+    remove_menu_page( 'users.php' );           // Utilisateurs
+    
+    // Sous-menus d'Apparence à cacher (on garde Personnaliser et Widgets)
+    remove_submenu_page( 'themes.php', 'themes.php' );           // Thèmes
+    remove_submenu_page( 'themes.php', 'theme-editor.php' );     // Éditeur de thème
+    remove_submenu_page( 'themes.php', 'nav-menus.php' );        // Menus
+    remove_submenu_page( 'themes.php', 'theme-installer' );      // Ajouter un thème
+}
+add_action( 'admin_menu', 'dsj_simplify_admin_for_soeur', 999 );
+
+// ════════════════════════════════════════════════════════════════
+// 3.1b NETTOYER LA BARRE ADMIN (en haut de l'écran)
+// ════════════════════════════════════════════════════════════════
+
+add_action( 'admin_bar_menu', function( $wp_admin_bar ) {
+    if ( ! current_user_can( 'manage_options' ) ) {
+        $wp_admin_bar->remove_node( 'wp-logo' );
+        $wp_admin_bar->remove_node( 'updates' );
+        $wp_admin_bar->remove_node( 'comments' );
+    }
+}, 999 );
+
+// ════════════════════════════════════════════════════════════════
+// 3.2 NETTOYER LE TABLEAU DE BORD (dashboard)
+// ════════════════════════════════════════════════════════════════
+
+function dsj_clean_dashboard() {
+    if ( current_user_can( 'manage_options' ) ) {
+        return;
+    }
+    
+    remove_meta_box( 'dashboard_primary', 'dashboard', 'side' );
+    remove_meta_box( 'dashboard_secondary', 'dashboard', 'side' );
+    remove_meta_box( 'dashboard_quick_press', 'dashboard', 'side' );
+    remove_meta_box( 'dashboard_activity', 'dashboard', 'normal' );
+    remove_meta_box( 'dashboard_site_health', 'dashboard', 'normal' );
+    remove_meta_box( 'dashboard_right_now', 'dashboard', 'normal' );
+    
+    remove_action( 'welcome_panel', 'wp_welcome_panel' );
+}
+add_action( 'wp_dashboard_setup', 'dsj_clean_dashboard' );
+
+// ════════════════════════════════════════════════════════════════
+// 3.3 WIDGET "QUE FAIRE AUJOURD'HUI ?" POUR LES SŒURS
+// ════════════════════════════════════════════════════════════════
+
+function dsj_add_help_widget() {
+    if ( current_user_can( 'manage_options' ) ) {
+        return;
+    }
+    
+    wp_add_dashboard_widget(
+        'dsj_help_widget',
+        '🌟 Que faire aujourd\'hui ?',
+        'dsj_render_help_widget'
+    );
+}
+add_action( 'wp_dashboard_setup', 'dsj_add_help_widget' );
+
+function dsj_render_help_widget() {
+    ?>
+    <style>
+        .dsj-help-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .dsj-help-list li {
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .dsj-help-list li:last-child {
+            border-bottom: none;
+        }
+        .dsj-help-list a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: #1A5276;
+            font-weight: 500;
+            font-size: 14px;
+        }
+        .dsj-help-list a:hover {
+            color: #D4AC0D;
+        }
+        .dsj-help-list .icon {
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+        .dsj-help-list .label {
+            flex: 1;
+        }
+        .dsj-help-list .arrow {
+            color: #ccc;
+            transition: color 0.2s;
+        }
+        .dsj-help-list a:hover .arrow {
+            color: #D4AC0D;
+        }
+        .dsj-help-separator {
+            padding: 10px 0 5px;
+            margin-top: 10px;
+            border-top: 2px solid #D4AC0D;
+            font-size: 12px;
+            font-weight: 600;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+    </style>
+    
+    <ul class="dsj-help-list">
+        <div class="dsj-help-separator">📅 Actions courantes</div>
+        
+        <li>
+            <a href="<?php echo esc_url( admin_url( 'post-new.php?post_type=formation' ) ); ?>">
+                <span class="icon">🎓</span>
+                <span class="label">Ajouter une formation</span>
+                <span class="arrow">→</span>
+            </a>
+        </li>
+        
+        <li>
+            <a href="<?php echo esc_url( admin_url( 'post-new.php?post_type=hebergement' ) ); ?>">
+                <span class="icon">🏠</span>
+                <span class="label">Ajouter un hébergement</span>
+                <span class="arrow">→</span>
+            </a>
+        </li>
+        
+        <li>
+            <a href="<?php echo esc_url( admin_url( 'post-new.php?post_type=menu' ) ); ?>">
+                <span class="icon">🍽️</span>
+                <span class="label">Ajouter un plat au restaurant</span>
+                <span class="arrow">→</span>
+            </a>
+        </li>
+        
+        <li>
+            <a href="<?php echo esc_url( admin_url( 'post-new.php?post_type=galerie' ) ); ?>">
+                <span class="icon">📸</span>
+                <span class="label">Ajouter une photo à la galerie</span>
+                <span class="arrow">→</span>
+            </a>
+        </li>
+        
+        <li>
+            <a href="<?php echo esc_url( admin_url( 'post-new.php?post_type=temoignage' ) ); ?>">
+                <span class="icon">💬</span>
+                <span class="label">Ajouter un témoignage</span>
+                <span class="arrow">→</span>
+            </a>
+        </li>
+        
+        <div class="dsj-help-separator">🎨 Personnaliser le site</div>
+        
+        <li>
+            <a href="<?php echo esc_url( admin_url( 'customize.php' ) ); ?>">
+                <span class="icon">🎨</span>
+                <span class="label">Personnaliser l'apparence</span>
+                <span class="arrow">→</span>
+            </a>
+        </li>
+        
+        <li>
+            <a href="<?php echo esc_url( admin_url( 'customize.php?autofocus[section]=dsj_urgence' ) ); ?>">
+                <span class="icon">🚨</span>
+                <span class="label">Modifier le bandeau d'urgence</span>
+                <span class="arrow">→</span>
+            </a>
+        </li>
+        
+        <li>
+            <a href="<?php echo esc_url( admin_url( 'widgets.php' ) ); ?>">
+                <span class="icon">🧩</span>
+                <span class="label">Gérer les widgets</span>
+                <span class="arrow">→</span>
+            </a>
+        </li>
+        
+        <li>
+            <a href="<?php echo esc_url( admin_url( 'upload.php' ) ); ?>">
+                <span class="icon">🖼️</span>
+                <span class="label">Médiathèque (images/fichiers)</span>
+                <span class="arrow">→</span>
+            </a>
+        </li>
+        
+        <div class="dsj-help-separator">📬 Consulter</div>
+        
+        <li>
+            <a href="<?php echo esc_url( admin_url( 'edit.php?post_type=dsj_message' ) ); ?>">
+                <span class="icon">📧</span>
+                <span class="label">Voir les messages reçus</span>
+                <span class="arrow">→</span>
+            </a>
+        </li>
+    </ul>
+    
+    <p style="margin-top: 15px; padding: 10px; background: #f0f6fc; border-left: 3px solid #1A5276; font-size: 13px; color: #555;">
+        💡 <strong>Besoin d'aide ?</strong> Cliquez sur l'onglet <em>Aide</em> en haut à droite de chaque écran.
+    </p>
+    <?php
+}
+
+// ════════════════════════════════════════════════════════════════
+// 3.4 ONGLETS D'AIDE CONTEXTUELLE SUR LES ÉCRANS CPT
+// ════════════════════════════════════════════════════════════════
+
+function dsj_add_help_tabs() {
+    $screen = get_current_screen();
+    if ( ! $screen || ! isset( $screen->post_type ) ) return;
+    
+    $help_content = [];
+    
+    switch ( $screen->post_type ) {
+        case 'formation':
+            $help_content = [
+                'title' => '🎓 Aide - Formation',
+                'content' => '
+                    <h3>Comment ajouter une formation ?</h3>
+                    <ol>
+                        <li><strong>Titre</strong> : nom de la formation (ex: "Couture Débutant")</li>
+                        <li><strong>Description</strong> : détails du programme, objectifs</li>
+                        <li><strong>Image mise en avant</strong> (colonne droite) : photo de la formation</li>
+                        <li><strong>Détails de la formation</strong> (en bas) : durée, prix, niveau, places, formatrice, horaires</li>
+                    </ol>
+                    <p>⚠️ <strong>Important :</strong> Remplissez au moins la durée et le prix, sinon un avertissement apparaîtra.</p>
+                    <p>✅ Cliquez sur <strong>Publier</strong> une fois terminé.</p>
+                ',
+            ];
+            break;
+            
+        case 'hebergement':
+            $help_content = [
+                'title' => '🏠 Aide - Hébergement',
+                'content' => '
+                    <h3>Comment ajouter un hébergement ?</h3>
+                    <ol>
+                        <li><strong>Titre</strong> : nom de la chambre (ex: "Chambre Familiale")</li>
+                        <li><strong>Description</strong> : description de la chambre</li>
+                        <li><strong>Image mise en avant</strong> : photo de la chambre</li>
+                        <li><strong>Détails</strong> (en bas) : capacité, prix par nuit, équipements, disponibilité</li>
+                    </ol>
+                    <p>💡 <strong>Équipements</strong> : séparez par des virgules (ex: "Wi-Fi, Climatisation, TV")</p>
+                    <p>⚠️ Pensez à mettre à jour la <strong>disponibilité</strong> dès qu\'une chambre est réservée.</p>
+                ',
+            ];
+            break;
+            
+        case 'menu':
+            $help_content = [
+                'title' => '🍽️ Aide - Plat du restaurant',
+                'content' => '
+                    <h3>Comment ajouter un plat ?</h3>
+                    <ol>
+                        <li><strong>Titre</strong> : nom du plat (ex: "Poulet DG")</li>
+                        <li><strong>Description</strong> : description du plat</li>
+                        <li><strong>Image mise en avant</strong> : belle photo du plat</li>
+                        <li><strong>Détails du plat</strong> (en bas) : prix, temps de préparation, ingrédients, allergènes</li>
+                    </ol>
+                    <p>📸 Une belle photo est très importante pour donner envie !</p>
+                ',
+            ];
+            break;
+            
+        case 'galerie':
+            $help_content = [
+                'title' => '📸 Aide - Photo galerie',
+                'content' => '
+                    <h3>Comment ajouter une photo à la galerie ?</h3>
+                    <ol>
+                        <li><strong>Titre</strong> : nom de la photo (ex: "Atelier couture 2024")</li>
+                        <li><strong>Image mise en avant</strong> : LA photo à afficher</li>
+                        <li><strong>Catégorie Galerie</strong> (colonne droite) : classez la photo (formations, hébergement, événements...)</li>
+                        <li><strong>Extrait</strong> (optionnel) : courte description affichée sous la photo</li>
+                    </ol>
+                    <p>💡 <strong>Conseil :</strong> Utilisez des photos lumineuses et de bonne qualité.</p>
+                ',
+            ];
+            break;
+            
+        case 'temoignage':
+            $help_content = [
+                'title' => '💬 Aide - Témoignage',
+                'content' => '
+                    <h3>Comment ajouter un témoignage ?</h3>
+                    <ol>
+                        <li><strong>Titre</strong> : nom de la personne (ex: "Marie K.")</li>
+                        <li><strong>Contenu</strong> : le témoignage complet</li>
+                    </ol>
+                    <p>✨ Les témoignages renforcent la confiance des visiteurs. Recueillez-en régulièrement !</p>
+                ',
+            ];
+            break;
+    }
+    
+    if ( ! empty( $help_content ) ) {
+        $screen->add_help_tab([
+            'id'      => 'dsj_help_tab',
+            'title'   => 'Aide',
+            'content' => $help_content['content'],
+        ]);
+    }
+}
+add_action( 'current_screen', 'dsj_add_help_tabs' );
