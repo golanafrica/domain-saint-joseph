@@ -1,6 +1,7 @@
 <?php
 /**
  * Template pour l'affichage d'un hébergement individuel
+ * Disposition identique aux pages de liste (photo en haut + bande bleue)
  */
 
 get_header(); ?>
@@ -9,26 +10,35 @@ get_header(); ?>
     
     <?php while ( have_posts() ) : the_post(); ?>
         
-        <!-- Hero section améliorée -->
-        <section class="page-header single-hebergement-header">
-            <div class="container">
-                <div class="header-content">
-                    <span class="header-badge">&#127968; Notre hébergement</span>
-                    <h1 class="header-title"><?php the_title(); ?></h1>
-                    <div class="header-divider">
-                        <span class="divider-line"></span>
-                        <span class="divider-icon">&#9962;</span>
-                        <span class="divider-line"></span>
-                    </div>
-                    <?php if ( has_excerpt() ) : ?>
-                        <p class="header-subtitle"><?php echo get_the_excerpt(); ?></p>
-                    <?php endif; ?>
-                </div>
+        <?php 
+        // Image du hero : priorité image mise en avant > image du Customizer
+        $hero_image_url = '';
+        if ( has_post_thumbnail() ) {
+            $hero_image_url = get_the_post_thumbnail_url( get_the_ID(), 'hero-size' );
+        }
+        if ( empty( $hero_image_url ) ) {
+            $hero_image_url = get_theme_mod( 'hero_maison_image', '' );
+        }
+        ?>
+        
+        <!-- Hero section : MÊME disposition que les pages (photo + bande bleue) -->
+        <section class="page-header hebergement-single-header">
+            <div class="page-photo-zone"
+                 <?php if ( $hero_image_url ) : ?>
+                 style="background-image: url('<?php echo esc_url( $hero_image_url ); ?>');"
+                 <?php endif; ?>>
             </div>
-            <div class="header-wave">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 120">
-                    <path fill="#ffffff" fill-opacity="1" d="M0,64L80,58.7C160,53,320,43,480,48C640,53,800,75,960,80C1120,85,1280,75,1360,69.3L1440,64L1440,120L1360,120C1280,120,1120,120,960,120C800,120,640,120,480,120C320,120,160,120,80,120L0,120Z"></path>
-                </svg>
+            <div class="header-caption-band">
+                <span class="header-badge">&#127968; Notre hébergement</span>
+                <h1 class="header-title"><?php the_title(); ?></h1>
+                <div class="header-divider">
+                    <span class="divider-line"></span>
+                    <span class="divider-icon">&#9962;</span>
+                    <span class="divider-line"></span>
+                </div>
+                <?php if ( has_excerpt() ) : ?>
+                    <p class="header-subtitle"><?php echo get_the_excerpt(); ?></p>
+                <?php endif; ?>
             </div>
         </section>
 
@@ -101,7 +111,6 @@ get_header(); ?>
                                 <span class="info-label">&#128715; Équipements :</span>
                                 <div class="equipements-list">
                                     <?php 
-                                    // Nettoyer et séparer les équipements
                                     $equipements_clean = preg_split('/[\s,]+/', $equipements);
                                     foreach ( $equipements_clean as $equip ) : 
                                         if( trim($equip) ): ?>
