@@ -1,7 +1,7 @@
 <?php
 /**
  * Functions du thème Domaine Saint Joseph
- * Version production - Phase 2 (Cohérence architecture)
+ * Version production - Phase 2 + Collaboration totale
  */
 
 if ( ! defined( 'ABSPATH' ) ) exit;
@@ -366,23 +366,27 @@ add_action( 'admin_post_dsj_restaurant_reservation', 'dsj_handle_restaurant_rese
 add_action( 'admin_post_nopriv_dsj_restaurant_reservation', 'dsj_handle_restaurant_reservation' );
 
 // ════════════════════════════════════════════════════════════════
-// RÔLES & PERMISSIONS - RÔLE SOEUR (avec toutes les capacités)
+// RÔLES & PERMISSIONS - RÔLE SOEUR (COLLABORATION TOTALE)
 // ════════════════════════════════════════════════════════════════
+// Les sœurs peuvent : créer, modifier, publier, supprimer
+// LEURS contenus ET ceux créés par l'admin ou d'autres sœurs.
 
 function dsj_add_roles() {
     remove_role( 'soeur' );
     
     add_role( 'soeur', __( 'Sœur', 'domaine-saint-joseph' ), [
-        // Capacités de base WordPress
+        // ── Capacités de base WordPress (avec collaboration totale) ──
         'read'                        => true,
         'edit_posts'                  => true,
         'edit_published_posts'        => true,
+        'edit_others_posts'           => true,  // ✅ NOUVEAU : Modifier TOUTES les publications
         'delete_posts'                => true,
         'delete_published_posts'      => true,
+        'delete_others_posts'         => true,  // ✅ NOUVEAU : Supprimer TOUTES les publications
         'publish_posts'               => true,
         'upload_files'                => true,
 
-        // Capacités CPT Formation
+        // ── Capacités CPT Formation ──
         'edit_formation'              => true,
         'edit_formations'             => true,
         'edit_others_formations'      => true,
@@ -390,13 +394,14 @@ function dsj_add_roles() {
         'edit_published_formations'   => true,
         'delete_formation'            => true,
         'delete_formations'           => true,
+        'delete_others_formations'    => true,  // ✅ NOUVEAU
         'delete_published_formation'  => true,
         'delete_published_formations' => true,
         'publish_formation'           => true,
         'publish_formations'          => true,
         'read_formation'              => true,
 
-        // Capacités CPT Hébergement
+        // ── Capacités CPT Hébergement ──
         'edit_hebergement'              => true,
         'edit_hebergements'             => true,
         'edit_others_hebergements'      => true,
@@ -404,13 +409,14 @@ function dsj_add_roles() {
         'edit_published_hebergements'   => true,
         'delete_hebergement'            => true,
         'delete_hebergements'           => true,
+        'delete_others_hebergements'    => true,  // ✅ NOUVEAU
         'delete_published_hebergement'  => true,
         'delete_published_hebergements' => true,
         'publish_hebergement'           => true,
         'publish_hebergements'          => true,
         'read_hebergement'              => true,
 
-        // Capacités CPT Menu (Restaurant)
+        // ── Capacités CPT Menu (Restaurant) ──
         'edit_menu'              => true,
         'edit_menus'             => true,
         'edit_others_menus'      => true,
@@ -418,13 +424,14 @@ function dsj_add_roles() {
         'edit_published_menus'   => true,
         'delete_menu'            => true,
         'delete_menus'           => true,
+        'delete_others_menus'    => true,  // ✅ NOUVEAU
         'delete_published_menu'  => true,
         'delete_published_menus' => true,
         'publish_menu'           => true,
         'publish_menus'          => true,
         'read_menu'              => true,
 
-        // Capacités CPT Galerie
+        // ── Capacités CPT Galerie ──
         'edit_galerie'              => true,
         'edit_galeries'             => true,
         'edit_others_galeries'      => true,
@@ -432,13 +439,14 @@ function dsj_add_roles() {
         'edit_published_galeries'   => true,
         'delete_galerie'            => true,
         'delete_galeries'           => true,
+        'delete_others_galeries'    => true,  // ✅ NOUVEAU
         'delete_published_galerie'  => true,
         'delete_published_galeries' => true,
         'publish_galerie'           => true,
         'publish_galeries'          => true,
         'read_galerie'              => true,
 
-        // Capacités CPT Témoignage
+        // ── Capacités CPT Témoignage ──
         'edit_temoignage'              => true,
         'edit_temoignages'             => true,
         'edit_others_temoignages'      => true,
@@ -446,13 +454,14 @@ function dsj_add_roles() {
         'edit_published_temoignages'   => true,
         'delete_temoignage'            => true,
         'delete_temoignages'           => true,
+        'delete_others_temoignages'    => true,  // ✅ NOUVEAU
         'delete_published_temoignage'  => true,
         'delete_published_temoignages' => true,
         'publish_temoignage'           => true,
         'publish_temoignages'          => true,
         'read_temoignage'              => true,
 
-        // Capacités Taxonomies
+        // ── Capacités Taxonomies ──
         'manage_categories' => true,
     ] );
 }
@@ -492,16 +501,12 @@ add_action( 'admin_enqueue_scripts', 'dsj_admin_widget_scripts' );
 // ════════════════════════════════════════════════════════════════
 // 2.2 NOTIFICATIONS ADMIN - CHAMPS MANQUANTS À LA PUBLICATION
 // ════════════════════════════════════════════════════════════════
-// Vérifie les champs critiques lors de la première publication
-// Affiche un message d'avertissement UNE SEULE FOIS (pas à chaque sauvegarde)
 
 function dsj_check_missing_fields_on_publish( $new_status, $old_status, $post ) {
-    // Ne s'exécute que lors de la PREMIÈRE publication (transition vers publish)
     if ( $new_status !== 'publish' || $old_status === 'publish' ) {
         return;
     }
     
-    // Vérifier le type de post
     $missing_fields = [];
     
     switch ( $post->post_type ) {
@@ -532,7 +537,6 @@ function dsj_check_missing_fields_on_publish( $new_status, $old_status, $post ) 
             break;
     }
     
-    // Si des champs manquent, stocker un transient pour afficher le message
     if ( ! empty( $missing_fields ) ) {
         set_transient( 
             'dsj_missing_fields_' . $post->ID, 
@@ -541,13 +545,12 @@ function dsj_check_missing_fields_on_publish( $new_status, $old_status, $post ) 
                 'title'  => $post->post_title,
                 'fields' => $missing_fields,
             ], 
-            120 // Expiration : 2 minutes (suffisant pour afficher le message une fois)
+            120
         );
     }
 }
 add_action( 'transition_post_status', 'dsj_check_missing_fields_on_publish', 10, 3 );
 
-// Afficher le message d'avertissement dans l'admin
 function dsj_display_missing_fields_notice() {
     global $post;
     
@@ -558,10 +561,8 @@ function dsj_display_missing_fields_notice() {
     
     if ( ! $notice_data ) return;
     
-    // Supprimer le transient après affichage (message unique)
     delete_transient( $transient_key );
     
-    // Construire le message
     $post_type_label = '';
     switch ( $notice_data['type'] ) {
         case 'formation': $post_type_label = 'formation'; break;
@@ -583,50 +584,34 @@ add_action( 'admin_notices', 'dsj_display_missing_fields_notice' );
 // ════════════════════════════════════════════════════════════════
 // 2.3 LIMITER LES BLOCS GUTENBERG POUR LES CPT
 // ════════════════════════════════════════════════════════════════
-// Restreint les blocs disponibles pour les sœurs (non-admins)
-// Les admins gardent accès à tous les blocs
 
 function dsj_limit_blocks( $allowed_blocks, $editor_context ) {
-    // Vérifier que le contexte contient un post
     if ( ! isset( $editor_context->post ) || ! $editor_context->post ) {
         return $allowed_blocks;
     }
     
     $post_type = $editor_context->post->post_type;
-    
-    // Ne restreindre que les CPT du Domaine Saint Joseph
     $dsj_cpts = [ 'formation', 'hebergement', 'menu', 'galerie', 'temoignage' ];
     
     if ( ! in_array( $post_type, $dsj_cpts, true ) ) {
         return $allowed_blocks;
     }
     
-    // Les admins gardent tous les blocs
     if ( current_user_can( 'manage_options' ) ) {
         return $allowed_blocks;
     }
     
-    // Blocs autorisés pour les sœurs (simples et sûrs)
     return [
-        // Texte
         'core/paragraph',
         'core/heading',
         'core/list',
         'core/list-item',
-        
-        // Médias
         'core/image',
         'core/gallery',
-        
-        // Structure
         'core/separator',
         'core/spacer',
         'core/group',
-        
-        // Tableaux (utiles pour les plannings)
         'core/table',
-        
-        // Mise en forme
         'core/buttons',
         'core/button',
     ];
