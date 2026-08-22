@@ -1,7 +1,7 @@
 <?php
 /**
  * Functions du thème Domaine Saint Joseph
- * Version production - Phase 1 terminée
+ * Version production - Phase 2 (Cohérence architecture)
  */
 
 if ( ! defined( 'ABSPATH' ) ) exit;
@@ -488,3 +488,147 @@ function dsj_admin_widget_scripts() {
     );
 }
 add_action( 'admin_enqueue_scripts', 'dsj_admin_widget_scripts' );
+
+// ════════════════════════════════════════════════════════════════
+// 2.2 NOTIFICATIONS ADMIN - CHAMPS MANQUANTS À LA PUBLICATION
+// ════════════════════════════════════════════════════════════════
+// Vérifie les champs critiques lors de la première publication
+// Affiche un message d'avertissement UNE SEULE FOIS (pas à chaque sauvegarde)
+
+function dsj_check_missing_fields_on_publish( $new_status, $old_status, $post ) {
+    // Ne s'exécute que lors de la PREMIÈRE publication (transition vers publish)
+    if ( $new_status !== 'publish' || $old_status === 'publish' ) {
+        return;
+    }
+    
+    // Vérifier le type de post
+    $missing_fields = [];
+    
+    switch ( $post->post_type ) {
+        case 'formation':
+            $duree  = get_post_meta( $post->ID, '_dsj_duree', true );
+            $prix   = get_post_meta( $post->ID, '_dsj_prix', true );
+            $niveau = get_post_meta( $post->ID, '_dsj_niveau', true );
+            
+            if ( empty( $duree ) ) $missing_fields[] = 'durée';
+            if ( empty( $prix ) ) $missing_fields[] = 'prix';
+            if ( empty( $niveau ) ) $missing_fields[] = 'niveau requis';
+            break;
+            
+        case 'hebergement':
+            $capacite  = get_post_meta( $post->ID, '_dsj_capacite', true );
+            $prix_nuit = get_post_meta( $post->ID, '_dsj_prix_nuit', true );
+            
+            if ( empty( $capacite ) ) $missing_fields[] = 'capacité';
+            if ( empty( $prix_nuit ) ) $missing_fields[] = 'prix par nuit';
+            break;
+            
+        case 'menu':
+            $prix_menu = get_post_meta( $post->ID, '_menu_prix', true );
+            $temps     = get_post_meta( $post->ID, '_menu_temps', true );
+            
+            if ( empty( $prix_menu ) ) $missing_fields[] = 'prix';
+            if ( empty( $temps ) ) $missing_fields[] = 'temps de préparation';
+            break;
+    }
+    
+    // Si des champs manquent, stocker un transient pour afficher le message
+    if ( ! empty( $missing_fields ) ) {
+        set_transient( 
+            'dsj_missing_fields_' . $post->ID, 
+            [
+                'type'   => $post->post_type,
+                'title'  => $post->post_title,
+                'fields' => $missing_fields,
+            ], 
+            120 // Expiration : 2 minutes (suffisant pour afficher le message une fois)
+        );
+    }
+}
+add_action( 'transition_post_status', 'dsj_check_missing_fields_on_publish', 10, 3 );
+
+// Afficher le message d'avertissement dans l'admin
+function dsj_display_missing_fields_notice() {
+    global $post;
+    
+    if ( ! $post ) return;
+    
+    $transient_key = 'dsj_missing_fields_' . $post->ID;
+    $notice_data = get_transient( $transient_key );
+    
+    if ( ! $notice_data ) return;
+    
+    // Supprimer le transient après affichage (message unique)
+    delete_transient( $transient_key );
+    
+    // Construire le message
+    $post_type_label = '';
+    switch ( $notice_data['type'] ) {
+        case 'formation': $post_type_label = 'formation'; break;
+        case 'hebergement': $post_type_label = 'hébergement'; break;
+        case 'menu': $post_type_label = 'plat'; break;
+    }
+    
+    $fields_list = implode( ', ', $notice_data['fields'] );
+    $edit_url = get_edit_post_link( $post->ID );
+    
+    echo '<div class="notice notice-warning is-dismissible">';
+    echo '<p><strong>⚠️ Attention :</strong> La ' . esc_html( $post_type_label ) . ' "<strong>' . esc_html( $notice_data['title'] ) . '</strong>" a été publiée mais il manque : <strong>' . esc_html( $fields_list ) . '</strong>.';
+    echo ' <a href="' . esc_url( $edit_url ) . '">Compléter maintenant →</a></p>';
+    echo '<p><small>Ces informations sont importantes pour que le contenu s\'affiche correctement sur le site.</small></p>';
+    echo '</div>';
+}
+add_action( 'admin_notices', 'dsj_display_missing_fields_notice' );
+
+// ════════════════════════════════════════════════════════════════
+// 2.3 LIMITER LES BLOCS GUTENBERG POUR LES CPT
+// ════════════════════════════════════════════════════════════════
+// Restreint les blocs disponibles pour les sœurs (non-admins)
+// Les admins gardent accès à tous les blocs
+
+function dsj_limit_blocks( $allowed_blocks, $editor_context ) {
+    // Vérifier que le contexte contient un post
+    if ( ! isset( $editor_context->post ) || ! $editor_context->post ) {
+        return $allowed_blocks;
+    }
+    
+    $post_type = $editor_context->post->post_type;
+    
+    // Ne restreindre que les CPT du Domaine Saint Joseph
+    $dsj_cpts = [ 'formation', 'hebergement', 'menu', 'galerie', 'temoignage' ];
+    
+    if ( ! in_array( $post_type, $dsj_cpts, true ) ) {
+        return $allowed_blocks;
+    }
+    
+    // Les admins gardent tous les blocs
+    if ( current_user_can( 'manage_options' ) ) {
+        return $allowed_blocks;
+    }
+    
+    // Blocs autorisés pour les sœurs (simples et sûrs)
+    return [
+        // Texte
+        'core/paragraph',
+        'core/heading',
+        'core/list',
+        'core/list-item',
+        
+        // Médias
+        'core/image',
+        'core/gallery',
+        
+        // Structure
+        'core/separator',
+        'core/spacer',
+        'core/group',
+        
+        // Tableaux (utiles pour les plannings)
+        'core/table',
+        
+        // Mise en forme
+        'core/buttons',
+        'core/button',
+    ];
+}
+add_filter( 'allowed_block_types_all', 'dsj_limit_blocks', 10, 2 );
