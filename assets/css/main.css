@@ -4344,6 +4344,9 @@ a:focus-visible, .btn:focus-visible, .galerie-link:focus-visible { outline: 3px 
 .hebergement-single-header .page-photo-zone {
     background-image: linear-gradient(135deg, var(--clr-primary, #1A5276) 0%, #0d2f47 100%);
 }
+
+
+
 /* ========================================
  * FIN DU FICHIER
  * ======================================== */
@@ -4365,3 +4368,50 @@ a:focus-visible, .btn:focus-visible, .galerie-link:focus-visible { outline: 3px 
  */
 
 
+
+ /* Compteur de caractères formulaire */
+.form-help {
+    display: block;
+    margin-top: 5px;
+    font-size: 0.85rem;
+    color: #666;
+    transition: color 0.2s;
+}
+
+/* Messages alerte stylés */
+.alert {
+    padding: 15px 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    font-size: 0.95rem;
+}
+
+.alert-success {
+    background: #d4edda;
+    color: #155724;
+    border-left: 4px solid #28a745;
+}
+
+.alert-error {
+    background: #f8d7da;
+    color: #721c24;
+    border-left: 4px solid #dc3545;
+}
+
+.alert-icon {
+    font-size: 1.3rem;
+    flex-shrink: 0;
+}
+
+.alert-content strong {
+    display: block;
+    margin-bottom: 4px;
+    font-size: 1rem;
+}
+
+.alert-content {
+    line-height: 1.5;
+}

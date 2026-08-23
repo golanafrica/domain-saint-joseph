@@ -116,11 +116,23 @@ $hero_soustitre = get_theme_mod( 'hero_contact_soustitre', 'Une question ? Une d
                         <div class="alert-content">
                             <?php
                             $error = $_GET['error'] ?? '';
-                            if ( $error === 'missing' ) echo '<strong>Champs manquants</strong><br>Veuillez remplir tous les champs obligatoires.';
-                            elseif ( $error === 'send' ) echo '<strong>Erreur d\'envoi</strong><br>Veuillez réessayer ou nous contacter par WhatsApp.';
-                            elseif ( $error === 'rate_limit' ) echo '<strong>Trop de messages</strong><br>Veuillez attendre quelques minutes avant de réessayer.';
-                            elseif ( $error === 'invalid_contact' ) echo '<strong>Contact invalide</strong><br>Veuillez entrer un email ou numéro de téléphone valide.';
-                            else echo '<strong>Erreur</strong><br>Une erreur est survenue. Veuillez réessayer.';
+                            if ( $error === 'missing' ) {
+                                echo '<strong>Champs manquants</strong><br>Veuillez remplir tous les champs obligatoires.';
+                            } elseif ( $error === 'too_long' ) {
+                                echo '<strong>Message trop long</strong><br>Votre message dépasse la limite de 5000 caractères. Veuillez le raccourcir.';
+                            } elseif ( $error === 'invalid_contact' ) {
+                                echo '<strong>Contact invalide</strong><br>Veuillez entrer un email ou numéro de téléphone valide.';
+                            } elseif ( $error === 'rate_limit' ) {
+                                echo '<strong>Trop de messages</strong><br>Vous avez envoyé trop de messages récemment. Veuillez attendre quelques minutes avant de réessayer.';
+                            } elseif ( $error === 'session_expired' ) {
+                                echo '<strong>Session expirée</strong><br>Votre session a expiré pour des raisons de sécurité. Veuillez recharger la page et réessayer.';
+                            } elseif ( $error === 'service_unavailable' ) {
+                                echo '<strong>Service temporairement indisponible</strong><br>Notre service de messagerie rencontre un problème technique. Merci de réessayer plus tard ou de nous contacter par WhatsApp.';
+                            } elseif ( $error === 'send' ) {
+                                echo '<strong>Erreur d\'envoi</strong><br>Une erreur est survenue lors de l\'envoi. Veuillez réessayer ou nous contacter directement par WhatsApp.';
+                            } else {
+                                echo '<strong>Erreur</strong><br>Une erreur est survenue. Veuillez réessayer.';
+                            }
                             ?>
                         </div>
                     </div>
@@ -139,29 +151,30 @@ $hero_soustitre = get_theme_mod( 'hero_contact_soustitre', 'Une question ? Une d
                     
                     <div class="form-group">
                         <label for="cf_nom">&#128100; Nom complet <span class="required">*</span></label>
-                        <input type="text" id="cf_nom" name="cf_nom" class="form-control" required>
+                        <input type="text" id="cf_nom" name="cf_nom" class="form-control" value="<?php echo isset( $_POST['cf_nom'] ) ? esc_attr( $_POST['cf_nom'] ) : ''; ?>" required>
                     </div>
                     
                     <div class="form-group">
                         <label for="cf_contact">&#128222; Email ou Téléphone <span class="required">*</span></label>
-                        <input type="text" id="cf_contact" name="cf_contact" class="form-control" placeholder="exemple@email.com ou 20 97 28 97" required>
+                        <input type="text" id="cf_contact" name="cf_contact" class="form-control" placeholder="exemple@email.com ou 20 97 28 97" value="<?php echo isset( $_POST['cf_contact'] ) ? esc_attr( $_POST['cf_contact'] ) : ''; ?>" required>
                     </div>
                     
                     <div class="form-group">
                         <label for="cf_sujet">&#128196; Sujet <span class="required">*</span></label>
                         <select id="cf_sujet" name="cf_sujet" class="form-control" required>
-                            <option value="general">Information générale</option>
-                            <option value="formation">Inscription formation</option>
-                            <option value="reservation">Réservation hébergement</option>
-                            <option value="don">Soutien / Don</option>
-                            <option value="partenariat">Partenariat</option>
-                            <option value="autre">Autre</option>
+                            <option value="general" <?php selected( $_POST['cf_sujet'] ?? '', 'general' ); ?>>Information générale</option>
+                            <option value="formation" <?php selected( $_POST['cf_sujet'] ?? '', 'formation' ); ?>>Inscription formation</option>
+                            <option value="reservation" <?php selected( $_POST['cf_sujet'] ?? '', 'reservation' ); ?>>Réservation hébergement</option>
+                            <option value="don" <?php selected( $_POST['cf_sujet'] ?? '', 'don' ); ?>>Soutien / Don</option>
+                            <option value="partenariat" <?php selected( $_POST['cf_sujet'] ?? '', 'partenariat' ); ?>>Partenariat</option>
+                            <option value="autre" <?php selected( $_POST['cf_sujet'] ?? '', 'autre' ); ?>>Autre</option>
                         </select>
                     </div>
                     
                     <div class="form-group">
-                        <label for="cf_message">&#128172; Message <span class="required">*</span></label>
-                        <textarea id="cf_message" name="cf_message" class="form-control" rows="5" required></textarea>
+                        <label for="cf_message">&#128172; Message <span class="required">*</span> <small>(max 5000 caractères)</small></label>
+                        <textarea id="cf_message" name="cf_message" class="form-control" rows="5" maxlength="5000" required><?php echo isset( $_POST['cf_message'] ) ? esc_textarea( $_POST['cf_message'] ) : ''; ?></textarea>
+                        <small class="form-help" id="message-counter">0 / 5000 caractères</small>
                     </div>
                     
                     <div class="form-footer">
@@ -182,5 +195,34 @@ $hero_soustitre = get_theme_mod( 'hero_contact_soustitre', 'Une question ? Une d
         </div>
     </div>
 </section>
+
+<!-- Compteur de caractères pour le message -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const textarea = document.getElementById('cf_message');
+    const counter = document.getElementById('message-counter');
+    
+    if (textarea && counter) {
+        function updateCounter() {
+            const length = textarea.value.length;
+            counter.textContent = length + ' / 5000 caractères';
+            
+            if (length > 4500) {
+                counter.style.color = '#dc3545';
+                counter.style.fontWeight = 'bold';
+            } else if (length > 4000) {
+                counter.style.color = '#ffc107';
+                counter.style.fontWeight = 'normal';
+            } else {
+                counter.style.color = '#666';
+                counter.style.fontWeight = 'normal';
+            }
+        }
+        
+        textarea.addEventListener('input', updateCounter);
+        updateCounter(); // Mise à jour initiale
+    }
+});
+</script>
 
 <?php get_footer(); ?>
