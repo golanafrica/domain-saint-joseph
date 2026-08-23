@@ -175,7 +175,7 @@ get_header(); ?>
                     <div class="alert alert-success">
                         <span class="alert-icon">&#9989;</span>
                         <div class="alert-content">
-                            <strong>Merci !</strong> Votre demande a bien été envoyée. Nous vous répondrons sous 48h par WhatsApp ou email.
+                            <strong>Demande envoyée !</strong> Merci pour votre demande de réservation. Nous vous répondrons sous 48h par WhatsApp ou email pour confirmer la disponibilité.
                         </div>
                     </div>
                 <?php elseif ( isset( $_GET['error'] ) ) : ?>
@@ -184,11 +184,23 @@ get_header(); ?>
                         <div class="alert-content">
                             <?php
                             $error = $_GET['error'] ?? '';
-                            if ( $error === 'missing' ) echo '<strong>Champs manquants</strong><br>Veuillez remplir tous les champs obligatoires.';
-                            elseif ( $error === 'send' ) echo '<strong>Erreur d\'envoi</strong><br>Veuillez réessayer ou nous contacter par WhatsApp.';
-                            elseif ( $error === 'rate_limit' ) echo '<strong>Trop de messages</strong><br>Veuillez attendre quelques minutes avant de réessayer.';
-                            elseif ( $error === 'invalid_contact' ) echo '<strong>Contact invalide</strong><br>Veuillez entrer un email ou numéro de téléphone valide.';
-                            else echo '<strong>Erreur</strong><br>Une erreur est survenue. Veuillez réessayer.';
+                            if ( $error === 'missing' ) {
+                                echo '<strong>Champs manquants</strong><br>Veuillez remplir tous les champs obligatoires (nom, contact, dates d\'arrivée et de départ).';
+                            } elseif ( $error === 'too_long' ) {
+                                echo '<strong>Message trop long</strong><br>Votre message dépasse la limite de 5000 caractères. Veuillez le raccourcir.';
+                            } elseif ( $error === 'invalid_contact' ) {
+                                echo '<strong>Contact invalide</strong><br>Veuillez entrer un email ou numéro de téléphone valide.';
+                            } elseif ( $error === 'rate_limit' ) {
+                                echo '<strong>Trop de demandes</strong><br>Vous avez envoyé trop de demandes récemment. Veuillez attendre quelques minutes avant de réessayer.';
+                            } elseif ( $error === 'session_expired' ) {
+                                echo '<strong>Session expirée</strong><br>Votre session a expiré pour des raisons de sécurité. Veuillez recharger la page et réessayer.';
+                            } elseif ( $error === 'service_unavailable' ) {
+                                echo '<strong>Service temporairement indisponible</strong><br>Notre service de réservation rencontre un problème technique. Merci de réessayer plus tard ou de nous contacter par WhatsApp.';
+                            } elseif ( $error === 'send' ) {
+                                echo '<strong>Erreur d\'envoi</strong><br>Une erreur est survenue lors de l\'envoi. Veuillez réessayer ou nous contacter directement par WhatsApp.';
+                            } else {
+                                echo '<strong>Erreur</strong><br>Une erreur est survenue. Veuillez réessayer ou nous contacter par WhatsApp.';
+                            }
                             ?>
                         </div>
                     </div>
@@ -212,7 +224,7 @@ get_header(); ?>
                                 <span class="label-icon">&#128100;</span>
                                 Nom complet <span class="required">*</span>
                             </label>
-                            <input type="text" id="nom" name="nom" class="form-control" placeholder="Votre nom et prénom" required>
+                            <input type="text" id="nom" name="nom" class="form-control" placeholder="Votre nom et prénom" value="<?php echo isset( $_POST['nom'] ) ? esc_attr( $_POST['nom'] ) : ''; ?>" required>
                             <span class="input-border"></span>
                         </div>
                         
@@ -221,7 +233,7 @@ get_header(); ?>
                                 <span class="label-icon">&#128222;</span>
                                 Email ou Téléphone <span class="required">*</span>
                             </label>
-                            <input type="text" id="contact" name="contact" class="form-control" placeholder="exemple@email.com ou +226 XX XX XX XX" required>
+                            <input type="text" id="contact" name="contact" class="form-control" placeholder="exemple@email.com ou +226 XX XX XX XX" value="<?php echo isset( $_POST['contact'] ) ? esc_attr( $_POST['contact'] ) : ''; ?>" required>
                             <span class="input-border"></span>
                         </div>
                     </div>
@@ -232,7 +244,7 @@ get_header(); ?>
                                 <span class="label-icon">&#128197;</span>
                                 Date d'arrivée <span class="required">*</span>
                             </label>
-                            <input type="date" id="arrivee" name="arrivee" class="form-control" required>
+                            <input type="date" id="arrivee" name="arrivee" class="form-control" value="<?php echo isset( $_POST['arrivee'] ) ? esc_attr( $_POST['arrivee'] ) : ''; ?>" required>
                             <span class="input-border"></span>
                         </div>
                         
@@ -241,7 +253,7 @@ get_header(); ?>
                                 <span class="label-icon">&#128197;</span>
                                 Date de départ <span class="required">*</span>
                             </label>
-                            <input type="date" id="depart" name="depart" class="form-control" required>
+                            <input type="date" id="depart" name="depart" class="form-control" value="<?php echo isset( $_POST['depart'] ) ? esc_attr( $_POST['depart'] ) : ''; ?>" required>
                             <span class="input-border"></span>
                         </div>
                         
@@ -258,9 +270,10 @@ get_header(); ?>
                     <div class="form-group full-width">
                         <label for="message">
                             <span class="label-icon">&#128172;</span>
-                            Besoins particuliers
+                            Besoins particuliers <small>(max 5000 caractères)</small>
                         </label>
-                        <textarea id="message" name="message" class="form-control" rows="4" placeholder="Ex: régime alimentaire, accès PMR, besoins spécifiques..."></textarea>
+                        <textarea id="message" name="message" class="form-control" rows="4" maxlength="5000" placeholder="Ex: régime alimentaire, accès PMR, besoins spécifiques..."><?php echo isset( $_POST['message'] ) ? esc_textarea( $_POST['message'] ) : ''; ?></textarea>
+                        <small class="form-help" id="message-counter">0 / 5000 caractères</small>
                         <span class="input-border"></span>
                     </div>
                     
@@ -281,5 +294,34 @@ get_header(); ?>
     <?php endwhile; ?>
     
 </main>
+
+<!-- Compteur de caractères pour le message -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const textarea = document.getElementById('message');
+    const counter = document.getElementById('message-counter');
+    
+    if (textarea && counter) {
+        function updateCounter() {
+            const length = textarea.value.length;
+            counter.textContent = length + ' / 5000 caractères';
+            
+            if (length > 4500) {
+                counter.style.color = '#dc3545';
+                counter.style.fontWeight = 'bold';
+            } else if (length > 4000) {
+                counter.style.color = '#ffc107';
+                counter.style.fontWeight = 'normal';
+            } else {
+                counter.style.color = '#666';
+                counter.style.fontWeight = 'normal';
+            }
+        }
+        
+        textarea.addEventListener('input', updateCounter);
+        updateCounter();
+    }
+});
+</script>
 
 <?php get_footer(); ?>
