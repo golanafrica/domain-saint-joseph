@@ -4,7 +4,7 @@
  * Domaine Saint Joseph
  * - Honeypot anti-spam
  * - Validation renforcee
- * - Rate limiting
+ * - Rate limiting (adapte au contexte Burkina Faso)
  * - Enregistrement des messages
  */
 
@@ -87,6 +87,37 @@ function dsj_messages_column_content( $column, $post_id ) {
 add_action( 'manage_dsj_message_posts_custom_column', 'dsj_messages_column_content', 10, 2 );
 
 // ========================================
+// 🔒 PHASE 7.2 : DÉTECTION IP RÉELLE (CDN, proxy, NAT)
+// ========================================
+// Au Burkina Faso, beaucoup d'utilisateurs partagent la même IP publique
+// via NAT opérateur. Si le site est derrière Cloudflare ou un proxy,
+// il faut lire la vraie IP du visiteur, pas celle du proxy.
+
+function dsj_get_real_ip() {
+    // Cloudflare (priorité max si le site est derrière CF)
+    if ( ! empty( $_SERVER['HTTP_CF_CONNECTING_IP'] ) ) {
+        return sanitize_text_field( $_SERVER['HTTP_CF_CONNECTING_IP'] );
+    }
+    
+    // Proxy générique (AWS, Nginx, Apache derrière proxy)
+    if ( ! empty( $_SERVER['HTTP_X_FORWARDED_FOR'] ) ) {
+        $ips = explode( ',', $_SERVER['HTTP_X_FORWARDED_FOR'] );
+        $ip = trim( $ips[0] );
+        if ( filter_var( $ip, FILTER_VALIDATE_IP ) ) {
+            return $ip;
+        }
+    }
+    
+    // Autre proxy
+    if ( ! empty( $_SERVER['HTTP_X_REAL_IP'] ) ) {
+        return sanitize_text_field( $_SERVER['HTTP_X_REAL_IP'] );
+    }
+    
+    // IP directe (fallback)
+    return sanitize_text_field( $_SERVER['REMOTE_ADDR'] ?? 'unknown' );
+}
+
+// ========================================
 // FONCTIONS HELPER SECURITE
 // ========================================
 
@@ -95,21 +126,28 @@ add_action( 'manage_dsj_message_posts_custom_column', 'dsj_messages_column_conte
  */
 function dsj_check_honeypot( $field_name = 'dsj_hp_field' ) {
     if ( ! empty( $_POST[ $field_name ] ) ) {
-        error_log( 'DSJ: Bot detecte via honeypot depuis ' . $_SERVER['REMOTE_ADDR'] );
+        $ip = dsj_get_real_ip();
+        error_log( 'DSJ: Bot detecte via honeypot depuis ' . $ip );
         return false;
     }
     return true;
 }
 
 /**
- * Verifie le rate limiting (max 5 envois par heure par IP)
+ * Verifie le rate limiting
+ * 
+ * 🔒 PHASE 7.2 : Seuil augmenté de 5 à 15/heure
+ * Au Burkina Faso, le NAT opérateur fait que plusieurs utilisateurs
+ * partagent la même IP publique. Un seuil de 5 bloquerait trop de vrais visiteurs.
  */
 function dsj_check_rate_limit( $form_type = 'contact' ) {
-    $ip = $_SERVER['REMOTE_ADDR'] ?? 'unknown';
+    $ip = dsj_get_real_ip();
     $key = 'dsj_rate_' . $form_type . '_' . md5( $ip );
     $count = (int) get_transient( $key );
     
-    if ( $count >= 5 ) {
+    // Seuil : 15 envois par heure (adapté au contexte africain)
+    if ( $count >= 15 ) {
+        error_log( 'DSJ: Rate limit atteint pour IP ' . $ip . ' (' . $count . ' envois/heure)' );
         return false;
     }
     
@@ -136,6 +174,22 @@ function dsj_validate_contact( $contact ) {
 }
 
 /**
+ * 🔒 PHASE 7.2 : Trouver dynamiquement un administrateur
+ * Ne pas dépendre de l'ID=1 (bonne pratique sécurité WordPress)
+ */
+function dsj_get_admin_author_id() {
+    $admin = get_users( [
+        'role'     => 'administrator',
+        'number'   => 1,
+        'orderby'  => 'ID',
+        'order'    => 'ASC',
+        'fields'   => 'ID',
+    ] );
+    
+    return ! empty( $admin ) ? (int) $admin[0] : 1;
+}
+
+/**
  * Enregistre un message dans le CPT
  */
 function dsj_save_message( $type, $data ) {
@@ -145,12 +199,15 @@ function dsj_save_message( $type, $data ) {
         $data['nom'] ?? 'Anonyme'
     );
     
+    // 🔒 PHASE 7.2 : post_author dynamique
+    $author_id = dsj_get_admin_author_id();
+    
     $post_id = wp_insert_post([
         'post_type'   => 'dsj_message',
         'post_title'  => $title,
         'post_content'=> $data['message'] ?? '',
         'post_status' => 'publish',
-        'post_author' => 1,
+        'post_author' => $author_id,
     ]);
     
     if ( $post_id && ! is_wp_error( $post_id ) ) {
@@ -158,7 +215,7 @@ function dsj_save_message( $type, $data ) {
         update_post_meta( $post_id, '_dsj_msg_nom', $data['nom'] ?? '' );
         update_post_meta( $post_id, '_dsj_msg_contact', $data['contact'] ?? '' );
         update_post_meta( $post_id, '_dsj_msg_sujet', $data['sujet'] ?? '' );
-        update_post_meta( $post_id, '_dsj_msg_ip', $_SERVER['REMOTE_ADDR'] ?? '' );
+        update_post_meta( $post_id, '_dsj_msg_ip', dsj_get_real_ip() );
         update_post_meta( $post_id, '_dsj_msg_read', 0 );
         
         foreach ( $data as $key => $value ) {
