@@ -169,7 +169,7 @@ $hero_soustitre = get_theme_mod( 'hero_restaurant_soustitre', 'Découvrez nos pl
             <div class="alert alert-success">
                 <span class="alert-icon">&#9989;</span>
                 <div class="alert-content">
-                    <strong>Réservation confirmée !</strong> Nous vous attendons. Un email de confirmation vous a été envoyé.
+                    <strong>Réservation envoyée !</strong> Nous vous confirmerons votre réservation par téléphone ou WhatsApp dans les plus brefs délais.
                 </div>
             </div>
         <?php elseif ( isset( $_GET['resa_error'] ) ) : ?>
@@ -178,11 +178,23 @@ $hero_soustitre = get_theme_mod( 'hero_restaurant_soustitre', 'Découvrez nos pl
                 <div class="alert-content">
                     <?php
                     $error = $_GET['resa_error'] ?? '';
-                    if ( $error === 'missing' ) echo '<strong>Champs manquants</strong><br>Veuillez remplir tous les champs obligatoires.';
-                    elseif ( $error === 'send' ) echo '<strong>Erreur d\'envoi</strong><br>Veuillez réessayer ou nous contacter par téléphone.';
-                    elseif ( $error === 'rate_limit' ) echo '<strong>Trop de messages</strong><br>Veuillez attendre quelques minutes avant de réessayer.';
-                    elseif ( $error === 'invalid_contact' ) echo '<strong>Contact invalide</strong><br>Veuillez entrer un numéro de téléphone valide.';
-                    else echo '<strong>Erreur</strong><br>Veuillez réessayer ou nous contacter par téléphone.';
+                    if ( $error === 'missing' ) {
+                        echo '<strong>Champs manquants</strong><br>Veuillez remplir tous les champs obligatoires.';
+                    } elseif ( $error === 'too_long' ) {
+                        echo '<strong>Message trop long</strong><br>Votre message dépasse la limite de 5000 caractères. Veuillez le raccourcir.';
+                    } elseif ( $error === 'invalid_contact' ) {
+                        echo '<strong>Contact invalide</strong><br>Veuillez entrer un numéro de téléphone valide.';
+                    } elseif ( $error === 'rate_limit' ) {
+                        echo '<strong>Trop de réservations</strong><br>Vous avez envoyé trop de demandes récemment. Veuillez attendre quelques minutes avant de réessayer.';
+                    } elseif ( $error === 'session_expired' ) {
+                        echo '<strong>Session expirée</strong><br>Votre session a expiré pour des raisons de sécurité. Veuillez recharger la page et réessayer.';
+                    } elseif ( $error === 'service_unavailable' ) {
+                        echo '<strong>Service temporairement indisponible</strong><br>Notre service de réservation rencontre un problème technique. Merci de réessayer plus tard ou de nous contacter par téléphone.';
+                    } elseif ( $error === 'send' ) {
+                        echo '<strong>Erreur d\'envoi</strong><br>Une erreur est survenue lors de l\'envoi. Veuillez réessayer ou nous contacter directement par téléphone.';
+                    } else {
+                        echo '<strong>Erreur</strong><br>Veuillez réessayer ou nous contacter par téléphone.';
+                    }
                     ?>
                 </div>
             </div>
@@ -202,32 +214,32 @@ $hero_soustitre = get_theme_mod( 'hero_restaurant_soustitre', 'Découvrez nos pl
             <div class="form-grid">
                 <div class="form-group">
                     <label for="resa_nom">&#128100; Nom complet <span class="required">*</span></label>
-                    <input type="text" id="resa_nom" name="resa_nom" class="form-control" required>
+                    <input type="text" id="resa_nom" name="resa_nom" class="form-control" value="<?php echo isset( $_POST['resa_nom'] ) ? esc_attr( $_POST['resa_nom'] ) : ''; ?>" required>
                 </div>
                 
                 <div class="form-group">
                     <label for="resa_contact">&#128222; Téléphone <span class="required">*</span></label>
-                    <input type="tel" id="resa_contact" name="resa_contact" class="form-control" required>
+                    <input type="tel" id="resa_contact" name="resa_contact" class="form-control" value="<?php echo isset( $_POST['resa_contact'] ) ? esc_attr( $_POST['resa_contact'] ) : ''; ?>" required>
                 </div>
             </div>
             
             <div class="form-grid">
                 <div class="form-group">
                     <label for="resa_date">&#128197; Date <span class="required">*</span></label>
-                    <input type="date" id="resa_date" name="resa_date" class="form-control" required>
+                    <input type="date" id="resa_date" name="resa_date" class="form-control" value="<?php echo isset( $_POST['resa_date'] ) ? esc_attr( $_POST['resa_date'] ) : ''; ?>" required>
                 </div>
                 
                 <div class="form-group">
                     <label for="resa_heure">&#9200; Heure <span class="required">*</span></label>
                     <select id="resa_heure" name="resa_heure" class="form-control" required>
-                        <option value="12h00">12h00</option>
-                        <option value="12h30">12h30</option>
-                        <option value="13h00">13h00</option>
-                        <option value="13h30">13h30</option>
-                        <option value="19h00">19h00</option>
-                        <option value="19h30">19h30</option>
-                        <option value="20h00">20h00</option>
-                        <option value="20h30">20h30</option>
+                        <option value="12h00" <?php selected( $_POST['resa_heure'] ?? '', '12h00' ); ?>>12h00</option>
+                        <option value="12h30" <?php selected( $_POST['resa_heure'] ?? '', '12h30' ); ?>>12h30</option>
+                        <option value="13h00" <?php selected( $_POST['resa_heure'] ?? '', '13h00' ); ?>>13h00</option>
+                        <option value="13h30" <?php selected( $_POST['resa_heure'] ?? '', '13h30' ); ?>>13h30</option>
+                        <option value="19h00" <?php selected( $_POST['resa_heure'] ?? '', '19h00' ); ?>>19h00</option>
+                        <option value="19h30" <?php selected( $_POST['resa_heure'] ?? '', '19h30' ); ?>>19h30</option>
+                        <option value="20h00" <?php selected( $_POST['resa_heure'] ?? '', '20h00' ); ?>>20h00</option>
+                        <option value="20h30" <?php selected( $_POST['resa_heure'] ?? '', '20h30' ); ?>>20h30</option>
                     </select>
                 </div>
             </div>
@@ -236,32 +248,33 @@ $hero_soustitre = get_theme_mod( 'hero_restaurant_soustitre', 'Découvrez nos pl
                 <div class="form-group">
                     <label for="resa_personnes">&#128101; Nombre de personnes <span class="required">*</span></label>
                     <select id="resa_personnes" name="resa_personnes" class="form-control" required>
-                        <option value="1">1 personne</option>
-                        <option value="2">2 personnes</option>
-                        <option value="3">3 personnes</option>
-                        <option value="4">4 personnes</option>
-                        <option value="5">5 personnes</option>
-                        <option value="6">6 personnes</option>
-                        <option value="7">7 personnes</option>
-                        <option value="8+">8+ personnes</option>
+                        <option value="1" <?php selected( $_POST['resa_personnes'] ?? '', '1' ); ?>>1 personne</option>
+                        <option value="2" <?php selected( $_POST['resa_personnes'] ?? '', '2' ); ?>>2 personnes</option>
+                        <option value="3" <?php selected( $_POST['resa_personnes'] ?? '', '3' ); ?>>3 personnes</option>
+                        <option value="4" <?php selected( $_POST['resa_personnes'] ?? '', '4' ); ?>>4 personnes</option>
+                        <option value="5" <?php selected( $_POST['resa_personnes'] ?? '', '5' ); ?>>5 personnes</option>
+                        <option value="6" <?php selected( $_POST['resa_personnes'] ?? '', '6' ); ?>>6 personnes</option>
+                        <option value="7" <?php selected( $_POST['resa_personnes'] ?? '', '7' ); ?>>7 personnes</option>
+                        <option value="8+" <?php selected( $_POST['resa_personnes'] ?? '', '8+' ); ?>>8+ personnes</option>
                     </select>
                 </div>
                 
                 <div class="form-group">
                     <label for="resa_occasion">&#127881; Occasion spéciale</label>
                     <select id="resa_occasion" name="resa_occasion" class="form-control">
-                        <option value="">Aucune</option>
-                        <option value="anniversaire">Anniversaire</option>
-                        <option value="mariage">Mariage</option>
-                        <option value="professionnel">Professionnel</option>
-                        <option value="autre">Autre</option>
+                        <option value="" <?php selected( $_POST['resa_occasion'] ?? '', '' ); ?>>Aucune</option>
+                        <option value="anniversaire" <?php selected( $_POST['resa_occasion'] ?? '', 'anniversaire' ); ?>>Anniversaire</option>
+                        <option value="mariage" <?php selected( $_POST['resa_occasion'] ?? '', 'mariage' ); ?>>Mariage</option>
+                        <option value="professionnel" <?php selected( $_POST['resa_occasion'] ?? '', 'professionnel' ); ?>>Professionnel</option>
+                        <option value="autre" <?php selected( $_POST['resa_occasion'] ?? '', 'autre' ); ?>>Autre</option>
                     </select>
                 </div>
             </div>
             
             <div class="form-group full-width">
-                <label for="resa_message">&#128172; Message / Demande particulière</label>
-                <textarea id="resa_message" name="resa_message" class="form-control" rows="3" placeholder="Régime alimentaire, allergies, demande spéciale..."></textarea>
+                <label for="resa_message">&#128172; Message / Demande particulière <small>(max 5000 caractères)</small></label>
+                <textarea id="resa_message" name="resa_message" class="form-control" rows="3" maxlength="5000" placeholder="Régime alimentaire, allergies, demande spéciale..."><?php echo isset( $_POST['resa_message'] ) ? esc_textarea( $_POST['resa_message'] ) : ''; ?></textarea>
+                <small class="form-help" id="message-counter">0 / 5000 caractères</small>
             </div>
             
             <div class="form-footer">
@@ -277,5 +290,34 @@ $hero_soustitre = get_theme_mod( 'hero_restaurant_soustitre', 'Découvrez nos pl
         </form>
     </div>
 </section>
+
+<!-- Compteur de caractères pour le message -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const textarea = document.getElementById('resa_message');
+    const counter = document.getElementById('message-counter');
+    
+    if (textarea && counter) {
+        function updateCounter() {
+            const length = textarea.value.length;
+            counter.textContent = length + ' / 5000 caractères';
+            
+            if (length > 4500) {
+                counter.style.color = '#dc3545';
+                counter.style.fontWeight = 'bold';
+            } else if (length > 4000) {
+                counter.style.color = '#ffc107';
+                counter.style.fontWeight = 'normal';
+            } else {
+                counter.style.color = '#666';
+                counter.style.fontWeight = 'normal';
+            }
+        }
+        
+        textarea.addEventListener('input', updateCounter);
+        updateCounter();
+    }
+});
+</script>
 
 <?php get_footer(); ?>
