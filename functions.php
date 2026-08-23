@@ -1,7 +1,7 @@
 <?php
 /**
  * Functions du thème Domaine Saint Joseph
- * Version production - Phase 3 (Simplification admin + accès Customizer/Widgets)
+ * Version production - Phase 7 (Corrections audit Claude)
  */
 
 if ( ! defined( 'ABSPATH' ) ) exit;
@@ -188,39 +188,82 @@ function dsj_get_email() {
 }
 
 // ════════════════════════════════════════════════════════════════
-// HANDLER FORMULAIRE DE CONTACT
+// 🔒 PHASE 6.1 : VÉRIFICATION FAIL-CLOSED SÉCURITÉ FORMULAIRES
+// ════════════════════════════════════════════════════════════════
+function dsj_verify_security_module_available() {
+    $required_functions = [
+        'dsj_check_honeypot',
+        'dsj_check_rate_limit',
+        'dsj_validate_contact',
+    ];
+    
+    foreach ( $required_functions as $func ) {
+        if ( ! function_exists( $func ) ) {
+            error_log( "DSJ Sécurité: $func() manquant — formulaire bloqué par sécurité." );
+            return false;
+        }
+    }
+    
+    return true;
+}
+
+// ════════════════════════════════════════════════════════════════
+// 🔒 PHASE 6.2 : HANDLER FORMULAIRE CONTACT (sécurisé)
 // ════════════════════════════════════════════════════════════════
 
 function dsj_handle_contact_form() {
+    $fallback_url = home_url( '/contact' );
+    $referer = wp_get_referer();
+    if ( $referer ) {
+        $fallback_url = remove_query_arg( [ 'success', 'error' ], $referer );
+    }
+    
+    // 1. Nonce (sécurité) - redirection propre au lieu de wp_die()
     if ( ! isset( $_POST['_wpnonce'] ) || ! wp_verify_nonce( $_POST['_wpnonce'], 'dsj_contact_nonce' ) ) {
-        wp_die( 'Erreur de sécurité', 'Domaine Saint Joseph', [ 'response' => 403 ] );
-    }
-    
-    if ( function_exists( 'dsj_check_honeypot' ) && ! dsj_check_honeypot() ) {
-        wp_safe_redirect( home_url( '/contact?success=1' ) );
+        wp_safe_redirect( add_query_arg( 'error', 'session_expired', $fallback_url ) );
         exit;
     }
     
-    if ( function_exists( 'dsj_check_rate_limit' ) && ! dsj_check_rate_limit( 'contact' ) ) {
-        wp_safe_redirect( home_url( '/contact?error=rate_limit' ) );
+    // 2. Fail-closed si sécurité indisponible
+    if ( ! dsj_verify_security_module_available() ) {
+        wp_safe_redirect( add_query_arg( 'error', 'service_unavailable', $fallback_url ) );
         exit;
     }
     
+    // 3. Honeypot (bot)
+    if ( ! dsj_check_honeypot() ) {
+        wp_safe_redirect( add_query_arg( 'success', '1', $fallback_url ) );
+        exit;
+    }
+    
+    // 4. Validation des données (AVANT rate limit)
     $nom     = sanitize_text_field( $_POST['cf_nom'] ?? '' );
     $contact = sanitize_text_field( $_POST['cf_contact'] ?? '' );
     $sujet   = sanitize_text_field( $_POST['cf_sujet'] ?? 'general' );
     $message = sanitize_textarea_field( $_POST['cf_message'] ?? '' );
     
     if ( empty( $nom ) || empty( $contact ) || empty( $message ) ) {
-        wp_safe_redirect( home_url( '/contact?error=missing' ) );
+        wp_safe_redirect( add_query_arg( 'error', 'missing', $fallback_url ) );
         exit;
     }
     
-    if ( function_exists( 'dsj_validate_contact' ) && ! dsj_validate_contact( $contact ) ) {
-        wp_safe_redirect( home_url( '/contact?error=invalid_contact' ) );
+    if ( mb_strlen( $message ) > 5000 ) {
+        wp_safe_redirect( add_query_arg( 'error', 'too_long', $fallback_url ) );
         exit;
     }
     
+    if ( ! dsj_validate_contact( $contact ) ) {
+        wp_safe_redirect( add_query_arg( 'error', 'invalid_contact', $fallback_url ) );
+        exit;
+    }
+    
+    // 5. Rate limit (APRÈS validation des données)
+    if ( ! dsj_check_rate_limit( 'contact' ) ) {
+        wp_safe_redirect( add_query_arg( 'error', 'rate_limit', $fallback_url ) );
+        exit;
+    }
+    
+    // 6. Enregistrement et envoi
     if ( function_exists( 'dsj_save_message' ) ) {
         dsj_save_message( 'contact', [
             'nom'     => $nom,
@@ -237,31 +280,42 @@ function dsj_handle_contact_form() {
     
     $sent = wp_mail( $to, $subject, $body, $headers );
     
-    wp_safe_redirect( home_url( $sent ? '/contact?success=1' : '/contact?error=send' ) );
+    wp_safe_redirect( add_query_arg( $sent ? 'success' : 'error', $sent ? '1' : 'send', $fallback_url ) );
     exit;
 }
 add_action( 'admin_post_dsj_contact_form', 'dsj_handle_contact_form' );
 add_action( 'admin_post_nopriv_dsj_contact_form', 'dsj_handle_contact_form' );
 
 // ════════════════════════════════════════════════════════════════
-// HANDLER FORMULAIRE DE RÉSERVATION HÉBERGEMENT
+// 🔒 PHASE 6.2 : HANDLER FORMULAIRE RÉSERVATION HÉBERGEMENT
 // ════════════════════════════════════════════════════════════════
 
 function dsj_handle_reservation_form() {
+    $fallback_url = home_url( '/maison-accueil' );
+    $referer = wp_get_referer();
+    if ( $referer ) {
+        $fallback_url = remove_query_arg( [ 'success', 'error' ], $referer );
+    }
+    
+    // 1. Nonce
     if ( ! isset( $_POST['_wpnonce'] ) || ! wp_verify_nonce( $_POST['_wpnonce'], 'dsj_reservation_nonce' ) ) {
-        wp_die( 'Erreur de sécurité', 'Domaine Saint Joseph', [ 'response' => 403 ] );
-    }
-    
-    if ( function_exists( 'dsj_check_honeypot' ) && ! dsj_check_honeypot() ) {
-        wp_safe_redirect( home_url( '/maison-accueil?success=1' ) );
+        wp_safe_redirect( add_query_arg( 'error', 'session_expired', $fallback_url ) );
         exit;
     }
     
-    if ( function_exists( 'dsj_check_rate_limit' ) && ! dsj_check_rate_limit( 'reservation' ) ) {
-        wp_safe_redirect( home_url( '/maison-accueil?error=rate_limit' ) );
+    // 2. Fail-closed
+    if ( ! dsj_verify_security_module_available() ) {
+        wp_safe_redirect( add_query_arg( 'error', 'service_unavailable', $fallback_url ) );
         exit;
     }
     
+    // 3. Honeypot
+    if ( ! dsj_check_honeypot() ) {
+        wp_safe_redirect( add_query_arg( 'success', '1', $fallback_url ) );
+        exit;
+    }
+    
+    // 4. Validation des données
     $nom     = sanitize_text_field( $_POST['nom'] ?? '' );
     $contact = sanitize_text_field( $_POST['contact'] ?? '' );
     $arrivee = sanitize_text_field( $_POST['arrivee'] ?? '' );
@@ -270,15 +324,27 @@ function dsj_handle_reservation_form() {
     $message = sanitize_textarea_field( $_POST['message'] ?? '' );
     
     if ( empty( $nom ) || empty( $contact ) || empty( $arrivee ) || empty( $depart ) ) {
-        wp_safe_redirect( home_url( '/maison-accueil?error=missing' ) );
+        wp_safe_redirect( add_query_arg( 'error', 'missing', $fallback_url ) );
         exit;
     }
     
-    if ( function_exists( 'dsj_validate_contact' ) && ! dsj_validate_contact( $contact ) ) {
-        wp_safe_redirect( home_url( '/maison-accueil?error=invalid_contact' ) );
+    if ( mb_strlen( $message ) > 5000 ) {
+        wp_safe_redirect( add_query_arg( 'error', 'too_long', $fallback_url ) );
         exit;
     }
     
+    if ( ! dsj_validate_contact( $contact ) ) {
+        wp_safe_redirect( add_query_arg( 'error', 'invalid_contact', $fallback_url ) );
+        exit;
+    }
+    
+    // 5. Rate limit
+    if ( ! dsj_check_rate_limit( 'reservation' ) ) {
+        wp_safe_redirect( add_query_arg( 'error', 'rate_limit', $fallback_url ) );
+        exit;
+    }
+    
+    // 6. Enregistrement et envoi
     if ( function_exists( 'dsj_save_message' ) ) {
         dsj_save_message( 'reservation', [
             'nom'            => $nom,
@@ -296,31 +362,42 @@ function dsj_handle_reservation_form() {
     $headers = [ 'Content-Type: text/plain; charset=UTF-8', 'Reply-To: ' . $contact ];
     $sent = wp_mail( $to, $subject, $body, $headers );
     
-    wp_safe_redirect( home_url( $sent ? '/maison-accueil?success=1' : '/maison-accueil?error=send' ) );
+    wp_safe_redirect( add_query_arg( $sent ? 'success' : 'error', $sent ? '1' : 'send', $fallback_url ) );
     exit;
 }
 add_action( 'admin_post_dsj_reservation_form', 'dsj_handle_reservation_form' );
 add_action( 'admin_post_nopriv_dsj_reservation_form', 'dsj_handle_reservation_form' );
 
 // ════════════════════════════════════════════════════════════════
-// HANDLER FORMULAIRE DE RÉSERVATION RESTAURANT
+// 🔒 PHASE 6.2 : HANDLER FORMULAIRE RÉSERVATION RESTAURANT
 // ════════════════════════════════════════════════════════════════
 
 function dsj_handle_restaurant_reservation() {
+    $fallback_url = home_url( '/restaurant' );
+    $referer = wp_get_referer();
+    if ( $referer ) {
+        $fallback_url = remove_query_arg( [ 'resa_success', 'resa_error' ], $referer );
+    }
+    
+    // 1. Nonce
     if ( ! isset( $_POST['_wpnonce'] ) || ! wp_verify_nonce( $_POST['_wpnonce'], 'dsj_restaurant_nonce' ) ) {
-        wp_die( 'Erreur de sécurité', 'Domaine Saint Joseph', [ 'response' => 403 ] );
-    }
-    
-    if ( function_exists( 'dsj_check_honeypot' ) && ! dsj_check_honeypot() ) {
-        wp_safe_redirect( home_url( '/restaurant?resa_success=1' ) );
+        wp_safe_redirect( add_query_arg( 'resa_error', 'session_expired', $fallback_url ) );
         exit;
     }
     
-    if ( function_exists( 'dsj_check_rate_limit' ) && ! dsj_check_rate_limit( 'restaurant' ) ) {
-        wp_safe_redirect( home_url( '/restaurant?resa_error=rate_limit' ) );
+    // 2. Fail-closed
+    if ( ! dsj_verify_security_module_available() ) {
+        wp_safe_redirect( add_query_arg( 'resa_error', 'service_unavailable', $fallback_url ) );
         exit;
     }
     
+    // 3. Honeypot
+    if ( ! dsj_check_honeypot() ) {
+        wp_safe_redirect( add_query_arg( 'resa_success', '1', $fallback_url ) );
+        exit;
+    }
+    
+    // 4. Validation des données
     $nom       = sanitize_text_field( $_POST['resa_nom'] ?? '' );
     $contact   = sanitize_text_field( $_POST['resa_contact'] ?? '' );
     $date      = sanitize_text_field( $_POST['resa_date'] ?? '' );
@@ -330,15 +407,27 @@ function dsj_handle_restaurant_reservation() {
     $message   = sanitize_textarea_field( $_POST['resa_message'] ?? '' );
     
     if ( empty( $nom ) || empty( $contact ) || empty( $date ) || empty( $heure ) ) {
-        wp_safe_redirect( home_url( '/restaurant?resa_error=missing' ) );
+        wp_safe_redirect( add_query_arg( 'resa_error', 'missing', $fallback_url ) );
         exit;
     }
     
-    if ( function_exists( 'dsj_validate_contact' ) && ! dsj_validate_contact( $contact ) ) {
-        wp_safe_redirect( home_url( '/restaurant?resa_error=invalid_contact' ) );
+    if ( mb_strlen( $message ) > 5000 ) {
+        wp_safe_redirect( add_query_arg( 'resa_error', 'too_long', $fallback_url ) );
         exit;
     }
     
+    if ( ! dsj_validate_contact( $contact ) ) {
+        wp_safe_redirect( add_query_arg( 'resa_error', 'invalid_contact', $fallback_url ) );
+        exit;
+    }
+    
+    // 5. Rate limit
+    if ( ! dsj_check_rate_limit( 'restaurant' ) ) {
+        wp_safe_redirect( add_query_arg( 'resa_error', 'rate_limit', $fallback_url ) );
+        exit;
+    }
+    
+    // 6. Enregistrement et envoi
     if ( function_exists( 'dsj_save_message' ) ) {
         dsj_save_message( 'restaurant', [
             'nom'       => $nom,
@@ -357,7 +446,7 @@ function dsj_handle_restaurant_reservation() {
     $headers = [ 'Content-Type: text/plain; charset=UTF-8', 'Reply-To: ' . $contact ];
     $sent = wp_mail( $to, $subject, $body, $headers );
     
-    wp_safe_redirect( home_url( $sent ? '/restaurant?resa_success=1' : '/restaurant?resa_error=send' ) );
+    wp_safe_redirect( add_query_arg( $sent ? 'resa_success' : 'resa_error', $sent ? '1' : 'send', $fallback_url ) );
     exit;
 }
 add_action( 'admin_post_dsj_restaurant_reservation', 'dsj_handle_restaurant_reservation' );
@@ -371,7 +460,6 @@ function dsj_add_roles() {
     remove_role( 'soeur' );
     
     add_role( 'soeur', __( 'Sœur', 'domaine-saint-joseph' ), [
-        // ── Capacités de base WordPress ──
         'read'                        => true,
         'edit_posts'                  => true,
         'edit_published_posts'        => true,
@@ -380,10 +468,9 @@ function dsj_add_roles() {
         'delete_published_posts'      => true,
         'delete_others_posts'         => true,
         'publish_posts'               => true,
-        'upload_files'                => true,      // 🖼 Médiathèque
-        'edit_theme_options'          => true,      // ✅ NOUVEAU : Customizer + Widgets + Menus
+        'upload_files'                => true,
+        'edit_theme_options'          => true,
 
-        // ── Capacités CPT Formation ──
         'edit_formation'              => true,
         'edit_formations'             => true,
         'edit_others_formations'      => true,
@@ -398,7 +485,6 @@ function dsj_add_roles() {
         'publish_formations'          => true,
         'read_formation'              => true,
 
-        // ── Capacités CPT Hébergement ──
         'edit_hebergement'              => true,
         'edit_hebergements'             => true,
         'edit_others_hebergements'      => true,
@@ -413,7 +499,6 @@ function dsj_add_roles() {
         'publish_hebergements'          => true,
         'read_hebergement'              => true,
 
-        // ── Capacités CPT Menu (Restaurant) ──
         'edit_menu'              => true,
         'edit_menus'             => true,
         'edit_others_menus'      => true,
@@ -428,7 +513,6 @@ function dsj_add_roles() {
         'publish_menus'          => true,
         'read_menu'              => true,
 
-        // ── Capacités CPT Galerie ──
         'edit_galerie'              => true,
         'edit_galeries'             => true,
         'edit_others_galeries'      => true,
@@ -443,7 +527,6 @@ function dsj_add_roles() {
         'publish_galeries'          => true,
         'read_galerie'              => true,
 
-        // ── Capacités CPT Témoignage ──
         'edit_temoignage'              => true,
         'edit_temoignages'             => true,
         'edit_others_temoignages'      => true,
@@ -458,7 +541,6 @@ function dsj_add_roles() {
         'publish_temoignages'          => true,
         'read_temoignage'              => true,
 
-        // ── Capacités Taxonomies ──
         'manage_categories' => true,
     ] );
 }
@@ -480,16 +562,24 @@ function dsj_force_hebergement_template( $template ) {
 add_filter( 'template_include', 'dsj_force_hebergement_template', 99 );
 
 // ════════════════════════════════════════════════════════════════
-// ADMIN SCRIPTS (uploader widget)
+// 🔒 PHASE 6.5 : ADMIN SCRIPTS RESTREINTS + CACHE-BUSTING
 // ════════════════════════════════════════════════════════════════
 
-function dsj_admin_widget_scripts() {
+function dsj_admin_widget_scripts( $hook ) {
+    if ( ! in_array( $hook, [ 'widgets.php', 'customize.php' ], true ) ) {
+        return;
+    }
+    
     wp_enqueue_media();
+    
+    $script_file = get_template_directory() . '/assets/js/widget-uploader.js';
+    $script_version = file_exists( $script_file ) ? filemtime( $script_file ) : '1.0';
+    
     wp_enqueue_script(
         'dsj-widget-uploader',
         get_template_directory_uri() . '/assets/js/widget-uploader.js',
         array( 'jquery' ),
-        '1.0',
+        $script_version,
         true
     );
 }
@@ -623,35 +713,45 @@ add_filter( 'allowed_block_types_all', 'dsj_limit_blocks', 10, 2 );
 // ════════════════════════════════════════════════════════════════
 // 3.1 NETTOYER LE MENU ADMIN POUR LES SŒURS
 // ════════════════════════════════════════════════════════════════
-// Les sœurs voient :
-// - Apparence > Personnaliser, Widgets (mais pas Thèmes, Éditeur, Menus)
-// - Médiathèque (upload_files)
-// - Tous les CPT
-// - Pages
 
 function dsj_simplify_admin_for_soeur() {
-    // Les admins voient tout
     if ( current_user_can( 'manage_options' ) ) {
         return;
     }
     
     // Menus principaux à cacher complètement
-    remove_menu_page( 'tools.php' );           // Outils
-    remove_menu_page( 'plugins.php' );         // Extensions
-    remove_menu_page( 'options-general.php' ); // Réglages
-    remove_menu_page( 'edit-comments.php' );   // Commentaires
-    remove_menu_page( 'users.php' );           // Utilisateurs
+    remove_menu_page( 'tools.php' );
+    remove_menu_page( 'plugins.php' );
+    remove_menu_page( 'options-general.php' );
+    remove_menu_page( 'edit-comments.php' );
+    remove_menu_page( 'users.php' );
     
-    // Sous-menus d'Apparence à cacher (on garde Personnaliser et Widgets)
+    // Sous-menus d'Apparence à cacher
     remove_submenu_page( 'themes.php', 'themes.php' );           // Thèmes
     remove_submenu_page( 'themes.php', 'theme-editor.php' );     // Éditeur de thème
-    remove_submenu_page( 'themes.php', 'nav-menus.php' );        // Menus
-    remove_submenu_page( 'themes.php', 'theme-installer' );      // Ajouter un thème
+    remove_submenu_page( 'themes.php', 'nav-menus.php' );        // Menus (bloqué aussi côté serveur plus bas)
+    remove_submenu_page( 'themes.php', 'theme-install.php' );    // ✅ Corrigé : vrai slug WordPress
 }
 add_action( 'admin_menu', 'dsj_simplify_admin_for_soeur', 999 );
 
 // ════════════════════════════════════════════════════════════════
-// 3.1b NETTOYER LA BARRE ADMIN (en haut de l'écran)
+// 🔒 PHASE 7.1 : BLOCAGE RÉEL DE NAV-MENUS.PHP (sécurité serveur)
+// ════════════════════════════════════════════════════════════════
+// remove_submenu_page() ne fait que masquer le lien, pas bloquer l'accès.
+// On ajoute ici un blocage serveur pour empêcher l'accès direct par URL.
+
+add_action( 'load-nav-menus.php', function() {
+    if ( ! current_user_can( 'manage_options' ) ) {
+        wp_die( 
+            'Vous n\'avez pas accès à cette page. Utilisez <a href="' . admin_url( 'customize.php' ) . '">Personnaliser</a> ou <a href="' . admin_url( 'widgets.php' ) . '">Widgets</a> pour modifier le site.', 
+            'Accès refusé', 
+            [ 'response' => 403 ] 
+        );
+    }
+});
+
+// ════════════════════════════════════════════════════════════════
+// 3.1b NETTOYER LA BARRE ADMIN
 // ════════════════════════════════════════════════════════════════
 
 add_action( 'admin_bar_menu', function( $wp_admin_bar ) {
@@ -663,7 +763,7 @@ add_action( 'admin_bar_menu', function( $wp_admin_bar ) {
 }, 999 );
 
 // ════════════════════════════════════════════════════════════════
-// 3.2 NETTOYER LE TABLEAU DE BORD (dashboard)
+// 3.2 NETTOYER LE TABLEAU DE BORD
 // ════════════════════════════════════════════════════════════════
 
 function dsj_clean_dashboard() {
@@ -847,7 +947,7 @@ function dsj_render_help_widget() {
 }
 
 // ════════════════════════════════════════════════════════════════
-// 3.4 ONGLETS D'AIDE CONTEXTUELLE SUR LES ÉCRANS CPT
+// 3.4 ONGLETS D'AIDE CONTEXTUELLE
 // ════════════════════════════════════════════════════════════════
 
 function dsj_add_help_tabs() {
@@ -863,12 +963,12 @@ function dsj_add_help_tabs() {
                 'content' => '
                     <h3>Comment ajouter une formation ?</h3>
                     <ol>
-                        <li><strong>Titre</strong> : nom de la formation (ex: "Couture Débutant")</li>
-                        <li><strong>Description</strong> : détails du programme, objectifs</li>
-                        <li><strong>Image mise en avant</strong> (colonne droite) : photo de la formation</li>
-                        <li><strong>Détails de la formation</strong> (en bas) : durée, prix, niveau, places, formatrice, horaires</li>
+                        <li><strong>Titre</strong> : nom de la formation</li>
+                        <li><strong>Description</strong> : détails du programme</li>
+                        <li><strong>Image mise en avant</strong> : photo de la formation</li>
+                        <li><strong>Détails</strong> : durée, prix, niveau, places, formatrice, horaires</li>
                     </ol>
-                    <p>⚠️ <strong>Important :</strong> Remplissez au moins la durée et le prix, sinon un avertissement apparaîtra.</p>
+                    <p>⚠️ Remplissez au moins la durée et le prix.</p>
                     <p>✅ Cliquez sur <strong>Publier</strong> une fois terminé.</p>
                 ',
             ];
@@ -880,13 +980,13 @@ function dsj_add_help_tabs() {
                 'content' => '
                     <h3>Comment ajouter un hébergement ?</h3>
                     <ol>
-                        <li><strong>Titre</strong> : nom de la chambre (ex: "Chambre Familiale")</li>
+                        <li><strong>Titre</strong> : nom de la chambre</li>
                         <li><strong>Description</strong> : description de la chambre</li>
                         <li><strong>Image mise en avant</strong> : photo de la chambre</li>
-                        <li><strong>Détails</strong> (en bas) : capacité, prix par nuit, équipements, disponibilité</li>
+                        <li><strong>Détails</strong> : capacité, prix par nuit, équipements, disponibilité</li>
                     </ol>
-                    <p>💡 <strong>Équipements</strong> : séparez par des virgules (ex: "Wi-Fi, Climatisation, TV")</p>
-                    <p>⚠️ Pensez à mettre à jour la <strong>disponibilité</strong> dès qu\'une chambre est réservée.</p>
+                    <p>💡 Équipements séparés par des virgules.</p>
+                    <p>⚠️ Mettez à jour la disponibilité dès qu\'une chambre est réservée.</p>
                 ',
             ];
             break;
@@ -897,12 +997,12 @@ function dsj_add_help_tabs() {
                 'content' => '
                     <h3>Comment ajouter un plat ?</h3>
                     <ol>
-                        <li><strong>Titre</strong> : nom du plat (ex: "Poulet DG")</li>
+                        <li><strong>Titre</strong> : nom du plat</li>
                         <li><strong>Description</strong> : description du plat</li>
                         <li><strong>Image mise en avant</strong> : belle photo du plat</li>
-                        <li><strong>Détails du plat</strong> (en bas) : prix, temps de préparation, ingrédients, allergènes</li>
+                        <li><strong>Détails</strong> : prix, temps, ingrédients, allergènes</li>
                     </ol>
-                    <p>📸 Une belle photo est très importante pour donner envie !</p>
+                    <p>📸 Une belle photo est très importante !</p>
                 ',
             ];
             break;
@@ -911,14 +1011,14 @@ function dsj_add_help_tabs() {
             $help_content = [
                 'title' => '📸 Aide - Photo galerie',
                 'content' => '
-                    <h3>Comment ajouter une photo à la galerie ?</h3>
+                    <h3>Comment ajouter une photo ?</h3>
                     <ol>
-                        <li><strong>Titre</strong> : nom de la photo (ex: "Atelier couture 2024")</li>
-                        <li><strong>Image mise en avant</strong> : LA photo à afficher</li>
-                        <li><strong>Catégorie Galerie</strong> (colonne droite) : classez la photo (formations, hébergement, événements...)</li>
-                        <li><strong>Extrait</strong> (optionnel) : courte description affichée sous la photo</li>
+                        <li><strong>Titre</strong> : nom de la photo</li>
+                        <li><strong>Image mise en avant</strong> : LA photo</li>
+                        <li><strong>Catégorie Galerie</strong> : classez la photo</li>
+                        <li><strong>Extrait</strong> : courte description (optionnel)</li>
                     </ol>
-                    <p>💡 <strong>Conseil :</strong> Utilisez des photos lumineuses et de bonne qualité.</p>
+                    <p>💡 Utilisez des photos lumineuses et de bonne qualité.</p>
                 ',
             ];
             break;
@@ -929,10 +1029,10 @@ function dsj_add_help_tabs() {
                 'content' => '
                     <h3>Comment ajouter un témoignage ?</h3>
                     <ol>
-                        <li><strong>Titre</strong> : nom de la personne (ex: "Marie K.")</li>
+                        <li><strong>Titre</strong> : nom de la personne</li>
                         <li><strong>Contenu</strong> : le témoignage complet</li>
                     </ol>
-                    <p>✨ Les témoignages renforcent la confiance des visiteurs. Recueillez-en régulièrement !</p>
+                    <p>✨ Les témoignages renforcent la confiance des visiteurs.</p>
                 ',
             ];
             break;
