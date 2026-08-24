@@ -1,0 +1,584 @@
+/* ========================================
+ * 09-SINGLES.CSS
+ * Single Formation + Single Hébergement
+ * Version corrigée : image = largeur colonne + pleine hauteur (sans débordement)
+ * ======================================== */
+
+/* ═══════════════════════════════════════════════════════════
+   HERO SINGLE (SANS bandes vides en haut/bas)
+   ═══════════════════════════════════════════════════════════ */
+
+.formation-single-header,
+.formation-single-header::before,
+.formation-single-header::after,
+.hebergement-single-header,
+.hebergement-single-header::before,
+.hebergement-single-header::after {
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+.formation-single-header,
+.hebergement-single-header {
+    display: block !important;
+    min-height: 0 !important;
+    height: auto !important;
+    align-items: initial !important;
+    justify-content: initial !important;
+    background: linear-gradient(135deg, var(--clr-primary, #1A5276) 0%, #1a3c5e 100%);
+    color: var(--clr-white);
+}
+
+.formation-single-header .page-photo-zone,
+.hebergement-single-header .page-photo-zone {
+    margin-top: 0 !important;
+}
+
+.formation-single-header .header-caption-band,
+.hebergement-single-header .header-caption-band {
+    margin-bottom: 0 !important;
+}
+
+/* Fallback si AUCUNE image : dégradé bleu (jamais de zone vide) */
+.formation-single-header .page-photo-zone,
+.hebergement-single-header .page-photo-zone {
+    background-image: linear-gradient(135deg, var(--clr-primary, #1A5276) 0%, #0d2f47 100%);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   HERO FORMATION — Badge, titre, diviseur
+   ═══════════════════════════════════════════════════════════ */
+
+.formation-single-header .header-badge {
+    display: inline-block;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(8px);
+    padding: 6px 20px;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 1px;
+    color: var(--clr-accent, #D4AC0D);
+    margin-bottom: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.formation-single-header .header-title {
+    font-size: 3rem;
+    font-weight: 800;
+    color: #ffffff;
+    margin: 0 0 20px;
+    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.15);
+    letter-spacing: -0.5px;
+}
+
+.formation-single-header .header-divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    margin: 20px 0;
+}
+
+.formation-single-header .divider-line {
+    width: 80px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--clr-accent, #D4AC0D), transparent);
+}
+
+.formation-single-header .divider-icon {
+    font-size: 1.5rem;
+    color: var(--clr-accent, #D4AC0D);
+    opacity: 0.9;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   GRILLES PRINCIPALES + ANIMATIONS
+   ═══════════════════════════════════════════════════════════ */
+
+.formation-single-grid,
+.hebergement-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 50px;
+    margin-bottom: 60px;
+}
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.formation-single-grid > *,
+.hebergement-grid > * {
+    animation: fadeInUp 0.6s ease-out forwards;
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+.formation-single-grid > *:first-child,
+.hebergement-grid > *:first-child { animation-delay: 0.1s; }
+.formation-single-grid > *:last-child,
+.hebergement-grid > *:last-child { animation-delay: 0.2s; }
+
+/* ═══════════════════════════════════════════════════════════
+   🔧 IMAGES — LARGEUR COLONNE + PLEINE HAUTEUR
+   (PAS d'aspect-ratio ni height:100% en desktop : c'est ça qui
+   faisait déborder l'image sur la colonne de droite)
+   ═══════════════════════════════════════════════════════════ */
+
+.formation-single-image,
+.main-image {
+    position: relative;
+    overflow: hidden;
+    border-radius: 20px;
+    box-shadow: 0 20px 35px rgba(0, 0, 0, 0.1);
+    background: #e8e8e8;
+    min-height: 350px;
+    /* Desktop : item de grille → largeur = colonne,
+       et align-self: stretch (défaut) → hauteur = colonne infos */
+}
+
+/* Hébergement : l'image remplit la hauteur restante de la galerie */
+.hebergement-gallery .main-image {
+    flex: 1;
+    min-height: 300px;
+}
+
+.formation-single-image img,
+.main-image img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+    transition: transform 0.5s ease;
+}
+
+.formation-single-image:hover img,
+.main-image:hover img {
+    transform: scale(1.05);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   GALERIE HÉBERGEMENT (miniatures)
+   ═══════════════════════════════════════════════════════════ */
+
+.hebergement-gallery {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.gallery-thumbs {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+    flex-wrap: wrap;
+}
+
+.gallery-thumbs img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.gallery-thumbs img:hover {
+    transform: scale(1.05);
+    border-color: var(--clr-accent, #D4AC0D);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   CARTES D'INFORMATIONS
+   ═══════════════════════════════════════════════════════════ */
+
+.formation-single-infos .infos-card,
+.hebergement-infos .infos-card {
+    background: var(--clr-white);
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    margin-bottom: 30px;
+}
+
+.formation-single-infos .infos-card h3,
+.hebergement-infos .infos-card h3 {
+    font-size: 1.5rem;
+    color: var(--clr-primary);
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid var(--clr-accent);
+    display: inline-block;
+}
+
+/* Lignes d'informations */
+.formation-single-infos .info-row,
+.hebergement-infos .info-row {
+    display: flex;
+    align-items: flex-start;
+    padding: 12px 0;
+    border-bottom: 1px solid #f0f0f0;
+    gap: 10px;
+}
+
+.formation-single-infos .info-row:last-child,
+.hebergement-infos .info-row:last-child {
+    border-bottom: none;
+}
+
+.formation-single-infos .info-label,
+.hebergement-infos .info-label {
+    font-weight: 700;
+    width: 140px;
+    min-width: 140px;
+    flex-shrink: 0;
+    color: var(--clr-primary);
+}
+
+.formation-single-infos .info-value,
+.hebergement-infos .info-value {
+    flex: 1;
+    color: #555;
+    word-break: break-word;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   BADGES DE DISPONIBILITÉ
+   ═══════════════════════════════════════════════════════════ */
+
+.badge-disponible {
+    color: #28a745;
+    font-weight: 600;
+    background: #d4edda;
+    padding: 4px 12px;
+    border-radius: 30px;
+    display: inline-block;
+    font-size: 0.85rem;
+}
+
+.badge-reservation {
+    color: #ffc107;
+    font-weight: 600;
+    background: #fff3cd;
+    padding: 4px 12px;
+    border-radius: 30px;
+    display: inline-block;
+    font-size: 0.85rem;
+}
+
+.badge-complet {
+    color: #dc3545;
+    font-weight: 600;
+    background: #f8d7da;
+    padding: 4px 12px;
+    border-radius: 30px;
+    display: inline-block;
+    font-size: 0.85rem;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   ÉQUIPEMENTS
+   ═══════════════════════════════════════════════════════════ */
+
+.equipements-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.equipement-tag {
+    background: #f8f9fa;
+    padding: 6px 14px;
+    border-radius: 30px;
+    font-size: 0.8rem;
+    color: #555;
+    transition: all var(--transition);
+    display: inline-block;
+}
+
+.equipement-tag:hover {
+    background: var(--clr-accent);
+    color: var(--clr-primary);
+    transform: translateY(-2px);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   BOUTONS CTA (inscription / réservation)
+   ═══════════════════════════════════════════════════════════ */
+
+.inscription-cta,
+.reservation-cta {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin: 25px 0;
+    position: relative;
+    z-index: 2; /* Les boutons toujours au-dessus */
+}
+
+.inscription-cta .btn,
+.reservation-cta .btn {
+    flex: 1;
+    min-width: 140px;
+    text-align: center;
+    padding: 14px 20px;
+    font-weight: 700;
+    border-radius: 50px;
+    transition: all var(--transition);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    cursor: pointer;
+}
+
+/* Bouton WhatsApp → VERT */
+.inscription-cta .btn-primary,
+.reservation-cta .btn-whatsapp {
+    background: #25D366;
+    color: var(--clr-white);
+    border: none;
+}
+
+.inscription-cta .btn-primary:hover,
+.reservation-cta .btn-whatsapp:hover {
+    background: #128C7E;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(37, 211, 102, 0.3);
+}
+
+/* Bouton secondaire → DORÉ */
+.inscription-cta .btn-outline,
+.reservation-cta .btn-primary {
+    background: var(--clr-accent);
+    color: var(--clr-primary);
+    border: none;
+}
+
+.inscription-cta .btn-outline:hover,
+.reservation-cta .btn-primary:hover {
+    background: #c49b0c;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(212, 172, 13, 0.3);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   INFORMATIONS SUPPLÉMENTAIRES
+   ═══════════════════════════════════════════════════════════ */
+
+.info-extra {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    background: #f8f9fa;
+    border-radius: 16px;
+    padding: 15px 20px;
+    margin-top: 20px;
+}
+
+.extra-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+    min-width: 200px;
+}
+
+.extra-icon { font-size: 1.6rem; }
+.extra-item div { display: flex; flex-direction: column; }
+.extra-item strong { font-size: 0.85rem; color: var(--clr-primary); }
+.extra-item small { font-size: 0.7rem; color: #666; }
+
+/* ═══════════════════════════════════════════════════════════
+   DESCRIPTIONS COMPLÈTES
+   ═══════════════════════════════════════════════════════════ */
+
+.formation-description,
+.hebergement-description {
+    margin-top: 40px;
+    padding-top: 40px;
+    border-top: 2px solid #eee;
+}
+
+.formation-description h3,
+.hebergement-description h3 {
+    font-size: 1.6rem;
+    color: var(--clr-primary);
+    margin-bottom: 25px;
+    position: relative;
+    padding-left: 15px;
+    border-left: 4px solid var(--clr-accent);
+}
+
+.formation-description .content,
+.hebergement-description .content {
+    color: #444;
+    line-height: 1.8;
+}
+
+.formation-description .content p,
+.hebergement-description .content p {
+    margin-bottom: 1.2rem;
+}
+
+/* Masquer les images dupliquées dans le contenu */
+.formation-description .content img,
+.hebergement-description .content img {
+    display: none;
+}
+
+/* Badges de formation (catégories) */
+.formation-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+}
+
+.formation-badge {
+    display: inline-block;
+    background: var(--clr-accent);
+    color: var(--clr-primary);
+    padding: 5px 15px;
+    border-radius: 30px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   RESPONSIVE
+   ═══════════════════════════════════════════════════════════ */
+
+/* Tablettes */
+@media (max-width: 992px) {
+    .formation-single-grid,
+    .hebergement-grid { gap: 35px; }
+    .formation-single-infos .info-label,
+    .hebergement-infos .info-label { width: 120px; min-width: 120px; }
+    .formation-single-image,
+    .main-image { min-height: 300px; }
+}
+
+/* Mobile : 1 colonne → là on PEUT utiliser aspect-ratio
+   (hauteur auto = pas de débordement) */
+@media (max-width: 768px) {
+    .formation-single-header,
+    .single-hebergement-header { padding: 50px 0 80px !important; }
+    .formation-single-grid,
+    .hebergement-grid {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+    .formation-single-image,
+    .main-image {
+        max-width: 100%;
+        width: 100%;
+        margin: 0 auto;
+        aspect-ratio: 16 / 10;
+        min-height: 0;
+    }
+    .hebergement-gallery .main-image { flex: none; }
+    .formation-single-infos .infos-card,
+    .hebergement-infos .infos-card {
+        padding: 20px;
+        border-radius: 16px;
+    }
+    .formation-single-infos .info-row,
+    .hebergement-infos .info-row {
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: flex-start;
+        padding: 10px 0;
+        gap: 8px;
+    }
+    .formation-single-infos .info-label,
+    .hebergement-infos .info-label {
+        width: 45%;
+        min-width: 110px;
+        margin-bottom: 0;
+        flex-shrink: 0;
+        font-size: 0.9rem;
+    }
+    .formation-single-infos .info-value,
+    .hebergement-infos .info-value {
+        width: 55%;
+        flex: 1;
+        font-size: 0.9rem;
+    }
+    .hebergement-infos .info-row.equipements,
+    .formation-single-infos .info-row.equipements {
+        flex-direction: column;
+    }
+    .hebergement-infos .info-row.equipements .info-label,
+    .formation-single-infos .info-row.equipements .info-label {
+        width: 100%;
+        margin-bottom: 8px;
+    }
+    .hebergement-infos .info-row.equipements .info-value,
+    .formation-single-infos .info-row.equipements .info-value {
+        width: 100%;
+    }
+    .inscription-cta,
+    .reservation-cta { flex-direction: column; }
+    .inscription-cta .btn,
+    .reservation-cta .btn { width: 100%; min-width: auto; }
+    .info-extra { flex-direction: column; border-radius: 14px; padding: 15px; }
+    .extra-item { width: 100%; min-width: auto; }
+    .gallery-thumbs img { width: 60px; height: 60px; }
+    .formation-description h3,
+    .hebergement-description h3 { font-size: 1.3rem; }
+    .formation-description .content,
+    .hebergement-description .content { font-size: 0.95rem; }
+}
+
+/* Très petits écrans */
+@media (max-width: 480px) {
+    .formation-single-infos .infos-card h3,
+    .hebergement-infos .infos-card h3 { font-size: 1.2rem; }
+    .formation-description h3,
+    .hebergement-description h3 { font-size: 1.2rem; }
+    .inscription-cta .btn,
+    .reservation-cta .btn { font-size: 0.9rem; padding: 12px 16px; }
+    .formation-single-image,
+    .main-image {
+        aspect-ratio: 1 / 1;
+        width: 100%;
+        max-width: 100%;
+    }
+    .formation-single-infos .info-label,
+    .hebergement-infos .info-label {
+        width: 40%;
+        min-width: 90px;
+        font-size: 0.85rem;
+    }
+    .formation-single-infos .info-value,
+    .hebergement-infos .info-value {
+        width: 60%;
+        font-size: 0.85rem;
+    }
+    .formation-single-infos .infos-card,
+    .hebergement-infos .infos-card { border-radius: 14px; padding: 16px; }
+    .info-extra { border-radius: 12px; padding: 12px; }
+    .extra-icon { font-size: 1.4rem; }
+    .equipement-tag { font-size: 0.7rem; padding: 4px 12px; }
+    .formation-single-header .header-title { font-size: 1.6rem; }
+    .formation-single-header .divider-icon { font-size: 1.2rem; }
+    .formation-single-header .divider-line { width: 40px; }
+    .formation-badge { font-size: 0.7rem; padding: 4px 12px; }
+}
