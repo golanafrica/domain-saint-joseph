@@ -1,7 +1,7 @@
 <?php
 /**
  * Functions du thème Domaine Saint Joseph
- * Version production - Phase 7 (Corrections audit Claude)
+ * Version production - Phase 8 (CSS modulaire + Corrections audit Claude)
  */
 
 if ( ! defined( 'ABSPATH' ) ) exit;
@@ -87,18 +87,55 @@ function dsj_widgets_init() {
 add_action( 'widgets_init', 'dsj_widgets_init' );
 
 // ════════════════════════════════════════════════════════════════
-// CHARGEMENT DES ASSETS AVEC CACHE-BUSTING (filemtime)
+// 🔧 PHASE 8 : CHARGEMENT DES ASSETS MODULAIRES AVEC CACHE-BUSTING
 // ════════════════════════════════════════════════════════════════
+// Chaque fichier CSS est chargé individuellement avec son propre
+// cache-busting via filemtime(). Cela permet :
+// - Un chargement parallèle plus rapide
+// - Un cache-busting précis par fichier
+// - Une maintenance facilitée (fichiers thématiques de 150-700 lignes)
 function dsj_assets() {
-    $style_file  = get_template_directory() . '/assets/css/main.css';
+    $css_dir = get_template_directory() . '/assets/css/';
+    $css_uri = get_template_directory_uri() . '/assets/css/';
+    
+    // Liste ordonnée des 12 fichiers CSS modulaires
+    // L'ordre est IMPORTANT : base d'abord, composants ensuite, pages enfin
+    $css_files = [
+        '01-base',          // Variables CSS + Reset + styles globaux
+        '02-header',        // Header + Navigation + Menu mobile
+        '03-hero',          // Hero slider + Hero custom + Page headers
+        '04-footer',        // Footer complet + Réseaux sociaux
+        '05-components',    // Boutons + Cartes + Stats + Témoignages
+        '06-forms',         // Formulaires + Alertes + Bandeau flash
+        '07-galerie',       // Galerie + Lightbox + Filtres
+        '08-pages',         // Pages spécifiques (À propos, Contact, etc.)
+        '09-singles',       // Single Formation + Single Hébergement
+        '10-cta',           // Sections CTA (Home + Formation)
+        '11-responsive',    // Corrections mobile spécifiques
+        '12-accessibility', // Accessibilité + Features + Page générique
+    ];
+    
+    // Charger chaque fichier CSS avec son propre cache-busting
+    foreach ( $css_files as $file ) {
+        $file_path = $css_dir . $file . '.css';
+        $file_url  = $css_uri . $file . '.css';
+        $version   = file_exists( $file_path ) ? filemtime( $file_path ) : '1.0';
+        
+        wp_enqueue_style( 'dsj-' . $file, $file_url, [], $version );
+    }
+    
+    // main.css (fichier d'orchestration — juste commentaires, vide de styles)
+    $main_file = $css_dir . 'main.css';
+    $main_version = file_exists( $main_file ) ? filemtime( $main_file ) : '1.0';
+    wp_enqueue_style( 'dsj-main', $css_uri . 'main.css', [], $main_version );
+    
+    // JavaScript principal avec cache-busting
     $script_file = get_template_directory() . '/assets/js/main.js';
-    
-    $style_version  = file_exists( $style_file ) ? filemtime( $style_file ) : '1.0';
     $script_version = file_exists( $script_file ) ? filemtime( $script_file ) : '1.0';
+    wp_enqueue_script( 'dsj-main-js', get_template_directory_uri() . '/assets/js/main.js', [], $script_version, true );
     
-    wp_enqueue_style( 'dsj-main', get_template_directory_uri() . '/assets/css/main.css', [], $style_version );
-    wp_enqueue_script( 'dsj-main', get_template_directory_uri() . '/assets/js/main.js', [], $script_version, true );
-    
+    // Variables CSS dynamiques (couleurs du Customizer)
+    // Injectées dans 01-base pour être disponibles avant tout le reste
     $primary_color = get_theme_mod( 'primary_color', '#1A5276' );
     $accent_color = get_theme_mod( 'accent_color', '#D4AC0D' );
     $custom_css = "
@@ -124,7 +161,7 @@ function dsj_assets() {
             color: var(--clr-accent);
         }
     ";
-    wp_add_inline_style( 'dsj-main', $custom_css );
+    wp_add_inline_style( 'dsj-01-base', $custom_css );
 }
 add_action( 'wp_enqueue_scripts', 'dsj_assets' );
 

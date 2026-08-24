@@ -1,17 +1,29 @@
 <?php
 /**
  * Archive pour les hébergements (liste)
+ * Disposition identique aux autres pages (photo en haut + bande bleue)
  */
 
 get_header(); ?>
 
 <main id="main" class="site-main">
-    
-    <!-- Header de la page -->
-    <section class="page-header">
-        <div class="container">
-            <h1>Nos Hébergements</h1>
-            <p class="page-subtitle">Chambres confortables, salles de conférence, chapelle : un lieu de repos et de ressourcement.</p>
+
+    <!-- Hero section : photo + bande bleue (cohérent avec le reste du site) -->
+    <section class="page-header hebergement-archive-header">
+        <div class="page-photo-zone"
+            <?php if ( get_theme_mod( 'hero_maison_image' ) ) : ?>
+                style="background-image: url('<?php echo esc_url( get_theme_mod( 'hero_maison_image' ) ); ?>');"
+            <?php endif; ?>>
+        </div>
+        <div class="header-caption-band">
+            <span class="header-badge">&#127968; Notre hébergement</span>
+            <h1 class="header-title">Nos Hébergements</h1>
+            <div class="header-divider">
+                <span class="divider-line"></span>
+                <span class="divider-icon">&#9962;</span>
+                <span class="divider-line"></span>
+            </div>
+            <p class="header-subtitle">Chambres confortables, salles de conférence, chapelle : un lieu de repos et de ressourcement.</p>
         </div>
     </section>
 
@@ -46,19 +58,19 @@ get_header(); ?>
                                 
                                 <div class="card-meta">
                                     <?php if ( $capacite ) : ?>
-                                        <span class="meta-item">? <?php echo esc_html( $capacite ); ?> pers.</span>
+                                        <span class="meta-item">&#128101; <?php echo esc_html( $capacite ); ?> pers.</span>
                                     <?php endif; ?>
                                     
                                     <?php if ( $prix_nuit ) : ?>
-                                        <span class="meta-item">? <?php echo esc_html( $prix_nuit ); ?> F/nuit</span>
+                                        <span class="meta-item">&#128176; <?php echo esc_html( $prix_nuit ); ?> F/nuit</span>
                                     <?php endif; ?>
                                     
                                     <?php if ( $dispo ) : ?>
                                         <span class="meta-item">
                                             <?php 
-                                            if ( $dispo === 'disponible' ) echo '? Disponible';
-                                            elseif ( $dispo === 'sur_reservation' ) echo '? Sur réservation';
-                                            else echo '? Complet';
+                                            if ( $dispo === 'disponible' ) echo '&#9989; Disponible';
+                                            elseif ( $dispo === 'sur_reservation' ) echo '&#128222; Sur réservation';
+                                            else echo '&#10060; Complet';
                                             ?>
                                         </span>
                                     <?php endif; ?>
@@ -76,7 +88,7 @@ get_header(); ?>
                                 </div>
                                 
                                 <a href="<?php the_permalink(); ?>" class="btn-link">
-                                    Voir les détails ?
+                                    Voir les détails &#8594;
                                 </a>
                             </div>
                         </div>
@@ -86,8 +98,8 @@ get_header(); ?>
                         <?php 
                         the_posts_pagination( [
                             'mid_size' => 2,
-                            'prev_text' => '? Précédent',
-                            'next_text' => 'Suivant ?',
+                            'prev_text' => '&#8592; Précédent',
+                            'next_text' => 'Suivant &#8594;,
                         ] ); 
                         ?>
                     </div>
@@ -98,7 +110,7 @@ get_header(); ?>
             </div>
         </div>
     </section>
-    
+
 </main>
 
 <?php get_footer(); ?>
