@@ -1,0 +1,68 @@
+/* ========================================
+ * 01-BASE.CSS
+ * Variables CSS + Reset + Styles de base
+ * ======================================== */
+
+/* === RESET === */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+/* === VARIABLES GLOBALES === */
+:root {
+    --clr-primary: #1A5276;
+    --clr-accent: #D4AC0D;
+    --clr-text: #2C3E50;
+    --clr-bg: #FDFEFE;
+    --clr-white: #FFFFFF;
+    --clr-bleu-clair: #EBF5FB;
+    --radius: 8px;
+    --shadow: 0 2px 16px rgba(0, 0, 0, 0.1);
+    --transition: 0.3s ease;
+    --container: 1200px;
+    --font-main: 'Segoe UI', Arial, sans-serif;
+}
+
+body {
+    font-family: var(--font-main);
+    background: var(--clr-bg);
+    color: var(--clr-text);
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+a { color: var(--clr-primary); text-decoration: none; transition: color var(--transition); }
+a:hover { color: var(--clr-accent); }
+img { max-width: 100%; height: auto; display: block; }
+.container { max-width: var(--container); margin: 0 auto; padding: 0 1.5rem; }
+
+/* === FONDS DE SECTION === */
+.bg-blanc       { background: #FDFEFE; }
+.bg-gris        { background: #F8F9FA; }
+.bg-bleu-clair  { background: #EBF5FB; }
+.bg-creme       { background: #FEF9EE; }
+.bg-vert-menthe { background: #F0FAF4; }
+.bg-primaire    {
+    background: linear-gradient(135deg, #1A5276 0%, #0f2a40 100%);
+    color: var(--clr-white);
+}
+.bg-primaire h1,
+.bg-primaire h2,
+.bg-primaire h3,
+.bg-primaire p,
+.bg-primaire a {
+    color: inherit;
+}
+
+/* === ESPACEMENT === */
+section.section-padding + section.section-padding {
+    margin-top: 0;
+}
+
+/* === VIEW TRANSITIONS === */
+@supports (view-transition-name: none) {
+    ::view-transition-group(*),
+    ::view-transition-old(*),
+    ::view-transition-new(*) {
+        animation-duration: 0.25s;
+        animation-timing-function: cubic-bezier(0.19, 1, 0.22, 1);
+    }
+}

@@ -117,9 +117,7 @@ function dsj_assets() {
         wp_enqueue_style( 'dsj-' . $file, $file_url, [], $version );
     }
     
-    $main_file = $css_dir . 'main.css';
-    $main_version = file_exists( $main_file ) ? filemtime( $main_file ) : '1.0';
-    wp_enqueue_style( 'dsj-main', $css_uri . 'main.css', [], $main_version );
+    
     
     $script_file = get_template_directory() . '/assets/js/main.js';
     $script_version = file_exists( $script_file ) ? filemtime( $script_file ) : '1.0';
