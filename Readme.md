@@ -223,3 +223,16 @@ text
 | ?? Évolutions futures | Roadmap du projet |
 | ? Support technique | Contact pour assistance |
 | ? Guide de perso | Tableau des fréquences |
+
+# CSS Architecture
+
+## Structure
+- `01-base.css` → Variables CSS + Reset
+- `02-header.css` → Header + Navigation
+...
+
+## Règles
+- Chaque fichier = 1 responsabilité
+- Utiliser les variables CSS (--clr-primary, etc.)
+- Mobile-first pour le responsive
+- Cache-busting automatique via filemtime()

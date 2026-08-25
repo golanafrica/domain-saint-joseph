@@ -1,3 +1,9 @@
+<?php
+/**
+ * Footer du thème Domaine Saint Joseph
+ * Phase 1 : coordonnées dynamiques via dsj_get_phone / dsj_get_whatsapp / dsj_get_email
+ */
+?>
 </main><!-- #main -->
 
 <footer class="site-footer" role="contentinfo">
@@ -56,7 +62,7 @@
                 </div>
             </div>
 
-            <!-- Colonne 2 - Contact -->
+            <!-- Colonne 2 - Contact (✅ DYNAMIQUE) -->
             <div class="footer-col">
                 <h4>&#128222; Contact</h4>
                 <ul class="footer-contact">
@@ -67,19 +73,29 @@
                     <li>
                         <span class="contact-icon">&#128222;</span>
                         <span>
-                            <a href="tel:+22620972897">20 97 28 97</a> / 
+                            <!-- ✅ DYNAMIQUE : téléphone principal -->
+                            <a href="tel:<?php echo esc_attr( preg_replace( '/[^0-9+]/', '', dsj_get_phone() ) ); ?>">
+                                <?php echo esc_html( dsj_get_phone() ); ?>
+                            </a> / 
+                            <!-- Numéro secondaire (pas de Customizer pour celui-ci) -->
                             <a href="tel:+22657521929">57 52 19 29</a>
                         </span>
                     </li>
                     <li>
                         <span class="contact-icon">&#128241;</span>
-                        <a href="https://wa.me/22666605890" target="_blank" rel="noopener noreferrer">
-                            WhatsApp: 66 60 58 90
+                        <!-- ✅ DYNAMIQUE : WhatsApp -->
+                        <a href="https://wa.me/<?php echo esc_attr( preg_replace( '/[^0-9]/', '', dsj_get_whatsapp() ) ); ?>" 
+                           target="_blank" 
+                           rel="noopener noreferrer">
+                            WhatsApp: <?php echo esc_html( dsj_get_whatsapp() ); ?>
                         </a>
                     </li>
                     <li>
                         <span class="contact-icon">&#128231;</span>
-                        <a href="mailto:centredsj@gmail.com">centredsj@gmail.com</a>
+                        <!-- ✅ DYNAMIQUE : Email -->
+                        <a href="mailto:<?php echo esc_attr( dsj_get_email() ); ?>">
+                            <?php echo esc_html( dsj_get_email() ); ?>
+                        </a>
                     </li>
                 </ul>
             </div>
@@ -115,8 +131,11 @@
                 
                 <p class="newsletter-note">&#128241; Suivez-nous aussi sur WhatsApp pour l'actualité du centre.</p>
                 
-                <!-- Bouton WhatsApp dans le footer -->
-                <a href="https://wa.me/22666605890" class="footer-whatsapp" target="_blank" rel="noopener noreferrer">
+                <!-- ✅ Bouton WhatsApp DYNAMIQUE dans le footer -->
+                <a href="https://wa.me/<?php echo esc_attr( preg_replace( '/[^0-9]/', '', dsj_get_whatsapp() ) ); ?>" 
+                   class="footer-whatsapp" 
+                   target="_blank" 
+                   rel="noopener noreferrer">
                     <span class="footer-whatsapp-icon">&#128172;</span>
                     <span>Nous contacter</span>
                 </a>
