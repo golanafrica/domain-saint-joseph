@@ -236,3 +236,40 @@ text
 - Utiliser les variables CSS (--clr-primary, etc.)
 - Mobile-first pour le responsive
 - Cache-busting automatique via filemtime()
+
+## 🎨 Architecture CSS modulaire
+
+Le CSS est découpé en 12 fichiers thématiques dans `assets/css/` :
+
+| Fichier | Contenu | Lignes |
+|---|---|---|
+| `01-base.css` | Variables + Reset + styles globaux | ~70 |
+| `02-header.css` | Header + Navigation + Menu mobile | ~150 |
+| `03-hero.css` | Hero slider + Hero custom + Page headers | ~500 |
+| `04-footer.css` | Footer complet + Réseaux sociaux | ~215 |
+| `05-components.css` | Boutons + Cartes + Stats + Témoignages | ~320 |
+| `06-forms.css` | Formulaires + Alertes + Bandeau flash | ~145 |
+| `07-galerie.css` | Galerie + Lightbox + Filtres | ~475 |
+| `08-pages.css` | Pages spécifiques (À propos, Contact, etc.) | ~450 |
+| `09-singles.css` | Single Formation + Single Hébergement | ~585 |
+| `10-cta.css` | Sections CTA (Home + Formation) | ~330 |
+| `11-responsive.css` | Corrections mobile spécifiques | ~280 |
+| `12-accessibility.css` | Accessibilité + Features + Page générique | ~360 |
+
+**Chargement** : Chaque fichier est chargé individuellement avec son propre cache-busting via `filemtime()` dans `functions.php`.
+
+## 🏠 Personnaliser la page d'accueil
+
+### Hero (bandeau principal)
+Le hero se gère **uniquement** via le Customizer :
+1. **Apparence → Personnaliser → Hero Slider**
+2. Activez le slider
+3. Ajoutez jusqu'à 5 images (1920×600px)
+4. Titre + sous-titre par slide
+5. Vitesse de défilement (défaut : 5000ms)
+
+> ⚠️ Le widget "Zone Hero" n'est plus utilisé.
+
+### Coordonnées (téléphone, WhatsApp, email)
+**Apparence → Personnaliser → Identité du site**
+- Les modifications s'appliquent partout (footer, contact, formulaires)
