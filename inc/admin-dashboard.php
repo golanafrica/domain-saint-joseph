@@ -264,7 +264,7 @@ function dsj_render_dashboard_page() {
                         <li><strong>Toujours vider le cache</strong> (Ctrl+F5) après modification pour voir les changements</li>
                         <li><strong>Images</strong> : Privilégiez les images <strong>WebP</strong> ou <strong>JPG</strong> de moins de 200 Ko pour la 3G</li>
                         <li><strong>Permaliens</strong> : Si une page donne une erreur 404, allez dans Réglages &#8594; Permaliens &#8594; Enregistrer</li>
-                        <li><strong>Formulaires</strong> : Les messages arrivent sur <strong>centredsj@gmail.com</strong></li>
+                        <li><strong>Formulaires</strong> : Les messages arrivent sur <strong><?php echo esc_html( dsj_get_email() ); ?></strong></li>
                     </ul>
                 </div>
             </div>
