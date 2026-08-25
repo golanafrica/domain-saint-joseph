@@ -1,6 +1,7 @@
 <?php
 /**
- * Page d'accueil &#8212; Avec palette de couleurs discrète
+ * Page d'accueil — Avec palette de couleurs discrète
+ * Phase 2 : échappement complet des sorties (esc_html/esc_attr/wp_kses_post)
  */
 
 get_header(); ?>
@@ -23,7 +24,7 @@ get_header(); ?>
     if ( ! empty( $slides ) ) : ?>
         <div class="hero-slider" data-speed="<?php echo esc_attr( get_theme_mod( 'hero_slider_speed', '5000' ) ); ?>">
 
-            <!-- Photos uniquement &#8212; sans overlay -->
+            <!-- Photos uniquement — sans overlay -->
             <div class="hero-slides-container">
                 <?php foreach ( $slides as $index => $slide ) : ?>
                     <div class="hero-slide <?php echo $index === 0 ? 'active' : ''; ?>"
@@ -124,20 +125,21 @@ get_header(); ?>
     </section>
 
     <!-- ===== STATISTIQUES ===== -->
+    <!-- ✅ Phase 2 : échappement avec esc_html() pour tous les textes courts -->
     <section class="stats-section bg-gris">
         <div class="container">
             <div class="stats-grid">
                 <div class="stat-item" data-count="2022">
-                    <div class="stat-label"><?php echo get_theme_mod( 'stat1_lbl', 'Fondé en' ); ?></div>
-                    <div class="stat-number"><?php echo get_theme_mod( 'stat1_nb', '2022' ); ?></div>
+                    <div class="stat-label"><?php echo esc_html( get_theme_mod( 'stat1_lbl', 'Fondé en' ) ); ?></div>
+                    <div class="stat-number"><?php echo esc_html( get_theme_mod( 'stat1_nb', '2022' ) ); ?></div>
                 </div>
                 <div class="stat-item" data-count="3">
-                    <div class="stat-label"><?php echo get_theme_mod( 'stat2_lbl', 'Filières' ); ?></div>
-                    <div class="stat-number"><?php echo get_theme_mod( 'stat2_nb', '3+' ); ?></div>
+                    <div class="stat-label"><?php echo esc_html( get_theme_mod( 'stat2_lbl', 'Filières' ) ); ?></div>
+                    <div class="stat-number"><?php echo esc_html( get_theme_mod( 'stat2_nb', '3+' ) ); ?></div>
                 </div>
                 <div class="stat-item" data-count="100">
-                    <div class="stat-label"><?php echo get_theme_mod( 'stat3_lbl', 'Dédié aux femmes' ); ?></div>
-                    <div class="stat-number"><?php echo get_theme_mod( 'stat3_nb', '100%' ); ?></div>
+                    <div class="stat-label"><?php echo esc_html( get_theme_mod( 'stat3_lbl', 'Dédié aux femmes' ) ); ?></div>
+                    <div class="stat-number"><?php echo esc_html( get_theme_mod( 'stat3_nb', '100%' ) ); ?></div>
                 </div>
                 <div class="stat-item">
                     <div class="stat-label">Bobo-Dioulasso</div>
@@ -320,6 +322,7 @@ get_header(); ?>
     </section>
 
     <!-- ===== SECTION APPEL À L'AIDE ===== -->
+    <!-- ✅ Phase 2 : titres avec esc_html(), icônes non échappées (HTML emoji autorisé), textes avec wp_kses_post() -->
     <?php if ( get_theme_mod( 'aide_accueil_active', true ) ) : ?>
     <section class="aide-urgence section-padding bg-creme">
         <div class="container">
@@ -333,8 +336,11 @@ get_header(); ?>
             <div class="aide-urgence-grid">
                 <!-- Carte Parrainage -->
                 <div class="aide-card">
+                    <!-- Icône : HTML emoji autorisé, pas d'échappement -->
                     <div class="aide-card-icon"><?php echo get_theme_mod( 'aide_parrainage_icone', '&#128103;' ); ?></div>
-                    <h3><?php echo get_theme_mod( 'aide_parrainage_titre', 'Parrainez une jeune fille' ); ?></h3>
+                    <!-- Titre : texte court → esc_html() -->
+                    <h3><?php echo esc_html( get_theme_mod( 'aide_parrainage_titre', 'Parrainez une jeune fille' ) ); ?></h3>
+                    <!-- Texte : HTML possible (<strong>) → wp_kses_post() -->
                     <p><?php echo wp_kses_post( get_theme_mod( 'aide_parrainage_texte', 'Pour seulement <strong>50 000 F CFA par mois</strong>, vous offrez une formation technique complète à une jeune fille.' ) ); ?></p>
                     <ul class="aide-list">
                         <?php for ( $i = 1; $i <= 3; $i++ ) : 
@@ -352,7 +358,7 @@ get_header(); ?>
                 <!-- Carte Construction -->
                 <div class="aide-card">
                     <div class="aide-card-icon"><?php echo get_theme_mod( 'aide_construction_icone', '&#128736;' ); ?></div>
-                    <h3><?php echo get_theme_mod( 'aide_construction_titre', 'Construisons ensemble' ); ?></h3>
+                    <h3><?php echo esc_html( get_theme_mod( 'aide_construction_titre', 'Construisons ensemble' ) ); ?></h3>
                     <p><?php echo wp_kses_post( get_theme_mod( 'aide_construction_texte', 'Nous avons besoin de <strong>nouvelles salles de formation</strong> pour accueillir plus de jeunes filles.' ) ); ?></p>
                     <ul class="aide-list">
                         <?php for ( $i = 1; $i <= 3; $i++ ) : 
@@ -384,7 +390,8 @@ get_header(); ?>
             
             <div class="aide-texte-supplementaire text-center mt-4">
                 <p>&#128222; Un doute ? Contactez-nous par WhatsApp pour toute question sur les dons ou parrainages.</p>
-                <a href="https://wa.me/<?php echo get_theme_mod( 'whatsapp', '22666605890' ); ?>" class="btn btn-whatsapp" target="_blank">&#128172; Nous contacter</a>
+                <!-- ✅ Lien WhatsApp : esc_attr() pour le numéro dans l'URL -->
+                <a href="https://wa.me/<?php echo esc_attr( preg_replace( '/[^0-9]/', '', get_theme_mod( 'whatsapp', '22666605890' ) ) ); ?>" class="btn btn-whatsapp" target="_blank" rel="noopener noreferrer">&#128172; Nous contacter</a>
             </div>
         </div>
     </section>
@@ -548,14 +555,18 @@ get_header(); ?>
     endif; ?>
 
     <!-- ===== CTA FINAL ===== -->
+    <!-- ✅ Phase 2 : échappement complet du CTA final -->
     <section class="cta-home-section section-padding bg-primaire">
         <div class="container">
             <div class="cta-content">
-                <h2><?php echo get_theme_mod( 'cta_title', 'Soutenez notre mission' ); ?></h2>
-                <p><?php echo get_theme_mod( 'cta_text', 'Votre contribution permet de former les leaders de demain. Parrainez une jeune fille ou faites un don pour soutenir le Domaine Saint Joseph.' ); ?></p>
+                <!-- Titre : texte court → esc_html() -->
+                <h2><?php echo esc_html( get_theme_mod( 'cta_title', 'Soutenez notre mission' ) ); ?></h2>
+                <!-- Texte : paragraphe sans HTML attendu → esc_html() (ou wp_kses_post si HTML autorisé) -->
+                <p><?php echo wp_kses_post( get_theme_mod( 'cta_text', 'Votre contribution permet de former les leaders de demain. Parrainez une jeune fille ou faites un don pour soutenir le Domaine Saint Joseph.' ) ); ?></p>
                 <div class="cta-buttons">
                     <a href="<?php echo esc_url( home_url( get_theme_mod( 'cta_button_url', '/nous-soutenir' ) ) ); ?>" class="btn btn-primary btn-large">&#128155; Nous soutenir</a>
-                    <a href="https://wa.me/<?php echo get_theme_mod( 'whatsapp', '22666605890' ); ?>" class="btn btn-whatsapp btn-large" target="_blank">&#128241; WhatsApp</a>
+                    <!-- Lien WhatsApp : esc_attr() pour le numéro -->
+                    <a href="https://wa.me/<?php echo esc_attr( preg_replace( '/[^0-9]/', '', get_theme_mod( 'whatsapp', '22666605890' ) ) ); ?>" class="btn btn-whatsapp btn-large" target="_blank" rel="noopener noreferrer">&#128241; WhatsApp</a>
                 </div>
             </div>
         </div>
