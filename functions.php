@@ -2,7 +2,7 @@
 /**
  * Functions du thème Domaine Saint Joseph
  * Version production - Phase 8 (CSS modulaire + Corrections audit Claude)
- * Phase 3 : URLs de redirection dynamiques pour les formulaires
+ * Phase 4 : Unification Hero - widget hero-area désactivé
  */
 
 if ( ! defined( 'ABSPATH' ) ) exit;
@@ -48,15 +48,18 @@ add_action( 'after_setup_theme', 'dsj_setup' );
 // ENREGISTREMENT DES ZONES DE WIDGETS
 // ════════════════════════════════════════════════════════════════
 function dsj_widgets_init() {
-    register_sidebar( [
-        'name'          => __( 'Zone Hero - Bandeau principal', 'domaine-saint-joseph' ),
-        'id'            => 'hero-area',
-        'description'   => __( 'Widget pour le bandeau de la page d\'accueil', 'domaine-saint-joseph' ),
-        'before_widget' => '<div class="hero-widget %2$s">',
-        'after_widget'  => '</div>',
-        'before_title'  => '<h1 class="hero-title">',
-        'after_title'   => '</h1>',
-    ] );
+    // ❌ Phase 4 : Widget hero-area DÉSACTIVÉ
+    // Le hero de la page d'accueil se gère désormais UNIQUEMENT via :
+    // Apparence → Personnaliser → Hero Slider
+    // register_sidebar( [
+    //     'name'          => __( 'Zone Hero - Bandeau principal', 'domaine-saint-joseph' ),
+    //     'id'            => 'hero-area',
+    //     'description'   => __( 'Widget pour le bandeau de la page d\'accueil', 'domaine-saint-joseph' ),
+    //     'before_widget' => '<div class="hero-widget %2$s">',
+    //     'after_widget'  => '</div>',
+    //     'before_title'  => '<h1 class="hero-title">',
+    //     'after_title'   => '</h1>',
+    // ] );
     
     register_sidebar( [
         'name'          => __( 'Pied de page - Colonne 1', 'domaine-saint-joseph' ),
@@ -116,8 +119,6 @@ function dsj_assets() {
         
         wp_enqueue_style( 'dsj-' . $file, $file_url, [], $version );
     }
-    
-    
     
     $script_file = get_template_directory() . '/assets/js/main.js';
     $script_version = file_exists( $script_file ) ? filemtime( $script_file ) : '1.0';
@@ -214,16 +215,12 @@ function dsj_get_email() {
 // ════════════════════════════════════════════════════════════════
 // 🔒 PHASE 3 : URLs DE REDIRECTION DYNAMIQUES POUR FORMULAIRES
 // ════════════════════════════════════════════════════════════════
-// Récupère l'URL de redirection après soumission d'un formulaire.
-// Priorité : 1) Referer (page d'origine) → 2) Page par slug → 3) Accueil
 function dsj_get_form_redirect_url( $form_type ) {
-    // 1. Priorité au referer (page d'où vient le formulaire)
     $referer = wp_get_referer();
     if ( $referer ) {
         return remove_query_arg( [ 'success', 'error', 'resa_success', 'resa_error' ], $referer );
     }
     
-    // 2. Fallback : chercher la page par slug
     $page_slugs = [
         'contact'     => 'contact',
         'reservation' => 'maison-daccueil',
@@ -238,7 +235,6 @@ function dsj_get_form_redirect_url( $form_type ) {
         }
     }
     
-    // 3. Fallback final : page d'accueil
     return home_url( '/' );
 }
 
@@ -267,28 +263,23 @@ function dsj_verify_security_module_available() {
 // ════════════════════════════════════════════════════════════════
 
 function dsj_handle_contact_form() {
-    // ✅ Phase 3 : URL dynamique au lieu de home_url('/contact')
     $fallback_url = dsj_get_form_redirect_url( 'contact' );
     
-    // 1. Nonce (sécurité) - redirection propre au lieu de wp_die()
     if ( ! isset( $_POST['_wpnonce'] ) || ! wp_verify_nonce( $_POST['_wpnonce'], 'dsj_contact_nonce' ) ) {
         wp_safe_redirect( add_query_arg( 'error', 'session_expired', $fallback_url ) );
         exit;
     }
     
-    // 2. Fail-closed si sécurité indisponible
     if ( ! dsj_verify_security_module_available() ) {
         wp_safe_redirect( add_query_arg( 'error', 'service_unavailable', $fallback_url ) );
         exit;
     }
     
-    // 3. Honeypot (bot)
     if ( ! dsj_check_honeypot() ) {
         wp_safe_redirect( add_query_arg( 'success', '1', $fallback_url ) );
         exit;
     }
     
-    // 4. Validation des données (AVANT rate limit)
     $nom     = sanitize_text_field( $_POST['cf_nom'] ?? '' );
     $contact = sanitize_text_field( $_POST['cf_contact'] ?? '' );
     $sujet   = sanitize_text_field( $_POST['cf_sujet'] ?? 'general' );
@@ -309,13 +300,11 @@ function dsj_handle_contact_form() {
         exit;
     }
     
-    // 5. Rate limit (APRÈS validation des données)
     if ( ! dsj_check_rate_limit( 'contact' ) ) {
         wp_safe_redirect( add_query_arg( 'error', 'rate_limit', $fallback_url ) );
         exit;
     }
     
-    // 6. Enregistrement et envoi
     if ( function_exists( 'dsj_save_message' ) ) {
         dsj_save_message( 'contact', [
             'nom'     => $nom,
@@ -343,28 +332,23 @@ add_action( 'admin_post_nopriv_dsj_contact_form', 'dsj_handle_contact_form' );
 // ════════════════════════════════════════════════════════════════
 
 function dsj_handle_reservation_form() {
-    // ✅ Phase 3 : URL dynamique
     $fallback_url = dsj_get_form_redirect_url( 'reservation' );
     
-    // 1. Nonce
     if ( ! isset( $_POST['_wpnonce'] ) || ! wp_verify_nonce( $_POST['_wpnonce'], 'dsj_reservation_nonce' ) ) {
         wp_safe_redirect( add_query_arg( 'error', 'session_expired', $fallback_url ) );
         exit;
     }
     
-    // 2. Fail-closed
     if ( ! dsj_verify_security_module_available() ) {
         wp_safe_redirect( add_query_arg( 'error', 'service_unavailable', $fallback_url ) );
         exit;
     }
     
-    // 3. Honeypot
     if ( ! dsj_check_honeypot() ) {
         wp_safe_redirect( add_query_arg( 'success', '1', $fallback_url ) );
         exit;
     }
     
-    // 4. Validation des données
     $nom     = sanitize_text_field( $_POST['nom'] ?? '' );
     $contact = sanitize_text_field( $_POST['contact'] ?? '' );
     $arrivee = sanitize_text_field( $_POST['arrivee'] ?? '' );
@@ -387,13 +371,11 @@ function dsj_handle_reservation_form() {
         exit;
     }
     
-    // 5. Rate limit
     if ( ! dsj_check_rate_limit( 'reservation' ) ) {
         wp_safe_redirect( add_query_arg( 'error', 'rate_limit', $fallback_url ) );
         exit;
     }
     
-    // 6. Enregistrement et envoi
     if ( function_exists( 'dsj_save_message' ) ) {
         dsj_save_message( 'reservation', [
             'nom'            => $nom,
@@ -422,28 +404,23 @@ add_action( 'admin_post_nopriv_dsj_reservation_form', 'dsj_handle_reservation_fo
 // ════════════════════════════════════════════════════════════════
 
 function dsj_handle_restaurant_reservation() {
-    // ✅ Phase 3 : URL dynamique
     $fallback_url = dsj_get_form_redirect_url( 'restaurant' );
     
-    // 1. Nonce
     if ( ! isset( $_POST['_wpnonce'] ) || ! wp_verify_nonce( $_POST['_wpnonce'], 'dsj_restaurant_nonce' ) ) {
         wp_safe_redirect( add_query_arg( 'resa_error', 'session_expired', $fallback_url ) );
         exit;
     }
     
-    // 2. Fail-closed
     if ( ! dsj_verify_security_module_available() ) {
         wp_safe_redirect( add_query_arg( 'resa_error', 'service_unavailable', $fallback_url ) );
         exit;
     }
     
-    // 3. Honeypot
     if ( ! dsj_check_honeypot() ) {
         wp_safe_redirect( add_query_arg( 'resa_success', '1', $fallback_url ) );
         exit;
     }
     
-    // 4. Validation des données
     $nom       = sanitize_text_field( $_POST['resa_nom'] ?? '' );
     $contact   = sanitize_text_field( $_POST['resa_contact'] ?? '' );
     $date      = sanitize_text_field( $_POST['resa_date'] ?? '' );
@@ -467,13 +444,11 @@ function dsj_handle_restaurant_reservation() {
         exit;
     }
     
-    // 5. Rate limit
     if ( ! dsj_check_rate_limit( 'restaurant' ) ) {
         wp_safe_redirect( add_query_arg( 'resa_error', 'rate_limit', $fallback_url ) );
         exit;
     }
     
-    // 6. Enregistrement et envoi
     if ( function_exists( 'dsj_save_message' ) ) {
         dsj_save_message( 'restaurant', [
             'nom'       => $nom,
@@ -765,18 +740,16 @@ function dsj_simplify_admin_for_soeur() {
         return;
     }
     
-    // Menus principaux à cacher complètement
     remove_menu_page( 'tools.php' );
     remove_menu_page( 'plugins.php' );
     remove_menu_page( 'options-general.php' );
     remove_menu_page( 'edit-comments.php' );
     remove_menu_page( 'users.php' );
     
-    // Sous-menus d'Apparence à cacher
-    remove_submenu_page( 'themes.php', 'themes.php' );           // Thèmes
-    remove_submenu_page( 'themes.php', 'theme-editor.php' );     // Éditeur de thème
-    remove_submenu_page( 'themes.php', 'nav-menus.php' );        // Menus (bloqué aussi côté serveur plus bas)
-    remove_submenu_page( 'themes.php', 'theme-install.php' );    // ✅ Corrigé : vrai slug WordPress
+    remove_submenu_page( 'themes.php', 'themes.php' );
+    remove_submenu_page( 'themes.php', 'theme-editor.php' );
+    remove_submenu_page( 'themes.php', 'nav-menus.php' );
+    remove_submenu_page( 'themes.php', 'theme-install.php' );
 }
 add_action( 'admin_menu', 'dsj_simplify_admin_for_soeur', 999 );
 

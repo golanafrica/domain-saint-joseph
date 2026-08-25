@@ -1,111 +1,21 @@
 <?php
 /**
  * Page d'accueil — Avec palette de couleurs discrète
- * Phase 2 : échappement complet des sorties (esc_html/esc_attr/wp_kses_post)
+ * Phase 4 : Hero unifié via template-parts
  */
 
 get_header(); ?>
 
 <main id="main" class="site-main">
-   <!-- ===== HERO SLIDER OPTIMISÉ ===== -->
-<?php if ( get_theme_mod( 'hero_slider_active', false ) ) :
-    $slides = [];
-    for ( $i = 1; $i <= 5; $i++ ) {
-        $image = get_theme_mod( "hero_slide_{$i}_image" );
-        if ( $image ) {
-            $slides[] = [
-                'image'     => $image,
-                'titre'     => get_theme_mod( "hero_slide_{$i}_titre", '' ),
-                'soustitre' => get_theme_mod( "hero_slide_{$i}_soustitre", '' ),
-            ];
-        }
-    }
 
-    if ( ! empty( $slides ) ) : ?>
-        <div class="hero-slider" data-speed="<?php echo esc_attr( get_theme_mod( 'hero_slider_speed', '5000' ) ); ?>">
-
-            <!-- Photos uniquement — sans overlay -->
-            <div class="hero-slides-container">
-                <?php foreach ( $slides as $index => $slide ) : ?>
-                    <div class="hero-slide <?php echo $index === 0 ? 'active' : ''; ?>"
-                         style="background-image: url('<?php echo esc_url( $slide['image'] ); ?>');
-                                <?php echo $index !== 0 ? 'display:none;' : ''; ?>">
-                    </div>
-                <?php endforeach; ?>
-
-                <!-- Flèches -->
-                <button class="slider-btn slider-prev" aria-label="Précédent">&#8249;</button>
-                <button class="slider-btn slider-next" aria-label="Suivant">&#8250;</button>
-
-                <!-- Dots -->
-                <div class="slider-dots">
-                    <?php foreach ( $slides as $index => $slide ) : ?>
-                        <span class="slider-dot <?php echo $index === 0 ? 'active' : ''; ?>"
-                              data-index="<?php echo $index; ?>"></span>
-                    <?php endforeach; ?>
-                </div>
-            </div>
-
-            <!-- Bande légende -->
-            <div class="hero-caption-band">
-                <div class="hero-caption-text">
-                    <h1 class="hero-title" id="hero-caption-title">
-                        <?php echo wp_kses_post( $slides[0]['titre'] ); ?>
-                    </h1>
-                    <?php if ( $slides[0]['soustitre'] ) : ?>
-                        <p class="hero-subtitle" id="hero-caption-subtitle">
-                            <?php echo esc_html( $slides[0]['soustitre'] ); ?>
-                        </p>
-                    <?php endif; ?>
-                </div>
-                <div class="hero-buttons">
-                    <a href="<?php echo esc_url( home_url( '/formation' ) ); ?>" class="btn btn-primary">&#127891; Nos formations</a>
-                    <a href="<?php echo esc_url( home_url( '/maison-daccueil' ) ); ?>" class="btn btn-secondary">&#127968; Découvrir l'accueil</a>
-                </div>
-            </div>
-
-        </div>
-
-        <!-- Données slides pour le JS -->
-        <script>
-        var heroSlideData = <?php echo wp_json_encode( array_map( function( $s ) {
-            return [
-                'titre'     => wp_strip_all_tags( $s['titre'] ),
-                'soustitre' => $s['soustitre'],
-            ];
-        }, $slides ) ); ?>;
-        </script>
-
-    <?php endif; ?>
-
-<?php elseif ( is_active_sidebar( 'hero-area' ) ) : ?>
-    <div class="hero-widget-container">
-        <?php dynamic_sidebar( 'hero-area' ); ?>
-    </div>
-
-<?php else : ?>
-    <!-- Hero par défaut sans slider -->
-    <div class="custom-hero">
-        <div class="photo-zone"></div>
-        <div class="hero-caption-band">
-            <div class="hero-caption-text">
-                <span class="hero-badge">&#9962; Travailleuses Missionnaires de l'Immaculée</span>
-                <h1 class="hero-title">
-                    Former les jeunes filles,
-                    <span class="hero-highlight">accueillir avec compassion</span>
-                </h1>
-                <p class="hero-subtitle">
-                    Centre de formation technique & Maison d'accueil &#8212;
-                    Bobo-Dioulasso, Burkina Faso, depuis 2022
-                </p>
-            </div>
-            <div class="hero-buttons">
-                <a href="<?php echo esc_url( home_url( '/formation' ) ); ?>" class="btn btn-primary">&#127891; Nos formations</a>
-                <a href="<?php echo esc_url( home_url( '/maison-daccueil' ) ); ?>" class="btn btn-secondary">&#127968; Découvrir l'accueil</a>
-            </div>
-        </div>
-    </div>
-<?php endif; ?>
+    <!-- ===== HERO SECTION (unifié) ===== -->
+    <?php if ( get_theme_mod( 'hero_slider_active', false ) ) :
+        // Slider Customizer (système principal)
+        get_template_part( 'template-parts/hero', 'slider' );
+    else :
+        // Fallback : hero par défaut si slider désactivé
+        get_template_part( 'template-parts/hero', 'default' );
+    endif; ?>
  
     <!-- ===== NOTRE HISTOIRE ===== -->
     <?php 
@@ -125,7 +35,6 @@ get_header(); ?>
     </section>
 
     <!-- ===== STATISTIQUES ===== -->
-    <!-- ✅ Phase 2 : échappement avec esc_html() pour tous les textes courts -->
     <section class="stats-section bg-gris">
         <div class="container">
             <div class="stats-grid">
@@ -322,7 +231,6 @@ get_header(); ?>
     </section>
 
     <!-- ===== SECTION APPEL À L'AIDE ===== -->
-    <!-- ✅ Phase 2 : titres avec esc_html(), icônes non échappées (HTML emoji autorisé), textes avec wp_kses_post() -->
     <?php if ( get_theme_mod( 'aide_accueil_active', true ) ) : ?>
     <section class="aide-urgence section-padding bg-creme">
         <div class="container">
@@ -336,11 +244,8 @@ get_header(); ?>
             <div class="aide-urgence-grid">
                 <!-- Carte Parrainage -->
                 <div class="aide-card">
-                    <!-- Icône : HTML emoji autorisé, pas d'échappement -->
                     <div class="aide-card-icon"><?php echo get_theme_mod( 'aide_parrainage_icone', '&#128103;' ); ?></div>
-                    <!-- Titre : texte court → esc_html() -->
                     <h3><?php echo esc_html( get_theme_mod( 'aide_parrainage_titre', 'Parrainez une jeune fille' ) ); ?></h3>
-                    <!-- Texte : HTML possible (<strong>) → wp_kses_post() -->
                     <p><?php echo wp_kses_post( get_theme_mod( 'aide_parrainage_texte', 'Pour seulement <strong>50 000 F CFA par mois</strong>, vous offrez une formation technique complète à une jeune fille.' ) ); ?></p>
                     <ul class="aide-list">
                         <?php for ( $i = 1; $i <= 3; $i++ ) : 
@@ -390,7 +295,6 @@ get_header(); ?>
             
             <div class="aide-texte-supplementaire text-center mt-4">
                 <p>&#128222; Un doute ? Contactez-nous par WhatsApp pour toute question sur les dons ou parrainages.</p>
-                <!-- ✅ Lien WhatsApp : esc_attr() pour le numéro dans l'URL -->
                 <a href="https://wa.me/<?php echo esc_attr( preg_replace( '/[^0-9]/', '', get_theme_mod( 'whatsapp', '22666605890' ) ) ); ?>" class="btn btn-whatsapp" target="_blank" rel="noopener noreferrer">&#128172; Nous contacter</a>
             </div>
         </div>
@@ -555,17 +459,13 @@ get_header(); ?>
     endif; ?>
 
     <!-- ===== CTA FINAL ===== -->
-    <!-- ✅ Phase 2 : échappement complet du CTA final -->
     <section class="cta-home-section section-padding bg-primaire">
         <div class="container">
             <div class="cta-content">
-                <!-- Titre : texte court → esc_html() -->
                 <h2><?php echo esc_html( get_theme_mod( 'cta_title', 'Soutenez notre mission' ) ); ?></h2>
-                <!-- Texte : paragraphe sans HTML attendu → esc_html() (ou wp_kses_post si HTML autorisé) -->
                 <p><?php echo wp_kses_post( get_theme_mod( 'cta_text', 'Votre contribution permet de former les leaders de demain. Parrainez une jeune fille ou faites un don pour soutenir le Domaine Saint Joseph.' ) ); ?></p>
                 <div class="cta-buttons">
                     <a href="<?php echo esc_url( home_url( get_theme_mod( 'cta_button_url', '/nous-soutenir' ) ) ); ?>" class="btn btn-primary btn-large">&#128155; Nous soutenir</a>
-                    <!-- Lien WhatsApp : esc_attr() pour le numéro -->
                     <a href="https://wa.me/<?php echo esc_attr( preg_replace( '/[^0-9]/', '', get_theme_mod( 'whatsapp', '22666605890' ) ) ); ?>" class="btn btn-whatsapp btn-large" target="_blank" rel="noopener noreferrer">&#128241; WhatsApp</a>
                 </div>
             </div>
