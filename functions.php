@@ -2,6 +2,7 @@
 /**
  * Functions du thème Domaine Saint Joseph
  * Version production - Phase 8 (CSS modulaire + Corrections audit Claude)
+ * Phase 3 : URLs de redirection dynamiques pour les formulaires
  */
 
 if ( ! defined( 'ABSPATH' ) ) exit;
@@ -89,33 +90,25 @@ add_action( 'widgets_init', 'dsj_widgets_init' );
 // ════════════════════════════════════════════════════════════════
 // 🔧 PHASE 8 : CHARGEMENT DES ASSETS MODULAIRES AVEC CACHE-BUSTING
 // ════════════════════════════════════════════════════════════════
-// Chaque fichier CSS est chargé individuellement avec son propre
-// cache-busting via filemtime(). Cela permet :
-// - Un chargement parallèle plus rapide
-// - Un cache-busting précis par fichier
-// - Une maintenance facilitée (fichiers thématiques de 150-700 lignes)
 function dsj_assets() {
     $css_dir = get_template_directory() . '/assets/css/';
     $css_uri = get_template_directory_uri() . '/assets/css/';
     
-    // Liste ordonnée des 12 fichiers CSS modulaires
-    // L'ordre est IMPORTANT : base d'abord, composants ensuite, pages enfin
     $css_files = [
-        '01-base',          // Variables CSS + Reset + styles globaux
-        '02-header',        // Header + Navigation + Menu mobile
-        '03-hero',          // Hero slider + Hero custom + Page headers
-        '04-footer',        // Footer complet + Réseaux sociaux
-        '05-components',    // Boutons + Cartes + Stats + Témoignages
-        '06-forms',         // Formulaires + Alertes + Bandeau flash
-        '07-galerie',       // Galerie + Lightbox + Filtres
-        '08-pages',         // Pages spécifiques (À propos, Contact, etc.)
-        '09-singles',       // Single Formation + Single Hébergement
-        '10-cta',           // Sections CTA (Home + Formation)
-        '11-responsive',    // Corrections mobile spécifiques
-        '12-accessibility', // Accessibilité + Features + Page générique
+        '01-base',
+        '02-header',
+        '03-hero',
+        '04-footer',
+        '05-components',
+        '06-forms',
+        '07-galerie',
+        '08-pages',
+        '09-singles',
+        '10-cta',
+        '11-responsive',
+        '12-accessibility',
     ];
     
-    // Charger chaque fichier CSS avec son propre cache-busting
     foreach ( $css_files as $file ) {
         $file_path = $css_dir . $file . '.css';
         $file_url  = $css_uri . $file . '.css';
@@ -124,18 +117,14 @@ function dsj_assets() {
         wp_enqueue_style( 'dsj-' . $file, $file_url, [], $version );
     }
     
-    // main.css (fichier d'orchestration — juste commentaires, vide de styles)
     $main_file = $css_dir . 'main.css';
     $main_version = file_exists( $main_file ) ? filemtime( $main_file ) : '1.0';
     wp_enqueue_style( 'dsj-main', $css_uri . 'main.css', [], $main_version );
     
-    // JavaScript principal avec cache-busting
     $script_file = get_template_directory() . '/assets/js/main.js';
     $script_version = file_exists( $script_file ) ? filemtime( $script_file ) : '1.0';
     wp_enqueue_script( 'dsj-main-js', get_template_directory_uri() . '/assets/js/main.js', [], $script_version, true );
     
-    // Variables CSS dynamiques (couleurs du Customizer)
-    // Injectées dans 01-base pour être disponibles avant tout le reste
     $primary_color = get_theme_mod( 'primary_color', '#1A5276' );
     $accent_color = get_theme_mod( 'accent_color', '#D4AC0D' );
     $custom_css = "
@@ -225,6 +214,37 @@ function dsj_get_email() {
 }
 
 // ════════════════════════════════════════════════════════════════
+// 🔒 PHASE 3 : URLs DE REDIRECTION DYNAMIQUES POUR FORMULAIRES
+// ════════════════════════════════════════════════════════════════
+// Récupère l'URL de redirection après soumission d'un formulaire.
+// Priorité : 1) Referer (page d'origine) → 2) Page par slug → 3) Accueil
+function dsj_get_form_redirect_url( $form_type ) {
+    // 1. Priorité au referer (page d'où vient le formulaire)
+    $referer = wp_get_referer();
+    if ( $referer ) {
+        return remove_query_arg( [ 'success', 'error', 'resa_success', 'resa_error' ], $referer );
+    }
+    
+    // 2. Fallback : chercher la page par slug
+    $page_slugs = [
+        'contact'     => 'contact',
+        'reservation' => 'maison-daccueil',
+        'restaurant'  => 'restaurant',
+    ];
+    
+    $slug = $page_slugs[ $form_type ] ?? '';
+    if ( $slug ) {
+        $page = get_page_by_path( $slug );
+        if ( $page ) {
+            return get_permalink( $page->ID );
+        }
+    }
+    
+    // 3. Fallback final : page d'accueil
+    return home_url( '/' );
+}
+
+// ════════════════════════════════════════════════════════════════
 // 🔒 PHASE 6.1 : VÉRIFICATION FAIL-CLOSED SÉCURITÉ FORMULAIRES
 // ════════════════════════════════════════════════════════════════
 function dsj_verify_security_module_available() {
@@ -249,11 +269,8 @@ function dsj_verify_security_module_available() {
 // ════════════════════════════════════════════════════════════════
 
 function dsj_handle_contact_form() {
-    $fallback_url = home_url( '/contact' );
-    $referer = wp_get_referer();
-    if ( $referer ) {
-        $fallback_url = remove_query_arg( [ 'success', 'error' ], $referer );
-    }
+    // ✅ Phase 3 : URL dynamique au lieu de home_url('/contact')
+    $fallback_url = dsj_get_form_redirect_url( 'contact' );
     
     // 1. Nonce (sécurité) - redirection propre au lieu de wp_die()
     if ( ! isset( $_POST['_wpnonce'] ) || ! wp_verify_nonce( $_POST['_wpnonce'], 'dsj_contact_nonce' ) ) {
@@ -328,11 +345,8 @@ add_action( 'admin_post_nopriv_dsj_contact_form', 'dsj_handle_contact_form' );
 // ════════════════════════════════════════════════════════════════
 
 function dsj_handle_reservation_form() {
-    $fallback_url = home_url( '/maison-accueil' );
-    $referer = wp_get_referer();
-    if ( $referer ) {
-        $fallback_url = remove_query_arg( [ 'success', 'error' ], $referer );
-    }
+    // ✅ Phase 3 : URL dynamique
+    $fallback_url = dsj_get_form_redirect_url( 'reservation' );
     
     // 1. Nonce
     if ( ! isset( $_POST['_wpnonce'] ) || ! wp_verify_nonce( $_POST['_wpnonce'], 'dsj_reservation_nonce' ) ) {
@@ -410,11 +424,8 @@ add_action( 'admin_post_nopriv_dsj_reservation_form', 'dsj_handle_reservation_fo
 // ════════════════════════════════════════════════════════════════
 
 function dsj_handle_restaurant_reservation() {
-    $fallback_url = home_url( '/restaurant' );
-    $referer = wp_get_referer();
-    if ( $referer ) {
-        $fallback_url = remove_query_arg( [ 'resa_success', 'resa_error' ], $referer );
-    }
+    // ✅ Phase 3 : URL dynamique
+    $fallback_url = dsj_get_form_redirect_url( 'restaurant' );
     
     // 1. Nonce
     if ( ! isset( $_POST['_wpnonce'] ) || ! wp_verify_nonce( $_POST['_wpnonce'], 'dsj_restaurant_nonce' ) ) {
@@ -774,9 +785,6 @@ add_action( 'admin_menu', 'dsj_simplify_admin_for_soeur', 999 );
 // ════════════════════════════════════════════════════════════════
 // 🔒 PHASE 7.1 : BLOCAGE RÉEL DE NAV-MENUS.PHP (sécurité serveur)
 // ════════════════════════════════════════════════════════════════
-// remove_submenu_page() ne fait que masquer le lien, pas bloquer l'accès.
-// On ajoute ici un blocage serveur pour empêcher l'accès direct par URL.
-
 add_action( 'load-nav-menus.php', function() {
     if ( ! current_user_can( 'manage_options' ) ) {
         wp_die( 
