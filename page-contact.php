@@ -1,6 +1,7 @@
 <?php
 /**
  * Template Name: Contact
+ * Phase 1 : coordonnées dynamiques via dsj_get_phone / dsj_get_whatsapp / dsj_get_email
  */
 get_header(); ?>
 
@@ -47,30 +48,44 @@ $hero_soustitre = get_theme_mod( 'hero_contact_soustitre', 'Une question ? Une d
                     </div>
                 </div>
                 
+                <!-- ✅ DYNAMIQUE : lu depuis Apparence → Personnaliser -->
                 <div class="info-block">
                     <div class="info-icon">&#128222;</div>
                     <div class="info-content">
                         <h3>Téléphone</h3>
                         <p>
-                            <a href="tel:+22620972897">20 97 28 97</a><br>
+                            <a href="tel:<?php echo esc_attr( preg_replace( '/[^0-9+]/', '', dsj_get_phone() ) ); ?>">
+                                <?php echo esc_html( dsj_get_phone() ); ?>
+                            </a><br>
+                            <!-- Numéro secondaire (à ajouter au Customizer si besoin) -->
                             <a href="tel:+22657521929">57 52 19 29</a>
                         </p>
                     </div>
                 </div>
                 
+                <!-- ✅ DYNAMIQUE -->
                 <div class="info-block">
                     <div class="info-icon">&#128241;</div>
                     <div class="info-content">
                         <h3>WhatsApp</h3>
-                        <p><a href="https://wa.me/22666605890" target="_blank">+226 66 60 58 90</a></p>
+                        <p>
+                            <a href="https://wa.me/<?php echo esc_attr( preg_replace( '/[^0-9]/', '', dsj_get_whatsapp() ) ); ?>" target="_blank" rel="noopener noreferrer">
+                                +<?php echo esc_html( dsj_get_whatsapp() ); ?>
+                            </a>
+                        </p>
                     </div>
                 </div>
                 
+                <!-- ✅ DYNAMIQUE -->
                 <div class="info-block">
                     <div class="info-icon">&#128231;</div>
                     <div class="info-content">
                         <h3>Email</h3>
-                        <p><a href="mailto:centredsj@gmail.com">centredsj@gmail.com</a></p>
+                        <p>
+                            <a href="mailto:<?php echo esc_attr( dsj_get_email() ); ?>">
+                                <?php echo esc_html( dsj_get_email() ); ?>
+                            </a>
+                        </p>
                     </div>
                 </div>
                 
@@ -185,9 +200,10 @@ $hero_soustitre = get_theme_mod( 'hero_contact_soustitre', 'Une question ? Une d
                     </div>
                 </form>
                 
+                <!-- ✅ Bouton WhatsApp DYNAMIQUE -->
                 <div class="contact-alternatif">
                     <p>Ou contactez-nous directement sur <strong>WhatsApp</strong> :</p>
-                    <a href="https://wa.me/22666605890" class="btn btn-whatsapp" target="_blank">
+                    <a href="https://wa.me/<?php echo esc_attr( preg_replace( '/[^0-9]/', '', dsj_get_whatsapp() ) ); ?>" class="btn btn-whatsapp" target="_blank" rel="noopener noreferrer">
                         &#128172; Écrire sur WhatsApp
                     </a>
                 </div>
@@ -220,7 +236,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         textarea.addEventListener('input', updateCounter);
-        updateCounter(); // Mise à jour initiale
+        updateCounter();
     }
 });
 </script>
