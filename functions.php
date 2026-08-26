@@ -2,7 +2,7 @@
 /**
  * Functions du thème Domaine Saint Joseph
  * Version production - Phase 8 (CSS modulaire + Corrections audit Claude)
- * Phase 4 : Unification Hero - widget hero-area désactivé
+ * Phase 4 : Unification Hero + Perf (defer JS) + SEO + Preload LCP
  */
 
 if ( ! defined( 'ABSPATH' ) ) exit;
@@ -51,15 +51,6 @@ function dsj_widgets_init() {
     // ❌ Phase 4 : Widget hero-area DÉSACTIVÉ
     // Le hero de la page d'accueil se gère désormais UNIQUEMENT via :
     // Apparence → Personnaliser → Hero Slider
-    // register_sidebar( [
-    //     'name'          => __( 'Zone Hero - Bandeau principal', 'domaine-saint-joseph' ),
-    //     'id'            => 'hero-area',
-    //     'description'   => __( 'Widget pour le bandeau de la page d\'accueil', 'domaine-saint-joseph' ),
-    //     'before_widget' => '<div class="hero-widget %2$s">',
-    //     'after_widget'  => '</div>',
-    //     'before_title'  => '<h1 class="hero-title">',
-    //     'after_title'   => '</h1>',
-    // ] );
     
     register_sidebar( [
         'name'          => __( 'Pied de page - Colonne 1', 'domaine-saint-joseph' ),
@@ -120,10 +111,22 @@ function dsj_assets() {
         wp_enqueue_style( 'dsj-' . $file, $file_url, [], $version );
     }
     
+    // 🚀 PERF : JavaScript principal en DEFER (non-bloquant)
     $script_file = get_template_directory() . '/assets/js/main.js';
     $script_version = file_exists( $script_file ) ? filemtime( $script_file ) : '1.0';
-    wp_enqueue_script( 'dsj-main-js', get_template_directory_uri() . '/assets/js/main.js', [], $script_version, true );
     
+    wp_enqueue_script( 
+        'dsj-main-js', 
+        get_template_directory_uri() . '/assets/js/main.js', 
+        [], 
+        $script_version, 
+        [
+            'strategy'  => 'defer',  // WordPress 6.3+ : chargement non-bloquant
+            'in_footer' => true,
+        ]
+    );
+    
+    // Variables CSS dynamiques (couleurs du Customizer)
     $primary_color = get_theme_mod( 'primary_color', '#1A5276' );
     $accent_color = get_theme_mod( 'accent_color', '#D4AC0D' );
     $custom_css = "
@@ -153,6 +156,14 @@ function dsj_assets() {
 }
 add_action( 'wp_enqueue_scripts', 'dsj_assets' );
 
+// Fallback : forcer l'attribut defer pour compatibilité versions WP < 6.3
+add_filter( 'script_loader_tag', function( $tag, $handle ) {
+    if ( $handle === 'dsj-main-js' && strpos( $tag, 'defer' ) === false ) {
+        return str_replace( ' src', ' defer src', $tag );
+    }
+    return $tag;
+}, 10, 2 );
+
 // ════════════════════════════════════════════════════════════════
 // OPTIMISATIONS DE PERFORMANCE
 // ════════════════════════════════════════════════════════════════
@@ -164,6 +175,7 @@ function dsj_performance() {
 }
 add_action( 'init', 'dsj_performance' );
 
+// Lazy loading + decoding async pour toutes les images
 add_filter( 'wp_get_attachment_image_attributes', function( $attr ) {
     if ( ! isset( $attr['loading'] ) ) {
         $attr['loading'] = 'lazy';
@@ -171,6 +183,44 @@ add_filter( 'wp_get_attachment_image_attributes', function( $attr ) {
     $attr['decoding'] = 'async';
     return $attr;
 });
+
+// ════════════════════════════════════════════════════════════════
+// 🚀 PERF : PRELOAD LCP (Image Hero par page)
+// ════════════════════════════════════════════════════════════════
+add_action( 'wp_head', function() {
+    $img = '';
+
+    if ( is_front_page() && get_theme_mod( 'hero_slider_active', false ) ) {
+        $img = get_theme_mod( 'hero_slide_1_image' );
+    } elseif ( is_singular( 'formation' ) ) {
+        $img = get_the_post_thumbnail_url( get_the_ID(), 'hero-size' ) ?: get_theme_mod( 'hero_formation_image' );
+    } elseif ( is_singular( 'hebergement' ) ) {
+        $img = get_the_post_thumbnail_url( get_the_ID(), 'hero-size' ) ?: get_theme_mod( 'hero_maison_image' );
+    } elseif ( is_page( 'contact' ) ) {
+        $img = get_theme_mod( 'hero_contact_image' );
+    } elseif ( is_page( 'restaurant' ) ) {
+        $img = get_theme_mod( 'hero_restaurant_image' );
+    } elseif ( is_singular() && has_post_thumbnail() ) {
+        $img = get_the_post_thumbnail_url( get_the_ID(), 'hero-size' );
+    }
+
+    if ( $img ) {
+        echo '<link rel="preload" as="image" href="' . esc_url( $img ) . '" fetchpriority="high">' . "\n";
+    }
+}, 1 );
+
+// ════════════════════════════════════════════════════════════════
+// 📈 SEO : META DESCRIPTION
+// ════════════════════════════════════════════════════════════════
+add_action( 'wp_head', function() {
+    if ( is_singular() && has_excerpt() ) {
+        $desc = get_the_excerpt();
+    } else {
+        $desc = get_theme_mod( 'meta_description',
+            'Centre de formation technique et maison d\'accueil à Bobo-Dioulasso. Formations, hébergement et restaurant solidaire.' );
+    }
+    echo '<meta name="description" content="' . esc_attr( wp_strip_all_tags( $desc ) ) . '">' . "\n";
+}, 1 );
 
 // ════════════════════════════════════════════════════════════════
 // CONFIGURATION SMTP (via Customizer)

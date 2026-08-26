@@ -1,9 +1,13 @@
 /* ========================================
  * 12-ACCESSIBILITY.CSS
- * Accessibilité + Features + Page générique
+ * Accessibilité + Features + Page générique + Contrastes WCAG
  * ======================================== */
 
-/* === ACCESSIBILITÉ GLOBALE === */
+/* ═══════════════════════════════════════════════════════════
+   1. ACCESSIBILITÉ GLOBALE
+   ═══════════════════════════════════════════════════════════ */
+
+/* Focus visible pour navigation clavier */
 a:focus-visible,
 .btn:focus-visible,
 .galerie-link:focus-visible {
@@ -11,6 +15,7 @@ a:focus-visible,
     outline-offset: 2px;
 }
 
+/* Réduction des animations pour préférence utilisateur */
 @media (prefers-reduced-motion: reduce) {
     *,
     *::before,
@@ -22,7 +27,47 @@ a:focus-visible,
     }
 }
 
-/* === SECTION POURQUOI NOUS CHOISIR (FEATURES) === */
+/* ═══════════════════════════════════════════════════════════
+   2. CORRECTIONS CONTRASTE WCAG AA (4.5:1)
+   ═══════════════════════════════════════════════════════════ */
+
+/* Bandeau flash INFO : fond plus sombre pour texte blanc lisible */
+.flash-info-label {
+    background: rgba(0, 0, 0, 0.55) !important;
+}
+
+/* Boutons WhatsApp : texte vert très sombre (blanc = 1.98:1 → 8.5:1) */
+.footer-whatsapp,
+.footer-whatsapp span,
+[class*="btn-whatsapp"],
+[class*="btn-whatsapp"] span,
+.hero-caption-band .hero-buttons .btn-primary,
+.custom-hero .hero-buttons .btn-primary,
+.page-header .btn-scroll {
+    color: #06341F !important;
+}
+
+/* Liens dorés sur fond blanc (2.16:1 → 4.9:1) */
+.btn-link {
+    color: #8A6D00;
+}
+
+/* Badges section (📖 Notre histoire, etc.) (3.86:1 → 6.8:1) */
+.section-badge,
+.reservation-badge,
+.aide-badge {
+    color: #0F2A40;
+}
+
+/* Boutons primaires sur fond doré : texte bleu foncé */
+a.btn-primary:not(.btn-whatsapp) {
+    color: #0F2A40;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   3. SECTION POURQUOI NOUS CHOISIR (FEATURES)
+   ═══════════════════════════════════════════════════════════ */
+
 .pourquoi-section {
     position: relative;
     overflow: hidden;
@@ -139,7 +184,10 @@ a:focus-visible,
     flex-grow: 1;
 }
 
-/* === PAGE GÉNÉRIQUE === */
+/* ═══════════════════════════════════════════════════════════
+   4. PAGE GÉNÉRIQUE (Mentions légales, CGV, etc.)
+   ═══════════════════════════════════════════════════════════ */
+
 .page-content-wrapper {
     max-width: 900px;
     margin: 0 auto;
@@ -209,7 +257,10 @@ a:focus-visible,
     background: linear-gradient(135deg, var(--clr-primary, #1A5276) 0%, #1a3c5e 100%);
 }
 
-/* === CTA PAGE === */
+/* ═══════════════════════════════════════════════════════════
+   5. CTA PAGE
+   ═══════════════════════════════════════════════════════════ */
+
 .cta-page-content {
     text-align: center;
     max-width: 700px;
@@ -228,7 +279,10 @@ a:focus-visible,
     font-size: 1.05rem;
 }
 
-/* === BOUTON WHATSAPP SMALL === */
+/* ═══════════════════════════════════════════════════════════
+   6. BOUTON WHATSAPP SMALL
+   ═══════════════════════════════════════════════════════════ */
+
 .btn-whatsapp-small {
     display: inline-flex;
     align-items: center;
@@ -249,7 +303,10 @@ a:focus-visible,
     color: white;
 }
 
-/* === NIVEAU BADGE === */
+/* ═══════════════════════════════════════════════════════════
+   7. NIVEAU BADGE (Formations)
+   ═══════════════════════════════════════════════════════════ */
+
 .formation-niveau { margin-top: 10px; }
 
 .niveau-badge {
@@ -262,7 +319,10 @@ a:focus-visible,
     font-weight: 600;
 }
 
-/* === PAGINATION === */
+/* ═══════════════════════════════════════════════════════════
+   8. PAGINATION
+   ═══════════════════════════════════════════════════════════ */
+
 .pagination {
     display: flex;
     justify-content: center;
@@ -293,7 +353,10 @@ a:focus-visible,
     color: var(--clr-primary, #1A5276);
 }
 
-/* === FORMATION FOOTER === */
+/* ═══════════════════════════════════════════════════════════
+   9. FORMATION FOOTER
+   ═══════════════════════════════════════════════════════════ */
+
 .formation-footer {
     display: flex;
     justify-content: space-between;
@@ -303,9 +366,15 @@ a:focus-visible,
     flex-wrap: wrap;
 }
 
-/* === RESPONSIVE ACCESSIBILITY === */
+/* ═══════════════════════════════════════════════════════════
+   10. RESPONSIVE
+   ═══════════════════════════════════════════════════════════ */
+
 @media (max-width: 992px) {
-    .features-grid { grid-template-columns: repeat(2, 1fr); gap: 25px; }
+    .features-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 25px;
+    }
     .feature-card { padding: 30px 20px; }
     .feature-icon { font-size: 3rem; }
     .feature-card h3 { font-size: 1.2rem; }
@@ -344,7 +413,7 @@ a:focus-visible,
     .feature-card p { font-size: 0.85rem; }
 }
 
-/* Accessibilité features */
+/* Accessibilité features - respects préférences utilisateur */
 @media (prefers-reduced-motion: reduce) {
     .feature-card,
     .feature-icon,
