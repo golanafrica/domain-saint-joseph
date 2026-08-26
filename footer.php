@@ -137,7 +137,7 @@
                    target="_blank" 
                    rel="noopener noreferrer">
                     <span class="footer-whatsapp-icon">&#128172;</span>
-                    <span>Nous contacter</span>
+                    <span>Écrire sur WhatsApp</span>
                 </a>
             </div>
         </div>
