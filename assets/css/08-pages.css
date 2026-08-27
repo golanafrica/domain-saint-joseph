@@ -1,6 +1,9 @@
 /* ========================================
  * 08-PAGES.CSS — VERSION CONSOLIDÉE (sans doublons)
  * Pages spécifiques + modernisation accueil + correctifs contraste
+ * ✅ SOURCE UNIQUE : page-content-wrapper, pagination, formation-footer,
+ *    cta-page-content, niveau-badge (supprimés de 12-accessibility.css)
+ * ✅ Galerie masonry SCOPÉE (n'écrase plus 07-galerie.css)
  * ======================================== */
 
 /* ═══════════════════════════════════════════════════════════
@@ -280,7 +283,7 @@
 .mt-3 { margin-top: 1.5rem; }
 
 /* ═══════════════════════════════════════════════════════════
-   8. PAGE GÉNÉRIQUE & ARCHIVES
+   8. PAGE GÉNÉRIQUE & ARCHIVES (SOURCE UNIQUE)
    ═══════════════════════════════════════════════════════════ */
 .page-content-wrapper {
     max-width: 900px; margin: 0 auto; font-size: 1.05rem; line-height: 1.8; color: #444;
@@ -402,7 +405,8 @@
 .meta-icon { margin-right: 0.3rem; }
 .btn-link .arrow { display: inline-block; transition: transform 0.25s ease; }
 .btn-link:hover .arrow { transform: translateX(4px); }
-.badge-disponible {
+/* ✅ SCOPÉ : badge absolu uniquement dans les cartes (09-singles gère le badge inline) */
+.card-modern .badge-disponible {
     position: absolute; top: 1rem; right: 1rem; background: #27ae60; color: white;
     padding: 0.3rem 0.8rem; border-radius: 20px; font-size: 0.75rem; font-weight: 600; z-index: 2;
 }
@@ -431,6 +435,7 @@
 }
 .section-image-placeholder span { font-size: 4rem; line-height: 1; margin-bottom: 12px; }
 .section-image-placeholder p { margin: 0; font-weight: 700; }
+/* ✅ SOURCE UNIQUE du badge sombre (supprimé de 12-accessibility) */
 .section-badge-dark {
     background: var(--clr-primary, #1A5276) !important; color: #ffffff !important;
     padding: 6px 18px; border-radius: 30px; display: inline-block;
@@ -517,24 +522,24 @@
 .valeur-card-modern h3 { font-size: 1.3rem; color: var(--clr-primary, #1A5276); margin: 0 0 12px; font-weight: 700; }
 .valeur-card-modern p { color: #666666; font-size: 0.95rem; line-height: 1.6; margin: 0; }
 
-/* 9.8 — Galerie masonry */
+/* 9.8 — Galerie masonry (✅ SCOPÉE : n'écrase plus 07-galerie.css) */
 .galerie-grid-masonry { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
 /* 4 photos = grille 2×2 */
 .galerie-grid-masonry.galerie-grid-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .galerie-item-masonry {
     overflow: hidden; border-radius: 20px; aspect-ratio: 1 / 1; background: #f2f4f7;
 }
-.galerie-link { position: relative; display: block; height: 100%; }
+.galerie-item-masonry .galerie-link { position: relative; display: block; height: 100%; }
 .galerie-item-masonry img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.35s ease; }
 .galerie-item-masonry:hover img { transform: scale(1.06); }
-.galerie-overlay {
+.galerie-grid-masonry .galerie-overlay {
     position: absolute; inset: 0; display: flex; flex-direction: column;
     justify-content: flex-end; align-items: center; gap: 8px; padding: 18px;
     background: linear-gradient(180deg, transparent 35%, rgba(26, 82, 118, 0.9));
     opacity: 0; transition: opacity 0.25s ease;
 }
 .galerie-item-masonry:hover .galerie-overlay { opacity: 1; }
-.galerie-title { color: #ffffff; font-weight: 700; text-align: center; }
+.galerie-grid-masonry .galerie-title { color: #ffffff; font-weight: 700; text-align: center; }
 
 /* 9.9 — Témoignages modernes */
 .temoignages-grid-modern { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
