@@ -1,7 +1,7 @@
 <?php
 /**
  * Functions du thème Domaine Saint Joseph
- * Version production - Phase 8 (CSS modulaire + Corrections audit Claude)
+ * Version production - Phase 9 (Galerie optimisée + Corrections doublons)
  * Phase 4 : Unification Hero + Perf (defer JS) + SEO + Preload LCP
  */
 
@@ -38,9 +38,11 @@ function dsj_setup() {
         'footer'  => __( 'Menu Footer', 'domaine-saint-joseph' ),
     ]);
     
+    // ✅ Toutes les tailles d'images au même endroit
     add_image_size( 'hero-size', 1920, 600, true );
     add_image_size( 'card-thumb', 400, 300, true );
     add_image_size( 'gallery-thumb', 300, 300, true );
+    add_image_size( 'gallery-full', 1200, 900, false );  // ✅ Fusionné ici (lightbox)
 }
 add_action( 'after_setup_theme', 'dsj_setup' );
 
@@ -48,10 +50,6 @@ add_action( 'after_setup_theme', 'dsj_setup' );
 // ENREGISTREMENT DES ZONES DE WIDGETS
 // ════════════════════════════════════════════════════════════════
 function dsj_widgets_init() {
-    // ❌ Phase 4 : Widget hero-area DÉSACTIVÉ
-    // Le hero de la page d'accueil se gère désormais UNIQUEMENT via :
-    // Apparence → Personnaliser → Hero Slider
-    
     register_sidebar( [
         'name'          => __( 'Pied de page - Colonne 1', 'domaine-saint-joseph' ),
         'id'            => 'footer-col-1',
@@ -121,19 +119,20 @@ function dsj_assets() {
         [], 
         $script_version, 
         [
-            'strategy'  => 'defer',  // WordPress 6.3+ : chargement non-bloquant
+            'strategy'  => 'defer',
             'in_footer' => true,
         ]
     );
     
     // Variables CSS dynamiques (couleurs du Customizer)
     $primary_color = get_theme_mod( 'primary_color', '#1A5276' );
-    $accent_color = get_theme_mod( 'accent_color', '#D4AC0D' );
-      $custom_css = "
+    $accent_color  = get_theme_mod( 'accent_color', '#D4AC0D' );
+    
+    $custom_css = "
         :root {
             --clr-primary: {$primary_color};
             --clr-accent: {$accent_color};
-            --clr-accent-dark: #8A6D00; /* ✅ Nouveau : doré foncé pour les liens (Contraste 4.9:1) */
+            --clr-accent-dark: #8A6D00;
         }
         .site-header, .site-footer, .hero-section, .page-header, .cta-final, .stats-section {
             background-color: var(--clr-primary);
@@ -149,7 +148,6 @@ function dsj_assets() {
         .stat-number, .section-title h2, .valeur-card h3 {
             color: var(--clr-primary);
         }
-        /* ✅ Séparation des liens et du hover */
         .btn-link {
             color: var(--clr-accent-dark);
         }
@@ -161,7 +159,7 @@ function dsj_assets() {
 }
 add_action( 'wp_enqueue_scripts', 'dsj_assets' );
 
-// Fallback : forcer l'attribut defer pour compatibilité versions WP < 6.3
+// Fallback defer pour WP < 6.3
 add_filter( 'script_loader_tag', function( $tag, $handle ) {
     if ( $handle === 'dsj-main-js' && strpos( $tag, 'defer' ) === false ) {
         return str_replace( ' src', ' defer src', $tag );
@@ -191,12 +189,33 @@ add_filter( 'wp_get_attachment_image_attributes', function( $attr ) {
 
 // ════════════════════════════════════════════════════════════════
 // 🚀 PERF : PRELOAD LCP (Image Hero par page)
+// ✅ Phase 9 : Galerie intégrée dans le hook unique
 // ════════════════════════════════════════════════════════════════
 add_action( 'wp_head', function() {
     $img = '';
 
     if ( is_front_page() && get_theme_mod( 'hero_slider_active', false ) ) {
         $img = get_theme_mod( 'hero_slide_1_image' );
+        
+    } elseif ( is_page_template( 'page-galerie.php' ) || is_post_type_archive( 'galerie' ) ) {
+        // ✅ Galerie : précharger le hero OU la première photo
+        $hero_img = get_theme_mod( 'hero_galerie_image' );
+        if ( $hero_img ) {
+            $img = $hero_img;
+        } else {
+            $first = new WP_Query([
+                'post_type'      => 'galerie',
+                'posts_per_page' => 1,
+                'orderby'        => 'date',
+                'order'          => 'DESC',
+                'fields'         => 'ids',
+            ]);
+            if ( $first->have_posts() ) {
+                $img = get_the_post_thumbnail_url( $first->posts[0], 'gallery-thumb' );
+            }
+            wp_reset_postdata();
+        }
+        
     } elseif ( is_singular( 'formation' ) ) {
         $img = get_the_post_thumbnail_url( get_the_ID(), 'hero-size' ) ?: get_theme_mod( 'hero_formation_image' );
     } elseif ( is_singular( 'hebergement' ) ) {
@@ -215,10 +234,14 @@ add_action( 'wp_head', function() {
 }, 1 );
 
 // ════════════════════════════════════════════════════════════════
-// 📈 SEO : META DESCRIPTION
+// 📈 SEO : META DESCRIPTION UNIQUE (1 seule balise par page)
+// ✅ Phase 9 : Galerie intégrée dans le hook unique
 // ════════════════════════════════════════════════════════════════
 add_action( 'wp_head', function() {
-    if ( is_singular() && has_excerpt() ) {
+    // ✅ Description spécifique par page (pas de doublon possible)
+    if ( is_page_template( 'page-galerie.php' ) || is_post_type_archive( 'galerie' ) ) {
+        $desc = 'Découvrez en images le Domaine Saint Joseph : nos formations, notre maison d\'accueil, nos événements et notre cadre de vie à Bobo-Dioulasso.';
+    } elseif ( is_singular() && has_excerpt() ) {
         $desc = get_the_excerpt();
     } else {
         $desc = get_theme_mod( 'meta_description',
@@ -529,7 +552,7 @@ add_action( 'admin_post_dsj_restaurant_reservation', 'dsj_handle_restaurant_rese
 add_action( 'admin_post_nopriv_dsj_restaurant_reservation', 'dsj_handle_restaurant_reservation' );
 
 // ════════════════════════════════════════════════════════════════
-// RÔLES & PERMISSIONS - RÔLE SOEUR (COLLABORATION TOTALE + CUSTOMIZER)
+// RÔLES & PERMISSIONS - RÔLE SOEUR
 // ════════════════════════════════════════════════════════════════
 
 function dsj_add_roles() {
@@ -809,7 +832,7 @@ function dsj_simplify_admin_for_soeur() {
 add_action( 'admin_menu', 'dsj_simplify_admin_for_soeur', 999 );
 
 // ════════════════════════════════════════════════════════════════
-// 🔒 PHASE 7.1 : BLOCAGE RÉEL DE NAV-MENUS.PHP (sécurité serveur)
+// 🔒 PHASE 7.1 : BLOCAGE RÉEL DE NAV-MENUS.PHP
 // ════════════════════════════════════════════════════════════════
 add_action( 'load-nav-menus.php', function() {
     if ( ! current_user_can( 'manage_options' ) ) {
