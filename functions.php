@@ -1,7 +1,8 @@
 <?php
 /**
  * Functions du thème Domaine Saint Joseph
- * Version production - Phase 9 (Galerie optimisée + Corrections doublons)
+ * Version production - Phase 10 (Corrections contraste CSS inline)
+ * Phase 9 : Galerie optimisée + Corrections doublons
  * Phase 4 : Unification Hero + Perf (defer JS) + SEO + Preload LCP
  */
 
@@ -80,7 +81,7 @@ function dsj_widgets_init() {
 add_action( 'widgets_init', 'dsj_widgets_init' );
 
 // ════════════════════════════════════════════════════════════════
-// 🔧 PHASE 8 : CHARGEMENT DES ASSETS MODULAIRES AVEC CACHE-BUSTING
+// 🔧 PHASE 10 : CHARGEMENT DES ASSETS + CSS INLINE CORRIGÉ
 // ════════════════════════════════════════════════════════════════
 function dsj_assets() {
     $css_dir = get_template_directory() . '/assets/css/';
@@ -124,31 +125,54 @@ function dsj_assets() {
         ]
     );
     
-    // Variables CSS dynamiques (couleurs du Customizer)
+    // ✅ Variables CSS dynamiques + CONTRASTES FORCÉS (Phase 10)
     $primary_color = get_theme_mod( 'primary_color', '#1A5276' );
     $accent_color  = get_theme_mod( 'accent_color', '#D4AC0D' );
     
-        $custom_css = "
+    $custom_css = "
         :root {
             --clr-primary: {$primary_color};
             --clr-accent: {$accent_color};
         }
+        
+        /* Backgrounds principaux */
         .site-header, .site-footer, .hero-section, .page-header, .cta-final, .stats-section {
             background-color: var(--clr-primary);
         }
+        
+        /* ✅ Boutons primaires : contraste 6.8:1 (bleu très foncé sur doré) */
         .btn-primary, button:not(.menu-toggle):not(.filter-btn), input[type='submit'] {
             background-color: var(--clr-accent);
-            color: #0F2A40;
-            font-weight: 700;
+            color: #0F2A40 !important;
+            font-weight: 700 !important;
         }
         .btn-primary:hover {
             background-color: var(--clr-primary);
-            color: white;
+            color: white !important;
         }
+        
+        /* ✅ Liens 'En savoir plus' : contraste 4.9:1 (doré foncé sur blanc) */
+        a.btn-link {
+            color: #8A6D00 !important;
+            font-weight: 600;
+        }
+        a.btn-link:hover {
+            color: var(--clr-primary) !important;
+        }
+        
+        /* ✅ Badges sections : contraste 8.2:1 (blanc sur bleu) */
+        .section-badge {
+            background-color: var(--clr-primary) !important;
+            color: #ffffff !important;
+        }
+        
+        /* Textes colorés */
         .stat-number, .section-title h2, .valeur-card h3 {
             color: var(--clr-primary);
         }
-        a:not(.btn):hover {
+        
+        /* Liens hover */
+        a:not(.btn):not(.btn-link):hover {
             color: var(--clr-accent);
         }
     ";
@@ -1139,3 +1163,46 @@ function dsj_add_help_tabs() {
 }
 add_action( 'current_screen', 'dsj_add_help_tabs' );
 
+// ════════════════════════════════════════════════════════════════
+// 🔣 ICÔNES PERSONNALISÉES
+// ════════════════════════════════════════════════════════════════
+function dsj_icon( $value, $class = '' ) {
+	if ( is_string( $value ) && filter_var( $value, FILTER_VALIDATE_URL ) ) {
+		return '<img src="' . esc_url( $value ) . '" alt="" class="dsj-icon-img ' . esc_attr( $class ) . '" loading="lazy" decoding="async">';
+	}
+	return '<span class="' . esc_attr( $class ) . '">' . wp_kses_post( $value ) . '</span>';
+}
+
+function dsj_customizer_icones_valeurs( $wp_customize ) {
+	$wp_customize->add_section( 'dsj_valeurs_icones', [
+		'title'    => '🌟 Icônes des Valeurs',
+		'priority' => 165,
+	] );
+
+	$valeurs = [
+		'respect'    => 'Respect',
+		'honnetete'  => 'Honnêteté',
+		'compassion' => 'Compassion',
+		'partage'    => 'Partage',
+		'rigueur'    => 'Rigueur',
+		'excellence' => 'Excellence',
+	];
+
+	foreach ( $valeurs as $key => $label ) {
+		$wp_customize->add_setting( 'valeur_' . $key . '_icone', [
+			'default'           => '',
+			'sanitize_callback' => 'esc_url_raw',
+		] );
+
+		$wp_customize->add_control( new WP_Customize_Image_Control(
+			$wp_customize,
+			'valeur_' . $key . '_icone',
+			[
+				'label'       => 'Icône personnalisée — ' . $label,
+				'description' => 'Laissez vide pour garder l\'emoji. SVG ou PNG 100×100 recommandé.',
+				'section'     => 'dsj_valeurs_icones',
+			]
+		) );
+	}
+}
+add_action( 'customize_register', 'dsj_customizer_icones_valeurs' );
