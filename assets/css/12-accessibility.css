@@ -424,3 +424,56 @@ a.btn-primary:not(.btn-whatsapp) {
         transform: none !important;
     }
 }
+
+/* ═══════════════════════════════════════════════════════════
+   11. CORRECTIONS WCAG FINALES (Phase 11)
+   ═══════════════════════════════════════════════════════════ */
+
+/* ✅ Header : bouton WhatsApp (le span texte) — texte vert foncé */
+.site-header .btn-whatsapp-text,
+.site-header a.btn-whatsapp span,
+.site-header a.btn-whatsapp {
+    color: #06341F !important;
+}
+
+.site-header a.btn-whatsapp:hover,
+.site-header a.btn-whatsapp:hover span {
+    color: #ffffff !important;
+}
+
+/* ✅ Footer : bouton WhatsApp (le span ET le lien) */
+.footer-whatsapp,
+.footer-whatsapp span,
+div.footer-grid > div.footer-col > a.footer-whatsapp,
+div.footer-grid > div.footer-col > a.footer-whatsapp span {
+    color: #06341F !important;
+}
+
+.footer-whatsapp:hover,
+.footer-whatsapp:hover span {
+    color: #ffffff !important;
+}
+
+/* ✅ Header badge galerie : texte blanc sur bandeau bleu (au lieu de doré) */
+.page-header .header-badge,
+.header-caption-band .header-badge,
+section.page-header span.header-badge {
+    color: #ffffff !important;
+    background: rgba(0, 0, 0, 0.35) !important;
+    padding: 4px 14px !important;
+    border-radius: 20px !important;
+}
+
+/* ✅ Forcer H4 dans les overlays galerie (au cas où le template utilise encore H3) */
+.galerie-caption h3,
+.galerie-overlay h3 {
+    font-size: 1.1rem !important;
+    font-weight: 600 !important;
+    color: white !important;
+}
+
+/* ✅ Icône galerie : fond doré + emoji sombre pour meilleur contraste */
+.galerie-icon {
+    background: var(--clr-accent, #D4AC0D) !important;
+    color: #0F2A40 !important;
+}
