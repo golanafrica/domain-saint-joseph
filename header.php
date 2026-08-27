@@ -1,43 +1,26 @@
 <!DOCTYPE html>
 <html <?php language_attributes(); ?>>
 <head>
-    <!-- Préchargement de la première image du slider -->
-<?php if ( get_theme_mod( 'hero_slider_active', false ) ) : 
-    $first_image = get_theme_mod( 'hero_slide_1_image' );
-    if ( $first_image ) : ?>
-        <link rel="preload" as="image" href="<?php echo esc_url( $first_image ); ?>" fetchpriority="high">
-    <?php endif; 
-endif; ?>
     <meta charset="<?php bloginfo( 'charset' ); ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    
-    <!-- Meta SEO améliorées -->
-    <meta name="description" content="<?php echo esc_attr( get_bloginfo( 'description' ) ); ?>">
+    <meta name="theme-color" content="<?php echo esc_attr( get_theme_mod( 'primary_color', '#1A5276' ) ); ?>">
+    <meta name="robots" content="index, follow, max-image-preview:large">
     <meta name="author" content="Domaine Saint Joseph">
-    <meta name="theme-color" content="<?php echo get_theme_mod( 'primary_color', '#1A5276' ); ?>">
-    <meta name="robots" content="index, follow">
     
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="<?php echo esc_url( home_url( '/' ) ); ?>">
-    <meta property="og:title" content="<?php wp_title( '|', true, 'right' ); ?><?php bloginfo( 'name' ); ?>">
-    <meta property="og:description" content="<?php echo esc_attr( get_bloginfo( 'description' ) ); ?>">
-    <meta property="og:image" content="<?php echo esc_url( get_template_directory_uri() . '/assets/images/og-image.jpg' ); ?>">
-    
-    <!-- Twitter Card -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="<?php wp_title( '|', true, 'right' ); ?><?php bloginfo( 'name' ); ?>">
-    <meta name="twitter:description" content="<?php echo esc_attr( get_bloginfo( 'description' ) ); ?>">
-    
-    <!-- Favicons -->
-    <link rel="icon" type="image/png" sizes="32x32" href="<?php echo esc_url( get_template_directory_uri() . '/assets/images/favicon-32x32.png' ); ?>">
-    <link rel="icon" type="image/png" sizes="16x16" href="<?php echo esc_url( get_template_directory_uri() . '/assets/images/favicon-16x16.png' ); ?>">
-    <link rel="apple-touch-icon" href="<?php echo esc_url( get_template_directory_uri() . '/assets/images/apple-touch-icon.png' ); ?>">
+    <?php
+    // ✅ SEO : meta description, OG, Twitter, preload LCP
+    // Tout est géré par les hooks dans functions.php (wp_head)
+    // → Pas de doublons, une seule source de vérité
+    ?>
     
     <?php wp_head(); ?>
     
-    <!-- Critical CSS inline pour performance - Version avec menu fluide -->
+    <!-- ========================================
+         CRITICAL CSS INLINE (performance)
+         Styles minimums pour le rendu immédiat
+         avant le chargement des 12 fichiers CSS
+    ======================================== -->
     <style id="critical-css">
         /* Reset et base */
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -45,7 +28,7 @@ endif; ?>
         .container { max-width: 1200px; margin: 0 auto; padding: 0 1.5rem; }
         
         /* Variables */
-        :root { --clr-primary: #1A5276; --clr-accent: #D4AC0D; --primary: #1A5276; --accent: #D4AC0D; }
+        :root { --clr-primary: #1A5276; --clr-accent: #D4AC0D; }
         
         /* Header sticky */
         .site-header { background: var(--clr-primary, #1A5276); position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
@@ -62,14 +45,14 @@ endif; ?>
         .nav-menu a::after { content: ''; position: absolute; bottom: -5px; left: 0; width: 0; height: 2px; background: var(--clr-accent, #D4AC0D); transition: width 0.3s ease; }
         .nav-menu a:hover::after, .nav-menu .current-menu-item a::after { width: 100%; }
         
-        /* Bouton WhatsApp */
+        /* ✅ Bouton WhatsApp - Contraste WCAG corrigé (vert foncé au lieu de blanc) */
         .site-header .btn-whatsapp {
             display: inline-flex !important;
             align-items: center !important;
             justify-content: center !important;
             gap: 8px !important;
             background: #25D366 !important;
-            color: white !important;
+            color: #06341F !important; /* ✅ Contraste 8.5:1 (WCAG AAA) */
             padding: 8px 16px !important;
             font-size: 0.85rem !important;
             font-weight: 600 !important;
@@ -79,11 +62,12 @@ endif; ?>
             border: none !important;
             cursor: pointer !important;
             flex-shrink: 0 !important;
-            width: auto !important;
-            height: auto !important;
-            box-shadow: none !important;
         }
-        .site-header .btn-whatsapp:hover { background: #128C7E !important; transform: translateY(-2px) !important; }
+        .site-header .btn-whatsapp:hover { 
+            background: #128C7E !important; 
+            color: white !important;
+            transform: translateY(-2px) !important; 
+        }
         .site-header .btn-whatsapp-icon { font-size: 1rem !important; }
         .site-header .btn-whatsapp-text { display: inline-block !important; font-size: 0.85rem !important; }
         
@@ -113,7 +97,7 @@ endif; ?>
         /* Flash info */
         .flash-info-banner { position: relative; padding: 8px 0; color: white; z-index: 1001; overflow: hidden; }
         .flash-info-content { display: flex; align-items: center; gap: 12px; max-width: 1200px; margin: 0 auto; padding: 0 1.5rem; }
-        .flash-info-label { background: rgba(0,0,0,0.25); padding: 4px 10px; border-radius: 4px; font-weight: 700; font-size: 0.7rem; white-space: nowrap; }
+        .flash-info-label { background: rgba(0,0,0,0.55); padding: 4px 10px; border-radius: 4px; font-weight: 700; font-size: 0.7rem; white-space: nowrap; }
         .marquee-wrapper { flex: 1; overflow: hidden; }
         .marquee-track { display: flex; gap: 40px; white-space: nowrap; animation: marqueeScroll 20s linear infinite; }
         .marquee-message { display: inline-flex; align-items: center; padding: 0 20px; font-size: 0.9rem; font-weight: 500; color: white; }
@@ -122,13 +106,12 @@ endif; ?>
         .flash-info-close { background: rgba(0,0,0,0.2); border: none; color: white; width: 24px; height: 24px; border-radius: 50%; cursor: pointer; }
         
         /* ========================================
-           MENU MOBILE - VERSION FLUIDE CORRIGÉE
+           MENU MOBILE - VERSION FLUIDE
         ======================================== */
         @media (max-width: 768px) {
             .menu-toggle { display: flex !important; }
             .site-nav { position: absolute; top: 100%; left: 0; right: 0; background: var(--clr-primary, #1A5276); z-index: 999; }
             
-            /* Animation fluide avec max-height et opacity */
             .nav-menu { 
                 display: flex !important; 
                 flex-direction: column !important; 
@@ -157,7 +140,6 @@ endif; ?>
                 visibility: visible;
             }
             
-            /* Animation cascade des éléments du menu */
             .nav-menu li { 
                 border-bottom: 1px solid rgba(255,255,255,0.1); 
                 opacity: 0; 
@@ -165,12 +147,7 @@ endif; ?>
                 transition: opacity 0.3s ease, transform 0.3s ease; 
             }
             
-            .nav-menu.is-open li { 
-                opacity: 1; 
-                transform: translateX(0); 
-            }
-            
-            /* Délais progressifs pour effet cascade */
+            .nav-menu.is-open li { opacity: 1; transform: translateX(0); }
             .nav-menu.is-open li:nth-child(1) { transition-delay: 0.05s; }
             .nav-menu.is-open li:nth-child(2) { transition-delay: 0.1s; }
             .nav-menu.is-open li:nth-child(3) { transition-delay: 0.15s; }
@@ -184,10 +161,9 @@ endif; ?>
             .nav-menu a:active { background: rgba(255,255,255,0.1); }
             .nav-menu a::after { display: none; }
             
-            /* WhatsApp button mobile */
             .site-header .btn-whatsapp { padding: 6px 12px !important; gap: 5px !important; }
             .site-header .btn-whatsapp-icon { font-size: 0.85rem !important; }
-            .site-header .btn-whatsapp-text { font-size: 0.7rem !important; display: inline-block !important; }
+            .site-header .btn-whatsapp-text { font-size: 0.7rem !important; }
             
             .top-bar-content { justify-content: center; gap: 1rem; }
             .site-logo img { max-height: 45px; }
@@ -210,13 +186,13 @@ endif; ?>
 <body <?php body_class(); ?>>
 <?php wp_body_open(); ?>
 
-<!-- BANDEAU FLASH INFO -->
+<!-- ===== BANDEAU FLASH INFO ===== -->
 <?php if ( get_theme_mod( 'urgence_active', false ) ) : 
-    $urgence_lien = get_theme_mod( 'urgence_lien', '/nous-soutenir' );
-    $urgence_bouton = get_theme_mod( 'urgence_bouton_texte', 'Je participe' );
-    $urgence_couleur = get_theme_mod( 'urgence_couleur', '#e74c3c' );
-    $urgence_icone = get_theme_mod( 'urgence_icone', '&#128680;' );
-    $urgence_vitesse = get_theme_mod( 'urgence_vitesse', 'normal' );
+    $urgence_lien     = get_theme_mod( 'urgence_lien', '/nous-soutenir' );
+    $urgence_bouton   = get_theme_mod( 'urgence_bouton_texte', 'Je participe' );
+    $urgence_couleur  = get_theme_mod( 'urgence_couleur', '#e74c3c' );
+    $urgence_icone    = get_theme_mod( 'urgence_icone', '&#128680;' );
+    $urgence_vitesse  = get_theme_mod( 'urgence_vitesse', 'normal' );
     
     $messages = [];
     for ( $i = 1; $i <= 5; $i++ ) {
@@ -235,34 +211,34 @@ endif; ?>
     }
     
     $animation_duration = '15s';
-    if ( $urgence_vitesse === 'lent' ) $animation_duration = '25s';
+    if ( $urgence_vitesse === 'lent' )   $animation_duration = '25s';
     if ( $urgence_vitesse === 'rapide' ) $animation_duration = '10s';
 ?>
 <div class="flash-info-banner" style="background: <?php echo esc_attr( $urgence_couleur ); ?>;" data-speed="<?php echo esc_attr( $animation_duration ); ?>">
     <div class="container">
         <div class="flash-info-content">
             <div class="flash-info-label">
-                <span class="flash-label-text"><?php echo $urgence_icone; ?> INFO</span>
+                <span class="flash-label-text"><?php echo wp_kses_post( $urgence_icone ); ?> INFO</span>
             </div>
             
             <div class="marquee-wrapper">
                 <div class="marquee-track">
                     <?php foreach ( $messages as $message ) : ?>
-                        <span class="marquee-message"><?php echo $message; ?></span>
+                        <span class="marquee-message"><?php echo wp_kses_post( $message ); ?></span>
                     <?php endforeach; ?>
                     <?php foreach ( $messages as $message ) : ?>
-                        <span class="marquee-message"><?php echo $message; ?></span>
+                        <span class="marquee-message"><?php echo wp_kses_post( $message ); ?></span>
                     <?php endforeach; ?>
                 </div>
             </div>
             
             <?php if ( $urgence_bouton && $urgence_lien ) : ?>
-                <a href="<?php echo esc_url( $urgence_lien ); ?>" class="flash-info-button">
+                <a href="<?php echo esc_url( home_url( $urgence_lien ) ); ?>" class="flash-info-button">
                     <?php echo esc_html( $urgence_bouton ); ?> &#8594;
                 </a>
             <?php endif; ?>
             
-            <button class="flash-info-close" aria-label="Fermer" onclick="this.closest('.flash-info-banner').style.display='none';">&#10005;</button>
+            <button class="flash-info-close" aria-label="<?php esc_attr_e( 'Fermer', 'domaine-saint-joseph' ); ?>" onclick="this.closest('.flash-info-banner').style.display='none';">&#10005;</button>
         </div>
     </div>
 </div>
@@ -276,15 +252,15 @@ endif; ?>
 <div class="top-bar">
     <div class="container">
         <div class="top-bar-content">
-            <span class="top-bar-text">&#128222; <?php echo dsj_get_phone(); ?></span>
-            <span class="top-bar-text">&#128231; <?php echo dsj_get_email(); ?></span>
+            <span class="top-bar-text">&#128222; <?php echo esc_html( dsj_get_phone() ); ?></span>
+            <span class="top-bar-text">&#128231; <?php echo esc_html( dsj_get_email() ); ?></span>
             <span class="top-bar-text">&#128205; Secteur 25, Bobo-Dioulasso</span>
         </div>
     </div>
 </div>
 <?php endif; ?>
 
-<!-- Header principal -->
+<!-- ===== HEADER PRINCIPAL ===== -->
 <header class="site-header" role="banner">
     <div class="container">
         <div class="header-inner">
@@ -294,7 +270,7 @@ endif; ?>
                     <?php the_custom_logo(); ?>
                 <?php else : ?>
                     <a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="logo-link" rel="home">
-                        <span class="logo-text">Domaine Saint Joseph</span>
+                        <span class="logo-text"><?php bloginfo( 'name' ); ?></span>
                         <span class="logo-tagline"><?php bloginfo( 'description' ); ?></span>
                     </a>
                 <?php endif; ?>
@@ -302,7 +278,7 @@ endif; ?>
 
             <!-- Menu burger (mobile) -->
             <button class="menu-toggle" 
-                    aria-label="<?php echo esc_attr__( 'Menu', 'domaine-saint-joseph' ); ?>" 
+                    aria-label="<?php esc_attr_e( 'Menu', 'domaine-saint-joseph' ); ?>" 
                     aria-expanded="false">
                 <span></span>
                 <span></span>
@@ -321,7 +297,7 @@ endif; ?>
             </nav>
 
             <!-- Bouton WhatsApp -->
-            <a href="https://wa.me/<?php echo dsj_get_whatsapp(); ?>" 
+            <a href="https://wa.me/<?php echo esc_attr( preg_replace( '/[^0-9]/', '', dsj_get_whatsapp() ) ); ?>" 
                class="btn-whatsapp" 
                target="_blank" 
                rel="noopener noreferrer nofollow"

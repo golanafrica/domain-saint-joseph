@@ -129,10 +129,11 @@ function dsj_assets() {
     // Variables CSS dynamiques (couleurs du Customizer)
     $primary_color = get_theme_mod( 'primary_color', '#1A5276' );
     $accent_color = get_theme_mod( 'accent_color', '#D4AC0D' );
-    $custom_css = "
+      $custom_css = "
         :root {
             --clr-primary: {$primary_color};
             --clr-accent: {$accent_color};
+            --clr-accent-dark: #8A6D00; /* ✅ Nouveau : doré foncé pour les liens (Contraste 4.9:1) */
         }
         .site-header, .site-footer, .hero-section, .page-header, .cta-final, .stats-section {
             background-color: var(--clr-primary);
@@ -148,7 +149,11 @@ function dsj_assets() {
         .stat-number, .section-title h2, .valeur-card h3 {
             color: var(--clr-primary);
         }
-        .btn-link, a:not(.btn):hover {
+        /* ✅ Séparation des liens et du hover */
+        .btn-link {
+            color: var(--clr-accent-dark);
+        }
+        a:not(.btn):hover {
             color: var(--clr-accent);
         }
     ";

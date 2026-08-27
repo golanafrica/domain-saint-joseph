@@ -2,15 +2,13 @@
 /**
  * Footer du thème Domaine Saint Joseph
  * Phase 1 : coordonnées dynamiques via dsj_get_phone / dsj_get_whatsapp / dsj_get_email
+ * Phase A11Y : hiérarchie des titres corrigée (H3 au lieu de H4)
  */
 ?>
 </main><!-- #main -->
 
 <footer class="site-footer" role="contentinfo">
-    <div class="footer-wave">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 120" preserveAspectRatio="none">
-            <path fill="#1A5276" fill-opacity="1" d="M0,64L80,58.7C160,53,320,43,480,48C640,53,800,75,960,80C1120,85,1280,75,1360,69.3L1440,64L1440,120L1360,120C1280,120,1120,120,960,120C800,120,640,120,480,120C320,120,160,120,80,120L0,120Z"></path>
-        </svg>
+    
     </div>
 
     <div class="container">
@@ -64,7 +62,7 @@
 
             <!-- Colonne 2 - Contact (✅ DYNAMIQUE) -->
             <div class="footer-col">
-                <h4>&#128222; Contact</h4>
+                <h3>&#128222; Contact</h3>
                 <ul class="footer-contact">
                     <li>
                         <span class="contact-icon">&#128205;</span>
@@ -102,7 +100,7 @@
 
             <!-- Colonne 3 - Liens rapides -->
             <div class="footer-col">
-                <h4>&#128279; Liens rapides</h4>
+                <h3>&#128279; Liens rapides</h3>
                 <ul class="footer-menu">
                     <li><a href="<?php echo esc_url( home_url( '/formation' ) ); ?>">&#127891; Nos formations</a></li>
                     <li><a href="<?php echo esc_url( home_url( '/maison-daccueil' ) ); ?>">&#127968; Maison d'accueil</a></li>
@@ -116,7 +114,7 @@
 
             <!-- Colonne 4 - Newsletter -->
             <div class="footer-col">
-                <h4>&#128232; Restez connectés</h4>
+                <h3>&#128232; Restez connectés</h3>
                 <p class="newsletter-text">Recevez nos actualités, événements et offres spéciales.</p>
                 
                 <form class="footer-newsletter" action="#" method="post" onsubmit="return false;">
