@@ -342,9 +342,7 @@
         });
     }
 
-    // ========================================
-    // HERO SLIDER - VERSION SIMPLE ET EFFICACE
-    // ========================================
+    // ── HERO SLIDER ──
     function initHeroSlider() {
         const slider = document.querySelector('.hero-slider');
         if (!slider) return;
@@ -361,14 +359,12 @@
         let isTransitioning = false;
         const speed = parseInt(slider.dataset.speed) || 5000;
         
-        // Trouver l'index du slide actif
         slides.forEach((slide, i) => {
             if (slide.classList.contains('active')) {
                 currentIndex = i;
             }
         });
         
-        // Masquer tous les slides sauf l'actif
         function showSlide(index) {
             if (isTransitioning || index === currentIndex) return;
             isTransitioning = true;
@@ -376,11 +372,9 @@
             const currentSlide = slides[currentIndex];
             const nextSlide = slides[index];
             
-            // Afficher le prochain slide
             nextSlide.style.display = 'block';
             nextSlide.style.opacity = '0';
             
-            // Animation de transition
             setTimeout(() => {
                 currentSlide.style.opacity = '0';
                 currentSlide.style.zIndex = '1';
@@ -396,7 +390,6 @@
                 }, 800);
             }, 50);
             
-            // Mettre à jour les dots
             dots.forEach((dot, i) => {
                 dot.classList.toggle('active', i === index);
             });
@@ -423,12 +416,10 @@
             interval = setInterval(nextSlide, speed);
         }
         
-        // S'assurer que le premier slide est visible
         slides[currentIndex].style.display = 'block';
         slides[currentIndex].style.opacity = '1';
         slides[currentIndex].style.zIndex = '2';
         
-        // Event listeners
         if (prevBtn) prevBtn.addEventListener('click', () => { prevSlide(); resetInterval(); });
         if (nextBtn) nextBtn.addEventListener('click', () => { nextSlide(); resetInterval(); });
         
@@ -436,11 +427,9 @@
             dot.addEventListener('click', () => { showSlide(i); resetInterval(); });
         });
         
-        // Pause au survol
         slider.addEventListener('mouseenter', () => { if (interval) clearInterval(interval); });
         slider.addEventListener('mouseleave', resetInterval);
         
-        // Démarrer l'autoplay
         resetInterval();
     }
 
@@ -461,6 +450,32 @@
         }
     }
 
+    // ── ANIMATIONS AU SCROLL (reveal sections) ──
+    function initRevealAnimations() {
+        const revealElements = document.querySelectorAll('.reveal-section');
+
+        if (!revealElements.length) return;
+
+        if (!('IntersectionObserver' in window)) {
+            revealElements.forEach(el => el.classList.add('revealed'));
+            return;
+        }
+
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('revealed');
+                    revealObserver.unobserve(entry.target);
+                }
+            });
+        }, {
+            threshold: 0.1,
+            rootMargin: '0px 0px -60px 0px'
+        });
+
+        revealElements.forEach(el => revealObserver.observe(el));
+    }
+
     // ── INITIALISATION GÉNÉRALE ──
     function init() {
         initMobileMenu();
@@ -472,7 +487,8 @@
         initHeroAnimations();
         initLazyLoadFallback();
         initGalleryFilters();
-        
+        initRevealAnimations();
+
         console.log('✅ Domaine Saint Joseph — JS initialisé');
     }
 

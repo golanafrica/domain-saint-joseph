@@ -128,18 +128,18 @@ function dsj_assets() {
     $primary_color = get_theme_mod( 'primary_color', '#1A5276' );
     $accent_color  = get_theme_mod( 'accent_color', '#D4AC0D' );
     
-    $custom_css = "
+        $custom_css = "
         :root {
             --clr-primary: {$primary_color};
             --clr-accent: {$accent_color};
-            --clr-accent-dark: #8A6D00;
         }
         .site-header, .site-footer, .hero-section, .page-header, .cta-final, .stats-section {
             background-color: var(--clr-primary);
         }
         .btn-primary, button:not(.menu-toggle):not(.filter-btn), input[type='submit'] {
             background-color: var(--clr-accent);
-            color: var(--clr-primary);
+            color: #0F2A40;
+            font-weight: 700;
         }
         .btn-primary:hover {
             background-color: var(--clr-primary);
@@ -147,9 +147,6 @@ function dsj_assets() {
         }
         .stat-number, .section-title h2, .valeur-card h3 {
             color: var(--clr-primary);
-        }
-        .btn-link {
-            color: var(--clr-accent-dark);
         }
         a:not(.btn):hover {
             color: var(--clr-accent);
@@ -1141,3 +1138,4 @@ function dsj_add_help_tabs() {
     }
 }
 add_action( 'current_screen', 'dsj_add_help_tabs' );
+

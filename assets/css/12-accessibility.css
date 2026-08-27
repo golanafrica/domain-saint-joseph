@@ -1,13 +1,14 @@
 /* ========================================
  * 12-ACCESSIBILITY.CSS
- * Accessibilité + Features + Page générique + Contrastes WCAG
+ * Accessibilité + Features + Page générique
+ * ✅ Nettoyé : ne contient PLUS les couleurs déjà
+ *   définies à la source (05-components / functions.php)
  * ======================================== */
 
 /* ═══════════════════════════════════════════════════════════
    1. ACCESSIBILITÉ GLOBALE
    ═══════════════════════════════════════════════════════════ */
 
-/* Focus visible pour navigation clavier */
 a:focus-visible,
 .btn:focus-visible,
 .galerie-link:focus-visible {
@@ -15,7 +16,6 @@ a:focus-visible,
     outline-offset: 2px;
 }
 
-/* Réduction des animations pour préférence utilisateur */
 @media (prefers-reduced-motion: reduce) {
     *,
     *::before,
@@ -28,40 +28,67 @@ a:focus-visible,
 }
 
 /* ═══════════════════════════════════════════════════════════
-   2. CORRECTIONS CONTRASTE WCAG AA (4.5:1)
+   2. CONTRASTES SPÉCIFIQUES (cas non couverts par la source)
    ═══════════════════════════════════════════════════════════ */
 
-/* Bandeau flash INFO : fond plus sombre pour texte blanc lisible */
+/* Bandeau flash INFO : fond assombri pour le texte blanc (4.5:1+) */
 .flash-info-label {
     background: rgba(0, 0, 0, 0.55) !important;
 }
 
-/* Boutons WhatsApp : texte vert très sombre (blanc = 1.98:1 → 8.5:1) */
+/* Boutons WhatsApp (tous variants) : texte vert très sombre (8.5:1) */
 .footer-whatsapp,
 .footer-whatsapp span,
 [class*="btn-whatsapp"],
 [class*="btn-whatsapp"] span,
-.hero-caption-band .hero-buttons .btn-primary,
-.custom-hero .hero-buttons .btn-primary,
-.page-header .btn-scroll {
+.btn-whatsapp-small,
+.btn-whatsapp-small span {
     color: #06341F !important;
 }
 
-/* Liens dorés sur fond blanc (2.16:1 → 4.9:1) */
-.btn-link {
-    color: #8A6D00;
+.footer-whatsapp:hover,
+.footer-whatsapp:hover span,
+[class*="btn-whatsapp"]:hover,
+[class*="btn-whatsapp"]:hover span {
+    color: #ffffff !important;
+    background: #128C7E !important;
 }
 
-/* Badges section (📖 Notre histoire, etc.) (3.86:1 → 6.8:1) */
-.section-badge,
-.reservation-badge,
-.aide-badge {
-    color: #0F2A40;
+/* Badges de hero (page-header) : blanc sur fond semi-transparent */
+.page-header .header-badge,
+.header-caption-band .header-badge {
+    color: #ffffff !important;
+    background: rgba(0, 0, 0, 0.35) !important;
+    padding: 4px 14px !important;
+    border-radius: 20px !important;
 }
 
-/* Boutons primaires sur fond doré : texte bleu foncé */
-a.btn-primary:not(.btn-whatsapp) {
-    color: #0F2A40;
+/* Alias utilisé par front-page (même rendu que .section-badge) */
+.section-badge-dark {
+    background: var(--clr-primary, #1A5276);
+    color: #ffffff;
+    padding: 6px 18px;
+    border-radius: 30px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    display: inline-block;
+}
+
+/* Overlays galerie : titres blancs lisibles */
+.galerie-caption h3,
+.galerie-caption h4,
+.galerie-overlay h3,
+.galerie-overlay h4,
+.galerie-title {
+    font-size: 1.1rem !important;
+    font-weight: 600 !important;
+    color: #ffffff !important;
+}
+
+/* Icône loupe galerie : emoji sombre sur doré */
+.galerie-icon {
+    background: var(--clr-accent, #D4AC0D) !important;
+    color: #0F2A40 !important;
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -280,31 +307,7 @@ a.btn-primary:not(.btn-whatsapp) {
 }
 
 /* ═══════════════════════════════════════════════════════════
-   6. BOUTON WHATSAPP SMALL
-   ═══════════════════════════════════════════════════════════ */
-
-.btn-whatsapp-small {
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    background: #25D366;
-    color: white;
-    padding: 6px 14px;
-    border-radius: 50px;
-    font-size: 0.8rem;
-    font-weight: 600;
-    text-decoration: none;
-    transition: all 0.3s ease;
-}
-
-.btn-whatsapp-small:hover {
-    background: #128C7E;
-    transform: translateY(-2px);
-    color: white;
-}
-
-/* ═══════════════════════════════════════════════════════════
-   7. NIVEAU BADGE (Formations)
+   6. NIVEAU BADGE (Formations)
    ═══════════════════════════════════════════════════════════ */
 
 .formation-niveau { margin-top: 10px; }
@@ -320,7 +323,7 @@ a.btn-primary:not(.btn-whatsapp) {
 }
 
 /* ═══════════════════════════════════════════════════════════
-   8. PAGINATION
+   7. PAGINATION
    ═══════════════════════════════════════════════════════════ */
 
 .pagination {
@@ -354,7 +357,7 @@ a.btn-primary:not(.btn-whatsapp) {
 }
 
 /* ═══════════════════════════════════════════════════════════
-   9. FORMATION FOOTER
+   8. FORMATION FOOTER
    ═══════════════════════════════════════════════════════════ */
 
 .formation-footer {
@@ -367,7 +370,7 @@ a.btn-primary:not(.btn-whatsapp) {
 }
 
 /* ═══════════════════════════════════════════════════════════
-   10. RESPONSIVE
+   9. RESPONSIVE
    ═══════════════════════════════════════════════════════════ */
 
 @media (max-width: 992px) {
@@ -413,7 +416,6 @@ a.btn-primary:not(.btn-whatsapp) {
     .feature-card p { font-size: 0.85rem; }
 }
 
-/* Accessibilité features - respects préférences utilisateur */
 @media (prefers-reduced-motion: reduce) {
     .feature-card,
     .feature-icon,
@@ -423,57 +425,4 @@ a.btn-primary:not(.btn-whatsapp) {
         animation: none !important;
         transform: none !important;
     }
-}
-
-/* ═══════════════════════════════════════════════════════════
-   11. CORRECTIONS WCAG FINALES (Phase 11)
-   ═══════════════════════════════════════════════════════════ */
-
-/* ✅ Header : bouton WhatsApp (le span texte) — texte vert foncé */
-.site-header .btn-whatsapp-text,
-.site-header a.btn-whatsapp span,
-.site-header a.btn-whatsapp {
-    color: #06341F !important;
-}
-
-.site-header a.btn-whatsapp:hover,
-.site-header a.btn-whatsapp:hover span {
-    color: #ffffff !important;
-}
-
-/* ✅ Footer : bouton WhatsApp (le span ET le lien) */
-.footer-whatsapp,
-.footer-whatsapp span,
-div.footer-grid > div.footer-col > a.footer-whatsapp,
-div.footer-grid > div.footer-col > a.footer-whatsapp span {
-    color: #06341F !important;
-}
-
-.footer-whatsapp:hover,
-.footer-whatsapp:hover span {
-    color: #ffffff !important;
-}
-
-/* ✅ Header badge galerie : texte blanc sur bandeau bleu (au lieu de doré) */
-.page-header .header-badge,
-.header-caption-band .header-badge,
-section.page-header span.header-badge {
-    color: #ffffff !important;
-    background: rgba(0, 0, 0, 0.35) !important;
-    padding: 4px 14px !important;
-    border-radius: 20px !important;
-}
-
-/* ✅ Forcer H4 dans les overlays galerie (au cas où le template utilise encore H3) */
-.galerie-caption h3,
-.galerie-overlay h3 {
-    font-size: 1.1rem !important;
-    font-weight: 600 !important;
-    color: white !important;
-}
-
-/* ✅ Icône galerie : fond doré + emoji sombre pour meilleur contraste */
-.galerie-icon {
-    background: var(--clr-accent, #D4AC0D) !important;
-    color: #0F2A40 !important;
 }
