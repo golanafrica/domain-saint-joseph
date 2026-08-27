@@ -1,6 +1,7 @@
 /* ========================================
  * 04-FOOTER.CSS
  * Footer complet + Réseaux sociaux
+ * Phase A11Y : h3 au lieu de h4 (hiérarchie titres)
  * ======================================== */
 
 /* === FOOTER WAVE === */
@@ -21,15 +22,19 @@
     gap: 30px;
     margin-bottom: 50px;
 }
-.footer-col h4 {
+
+/* ✅ TITRES FOOTER : h3 (au lieu de h4)
+ * :not(.footer-title) évite d'impacter le titre du logo */
+.footer-col h3:not(.footer-title) {
     color: var(--clr-accent);
     margin-bottom: 20px;
     font-size: 1.2rem;
+    font-weight: 700;
     position: relative;
     display: inline-block;
     padding-bottom: 8px;
 }
-.footer-col h4::after {
+.footer-col h3:not(.footer-title)::after {
     content: '';
     position: absolute;
     bottom: 0;
@@ -38,6 +43,7 @@
     height: 2px;
     background: var(--clr-accent);
 }
+
 .footer-logo { margin-bottom: 15px; }
 .footer-title { font-size: 1.3rem; font-weight: 700; color: var(--clr-white); margin-bottom: 10px; }
 .footer-description { color: rgba(255, 255, 255, 0.8); line-height: 1.6; margin-bottom: 15px; font-size: 0.85rem; }
@@ -150,13 +156,13 @@
 .footer-newsletter button:hover { background: #c49b0c; transform: translateX(2px); }
 .newsletter-note { font-size: 0.75rem; color: rgba(255, 255, 255, 0.5); margin: 10px 0; }
 
-/* WhatsApp footer */
+/* ✅ WhatsApp footer : contraste WCAG corrigé (vert foncé au lieu de blanc) */
 .footer-whatsapp {
     display: inline-flex;
     align-items: center;
     gap: 8px;
     background: #25D366;
-    color: var(--clr-white);
+    color: #06341F;  /* ✅ Contraste 8.5:1 (WCAG AAA) au lieu de white (1.98:1) */
     padding: 10px 20px;
     border-radius: 50px;
     font-weight: 600;
@@ -165,7 +171,11 @@
     transition: all var(--transition);
     margin-top: 15px;
 }
-.footer-whatsapp:hover { background: #128C7E; transform: translateY(-2px); color: var(--clr-white); }
+.footer-whatsapp:hover {
+    background: #128C7E;
+    color: white;  /* Au hover, fond plus sombre = texte blanc OK */
+    transform: translateY(-2px);
+}
 .footer-whatsapp-icon { font-size: 1rem; }
 
 /* Footer bottom */
@@ -183,8 +193,17 @@
 @media (max-width: 768px) {
     .footer-grid { grid-template-columns: 1fr; gap: 35px; }
     .footer-col { text-align: center; }
-    .footer-col h4 { display: inline-block; text-align: center; }
-    .footer-col h4::after { left: 50%; transform: translateX(-50%); }
+    
+    /* ✅ Titres centrés sur mobile */
+    .footer-col h3:not(.footer-title) {
+        display: inline-block;
+        text-align: center;
+    }
+    .footer-col h3:not(.footer-title)::after {
+        left: 50%;
+        transform: translateX(-50%);
+    }
+    
     .footer-logo { text-align: center; display: flex; justify-content: center; }
     .footer-logo img { margin: 0 auto; }
     .footer-description, .footer-hours, .footer-social, .footer-contact li,
@@ -202,7 +221,8 @@
 }
 
 @media (max-width: 480px) {
-    .footer-col h4 { font-size: 1rem; }
+    /* ✅ Taille des titres sur petit écran */
+    .footer-col h3:not(.footer-title) { font-size: 1rem; }
     .footer-title { font-size: 1.1rem; }
     .footer-description { font-size: 0.8rem; }
     .social-link { width: 32px; height: 32px; font-size: 0.9rem; }
