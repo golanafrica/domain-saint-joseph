@@ -6,3 +6,12 @@ node_modules/
 vendor/
 dist/
 *.zip
+# Fichiers générés dynamiquement
+assets/css/cache/
+*.bak
+
+# OS & IDE
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
