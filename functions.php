@@ -1,7 +1,8 @@
 <?php
 /**
  * Functions du thème Domaine Saint Joseph
- * Version production - Phase 10 (Corrections contraste CSS inline)
+ * Version production - Phase 11 (Concaténation CSS + Minification + Corrections)
+ * Phase 10 : Corrections contraste CSS inline
  * Phase 9 : Galerie optimisée + Corrections doublons
  * Phase 4 : Unification Hero + Perf (defer JS) + SEO + Preload LCP
  */
@@ -81,33 +82,113 @@ function dsj_widgets_init() {
 add_action( 'widgets_init', 'dsj_widgets_init' );
 
 // ════════════════════════════════════════════════════════════════
-// 🔧 PHASE 10 : CHARGEMENT DES ASSETS + CSS INLINE CORRIGÉ
+// 🚀 PHASE 11 : CONCATÉNATION CSS + MINIFICATION (Performance 3G)
 // ════════════════════════════════════════════════════════════════
-function dsj_assets() {
+
+/**
+ * Génère l'URL du CSS concaténé/minifié avec cache-busting
+ * Fallback sur les fichiers individuels si erreur
+ */
+function dsj_get_combined_css_url() {
     $css_dir = get_template_directory() . '/assets/css/';
-    $css_uri = get_template_directory_uri() . '/assets/css/';
+    $cache_dir = $css_dir . 'cache/';
     
+    // Liste des fichiers CSS à concaténer (dans l'ordre)
     $css_files = [
-        '01-base',
-        '02-header',
-        '03-hero',
-        '04-footer',
-        '05-components',
-        '06-forms',
-        '07-galerie',
-        '08-pages',
-        '09-singles',
-        '10-cta',
-        '11-responsive',
-        '12-accessibility',
+        '01-base.css',
+        '02-header.css',
+        '03-hero.css',
+        '04-footer.css',
+        '05-components.css',
+        '06-forms.css',
+        '07-galerie.css',
+        '08-pages.css',
+        '09-singles.css',
+        '10-cta.css',
+        '11-responsive.css',
+        '12-accessibility.css',
     ];
     
+    // Calcul du hash basé sur les timestamps de modification
+    $timestamps = [];
     foreach ( $css_files as $file ) {
-        $file_path = $css_dir . $file . '.css';
-        $file_url  = $css_uri . $file . '.css';
-        $version   = file_exists( $file_path ) ? filemtime( $file_path ) : '1.0';
+        $file_path = $css_dir . $file;
+        if ( file_exists( $file_path ) ) {
+            $timestamps[] = filemtime( $file_path );
+        }
+    }
+    
+    $hash = md5( implode( '-', $timestamps ) );
+    $cache_file = 'combined-' . $hash . '.css';
+    $cache_path = $cache_dir . $cache_file;
+    
+    // Si le cache n'existe pas, le générer
+    if ( ! file_exists( $cache_path ) ) {
+        $combined = '';
         
-        wp_enqueue_style( 'dsj-' . $file, $file_url, [], $version );
+        foreach ( $css_files as $file ) {
+            $file_path = $css_dir . $file;
+            if ( file_exists( $file_path ) ) {
+                $content = file_get_contents( $file_path );
+                
+                // ✅ Minification SÉCURISÉE (ne casse pas les calc(), rgba(), variables CSS)
+                $content = preg_replace( '!/\*.*?\*/!s', '', $content ); // Supprime commentaires
+                $content = preg_replace( '/[\r\n\t]+/', '', $content ); // Supprime sauts de ligne/tabulations
+                $content = preg_replace( '/\s+/', ' ', $content ); // Réduit les espaces multiples
+                $content = preg_replace( '/\s*([{};])\s*/', '$1', $content ); // Colle les accolades et points-virgules
+                $content = trim( $content );
+                
+                $combined .= $content . "\n";
+            }
+        }
+        
+        // Créer le dossier cache s'il n'existe pas
+        if ( ! file_exists( $cache_dir ) ) {
+            wp_mkdir_p( $cache_dir );
+        }
+        
+        // Écrire le fichier concaténé
+        if ( wp_is_writable( $cache_dir ) ) {
+            file_put_contents( $cache_path, $combined );
+        } else {
+            // Fallback : retourner null pour utiliser les fichiers individuels
+            return null;
+        }
+    }
+    
+    return get_template_directory_uri() . '/assets/css/cache/' . $cache_file;
+}
+
+/**
+ * Chargement des assets avec concaténation CSS (Phase 11)
+ */
+function dsj_assets() {
+    $css_files_list = [
+        '01-base', '02-header', '03-hero', '04-footer', '05-components',
+        '06-forms', '07-galerie', '08-pages', '09-singles', '10-cta',
+        '11-responsive', '12-accessibility',
+    ];
+    
+    // 🚀 CSS concaténé/minifié (1 requête au lieu de 12)
+    $combined_css_url = dsj_get_combined_css_url();
+    
+    if ( $combined_css_url ) {
+        $combined_css_path = get_template_directory() . '/assets/css/cache/' . basename( $combined_css_url );
+        $combined_version = file_exists( $combined_css_path ) ? filemtime( $combined_css_path ) : '1.0';
+        wp_enqueue_style( 'dsj-combined', $combined_css_url, [], $combined_version );
+        $inline_handle = 'dsj-combined';
+    } else {
+        // Fallback : charger les 12 fichiers individuellement
+        $css_dir = get_template_directory() . '/assets/css/';
+        $css_uri = get_template_directory_uri() . '/assets/css/';
+        
+        foreach ( $css_files_list as $file ) {
+            $file_path = $css_dir . $file . '.css';
+            $file_url  = $css_uri . $file . '.css';
+            $version   = file_exists( $file_path ) ? filemtime( $file_path ) : '1.0';
+            wp_enqueue_style( 'dsj-' . $file, $file_url, [], $version );
+        }
+        $inline_handle = 'dsj-01-base';
     }
     
     // 🚀 PERF : JavaScript principal en DEFER (non-bloquant)
@@ -176,7 +257,7 @@ function dsj_assets() {
             color: var(--clr-accent);
         }
     ";
-    wp_add_inline_style( 'dsj-01-base', $custom_css );
+    wp_add_inline_style( $inline_handle, $custom_css );
 }
 add_action( 'wp_enqueue_scripts', 'dsj_assets' );
 
@@ -287,7 +368,14 @@ function dsj_configure_smtp( $phpmailer ) {
     $phpmailer->Port       = get_theme_mod( 'smtp_port', 587 );
     $phpmailer->Username   = get_theme_mod( 'smtp_user', '' );
     $phpmailer->Password   = get_theme_mod( 'smtp_pass', '' );
-    $phpmailer->SMTPSecure = get_theme_mod( 'smtp_encryption', 'tls' );
+    
+    // ✅ Correction : Vérification du chiffrement pour éviter les erreurs PHPMailer
+    $encryption = get_theme_mod( 'smtp_encryption', 'tls' );
+    if ( in_array( $encryption, [ 'tls', 'ssl' ], true ) ) {
+        $phpmailer->SMTPSecure = $encryption;
+    } else {
+        $phpmailer->SMTPSecure = '';
+    }
     
     $from_email = get_theme_mod( 'smtp_from_email', get_theme_mod( 'dsj_email', 'centredsj@gmail.com' ) );
     $from_name  = get_theme_mod( 'smtp_from_name', 'Domaine Saint Joseph' );
@@ -379,10 +467,11 @@ function dsj_handle_contact_form() {
         exit;
     }
     
-    $nom     = sanitize_text_field( $_POST['cf_nom'] ?? '' );
-    $contact = sanitize_text_field( $_POST['cf_contact'] ?? '' );
-    $sujet   = sanitize_text_field( $_POST['cf_sujet'] ?? 'general' );
-    $message = sanitize_textarea_field( $_POST['cf_message'] ?? '' );
+    // ✅ Correction : Ajout de wp_unslash() pour nettoyer les données POST
+    $nom     = sanitize_text_field( wp_unslash( $_POST['cf_nom'] ?? '' ) );
+    $contact = sanitize_text_field( wp_unslash( $_POST['cf_contact'] ?? '' ) );
+    $sujet   = sanitize_text_field( wp_unslash( $_POST['cf_sujet'] ?? 'general' ) );
+    $message = sanitize_textarea_field( wp_unslash( $_POST['cf_message'] ?? '' ) );
     
     if ( empty( $nom ) || empty( $contact ) || empty( $message ) ) {
         wp_safe_redirect( add_query_arg( 'error', 'missing', $fallback_url ) );
@@ -448,12 +537,12 @@ function dsj_handle_reservation_form() {
         exit;
     }
     
-    $nom     = sanitize_text_field( $_POST['nom'] ?? '' );
-    $contact = sanitize_text_field( $_POST['contact'] ?? '' );
-    $arrivee = sanitize_text_field( $_POST['arrivee'] ?? '' );
-    $depart  = sanitize_text_field( $_POST['depart'] ?? '' );
-    $type    = sanitize_text_field( $_POST['type'] ?? '' );
-    $message = sanitize_textarea_field( $_POST['message'] ?? '' );
+    $nom     = sanitize_text_field( wp_unslash( $_POST['nom'] ?? '' ) );
+    $contact = sanitize_text_field( wp_unslash( $_POST['contact'] ?? '' ) );
+    $arrivee = sanitize_text_field( wp_unslash( $_POST['arrivee'] ?? '' ) );
+    $depart  = sanitize_text_field( wp_unslash( $_POST['depart'] ?? '' ) );
+    $type    = sanitize_text_field( wp_unslash( $_POST['type'] ?? '' ) );
+    $message = sanitize_textarea_field( wp_unslash( $_POST['message'] ?? '' ) );
     
     if ( empty( $nom ) || empty( $contact ) || empty( $arrivee ) || empty( $depart ) ) {
         wp_safe_redirect( add_query_arg( 'error', 'missing', $fallback_url ) );
@@ -520,13 +609,13 @@ function dsj_handle_restaurant_reservation() {
         exit;
     }
     
-    $nom       = sanitize_text_field( $_POST['resa_nom'] ?? '' );
-    $contact   = sanitize_text_field( $_POST['resa_contact'] ?? '' );
-    $date      = sanitize_text_field( $_POST['resa_date'] ?? '' );
-    $heure     = sanitize_text_field( $_POST['resa_heure'] ?? '' );
-    $personnes = sanitize_text_field( $_POST['resa_personnes'] ?? '' );
-    $occasion  = sanitize_text_field( $_POST['resa_occasion'] ?? '' );
-    $message   = sanitize_textarea_field( $_POST['resa_message'] ?? '' );
+    $nom       = sanitize_text_field( wp_unslash( $_POST['resa_nom'] ?? '' ) );
+    $contact   = sanitize_text_field( wp_unslash( $_POST['resa_contact'] ?? '' ) );
+    $date      = sanitize_text_field( wp_unslash( $_POST['resa_date'] ?? '' ) );
+    $heure     = sanitize_text_field( wp_unslash( $_POST['resa_heure'] ?? '' ) );
+    $personnes = sanitize_text_field( wp_unslash( $_POST['resa_personnes'] ?? '' ) );
+    $occasion  = sanitize_text_field( wp_unslash( $_POST['resa_occasion'] ?? '' ) );
+    $message   = sanitize_textarea_field( wp_unslash( $_POST['resa_message'] ?? '' ) );
     
     if ( empty( $nom ) || empty( $contact ) || empty( $date ) || empty( $heure ) ) {
         wp_safe_redirect( add_query_arg( 'resa_error', 'missing', $fallback_url ) );
@@ -759,8 +848,13 @@ function dsj_check_missing_fields_on_publish( $new_status, $old_status, $post ) 
 add_action( 'transition_post_status', 'dsj_check_missing_fields_on_publish', 10, 3 );
 
 function dsj_display_missing_fields_notice() {
-    global $post;
+    // ✅ Correction : Vérification de l'écran pour éviter les erreurs sur le dashboard
+    $screen = get_current_screen();
+    if ( ! $screen || ! in_array( $screen->base, [ 'post', 'edit' ], true ) ) {
+        return;
+    }
     
+    global $post;
     if ( ! $post ) return;
     
     $transient_key = 'dsj_missing_fields_' . $post->ID;
@@ -793,6 +887,7 @@ add_action( 'admin_notices', 'dsj_display_missing_fields_notice' );
 // ════════════════════════════════════════════════════════════════
 
 function dsj_limit_blocks( $allowed_blocks, $editor_context ) {
+    // ✅ Correction : Vérification stricte de l'objet post
     if ( ! isset( $editor_context->post ) || ! $editor_context->post ) {
         return $allowed_blocks;
     }

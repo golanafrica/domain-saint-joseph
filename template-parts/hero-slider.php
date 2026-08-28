@@ -2,10 +2,7 @@
 /**
  * Template Part : Hero Slider
  * Affiche le slider Customizer (5 images max)
- * 
- * Chargé par front-page.php si :
- * - get_theme_mod('hero_slider_active') === true
- * - Au moins 1 slide configurée
+ * ✅ Phase LCP : Image préchargée via <img> pour performance 3G
  */
 
 if ( ! defined( 'ABSPATH' ) ) exit;
@@ -31,7 +28,19 @@ if ( empty( $slides ) ) {
 
 <div class="hero-slider" data-speed="<?php echo esc_attr( get_theme_mod( 'hero_slider_speed', '5000' ) ); ?>">
 
-    <!-- Photos uniquement — sans overlay -->
+    <!-- ✅ NOUVEAU : Image LCP préchargée (visible immédiatement) -->
+    <?php if ( ! empty( $slides[0] ) ) : ?>
+        <img 
+            src="<?php echo esc_url( $slides[0]['image'] ); ?>" 
+            alt="<?php echo esc_attr( $slides[0]['titre'] ?: 'Domaine Saint Joseph' ); ?>"
+            class="hero-lcp-image"
+            fetchpriority="high"
+            decoding="async"
+            style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:0;opacity:1;"
+        >
+    <?php endif; ?>
+
+    <!-- Photos en background (transition JS) -->
     <div class="hero-slides-container">
         <?php foreach ( $slides as $index => $slide ) : ?>
             <div class="hero-slide <?php echo $index === 0 ? 'active' : ''; ?>"
@@ -50,6 +59,7 @@ if ( empty( $slides ) ) {
                 <span class="slider-dot <?php echo $index === 0 ? 'active' : ''; ?>"
                       data-index="<?php echo $index; ?>"
                       role="button"
+                      tabindex="0"
                       aria-label="<?php echo esc_attr( sprintf( __( 'Aller au slide %d', 'domaine-saint-joseph' ), $index + 1 ) ); ?>"></span>
             <?php endforeach; ?>
         </div>

@@ -494,3 +494,54 @@
     .page-header .header-subtitle { font-size: 0.8rem; }
     .page-header .header-badge { font-size: 0.75rem; }
 }
+
+
+/* ========================================
+   SLIDER DOTS - Accessibilité tactile (Target Size 24px)
+   ======================================== */
+.slider-dots {
+    display: flex;
+    justify-content: center;
+    gap: 4px; /* Espace visuel entre les points */
+    margin-top: 1rem;
+}
+
+.slider-dot {
+    /* Zone cliquable de 24x24px pour l'accessibilité tactile */
+    width: 24px;
+    height: 24px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    padding: 0;
+    position: relative;
+}
+
+/* Le point visuel réel (plus petit) */
+.slider-dot::after {
+    content: '';
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.5);
+    transition: all 0.3s ease;
+}
+
+.slider-dot.active::after {
+    background: #D4AC0D; /* Couleur accent (jaune/or) */
+    width: 12px;
+    height: 12px;
+}
+
+.slider-dot:hover::after {
+    background: rgba(255, 255, 255, 0.8);
+}
+
+.slider-dot:focus-visible {
+    outline: 2px solid #D4AC0D;
+    outline-offset: 2px;
+    border-radius: 50%;
+}

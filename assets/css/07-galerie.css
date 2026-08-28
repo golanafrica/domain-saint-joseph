@@ -2,6 +2,7 @@
  * 07-GALERIE.CSS
  * Galerie, lightbox, filtres, home galerie
  * Phase 10 : Fix bande blanche + lightbox boutons + image full
+ * ✅ FIX : sélecteurs scopés pour éviter conflits avec 08-pages.css
  * ======================================== */
 
 /* ═══════════════════════════════════════════════════════════
@@ -57,8 +58,9 @@
     } 
 }
 
-/* Overlay avec légende */
-.galerie-overlay {
+/* ✅ SCOPÉ : Overlay avec légende (uniquement dans galerie standard) */
+.galerie-grid .galerie-overlay,
+.galerie-grid-section .galerie-overlay {
     position: absolute; 
     inset: 0;
     background: linear-gradient(135deg, rgba(26, 82, 118, 0.85), rgba(41, 128, 185, 0.9));
@@ -101,9 +103,13 @@
     } 
 }
 
-.galerie-title,
-.galerie-caption h3,
-.galerie-caption h4 { 
+/* ✅ SCOPÉ : Titres galerie (uniquement dans galerie standard) */
+.galerie-grid .galerie-title,
+.galerie-grid .galerie-caption h3,
+.galerie-grid .galerie-caption h4,
+.galerie-grid-section .galerie-title,
+.galerie-grid-section .galerie-caption h3,
+.galerie-grid-section .galerie-caption h4 { 
     font-size: 1.1rem; 
     margin-bottom: 5px; 
     font-weight: 600; 
@@ -613,9 +619,12 @@
         margin-bottom: 10px; 
     }
     
-    .galerie-title,
-    .galerie-caption h3,
-    .galerie-caption h4 { 
+    .galerie-grid .galerie-title,
+    .galerie-grid .galerie-caption h3,
+    .galerie-grid .galerie-caption h4,
+    .galerie-grid-section .galerie-title,
+    .galerie-grid-section .galerie-caption h3,
+    .galerie-grid-section .galerie-caption h4 { 
         font-size: 0.95rem; 
     }
     

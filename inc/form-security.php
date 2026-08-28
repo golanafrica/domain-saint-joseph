@@ -49,11 +49,11 @@ add_action( 'init', 'dsj_register_messages_cpt' );
 // ========================================
 function dsj_messages_columns( $columns ) {
     $new_columns = [];
-    $new_columns['cb']        = $columns['cb'];
+    $new_columns['cb']        = $columns['cb'] ?? '';
     $new_columns['type']      = 'Type';
-    $new_columns['title']     = $columns['title'];
+    $new_columns['title']     = $columns['title'] ?? 'Titre';
     $new_columns['contact']   = 'Contact';
-    $new_columns['date']      = $columns['date'];
+    $new_columns['date']      = $columns['date'] ?? 'Date';
     $new_columns['status']    = 'Statut';
     return $new_columns;
 }
@@ -89,17 +89,13 @@ add_action( 'manage_dsj_message_posts_custom_column', 'dsj_messages_column_conte
 // ========================================
 // 🔒 PHASE 7.2 : DÉTECTION IP RÉELLE (CDN, proxy, NAT)
 // ========================================
-// Au Burkina Faso, beaucoup d'utilisateurs partagent la même IP publique
-// via NAT opérateur. Si le site est derrière Cloudflare ou un proxy,
-// il faut lire la vraie IP du visiteur, pas celle du proxy.
-
 function dsj_get_real_ip() {
-    // Cloudflare (priorité max si le site est derrière CF)
+    // Cloudflare
     if ( ! empty( $_SERVER['HTTP_CF_CONNECTING_IP'] ) ) {
         return sanitize_text_field( $_SERVER['HTTP_CF_CONNECTING_IP'] );
     }
     
-    // Proxy générique (AWS, Nginx, Apache derrière proxy)
+    // Proxy générique
     if ( ! empty( $_SERVER['HTTP_X_FORWARDED_FOR'] ) ) {
         $ips = explode( ',', $_SERVER['HTTP_X_FORWARDED_FOR'] );
         $ip = trim( $ips[0] );
@@ -113,7 +109,7 @@ function dsj_get_real_ip() {
         return sanitize_text_field( $_SERVER['HTTP_X_REAL_IP'] );
     }
     
-    // IP directe (fallback)
+    // IP directe
     return sanitize_text_field( $_SERVER['REMOTE_ADDR'] ?? 'unknown' );
 }
 
@@ -121,9 +117,6 @@ function dsj_get_real_ip() {
 // FONCTIONS HELPER SECURITE
 // ========================================
 
-/**
- * Verifie le honeypot (champ piege pour les bots)
- */
 function dsj_check_honeypot( $field_name = 'dsj_hp_field' ) {
     if ( ! empty( $_POST[ $field_name ] ) ) {
         $ip = dsj_get_real_ip();
@@ -133,19 +126,11 @@ function dsj_check_honeypot( $field_name = 'dsj_hp_field' ) {
     return true;
 }
 
-/**
- * Verifie le rate limiting
- * 
- * 🔒 PHASE 7.2 : Seuil augmenté de 5 à 15/heure
- * Au Burkina Faso, le NAT opérateur fait que plusieurs utilisateurs
- * partagent la même IP publique. Un seuil de 5 bloquerait trop de vrais visiteurs.
- */
 function dsj_check_rate_limit( $form_type = 'contact' ) {
     $ip = dsj_get_real_ip();
     $key = 'dsj_rate_' . $form_type . '_' . md5( $ip );
     $count = (int) get_transient( $key );
     
-    // Seuil : 15 envois par heure (adapté au contexte africain)
     if ( $count >= 15 ) {
         error_log( 'DSJ: Rate limit atteint pour IP ' . $ip . ' (' . $count . ' envois/heure)' );
         return false;
@@ -155,9 +140,6 @@ function dsj_check_rate_limit( $form_type = 'contact' ) {
     return true;
 }
 
-/**
- * Valide email ou telephone
- */
 function dsj_validate_contact( $contact ) {
     $contact = sanitize_text_field( $contact );
     
@@ -173,10 +155,6 @@ function dsj_validate_contact( $contact ) {
     return false;
 }
 
-/**
- * 🔒 PHASE 7.2 : Trouver dynamiquement un administrateur
- * Ne pas dépendre de l'ID=1 (bonne pratique sécurité WordPress)
- */
 function dsj_get_admin_author_id() {
     $admin = get_users( [
         'role'     => 'administrator',
@@ -189,9 +167,6 @@ function dsj_get_admin_author_id() {
     return ! empty( $admin ) ? (int) $admin[0] : 1;
 }
 
-/**
- * Enregistre un message dans le CPT
- */
 function dsj_save_message( $type, $data ) {
     $title = sprintf( '[%s] %s - %s', 
         strtoupper( $type ), 
@@ -199,7 +174,6 @@ function dsj_save_message( $type, $data ) {
         $data['nom'] ?? 'Anonyme'
     );
     
-    // 🔒 PHASE 7.2 : post_author dynamique
     $author_id = dsj_get_admin_author_id();
     
     $post_id = wp_insert_post([
@@ -220,7 +194,9 @@ function dsj_save_message( $type, $data ) {
         
         foreach ( $data as $key => $value ) {
             if ( ! in_array( $key, [ 'nom', 'contact', 'sujet', 'message' ] ) ) {
-                update_post_meta( $post_id, '_dsj_msg_' . $key, sanitize_text_field( $value ) );
+                // Protection si le formulaire renvoie un tableau (ex: cases à cocher)
+                $clean_value = is_array( $value ) ? sanitize_text_field( implode( ', ', $value ) ) : sanitize_text_field( $value );
+                update_post_meta( $post_id, '_dsj_msg_' . $key, $clean_value );
             }
         }
         
@@ -246,6 +222,7 @@ function dsj_add_message_metabox() {
 add_action( 'add_meta_boxes', 'dsj_add_message_metabox' );
 
 function dsj_message_details_callback( $post ) {
+    // Marquer comme lu à l'ouverture
     update_post_meta( $post->ID, '_dsj_msg_read', 1 );
     
     $type    = get_post_meta( $post->ID, '_dsj_msg_type', true );
@@ -288,7 +265,7 @@ function dsj_message_details_callback( $post ) {
             gap: 6px;
             padding: 8px 16px; 
             background: #25D366; 
-            color: white; 
+            color: white !important; 
             text-decoration: none; 
             border-radius: 50px;
             font-weight: 600;
@@ -327,12 +304,12 @@ function dsj_message_details_callback( $post ) {
     </div>
     
     <div class="dsj-msg-actions">
-        <?php if ( strpos( $contact, '@' ) !== false ) : ?>
+        <?php if ( $contact && strpos( $contact, '@' ) !== false ) : ?>
             <a href="mailto:<?php echo esc_attr( $contact ); ?>?subject=Re: <?php echo urlencode( $sujet ); ?>" class="email-btn">
                 &#128231; Repondre par email
             </a>
-        <?php else : ?>
-            <a href="https://wa.me/<?php echo preg_replace( '/[^0-9]/', '', $contact ); ?>" target="_blank">
+        <?php elseif ( $contact ) : ?>
+            <a href="https://wa.me/<?php echo preg_replace( '/[^0-9]/', '', $contact ); ?>" target="_blank" rel="noopener noreferrer">
                 &#128172; Repondre sur WhatsApp
             </a>
         <?php endif; ?>

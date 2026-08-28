@@ -4,6 +4,7 @@
  * ✅ NETTOYÉ : doublons supprimés (page-content-wrapper, pagination,
  *    formation-footer, cta-page-content, niveau-badge, section-badge-dark
  *    vivent désormais UNIQUEMENT dans 08-pages.css)
+ * ✅ FIX : sélecteurs galerie scopés pour éviter conflits
  * ======================================== */
 
 /* ═══════════════════════════════════════════════════════════
@@ -64,12 +65,12 @@ a:focus-visible,
     border-radius: 20px !important;
 }
 
-/* Overlays galerie : titres blancs lisibles (contraste WCAG) */
-.galerie-caption h3,
-.galerie-caption h4,
-.galerie-overlay h3,
-.galerie-overlay h4,
-.galerie-title {
+/* ✅ SCOPÉ : Overlays galerie masonry uniquement (évite conflit avec 07-galerie.css) */
+.galerie-grid-masonry .galerie-caption h3,
+.galerie-grid-masonry .galerie-caption h4,
+.galerie-grid-masonry .galerie-overlay h3,
+.galerie-grid-masonry .galerie-overlay h4,
+.galerie-grid-masonry .galerie-title {
     font-size: 1.1rem !important;
     font-weight: 600 !important;
     color: #ffffff !important;

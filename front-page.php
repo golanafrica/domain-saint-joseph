@@ -1,8 +1,10 @@
 <?php
 /**
- * Page d'accueil — Version modernisée stable
+ * Page d'accueil — Version modernisée stable + Accessibilité
  * Contenu 100% dynamique : affiche les DERNIERS éléments publiés
  * (formations, chambres, menus, photos) — max 3 à 4 par section.
+ * + Icônes personnalisées pour les Valeurs (Customizer)
+ * ✅ Phase A11Y : aria-label sur tous les liens + alt corrigés (vides si texte visible)
  */
 
 get_header();
@@ -57,7 +59,7 @@ $menus_recents     = $dsj_recent_images( 'menu', 4 );
 $photos_recentes   = $dsj_recent_images( 'galerie', 4 );
 ?>
 
-<main id="main" class="site-main">
+<div class="site-main">
 
 	<!-- ===== HERO SECTION ===== -->
 	<?php if ( get_theme_mod( 'hero_slider_active', false ) ) : ?>
@@ -74,12 +76,12 @@ $photos_recentes   = $dsj_recent_images( 'galerie', 4 );
 	);
 	?>
 
-	<section class="home-histoire section-padding bg-bleu-clair reveal-section">
+	<section class="home-histoire section-padding bg-bleu-clair reveal-section" aria-labelledby="histoire-title">
 		<div class="container">
 			<div class="section-header">
-				<span class="section-badge section-badge-dark">&#128214; Notre histoire</span>
-				<h2 class="section-title">Le Domaine Saint Joseph</h2>
-				<div class="section-divider"></div>
+				<span class="section-badge section-badge-dark" aria-hidden="true">&#128214; Notre histoire</span>
+				<h2 class="section-title" id="histoire-title">Le Domaine Saint Joseph</h2>
+				<div class="section-divider" aria-hidden="true"></div>
 			</div>
 
 			<div class="histoire-content">
@@ -89,12 +91,13 @@ $photos_recentes   = $dsj_recent_images( 'galerie', 4 );
 	</section>
 
 	<!-- ===== STATISTIQUES ===== -->
-	<section class="stats-section bg-gradient-primary reveal-section">
+	<section class="stats-section bg-gradient-primary reveal-section" aria-labelledby="stats-title">
 		<div class="container">
+			<h2 class="screen-reader-text" id="stats-title">Chiffres clés</h2>
 			<div class="stats-grid">
 
 				<div class="stat-item stat-card">
-					<div class="stat-icon">&#127942;</div>
+					<div class="stat-icon" aria-hidden="true">&#127942;</div>
 					<div
 						class="stat-number"
 						data-count="<?php echo esc_attr( $stat1['number'] ); ?>"
@@ -108,7 +111,7 @@ $photos_recentes   = $dsj_recent_images( 'galerie', 4 );
 				</div>
 
 				<div class="stat-item stat-card">
-					<div class="stat-icon">&#127891;</div>
+					<div class="stat-icon" aria-hidden="true">&#127891;</div>
 					<div
 						class="stat-number"
 						data-count="<?php echo esc_attr( $stat2['number'] ); ?>"
@@ -122,7 +125,7 @@ $photos_recentes   = $dsj_recent_images( 'galerie', 4 );
 				</div>
 
 				<div class="stat-item stat-card">
-					<div class="stat-icon">&#128170;</div>
+					<div class="stat-icon" aria-hidden="true">&#128170;</div>
 					<div
 						class="stat-number"
 						data-count="<?php echo esc_attr( $stat3['number'] ); ?>"
@@ -136,7 +139,7 @@ $photos_recentes   = $dsj_recent_images( 'galerie', 4 );
 				</div>
 
 				<div class="stat-item stat-card">
-					<div class="stat-icon">&#128205;</div>
+					<div class="stat-icon" aria-hidden="true">&#128205;</div>
 					<div class="stat-number">S25</div>
 					<div class="stat-label">Bobo-Dioulasso</div>
 				</div>
@@ -146,12 +149,12 @@ $photos_recentes   = $dsj_recent_images( 'galerie', 4 );
 	</section>
 
 	<!-- ===== NOS FORMATIONS (3 dernières publiées) ===== -->
-	<section class="home-formations section-padding bg-blanc reveal-section">
+	<section class="home-formations section-padding bg-blanc reveal-section" aria-labelledby="formations-title">
 		<div class="container">
 			<div class="section-header">
-				<span class="section-badge section-badge-dark">&#127891; Excellence académique</span>
-				<h2 class="section-title">Nos Formations</h2>
-				<div class="section-divider"></div>
+				<span class="section-badge section-badge-dark" aria-hidden="true">&#127891; Excellence académique</span>
+				<h2 class="section-title" id="formations-title">Nos Formations</h2>
+				<div class="section-divider" aria-hidden="true"></div>
 				<p class="section-subtitle">Des filières concrètes pour l'autonomie des jeunes filles.</p>
 			</div>
 
@@ -174,14 +177,18 @@ $photos_recentes   = $dsj_recent_images( 'galerie', 4 );
 
 						<article class="formation-card card-modern">
 							<div class="card-image">
-								<a href="<?php the_permalink(); ?>">
+								<a href="<?php the_permalink(); ?>" aria-label="En savoir plus sur la formation <?php echo esc_attr( get_the_title() ); ?>">
 									<?php if ( has_post_thumbnail() ) : ?>
-										<?php the_post_thumbnail( 'card-thumb' ); ?>
+										<?php the_post_thumbnail( 'card-thumb', [
+											'alt' => esc_attr( get_the_title() ),
+											'loading' => 'lazy',
+											'decoding' => 'async',
+										] ); ?>
 									<?php else : ?>
-										<div class="card-icon-placeholder">&#127891;</div>
+										<div class="card-icon-placeholder" aria-hidden="true">&#127891;</div>
 									<?php endif; ?>
 								</a>
-								<div class="card-image-overlay"></div>
+								<div class="card-image-overlay" aria-hidden="true"></div>
 							</div>
 
 							<div class="card-content">
@@ -193,11 +200,11 @@ $photos_recentes   = $dsj_recent_images( 'galerie', 4 );
 
 								<div class="card-meta">
 									<?php if ( $duree ) : ?>
-										<span class="meta-item">&#128197; <?php echo esc_html( $duree ); ?></span>
+										<span class="meta-item"><span aria-hidden="true">&#128197;</span> <?php echo esc_html( $duree ); ?></span>
 									<?php endif; ?>
 
 									<?php if ( $prix ) : ?>
-										<span class="meta-item">&#128176; <?php echo esc_html( $prix ); ?></span>
+										<span class="meta-item"><span aria-hidden="true">&#128176;</span> <?php echo esc_html( $prix ); ?></span>
 									<?php endif; ?>
 								</div>
 
@@ -206,8 +213,8 @@ $photos_recentes   = $dsj_recent_images( 'galerie', 4 );
 								</div>
 
 								<div class="card-footer">
-									<a href="<?php the_permalink(); ?>" class="btn-link">
-										En savoir plus <span class="arrow">&#8594;</span>
+									<a href="<?php the_permalink(); ?>" class="btn-link" aria-label="En savoir plus sur <?php echo esc_attr( get_the_title() ); ?>">
+										En savoir plus <span class="arrow" aria-hidden="true">&#8594;</span>
 									</a>
 								</div>
 							</div>
@@ -225,7 +232,7 @@ $photos_recentes   = $dsj_recent_images( 'galerie', 4 );
 			</div>
 
 			<div class="text-center mt-4">
-				<a href="<?php echo esc_url( home_url( '/formation' ) ); ?>" class="btn btn-primary btn-animated">
+				<a href="<?php echo esc_url( get_post_type_archive_link( 'formation' ) ); ?>" class="btn btn-primary btn-animated">
 					Voir toutes les formations
 				</a>
 			</div>
@@ -233,14 +240,14 @@ $photos_recentes   = $dsj_recent_images( 'galerie', 4 );
 	</section>
 
 	<!-- ===== MAISON D'ACCUEIL (3 dernières chambres en images) ===== -->
-	<section class="home-maison-presentation section-padding bg-vert-menthe reveal-section">
+	<section class="home-maison-presentation section-padding bg-vert-menthe reveal-section" aria-labelledby="maison-title">
 		<div class="container">
 			<div class="maison-layout">
 
 				<div class="maison-content-left">
-					<span class="section-badge section-badge-dark">&#127968; Ouverte à tous</span>
-					<h2 class="section-title">La Maison d'Accueil</h2>
-					<div class="section-divider left"></div>
+					<span class="section-badge section-badge-dark" aria-hidden="true">&#127968; Ouverte à tous</span>
+					<h2 class="section-title" id="maison-title">La Maison d'Accueil</h2>
+					<div class="section-divider left" aria-hidden="true"></div>
 
 					<p class="maison-intro">
 						La Maison d'Accueil a pour but l'autoprise en charge du Centre pour soutenir la formation.
@@ -248,27 +255,27 @@ $photos_recentes   = $dsj_recent_images( 'galerie', 4 );
 
 					<div class="services-grid-modern">
 						<div class="service-modern-item">
-							<span class="service-icon">&#128524;</span>
+							<span class="service-icon" aria-hidden="true">&#128524;</span>
 							<span class="service-text">Retraites, récollections</span>
 						</div>
 						<div class="service-modern-item">
-							<span class="service-icon">&#127881;</span>
+							<span class="service-icon" aria-hidden="true">&#127881;</span>
 							<span class="service-text">Événements</span>
 						</div>
 						<div class="service-modern-item">
-							<span class="service-icon">&#128106;</span>
+							<span class="service-icon" aria-hidden="true">&#128106;</span>
 							<span class="service-text">Réunions de famille</span>
 						</div>
 						<div class="service-modern-item">
-							<span class="service-icon">&#128188;</span>
+							<span class="service-icon" aria-hidden="true">&#128188;</span>
 							<span class="service-text">Sessions de travail</span>
 						</div>
 						<div class="service-modern-item">
-							<span class="service-icon">&#128218;</span>
+							<span class="service-icon" aria-hidden="true">&#128218;</span>
 							<span class="service-text">Conférences</span>
 						</div>
 						<div class="service-modern-item">
-							<span class="service-icon">&#128214;</span>
+							<span class="service-icon" aria-hidden="true">&#128214;</span>
 							<span class="service-text">Journées d'étude</span>
 						</div>
 					</div>
@@ -282,10 +289,10 @@ $photos_recentes   = $dsj_recent_images( 'galerie', 4 );
 					<?php if ( ! empty( $chambres_recentes ) ) : ?>
 						<div class="maison-image-stack">
 							<?php foreach ( $chambres_recentes as $index => $image ) : ?>
-								<a href="<?php echo esc_url( $image['link'] ); ?>" class="maison-img maison-img-<?php echo esc_attr( $index + 1 ); ?>">
+								<a href="<?php echo esc_url( $image['link'] ); ?>" class="maison-img maison-img-<?php echo esc_attr( $index + 1 ); ?>" aria-label="Voir l'hébergement <?php echo esc_attr( $image['title'] ); ?>">
 									<img
 										src="<?php echo esc_url( $image['url'] ); ?>"
-										alt="<?php echo esc_attr( $image['title'] ); ?>"
+										alt=""
 										loading="lazy"
 										decoding="async"
 									>
@@ -294,7 +301,7 @@ $photos_recentes   = $dsj_recent_images( 'galerie', 4 );
 						</div>
 					<?php else : ?>
 						<div class="section-image-placeholder">
-							<span>&#127968;</span>
+							<span aria-hidden="true">&#127968;</span>
 							<p>Maison d'accueil</p>
 						</div>
 					<?php endif; ?>
@@ -305,12 +312,12 @@ $photos_recentes   = $dsj_recent_images( 'galerie', 4 );
 	</section>
 
 	<!-- ===== NOS HÉBERGEMENTS (3 dernières chambres publiées) ===== -->
-	<section class="home-hebergements section-padding bg-gris reveal-section">
+	<section class="home-hebergements section-padding bg-gris reveal-section" aria-labelledby="hebergements-title">
 		<div class="container">
 			<div class="section-header">
-				<span class="section-badge section-badge-dark">&#127968; Lieu d'accueil</span>
-				<h2 class="section-title">Nos Hébergements</h2>
-				<div class="section-divider"></div>
+				<span class="section-badge section-badge-dark" aria-hidden="true">&#127968; Lieu d'accueil</span>
+				<h2 class="section-title" id="hebergements-title">Nos Hébergements</h2>
+				<div class="section-divider" aria-hidden="true"></div>
 				<p class="section-subtitle">Un cadre paisible pour votre séjour.</p>
 			</div>
 
@@ -333,14 +340,18 @@ $photos_recentes   = $dsj_recent_images( 'galerie', 4 );
 
 						<article class="hebergement-card card-modern">
 							<div class="card-image">
-								<a href="<?php the_permalink(); ?>">
+								<a href="<?php the_permalink(); ?>" aria-label="En savoir plus sur l'hébergement <?php echo esc_attr( get_the_title() ); ?>">
 									<?php if ( has_post_thumbnail() ) : ?>
-										<?php the_post_thumbnail( 'card-thumb' ); ?>
+										<?php the_post_thumbnail( 'card-thumb', [
+											'alt' => '',
+											'loading' => 'lazy',
+											'decoding' => 'async',
+										] ); ?>
 									<?php else : ?>
-										<div class="card-icon-placeholder">&#127968;</div>
+										<div class="card-icon-placeholder" aria-hidden="true">&#127968;</div>
 									<?php endif; ?>
 								</a>
-								<div class="card-image-overlay"></div>
+								<div class="card-image-overlay" aria-hidden="true"></div>
 							</div>
 
 							<div class="card-content">
@@ -352,11 +363,11 @@ $photos_recentes   = $dsj_recent_images( 'galerie', 4 );
 
 								<div class="card-meta">
 									<?php if ( $capacite ) : ?>
-										<span class="meta-item">&#128101; <?php echo esc_html( $capacite ); ?> pers.</span>
+										<span class="meta-item"><span aria-hidden="true">&#128101;</span> <?php echo esc_html( $capacite ); ?> pers.</span>
 									<?php endif; ?>
 
 									<?php if ( $prix_nuit ) : ?>
-										<span class="meta-item">&#128176; <?php echo esc_html( $prix_nuit ); ?>/nuit</span>
+										<span class="meta-item"><span aria-hidden="true">&#128176;</span> <?php echo esc_html( $prix_nuit ); ?>/nuit</span>
 									<?php endif; ?>
 								</div>
 
@@ -364,8 +375,8 @@ $photos_recentes   = $dsj_recent_images( 'galerie', 4 );
 									<?php echo esc_html( wp_trim_words( get_the_excerpt() ?: get_the_content(), 14, '...' ) ); ?>
 								</div>
 
-								<a href="<?php the_permalink(); ?>" class="btn-link">
-									Voir les détails <span class="arrow">&#8594;</span>
+								<a href="<?php the_permalink(); ?>" class="btn-link" aria-label="Voir les détails de <?php echo esc_attr( get_the_title() ); ?>">
+									Voir les détails <span class="arrow" aria-hidden="true">&#8594;</span>
 								</a>
 							</div>
 						</article>
@@ -391,22 +402,22 @@ $photos_recentes   = $dsj_recent_images( 'galerie', 4 );
 
 	<!-- ===== COMMENT NOUS AIDER ===== -->
 	<?php if ( get_theme_mod( 'aide_accueil_active', true ) ) : ?>
-		<section class="aide-urgence section-padding bg-creme reveal-section">
+		<section class="aide-urgence section-padding bg-creme reveal-section" aria-labelledby="aide-title">
 			<div class="container">
 				<div class="section-header">
-					<span class="section-badge section-badge-dark">&#128157; Soutenez notre mission</span>
-					<h2 class="section-title">Comment nous aider ?</h2>
-					<div class="section-divider"></div>
+					<span class="section-badge section-badge-dark" aria-hidden="true">&#128157; Soutenez notre mission</span>
+					<h2 class="section-title" id="aide-title">Comment nous aider ?</h2>
+					<div class="section-divider" aria-hidden="true"></div>
 					<p class="section-subtitle">Votre générosité change des vies et soutient la formation des jeunes filles.</p>
 				</div>
 
 				<div class="aide-urgence-grid">
 
 					<article class="aide-card aide-card-modern">
-						<div class="aide-card-gradient"></div>
+						<div class="aide-card-gradient" aria-hidden="true"></div>
 						<div class="aide-card-content">
-							<div class="aide-card-icon">
-								<?php echo wp_kses_post( get_theme_mod( 'aide_parrainage_icone', '&#128103;' ) ); ?>
+							<div class="aide-card-icon" aria-hidden="true">
+								<?php echo function_exists( 'dsj_icon' ) ? dsj_icon( get_theme_mod( 'aide_parrainage_icone', '&#128103;' ) ) : wp_kses_post( get_theme_mod( 'aide_parrainage_icone', '&#128103;' ) ); ?>
 							</div>
 							<h3><?php echo esc_html( get_theme_mod( 'aide_parrainage_titre', 'Parrainez une jeune fille' ) ); ?></h3>
 							<p>
@@ -428,16 +439,16 @@ $photos_recentes   = $dsj_recent_images( 'galerie', 4 );
 							</ul>
 
 							<a href="<?php echo esc_url( home_url( '/nous-soutenir' ) ); ?>" class="btn btn-primary btn-animated">
-								<?php echo esc_html( get_theme_mod( 'aide_parrainage_bouton', 'Je parraine' ) ); ?> &#8594;
+								<?php echo esc_html( get_theme_mod( 'aide_parrainage_bouton', 'Je parraine' ) ); ?> <span aria-hidden="true">&#8594;</span>
 							</a>
 						</div>
 					</article>
 
 					<article class="aide-card aide-card-modern">
-						<div class="aide-card-gradient"></div>
+						<div class="aide-card-gradient" aria-hidden="true"></div>
 						<div class="aide-card-content">
-							<div class="aide-card-icon">
-								<?php echo wp_kses_post( get_theme_mod( 'aide_construction_icone', '&#128736;' ) ); ?>
+							<div class="aide-card-icon" aria-hidden="true">
+								<?php echo function_exists( 'dsj_icon' ) ? dsj_icon( get_theme_mod( 'aide_construction_icone', '&#128736;' ) ) : wp_kses_post( get_theme_mod( 'aide_construction_icone', '&#128736;' ) ); ?>
 							</div>
 							<h3><?php echo esc_html( get_theme_mod( 'aide_construction_titre', 'Construisons ensemble' ) ); ?></h3>
 							<p>
@@ -459,15 +470,17 @@ $photos_recentes   = $dsj_recent_images( 'galerie', 4 );
 							</ul>
 
 							<a href="<?php echo esc_url( home_url( '/nous-soutenir' ) ); ?>" class="btn btn-primary btn-animated">
-								<?php echo esc_html( get_theme_mod( 'aide_construction_bouton', 'Je contribue' ) ); ?> &#8594;
+								<?php echo esc_html( get_theme_mod( 'aide_construction_bouton', 'Je contribue' ) ); ?> <span aria-hidden="true">&#8594;</span>
 							</a>
 						</div>
 					</article>
 
 					<article class="aide-card aide-card-modern">
-						<div class="aide-card-gradient"></div>
+						<div class="aide-card-gradient" aria-hidden="true"></div>
 						<div class="aide-card-content">
-							<div class="aide-card-icon">&#128155;</div>
+							<div class="aide-card-icon" aria-hidden="true">
+								<?php echo function_exists( 'dsj_icon' ) ? dsj_icon( '&#128155;' ) : '&#128155;'; ?>
+							</div>
 							<h3>Faire un don</h3>
 							<p>
 								Votre don, petit ou grand, soutient la formation des jeunes filles et l'entretien du centre.
@@ -480,7 +493,7 @@ $photos_recentes   = $dsj_recent_images( 'galerie', 4 );
 							</ul>
 
 							<a href="<?php echo esc_url( home_url( '/nous-soutenir' ) ); ?>" class="btn btn-primary btn-animated">
-								&#128155; Je donne &#8594;
+								<span aria-hidden="true">&#128155;</span> Je donne <span aria-hidden="true">&#8594;</span>
 							</a>
 						</div>
 					</article>
@@ -488,14 +501,15 @@ $photos_recentes   = $dsj_recent_images( 'galerie', 4 );
 				</div>
 
 				<div class="aide-texte-supplementaire text-center mt-4">
-					<p>&#128222; Un doute ? Contactez-nous par WhatsApp pour toute question sur les dons ou parrainages.</p>
+					<p><span aria-hidden="true">&#128222;</span> Un doute ? Contactez-nous par WhatsApp pour toute question sur les dons ou parrainages.</p>
 					<a
 						href="https://wa.me/<?php echo esc_attr( preg_replace( '/[^0-9]/', '', get_theme_mod( 'whatsapp', '22666605890' ) ) ); ?>"
 						class="btn btn-whatsapp btn-animated"
 						target="_blank"
 						rel="noopener noreferrer"
+						aria-label="Nous contacter sur WhatsApp"
 					>
-						&#128172; Nous contacter
+						<span aria-hidden="true">&#128172;</span> Nous contacter
 					</a>
 				</div>
 			</div>
@@ -503,19 +517,19 @@ $photos_recentes   = $dsj_recent_images( 'galerie', 4 );
 	<?php endif; ?>
 
 	<!-- ===== RESTAURANT (4 derniers menus publiés) ===== -->
-	<section class="home-restaurant section-padding bg-blanc reveal-section">
+	<section class="home-restaurant section-padding bg-blanc reveal-section" aria-labelledby="restaurant-title">
 		<div class="container">
 			<div class="section-header">
-				<span class="section-badge section-badge-dark">&#127869; Table d'hôte</span>
-				<h2 class="section-title">Notre Restaurant</h2>
-				<div class="section-divider"></div>
+				<span class="section-badge section-badge-dark" aria-hidden="true">&#127869; Table d'hôte</span>
+				<h2 class="section-title" id="restaurant-title">Notre Restaurant</h2>
+				<div class="section-divider" aria-hidden="true"></div>
 				<p class="section-subtitle">Cuisine locale et internationale, préparée avec amour.</p>
 			</div>
 
 			<div class="restaurant-preview-modern">
 
 				<div class="restaurant-info-card">
-					<h3>&#128339; Horaires</h3>
+					<h3><span aria-hidden="true">&#128339;</span> Horaires</h3>
 
 					<?php
 					$petitdej = get_theme_mod( 'restaurant_petitdej', '7h00 - 9h30' );
@@ -524,7 +538,7 @@ $photos_recentes   = $dsj_recent_images( 'galerie', 4 );
 					?>
 
 					<div class="horaire-item">
-						<span class="horaire-icon">&#9728;&#65039;</span>
+						<span class="horaire-icon" aria-hidden="true">&#9728;&#65039;</span>
 						<div>
 							<strong>Petit-déjeuner</strong>
 							<span><?php echo esc_html( $petitdej ); ?></span>
@@ -532,7 +546,7 @@ $photos_recentes   = $dsj_recent_images( 'galerie', 4 );
 					</div>
 
 					<div class="horaire-item">
-						<span class="horaire-icon">&#127860;</span>
+						<span class="horaire-icon" aria-hidden="true">&#127860;</span>
 						<div>
 							<strong>Déjeuner</strong>
 							<span><?php echo esc_html( $dejeuner ); ?></span>
@@ -540,7 +554,7 @@ $photos_recentes   = $dsj_recent_images( 'galerie', 4 );
 					</div>
 
 					<div class="horaire-item">
-						<span class="horaire-icon">&#127769;</span>
+						<span class="horaire-icon" aria-hidden="true">&#127769;</span>
 						<div>
 							<strong>Dîner</strong>
 							<span><?php echo esc_html( $diner ); ?></span>
@@ -549,10 +563,10 @@ $photos_recentes   = $dsj_recent_images( 'galerie', 4 );
 
 					<div class="restaurant-cta-home mt-3">
 						<a href="<?php echo esc_url( home_url( '/restaurant' ) ); ?>" class="btn btn-primary btn-animated">
-							&#127869; Découvrir la carte
+							<span aria-hidden="true">&#127869;</span> Découvrir la carte
 						</a>
 						<a href="<?php echo esc_url( home_url( '/restaurant#reservation-restaurant' ) ); ?>" class="btn btn-secondary btn-animated">
-							&#128197; Réserver une table
+							<span aria-hidden="true">&#128197;</span> Réserver une table
 						</a>
 					</div>
 				</div>
@@ -560,10 +574,10 @@ $photos_recentes   = $dsj_recent_images( 'galerie', 4 );
 				<div class="restaurant-gallery">
 					<?php if ( ! empty( $menus_recents ) ) : ?>
 						<?php foreach ( $menus_recents as $image ) : ?>
-							<a href="<?php echo esc_url( $image['link'] ); ?>" class="plat-thumb">
+							<a href="<?php echo esc_url( $image['link'] ); ?>" class="plat-thumb" aria-label="Voir le plat <?php echo esc_attr( $image['title'] ); ?>">
 								<img
 									src="<?php echo esc_url( $image['url'] ); ?>"
-									alt="<?php echo esc_attr( $image['title'] ); ?>"
+									alt=""
 									loading="lazy"
 									decoding="async"
 								>
@@ -574,7 +588,7 @@ $photos_recentes   = $dsj_recent_images( 'galerie', 4 );
 						<?php endforeach; ?>
 					<?php else : ?>
 						<div class="section-image-placeholder">
-							<span>&#127869;</span>
+							<span aria-hidden="true">&#127869;</span>
 							<p>Restaurant</p>
 						</div>
 					<?php endif; ?>
@@ -584,79 +598,83 @@ $photos_recentes   = $dsj_recent_images( 'galerie', 4 );
 		</div>
 	</section>
 
-	<!-- ===== NOS VALEURS ===== -->
-	<section class="valeurs-section section-padding bg-creme reveal-section">
+	<!-- ===== NOS VALEURS (avec icônes personnalisées via Customizer) ===== -->
+	<section class="valeurs-section section-padding bg-creme reveal-section" aria-labelledby="valeurs-title">
 		<div class="container">
 			<div class="section-header">
-				<span class="section-badge section-badge-dark">&#11088; Nos fondamentaux</span>
-				<h2 class="section-title">Nos Valeurs</h2>
-				<div class="section-divider"></div>
+				<span class="section-badge section-badge-dark" aria-hidden="true">&#11088; Nos fondamentaux</span>
+				<h2 class="section-title" id="valeurs-title">Nos Valeurs</h2>
+				<div class="section-divider" aria-hidden="true"></div>
 				<p class="section-subtitle">Ce qui nous guide au quotidien.</p>
 			</div>
 
 			<div class="valeurs-grid-modern">
-				<article class="valeur-card-modern">
-					<div class="valeur-icon-wrapper"><span class="valeur-icon">&#129309;</span></div>
-					<h3>Respect</h3>
-					<p>De chaque personne humaine dans sa dignité.</p>
-				</article>
+				<?php
+				/**
+				 * Tableau des valeurs :
+				 * [0] = clé du Customizer (valeur_{clé}_icone)
+				 * [1] = emoji par défaut (fallback)
+				 * [2] = titre
+				 * [3] = description
+				 */
+				$valeurs = [
+					[ 'respect',    '&#129309;',        'Respect',    'De chaque personne humaine dans sa dignité.' ],
+					[ 'honnetete',  '&#128142;',        'Honnêteté',  'Dans toutes nos relations et engagements.' ],
+					[ 'compassion', '&#10084;&#65039;', 'Compassion', 'Envers les plus vulnérables.' ],
+					[ 'partage',    '&#127807;',        'Partage',    'Des savoirs, ressources et expériences.' ],
+					[ 'rigueur',    '&#128220;',        'Rigueur',    'Dans le travail sérieux et bien accompli.' ],
+					[ 'excellence', '&#11088;',         'Excellence', 'Toujours viser le meilleur de soi-même.' ],
+				];
 
-				<article class="valeur-card-modern">
-					<div class="valeur-icon-wrapper"><span class="valeur-icon">&#128142;</span></div>
-					<h3>Honnêteté</h3>
-					<p>Dans toutes nos relations et engagements.</p>
-				</article>
+				foreach ( $valeurs as $v ) :
+					// Icône personnalisée depuis le Customizer, sinon emoji par défaut
+					$icone_custom = get_theme_mod( 'valeur_' . $v[0] . '_icone', '' );
+					$icone_html   = '';
 
-				<article class="valeur-card-modern">
-					<div class="valeur-icon-wrapper"><span class="valeur-icon">&#10084;&#65039;</span></div>
-					<h3>Compassion</h3>
-					<p>Envers les plus vulnérables.</p>
-				</article>
-
-				<article class="valeur-card-modern">
-					<div class="valeur-icon-wrapper"><span class="valeur-icon">&#127807;</span></div>
-					<h3>Partage</h3>
-					<p>Des savoirs, ressources et expériences.</p>
-				</article>
-
-				<article class="valeur-card-modern">
-					<div class="valeur-icon-wrapper"><span class="valeur-icon">&#128220;</span></div>
-					<h3>Rigueur</h3>
-					<p>Dans le travail sérieux et bien accompli.</p>
-				</article>
-
-				<article class="valeur-card-modern">
-					<div class="valeur-icon-wrapper"><span class="valeur-icon">&#11088;</span></div>
-					<h3>Excellence</h3>
-					<p>Toujours viser le meilleur de soi-même.</p>
-				</article>
+					if ( function_exists( 'dsj_icon' ) ) {
+						$icone_html = $icone_custom
+							? dsj_icon( $icone_custom, 'valeur-icon' )
+							: dsj_icon( $v[1], 'valeur-icon' );
+					} else {
+						// Fallback si la fonction n'existe pas encore
+						$icone_html = '<span class="valeur-icon">' . ( $icone_custom ? esc_url( $icone_custom ) : $v[1] ) . '</span>';
+					}
+					?>
+					<article class="valeur-card-modern">
+						<div class="valeur-icon-wrapper" aria-hidden="true">
+							<?php echo $icone_html; ?>
+						</div>
+						<h3><?php echo esc_html( $v[2] ); ?></h3>
+						<p><?php echo esc_html( $v[3] ); ?></p>
+					</article>
+				<?php endforeach; ?>
 			</div>
 		</div>
 	</section>
 
 	<!-- ===== GALERIE (4 dernières photos publiées) ===== -->
 	<?php if ( ! empty( $photos_recentes ) ) : ?>
-		<section class="home-galerie section-padding bg-gris reveal-section">
+		<section class="home-galerie section-padding bg-gris reveal-section" aria-labelledby="galerie-title">
 			<div class="container">
 				<div class="section-header">
-					<span class="section-badge section-badge-dark">&#128248; En images</span>
-					<h2 class="section-title">Galerie</h2>
-					<div class="section-divider"></div>
+					<span class="section-badge section-badge-dark" aria-hidden="true">&#128248; En images</span>
+					<h2 class="section-title" id="galerie-title">Galerie</h2>
+					<div class="section-divider" aria-hidden="true"></div>
 					<p class="section-subtitle">Découvrez notre cadre de vie.</p>
 				</div>
 
 				<div class="galerie-grid-masonry galerie-grid-<?php echo esc_attr( count( $photos_recentes ) ); ?>">
 					<?php foreach ( $photos_recentes as $image ) : ?>
 						<article class="galerie-item-masonry">
-							<a href="<?php echo esc_url( $image['link'] ); ?>" class="galerie-link">
+							<a href="<?php echo esc_url( $image['link'] ); ?>" class="galerie-link" aria-label="Voir la photo <?php echo esc_attr( $image['title'] ); ?>">
 								<img
 									src="<?php echo esc_url( $image['url'] ); ?>"
-									alt="<?php echo esc_attr( $image['title'] ); ?>"
+									alt=""
 									loading="lazy"
 									decoding="async"
 								>
 								<span class="galerie-overlay">
-									<span class="galerie-icon">&#128269;</span>
+									<span class="galerie-icon" aria-hidden="true">&#128269;</span>
 									<span class="galerie-title"><?php echo esc_html( $image['title'] ); ?></span>
 								</span>
 							</a>
@@ -665,7 +683,7 @@ $photos_recentes   = $dsj_recent_images( 'galerie', 4 );
 				</div>
 
 				<div class="text-center mt-4">
-					<a href="<?php echo esc_url( home_url( '/galerie' ) ); ?>" class="btn btn-secondary btn-animated">
+					<a href="<?php echo esc_url( get_post_type_archive_link( 'galerie' ) ); ?>" class="btn btn-secondary btn-animated">
 						Voir toute la galerie
 					</a>
 				</div>
@@ -684,12 +702,12 @@ $photos_recentes   = $dsj_recent_images( 'galerie', 4 );
 
 	if ( $temoignages->have_posts() ) :
 		?>
-		<section class="temoignages-section section-padding bg-blanc reveal-section">
+		<section class="temoignages-section section-padding bg-blanc reveal-section" aria-labelledby="temoignages-title">
 			<div class="container">
 				<div class="section-header">
-					<span class="section-badge section-badge-dark">&#128172; Ils parlent de nous</span>
-					<h2 class="section-title">Témoignages</h2>
-					<div class="section-divider"></div>
+					<span class="section-badge section-badge-dark" aria-hidden="true">&#128172; Ils parlent de nous</span>
+					<h2 class="section-title" id="temoignages-title">Témoignages</h2>
+					<div class="section-divider" aria-hidden="true"></div>
 				</div>
 
 				<div class="temoignages-grid-modern">
@@ -698,7 +716,7 @@ $photos_recentes   = $dsj_recent_images( 'galerie', 4 );
 						$temoignages->the_post();
 						?>
 						<article class="temoignage-card-modern">
-							<div class="temoignage-quote">&#8220;</div>
+							<div class="temoignage-quote" aria-hidden="true">&#8220;</div>
 							<div class="temoignage-content">
 								<?php echo esc_html( wp_trim_words( get_the_content(), 30, '...' ) ); ?>
 							</div>
@@ -716,10 +734,10 @@ $photos_recentes   = $dsj_recent_images( 'galerie', 4 );
 	?>
 
 	<!-- ===== CTA FINAL ===== -->
-	<section class="cta-home-section section-padding bg-gradient-primary reveal-section">
+	<section class="cta-home-section section-padding bg-gradient-primary reveal-section" aria-labelledby="cta-title">
 		<div class="container">
 			<div class="cta-content">
-				<h2>
+				<h2 id="cta-title">
 					<?php echo esc_html( get_theme_mod( 'cta_title', 'Soutenez notre mission' ) ); ?>
 				</h2>
 
@@ -729,7 +747,7 @@ $photos_recentes   = $dsj_recent_images( 'galerie', 4 );
 
 				<div class="cta-buttons">
 					<a href="<?php echo esc_url( home_url( get_theme_mod( 'cta_button_url', '/nous-soutenir' ) ) ); ?>" class="btn btn-primary btn-large btn-animated">
-						&#128155; Nous soutenir
+						<span aria-hidden="true">&#128155;</span> Nous soutenir
 					</a>
 
 					<a
@@ -737,14 +755,15 @@ $photos_recentes   = $dsj_recent_images( 'galerie', 4 );
 						class="btn btn-whatsapp btn-large btn-animated"
 						target="_blank"
 						rel="noopener noreferrer"
+						aria-label="Nous contacter sur WhatsApp"
 					>
-						&#128241; WhatsApp
+						<span aria-hidden="true">&#128241;</span> WhatsApp
 					</a>
 				</div>
 			</div>
 		</div>
 	</section>
 
-</main>
+</div>
 
 <?php get_footer(); ?>

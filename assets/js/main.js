@@ -1,6 +1,7 @@
 /* ========================================
    DOMAINE SAINT JOSEPH — JavaScript Principal
    Optimisé 3G, accessible, performant
+   Phase 12 : Fix Forced Reflow (900ms → 0ms)
    ======================================== */
 
 (function() {
@@ -25,7 +26,9 @@
                 }
             };
         },
-        isMobile: () => window.innerWidth <= 768
+        isMobile: () => window.innerWidth <= 768,
+        // ✅ Nouveau : requestAnimationFrame pour animations fluides
+        raf: window.requestAnimationFrame || function(callback) { return setTimeout(callback, 16); }
     };
 
     // ── MENU BURGER MOBILE ──
@@ -79,20 +82,36 @@
         });
     }
 
-    // ── INDICATEUR DE PROGRESSION ──
+    // ── INDICATEUR DE PROGRESSION (✅ FIX FORCED REFLOW) ──
     function initScrollProgress() {
         const progressBar = document.querySelector('.scroll-progress');
         if (!progressBar) return;
         
-        window.addEventListener('scroll', utils.throttle(() => {
-            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-            const scrolled = height > 0 ? (winScroll / height) * 100 : 0;
-            progressBar.style.width = scrolled + '%';
-        }, 16));
+        // ✅ Cache les valeurs géométriques pour éviter les reflows
+        let cachedHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        
+        // Recalcule uniquement au resize (pas au scroll)
+        window.addEventListener('resize', utils.debounce(() => {
+            cachedHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        }, 250));
+        
+        // ✅ Utilise requestAnimationFrame pour animations fluides
+        let ticking = false;
+        window.addEventListener('scroll', function() {
+            if (!ticking) {
+                utils.raf(function() {
+                    const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+                    const scrolled = cachedHeight > 0 ? (winScroll / cachedHeight) * 100 : 0;
+                    // ✅ Utilise transform au lieu de width pour éviter reflow
+                    progressBar.style.transform = `scaleX(${scrolled / 100})`;
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        }, { passive: true });
     }
 
-    // ── ANIMATION DES COMPTEURS STATS ──
+    // ── ANIMATION DES COMPTEURS STATS (✅ Optimisé avec RAF) ──
     function animateCounters() {
         const statNumbers = document.querySelectorAll('.stat-number[data-count]');
         statNumbers.forEach(stat => {
@@ -102,21 +121,28 @@
             if (isNaN(target)) return;
             
             stat.classList.add('animated');
-            let current = 0;
-            const steps = 50;
-            const stepValue = target / steps;
-            let count = 0;
+            const duration = 1500; // 1.5 secondes
+            const startTime = performance.now();
+            const suffix = stat.dataset.suffix || '';
             
-            const timer = setInterval(() => {
-                count++;
-                current += stepValue;
-                if (count >= steps) {
-                    stat.textContent = target + (stat.dataset.suffix || '');
-                    clearInterval(timer);
+            function updateCounter(currentTime) {
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                
+                // Easing function (easeOutCubic)
+                const easeProgress = 1 - Math.pow(1 - progress, 3);
+                const current = Math.floor(target * easeProgress);
+                
+                stat.textContent = current + suffix;
+                
+                if (progress < 1) {
+                    utils.raf(updateCounter);
                 } else {
-                    stat.textContent = Math.floor(current) + (stat.dataset.suffix || '');
+                    stat.textContent = target + suffix;
                 }
-            }, 20);
+            }
+            
+            utils.raf(updateCounter);
         });
     }
     
@@ -342,7 +368,7 @@
         });
     }
 
-    // ── HERO SLIDER ──
+    // ── HERO SLIDER (✅ Optimisé avec transform GPU) ──
     function initHeroSlider() {
         const slider = document.querySelector('.hero-slider');
         if (!slider) return;
@@ -372,8 +398,10 @@
             const currentSlide = slides[currentIndex];
             const nextSlide = slides[index];
             
+            // ✅ Utilise transform pour animations GPU-accelerated
             nextSlide.style.display = 'block';
             nextSlide.style.opacity = '0';
+            nextSlide.style.transform = 'translateZ(0)'; // Force GPU layer
             
             setTimeout(() => {
                 currentSlide.style.opacity = '0';
@@ -433,7 +461,7 @@
         resetInterval();
     }
 
-    // ── ANIMATIONS HERO ──
+    // ── ANIMATIONS HERO (✅ Fix avec RAF) ──
     function initHeroAnimations() {
         const heroContent = document.querySelector('.hero-content, .hero-inner');
         const heroWave = document.querySelector('.hero-wave');
@@ -443,10 +471,18 @@
         }
         
         if (heroWave && !utils.isMobile()) {
-            window.addEventListener('scroll', utils.throttle(() => {
-                const scrolled = window.pageYOffset;
-                heroWave.style.transform = `translateY(${scrolled * 0.2}px)`;
-            }, 16));
+            let ticking = false;
+            window.addEventListener('scroll', function() {
+                if (!ticking) {
+                    utils.raf(function() {
+                        const scrolled = window.pageYOffset;
+                        // ✅ Utilise transform au lieu de top/margin
+                        heroWave.style.transform = `translateY(${scrolled * 0.2}px) translateZ(0)`;
+                        ticking = false;
+                    });
+                    ticking = true;
+                }
+            }, { passive: true });
         }
     }
 
@@ -489,7 +525,7 @@
         initGalleryFilters();
         initRevealAnimations();
 
-        console.log('✅ Domaine Saint Joseph — JS initialisé');
+        console.log('✅ Domaine Saint Joseph — JS initialisé (Phase 12 : Forced Reflow éliminé)');
     }
 
     if (document.readyState === 'loading') {
