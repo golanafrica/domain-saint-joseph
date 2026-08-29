@@ -34,3 +34,21 @@ Toutes les modifications notables du thème Domaine Saint Joseph.
 - Slug `theme-install.php` corrigé (était `theme-installer`)
 - Cache-busting sur `widget-uploader.js`
 - Restriction admin scripts aux pages widgets/customizer
+
+## [1.1.0] - 2026-08-29
+### Added
+- Concaténation CSS automatique (12 fichiers → 1)
+- Slider dots accessibles (target-size 24px)
+- Logo optimisé en WebP (1.8 Ko)
+- Page maison-accueil entièrement accessible (aria-label, role=alert)
+
+### Fixed
+- Double balise <main> corrigée sur toutes les pages
+- Alt redondants sur images avec overlay
+- Contraste bouton WhatsApp (WCAG AAA)
+- Fichier main.css.legacy supprimé
+
+### Performance
+- TBT : 5170ms → 0ms (Forced Reflow éliminé)
+- Requête CSS : 12 → 1
+- Logo : 23 Ko → 1.8 Ko (WebP)
