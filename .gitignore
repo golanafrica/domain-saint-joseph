@@ -1,17 +1,28 @@
-.DS_Store
-Thumbs.db
-*.log
-*.tmp
-node_modules/
-vendor/
-dist/
-*.zip
-# Fichiers générés dynamiquement
-assets/css/cache/
-*.bak
-
+# ========================================
 # OS & IDE
+# ========================================
 .DS_Store
 Thumbs.db
 .idea/
 .vscode/
+
+# ========================================
+# Logs & Temporaires
+# ========================================
+*.log
+*.tmp
+*.zip
+
+# ========================================
+# Dépendances
+# ========================================
+node_modules/
+vendor/
+dist/
+
+# ========================================
+# Fichiers générés dynamiquement
+# ========================================
+assets/css/cache/
+*.bak
+front-page.php.bak
