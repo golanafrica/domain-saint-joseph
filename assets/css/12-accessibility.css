@@ -248,3 +248,45 @@ a:focus-visible,
         transform: none !important;
     }
 }
+
+
+/* ========================================
+   BANDEAU DÉFILANT (MARQUEE) — WCAG 2.2.2
+   Pause au survol et au focus clavier
+   ======================================== */
+.marquee-track:hover,
+.marquee-track:focus-within {
+    animation-play-state: paused !important;
+}
+
+/* Bouton pause accessible (optionnel, à ajouter dans header.php si souhaité) */
+.marquee-pause-btn {
+    background: rgba(0, 0, 0, 0.3);
+    border: none;
+    color: white;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    transition: background 0.3s ease;
+    flex-shrink: 0;
+}
+
+.marquee-pause-btn:hover,
+.marquee-pause-btn:focus-visible {
+    background: rgba(0, 0, 0, 0.6);
+    outline: 2px solid var(--clr-accent, #D4AC0D);
+    outline-offset: 2px;
+}
+
+.marquee-pause-btn[aria-pressed="true"]::before {
+    content: '▶';
+}
+
+.marquee-pause-btn[aria-pressed="false"]::before {
+    content: '⏸';
+}
