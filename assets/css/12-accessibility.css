@@ -249,7 +249,6 @@ a:focus-visible,
     }
 }
 
-
 /* ========================================
    BANDEAU DÉFILANT (MARQUEE) — WCAG 2.2.2
    Pause au survol et au focus clavier
@@ -289,4 +288,30 @@ a:focus-visible,
 
 .marquee-pause-btn[aria-pressed="false"]::before {
     content: '⏸';
+}
+
+/* ═══════════════════════════════════════════
+   CORRECTIFS CONTRASTE — AUDIT FINAL (Lighthouse)
+   ═══════════════════════════════════════════ */
+
+/* Badge "Disponible" : 3.13:1 → vert foncé 5.1:1 ✅ */
+.card-badge.disponible {
+    background: #1e7e34 !important;
+    color: #ffffff !important;
+}
+
+/* Badge "Complet" : rouge limite → rouge foncé 6.5:1 ✅ */
+.card-badge.complet {
+    background: #b02a37 !important;
+    color: #ffffff !important;
+}
+
+/* Note formulaire : 3.11:1 → gris foncé 6.1:1 ✅ */
+.form-note {
+    color: #595959 !important;
+}
+
+/* Badge réservation : 3.86:1 → bleu très foncé 6.8:1 ✅ */
+.reservation-badge {
+    color: #0F2A40 !important;
 }

@@ -1,6 +1,9 @@
 /* ========================================
  * 11-RESPONSIVE.CSS
  * Corrections mobile spécifiques
+ * ✅ NETTOYÉ : sélecteur universel [class*="whatsapp"] supprimé
+ *    (il transformait .cta-whatsapp en pilule verte)
+ *    Le style WhatsApp ciblé vit dans 02-header.css
  * ======================================== */
 
 /* === HERO MOBILE === */
@@ -179,7 +182,7 @@
     .stat-item::before { display: none !important; }
 }
 
-/* === WHATSAPP HEADER MOBILE === */
+/* === WHATSAPP HEADER MOBILE (ciblé : .btn-whatsapp uniquement) === */
 @media (max-width: 768px) {
     .site-header .btn-whatsapp,
     .header-inner .btn-whatsapp {
@@ -240,38 +243,8 @@
     }
 }
 
-/* === WHATSAPP UNIVERSEL === */
-[class*="whatsapp"],
-[class*="whatsapp"]:hover,
-[class*="whatsapp"]:focus,
-[class*="whatsapp"]:active {
-    background: #25D366 !important;
-    color: white !important;
-    border-radius: 50px !important;
-    display: inline-flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    gap: 8px !important;
-    text-decoration: none !important;
-    transition: all 0.3s ease !important;
-    border: none !important;
-    outline: none !important;
-    box-shadow: none !important;
-}
-[class*="whatsapp"]:hover {
-    background: #128C7E !important;
-    transform: translateY(-2px) !important;
-}
-
-@media (max-width: 768px) {
-    .site-header [class*="whatsapp"] {
-        width: auto !important;
-        height: auto !important;
-        padding: 8px 12px !important;
-        border-radius: 50px !important;
-    }
-    .site-header [class*="whatsapp"]::before,
-    .site-header [class*="whatsapp"]::after {
-        display: none !important;
-    }
-}
+/* ❌ SUPPRIMÉ : le bloc .site-header [class*="whatsapp"] a été retiré.
+   Il ciblait TOUTES les classes contenant "whatsapp" (y compris le
+   paragraphe .cta-whatsapp du CTA final). Le style du bouton WhatsApp
+   du header est déjà géré par les blocs ciblés ci-dessus et par
+   02-header.css. */

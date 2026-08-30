@@ -1,7 +1,8 @@
 <?php
 /**
  * Functions du thème Domaine Saint Joseph
- * Version production - Phase 11 (Concaténation CSS + Minification + Corrections)
+ * Version production - Phase 12 (Modern Home + Corrections Contraste)
+ * Phase 11 : Concaténation CSS + Minification
  * Phase 10 : Corrections contraste CSS inline
  * Phase 9 : Galerie optimisée + Corrections doublons
  * Phase 4 : Unification Hero + Perf (defer JS) + SEO + Preload LCP
@@ -161,6 +162,7 @@ function dsj_get_combined_css_url() {
 
 /**
  * Chargement des assets avec concaténation CSS (Phase 11)
+ * ✅ Phase 12 : Ajout CSS moderne conditionnel (front-page uniquement)
  */
 function dsj_assets() {
     $css_files_list = [
@@ -191,6 +193,14 @@ function dsj_assets() {
         $inline_handle = 'dsj-01-base';
     }
     
+    // ✅ NOUVEAU Phase 12 : CSS moderne pour la page d'accueil uniquement
+    if ( is_front_page() ) {
+        $modern_home_path = get_template_directory() . '/assets/css/13-modern-home.css';
+        $modern_home_url  = get_template_directory_uri() . '/assets/css/13-modern-home.css';
+        $modern_version   = file_exists( $modern_home_path ) ? filemtime( $modern_home_path ) : '1.0';
+        wp_enqueue_style( 'dsj-modern-home', $modern_home_url, [ $inline_handle ], $modern_version );
+    }
+    
     // 🚀 PERF : JavaScript principal en DEFER (non-bloquant)
     $script_file = get_template_directory() . '/assets/js/main.js';
     $script_version = file_exists( $script_file ) ? filemtime( $script_file ) : '1.0';
@@ -206,7 +216,7 @@ function dsj_assets() {
         ]
     );
     
-    // ✅ Variables CSS dynamiques + CONTRASTES FORCÉS (Phase 10)
+    // ✅ Variables CSS dynamiques + CONTRASTES FORCÉS (Phase 10 + Phase 12)
     $primary_color = get_theme_mod( 'primary_color', '#1A5276' );
     $accent_color  = get_theme_mod( 'accent_color', '#D4AC0D' );
     
@@ -245,6 +255,21 @@ function dsj_assets() {
         .section-badge {
             background-color: var(--clr-primary) !important;
             color: #ffffff !important;
+        }
+        
+        /* ✅ Phase 12 : Bouton WhatsApp scroll - CONTRASTE CORRIGÉ (4.5:1)
+           Avant : blanc sur #25d366 = 1.98:1 ❌
+           Après : texte foncé sur vert WhatsApp = 6.8:1 ✅ */
+        .btn-scroll,
+        .page-header .btn-scroll {
+            background: #25D366 !important;
+            color: #06341F !important;
+            font-weight: 700 !important;
+        }
+        .btn-scroll:hover,
+        .page-header .btn-scroll:hover {
+            background: #128C7E !important;
+            color: white !important;
         }
         
         /* Textes colorés */
@@ -467,7 +492,6 @@ function dsj_handle_contact_form() {
         exit;
     }
     
-    // ✅ Correction : Ajout de wp_unslash() pour nettoyer les données POST
     $nom     = sanitize_text_field( wp_unslash( $_POST['cf_nom'] ?? '' ) );
     $contact = sanitize_text_field( wp_unslash( $_POST['cf_contact'] ?? '' ) );
     $sujet   = sanitize_text_field( wp_unslash( $_POST['cf_sujet'] ?? 'general' ) );
@@ -848,7 +872,6 @@ function dsj_check_missing_fields_on_publish( $new_status, $old_status, $post ) 
 add_action( 'transition_post_status', 'dsj_check_missing_fields_on_publish', 10, 3 );
 
 function dsj_display_missing_fields_notice() {
-    // ✅ Correction : Vérification de l'écran pour éviter les erreurs sur le dashboard
     $screen = get_current_screen();
     if ( ! $screen || ! in_array( $screen->base, [ 'post', 'edit' ], true ) ) {
         return;
@@ -887,7 +910,6 @@ add_action( 'admin_notices', 'dsj_display_missing_fields_notice' );
 // ════════════════════════════════════════════════════════════════
 
 function dsj_limit_blocks( $allowed_blocks, $editor_context ) {
-    // ✅ Correction : Vérification stricte de l'objet post
     if ( ! isset( $editor_context->post ) || ! $editor_context->post ) {
         return $allowed_blocks;
     }
