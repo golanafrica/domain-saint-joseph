@@ -1,10 +1,9 @@
 <?php
 /**
- * Page d'accueil — Version modernisée stable + Accessibilité
- * Contenu 100% dynamique : affiche les DERNIERS éléments publiés
- * (formations, chambres, menus, photos) — max 3 à 4 par section.
- * + Icônes personnalisées pour les Valeurs (Customizer)
- * ✅ Phase A11Y : aria-label sur tous les liens + alt corrigés (vides si texte visible)
+ * Page d'accueil — Version moderne humanitaire (7 sections)
+ * ✅ 1 CTA prioritaire (parrainage) + icônes SVG + palette réduite
+ * Contenu 100% dynamique (Customizer + CPT)
+ * ✅ Phase A11Y : aria-label sur tous les liens + alt corrigés
  */
 
 get_header();
@@ -17,26 +16,19 @@ get_header();
 $dsj_split_stat = function ( $value ) {
 	$number = preg_replace( '/[^0-9]/', '', $value );
 	$suffix = str_replace( $number, '', $value );
-
-	return [
-		'number' => $number ?: '0',
-		'suffix' => $suffix,
-		'label'  => $value,
-	];
+	return [ 'number' => $number ?: '0', 'suffix' => $suffix, 'label' => $value ];
 };
 
-/** Dernières images publiées d'un CPT (url + titre + lien). */
-$dsj_recent_images = function ( $post_type, $limit = 3, $size = 'medium_large' ) {
+/** Dernières images publiées d'un CPT. */
+$dsj_recent_images = function ( $post_type, $limit = 4, $size = 'medium_large' ) {
 	$images = [];
-
-	$posts = get_posts( [
+	$posts  = get_posts( [
 		'post_type'      => $post_type,
 		'posts_per_page' => $limit,
 		'post_status'    => 'publish',
 		'orderby'        => 'date',
 		'order'          => 'DESC',
 	] );
-
 	foreach ( $posts as $post ) {
 		if ( has_post_thumbnail( $post->ID ) ) {
 			$images[] = [
@@ -46,113 +38,112 @@ $dsj_recent_images = function ( $post_type, $limit = 3, $size = 'medium_large' )
 			];
 		}
 	}
-
 	return $images;
 };
 
+/* ────────────────────────────────────────────────────────────
+   ICÔNES SVG (cohérentes sur tous les appareils)
+   ──────────────────────────────────────────────────────────── */
+$svg_wrap = '<svg class="dsj-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">';
+$svg = [
+	'coeur'     => $svg_wrap . '<path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21.2l7.8-7.8 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg>',
+	'diplome'   => $svg_wrap . '<path d="M22 10L12 5 2 10l10 5 10-5z"/><path d="M6 12.5V17c0 1.7 2.7 3 6 3s6-1.3 6-3v-4.5"/></svg>',
+	'maison'    => $svg_wrap . '<path d="M3 10.5L12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/><path d="M10 21v-6h4v6"/></svg>',
+	'repas'     => $svg_wrap . '<path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>',
+	'camera'    => $svg_wrap . '<path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>',
+	'horloge'   => $svg_wrap . '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>',
+	'pin'       => $svg_wrap . '<path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg>',
+	'personnes' => $svg_wrap . '<path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="10" cy="7" r="4"/><path d="M21 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>',
+	'check'     => $svg_wrap . '<path d="M20 6L9 17l-5-5"/></svg>',
+	'main'      => $svg_wrap . '<path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21.2l7.8-7.8 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg>',
+	'livre'     => $svg_wrap . '<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>',
+	'etoile'    => $svg_wrap . '<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>',
+	'soleil'    => $svg_wrap . '<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>',
+	'lune'      => $svg_wrap . '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>',
+];
+
+/* ────────────────────────────────────────────────────────────
+   DONNÉES DYNAMIQUES
+   ──────────────────────────────────────────────────────────── */
 $stat1 = $dsj_split_stat( get_theme_mod( 'stat1_nb', '2022' ) );
 $stat2 = $dsj_split_stat( get_theme_mod( 'stat2_nb', '3+' ) );
 $stat3 = $dsj_split_stat( get_theme_mod( 'stat3_nb', '100%' ) );
 
-$chambres_recentes = $dsj_recent_images( 'hebergement', 3 );
-$menus_recents     = $dsj_recent_images( 'menu', 4 );
-$photos_recentes   = $dsj_recent_images( 'galerie', 4 );
+$menus_recents   = $dsj_recent_images( 'menu', 4 );
+$photos_recentes = $dsj_recent_images( 'galerie', 4 );
+
+$url_soutenir = esc_url( home_url( '/nous-soutenir' ) );
+$url_whatsapp = 'https://wa.me/' . preg_replace( '/[^0-9]/', '', get_theme_mod( 'whatsapp', '22666605890' ) );
+
+$histoire_texte = get_theme_mod(
+	'histoire_texte',
+	'Le Domaine Saint Joseph a été créé en <strong>2022</strong>. Ce centre est une expression du charisme des <strong>Travailleuses Missionnaires de l\'Immaculée</strong>.'
+);
 ?>
 
 <div class="site-main">
 
-	<!-- ===== HERO SECTION ===== -->
+	<!-- ===== 1. HERO ===== -->
 	<?php if ( get_theme_mod( 'hero_slider_active', false ) ) : ?>
 		<?php get_template_part( 'template-parts/hero', 'slider' ); ?>
 	<?php else : ?>
 		<?php get_template_part( 'template-parts/hero', 'default' ); ?>
 	<?php endif; ?>
 
-	<!-- ===== NOTRE HISTOIRE ===== -->
-	<?php
-	$histoire_texte = get_theme_mod(
-		'histoire_texte',
-		'Le Domaine Saint Joseph a été créé en <strong>2022</strong>. Ce centre est une expression du charisme des <strong>Travailleuses Missionnaires de l\'Immaculée</strong>.'
-	);
-	?>
-
-	<section class="home-histoire section-padding bg-bleu-clair reveal-section" aria-labelledby="histoire-title">
+	<!-- ===== 2. HISTOIRE + STATS + VALEURS (fusionnées) ===== -->
+	<section class="home-histoire section-padding" aria-labelledby="histoire-title">
 		<div class="container">
-			<div class="section-header">
-				<span class="section-badge section-badge-dark" aria-hidden="true">&#128214; Notre histoire</span>
-				<h2 class="section-title" id="histoire-title">Le Domaine Saint Joseph</h2>
-				<div class="section-divider" aria-hidden="true"></div>
-			</div>
+			<div class="histoire-stats-layout">
 
-			<div class="histoire-content">
-				<?php echo wp_kses_post( $histoire_texte ); ?>
-			</div>
-		</div>
-	</section>
+				<div class="histoire-text reveal-section">
+					<span class="section-badge-light"><?php echo $svg['main']; ?> Notre histoire</span>
+					<h2 class="section-title" id="histoire-title">Le Domaine Saint Joseph</h2>
+					<div class="section-divider left" aria-hidden="true"></div>
+					<div class="histoire-content"><?php echo wp_kses_post( $histoire_texte ); ?></div>
 
-	<!-- ===== STATISTIQUES ===== -->
-	<section class="stats-section bg-gradient-primary reveal-section" aria-labelledby="stats-title">
-		<div class="container">
-			<h2 class="screen-reader-text" id="stats-title">Chiffres clés</h2>
-			<div class="stats-grid">
+					<ul class="valeurs-strip" aria-label="Nos valeurs fondamentales">
+						<li><?php echo $svg['check']; ?> <span>Respect</span></li>
+						<li><?php echo $svg['check']; ?> <span>Compassion</span></li>
+						<li><?php echo $svg['check']; ?> <span>Excellence</span></li>
+					</ul>
 
-				<div class="stat-item stat-card">
-					<div class="stat-icon" aria-hidden="true">&#127942;</div>
-					<div
-						class="stat-number"
-						data-count="<?php echo esc_attr( $stat1['number'] ); ?>"
-						data-suffix="<?php echo esc_attr( $stat1['suffix'] ); ?>"
-					>
-						<?php echo esc_html( $stat1['label'] ); ?>
-					</div>
-					<div class="stat-label">
-						<?php echo esc_html( get_theme_mod( 'stat1_lbl', 'Fondé en' ) ); ?>
-					</div>
+					<a href="<?php echo esc_url( home_url( '/a-propos' ) ); ?>" class="btn-link">
+						En savoir plus sur nous <span class="arrow" aria-hidden="true">→</span>
+					</a>
 				</div>
 
-				<div class="stat-item stat-card">
-					<div class="stat-icon" aria-hidden="true">&#127891;</div>
-					<div
-						class="stat-number"
-						data-count="<?php echo esc_attr( $stat2['number'] ); ?>"
-						data-suffix="<?php echo esc_attr( $stat2['suffix'] ); ?>"
-					>
-						<?php echo esc_html( $stat2['label'] ); ?>
+				<div class="histoire-stats reveal-section">
+					<div class="stat-block">
+						<span class="stat-icon"><?php echo $svg['diplome']; ?></span>
+						<span class="stat-number" data-count="<?php echo esc_attr( $stat1['number'] ); ?>" data-suffix="<?php echo esc_attr( $stat1['suffix'] ); ?>"><?php echo esc_html( $stat1['label'] ); ?></span>
+						<span class="stat-label"><?php echo esc_html( get_theme_mod( 'stat1_lbl', 'Fondé en' ) ); ?></span>
 					</div>
-					<div class="stat-label">
-						<?php echo esc_html( get_theme_mod( 'stat2_lbl', 'Filières' ) ); ?>
+					<div class="stat-block">
+						<span class="stat-icon"><?php echo $svg['livre']; ?></span>
+						<span class="stat-number" data-count="<?php echo esc_attr( $stat2['number'] ); ?>" data-suffix="<?php echo esc_attr( $stat2['suffix'] ); ?>"><?php echo esc_html( $stat2['label'] ); ?></span>
+						<span class="stat-label"><?php echo esc_html( get_theme_mod( 'stat2_lbl', 'Filières' ) ); ?></span>
 					</div>
-				</div>
-
-				<div class="stat-item stat-card">
-					<div class="stat-icon" aria-hidden="true">&#128170;</div>
-					<div
-						class="stat-number"
-						data-count="<?php echo esc_attr( $stat3['number'] ); ?>"
-						data-suffix="<?php echo esc_attr( $stat3['suffix'] ); ?>"
-					>
-						<?php echo esc_html( $stat3['label'] ); ?>
+					<div class="stat-block">
+						<span class="stat-icon"><?php echo $svg['personnes']; ?></span>
+						<span class="stat-number" data-count="<?php echo esc_attr( $stat3['number'] ); ?>" data-suffix="<?php echo esc_attr( $stat3['suffix'] ); ?>"><?php echo esc_html( $stat3['label'] ); ?></span>
+						<span class="stat-label"><?php echo esc_html( get_theme_mod( 'stat3_lbl', 'Dédié aux femmes' ) ); ?></span>
 					</div>
-					<div class="stat-label">
-						<?php echo esc_html( get_theme_mod( 'stat3_lbl', 'Dédié aux femmes' ) ); ?>
+					<div class="stat-block">
+						<span class="stat-icon"><?php echo $svg['pin']; ?></span>
+						<span class="stat-number">S25</span>
+						<span class="stat-label">Bobo-Dioulasso</span>
 					</div>
-				</div>
-
-				<div class="stat-item stat-card">
-					<div class="stat-icon" aria-hidden="true">&#128205;</div>
-					<div class="stat-number">S25</div>
-					<div class="stat-label">Bobo-Dioulasso</div>
 				</div>
 
 			</div>
 		</div>
 	</section>
 
-	<!-- ===== NOS FORMATIONS (3 dernières publiées) ===== -->
-	<section class="home-formations section-padding bg-blanc reveal-section" aria-labelledby="formations-title">
+	<!-- ===== 3. NOS FORMATIONS ===== -->
+	<section class="home-formations section-padding section-alt" aria-labelledby="formations-title">
 		<div class="container">
 			<div class="section-header">
-				<span class="section-badge section-badge-dark" aria-hidden="true">&#127891; Excellence académique</span>
+				<span class="section-badge-light"><?php echo $svg['diplome']; ?> Excellence académique</span>
 				<h2 class="section-title" id="formations-title">Nos Formations</h2>
 				<div class="section-divider" aria-hidden="true"></div>
 				<p class="section-subtitle">Des filières concrètes pour l'autonomie des jeunes filles.</p>
@@ -160,437 +151,132 @@ $photos_recentes   = $dsj_recent_images( 'galerie', 4 );
 
 			<div class="formations-grid">
 				<?php
-				$formations = new WP_Query( [
-					'post_type'      => 'formation',
-					'posts_per_page' => 3,
-					'orderby'        => 'date',
-					'order'          => 'DESC',
-				] );
-
+				$formations = new WP_Query( [ 'post_type' => 'formation', 'posts_per_page' => 3, 'orderby' => 'date', 'order' => 'DESC' ] );
 				if ( $formations->have_posts() ) :
-					while ( $formations->have_posts() ) :
-						$formations->the_post();
-
+					while ( $formations->have_posts() ) : $formations->the_post();
 						$duree = get_post_meta( get_the_ID(), '_dsj_duree', true );
 						$prix  = get_post_meta( get_the_ID(), '_dsj_prix', true );
 						?>
-
 						<article class="formation-card card-modern">
 							<div class="card-image">
 								<a href="<?php the_permalink(); ?>" aria-label="En savoir plus sur la formation <?php echo esc_attr( get_the_title() ); ?>">
 									<?php if ( has_post_thumbnail() ) : ?>
-										<?php the_post_thumbnail( 'card-thumb', [
-											'alt' => esc_attr( get_the_title() ),
-											'loading' => 'lazy',
-											'decoding' => 'async',
-										] ); ?>
+										<?php the_post_thumbnail( 'card-thumb', [ 'alt' => '', 'loading' => 'lazy', 'decoding' => 'async' ] ); ?>
 									<?php else : ?>
-										<div class="card-icon-placeholder" aria-hidden="true">&#127891;</div>
+										<div class="card-icon-placeholder"><?php echo $svg['diplome']; ?></div>
 									<?php endif; ?>
 								</a>
-								<div class="card-image-overlay" aria-hidden="true"></div>
 							</div>
-
 							<div class="card-content">
-								<h3>
-									<a href="<?php the_permalink(); ?>">
-										<?php the_title(); ?>
-									</a>
-								</h3>
-
+								<h3><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h3>
 								<div class="card-meta">
-									<?php if ( $duree ) : ?>
-										<span class="meta-item"><span aria-hidden="true">&#128197;</span> <?php echo esc_html( $duree ); ?></span>
-									<?php endif; ?>
-
-									<?php if ( $prix ) : ?>
-										<span class="meta-item"><span aria-hidden="true">&#128176;</span> <?php echo esc_html( $prix ); ?></span>
-									<?php endif; ?>
+									<?php if ( $duree ) : ?><span class="meta-item"><?php echo $svg['horloge']; ?> <?php echo esc_html( $duree ); ?></span><?php endif; ?>
+									<?php if ( $prix ) : ?><span class="meta-item"><?php echo esc_html( $prix ); ?></span><?php endif; ?>
 								</div>
-
-								<div class="card-description">
-									<?php echo esc_html( wp_trim_words( get_the_excerpt() ?: get_the_content(), 14, '...' ) ); ?>
-								</div>
-
-								<div class="card-footer">
-									<a href="<?php the_permalink(); ?>" class="btn-link" aria-label="En savoir plus sur <?php echo esc_attr( get_the_title() ); ?>">
-										En savoir plus <span class="arrow" aria-hidden="true">&#8594;</span>
-									</a>
-								</div>
+								<div class="card-description"><?php echo esc_html( wp_trim_words( get_the_excerpt() ?: get_the_content(), 14, '...' ) ); ?></div>
+								<a href="<?php the_permalink(); ?>" class="btn-link" aria-label="En savoir plus sur <?php echo esc_attr( get_the_title() ); ?>">
+									En savoir plus <span class="arrow" aria-hidden="true">→</span>
+								</a>
 							</div>
 						</article>
-
-					<?php
-					endwhile;
-					wp_reset_postdata();
-				else :
-					?>
-					<div class="no-content">
-						<p>Aucune formation disponible pour le moment.</p>
-					</div>
+					<?php endwhile; wp_reset_postdata();
+				else : ?>
+					<p class="no-content">Aucune formation disponible pour le moment.</p>
 				<?php endif; ?>
 			</div>
 
 			<div class="text-center mt-4">
-				<a href="<?php echo esc_url( get_post_type_archive_link( 'formation' ) ); ?>" class="btn btn-primary btn-animated">
-					Voir toutes les formations
-				</a>
+				<a href="<?php echo esc_url( get_post_type_archive_link( 'formation' ) ); ?>" class="btn btn-secondary">Voir toutes les formations</a>
 			</div>
 		</div>
 	</section>
 
-	<!-- ===== MAISON D'ACCUEIL (3 dernières chambres en images) ===== -->
-	<section class="home-maison-presentation section-padding bg-vert-menthe reveal-section" aria-labelledby="maison-title">
+	<!-- ===== 4. MAISON D'ACCUEIL + HÉBERGEMENTS (fusionnées) ===== -->
+	<section class="home-maison section-padding" aria-labelledby="maison-title">
 		<div class="container">
 			<div class="maison-layout">
 
-				<div class="maison-content-left">
-					<span class="section-badge section-badge-dark" aria-hidden="true">&#127968; Ouverte à tous</span>
+				<div class="maison-intro reveal-section">
+					<span class="section-badge-light"><?php echo $svg['maison']; ?> Ouverte à tous</span>
 					<h2 class="section-title" id="maison-title">La Maison d'Accueil</h2>
 					<div class="section-divider left" aria-hidden="true"></div>
-
-					<p class="maison-intro">
-						La Maison d'Accueil a pour but l'autoprise en charge du Centre pour soutenir la formation.
+					<p class="maison-intro-texte">
+						Un lieu de repos et de ressourcement dont les recettes soutiennent directement la formation des jeunes filles.
 					</p>
 
-					<div class="services-grid-modern">
-						<div class="service-modern-item">
-							<span class="service-icon" aria-hidden="true">&#128524;</span>
-							<span class="service-text">Retraites, récollections</span>
-						</div>
-						<div class="service-modern-item">
-							<span class="service-icon" aria-hidden="true">&#127881;</span>
-							<span class="service-text">Événements</span>
-						</div>
-						<div class="service-modern-item">
-							<span class="service-icon" aria-hidden="true">&#128106;</span>
-							<span class="service-text">Réunions de famille</span>
-						</div>
-						<div class="service-modern-item">
-							<span class="service-icon" aria-hidden="true">&#128188;</span>
-							<span class="service-text">Sessions de travail</span>
-						</div>
-						<div class="service-modern-item">
-							<span class="service-icon" aria-hidden="true">&#128218;</span>
-							<span class="service-text">Conférences</span>
-						</div>
-						<div class="service-modern-item">
-							<span class="service-icon" aria-hidden="true">&#128214;</span>
-							<span class="service-text">Journées d'étude</span>
-						</div>
-					</div>
+					<ul class="services-compact">
+						<li><?php echo $svg['check']; ?> <span>Retraites &amp; récollections</span></li>
+						<li><?php echo $svg['check']; ?> <span>Événements &amp; familles</span></li>
+						<li><?php echo $svg['check']; ?> <span>Sessions de travail</span></li>
+						<li><?php echo $svg['check']; ?> <span>Conférences &amp; études</span></li>
+					</ul>
 
-					<a href="<?php echo esc_url( home_url( '/maison-daccueil' ) ); ?>" class="btn btn-primary btn-animated">
-						Découvrir la maison
+					<a href="<?php echo esc_url( home_url( '/maison-daccueil' ) ); ?>" class="btn btn-primary">
+						Découvrir &amp; réserver
 					</a>
 				</div>
 
-				<div class="maison-visual-right">
-					<?php if ( ! empty( $chambres_recentes ) ) : ?>
-						<div class="maison-image-stack">
-							<?php foreach ( $chambres_recentes as $index => $image ) : ?>
-								<a href="<?php echo esc_url( $image['link'] ); ?>" class="maison-img maison-img-<?php echo esc_attr( $index + 1 ); ?>" aria-label="Voir l'hébergement <?php echo esc_attr( $image['title'] ); ?>">
-									<img
-										src="<?php echo esc_url( $image['url'] ); ?>"
-										alt=""
-										loading="lazy"
-										decoding="async"
-									>
-								</a>
-							<?php endforeach; ?>
-						</div>
-					<?php else : ?>
-						<div class="section-image-placeholder">
-							<span aria-hidden="true">&#127968;</span>
-							<p>Maison d'accueil</p>
-						</div>
-					<?php endif; ?>
-				</div>
-
-			</div>
-		</div>
-	</section>
-
-	<!-- ===== NOS HÉBERGEMENTS (3 dernières chambres publiées) ===== -->
-	<section class="home-hebergements section-padding bg-gris reveal-section" aria-labelledby="hebergements-title">
-		<div class="container">
-			<div class="section-header">
-				<span class="section-badge section-badge-dark" aria-hidden="true">&#127968; Lieu d'accueil</span>
-				<h2 class="section-title" id="hebergements-title">Nos Hébergements</h2>
-				<div class="section-divider" aria-hidden="true"></div>
-				<p class="section-subtitle">Un cadre paisible pour votre séjour.</p>
-			</div>
-
-			<div class="hebergements-grid">
-				<?php
-				$hebergements = new WP_Query( [
-					'post_type'      => 'hebergement',
-					'posts_per_page' => 3,
-					'orderby'        => 'date',
-					'order'          => 'DESC',
-				] );
-
-				if ( $hebergements->have_posts() ) :
-					while ( $hebergements->have_posts() ) :
-						$hebergements->the_post();
-
-						$capacite  = get_post_meta( get_the_ID(), '_dsj_capacite', true );
-						$prix_nuit = get_post_meta( get_the_ID(), '_dsj_prix_nuit', true );
-						?>
-
-						<article class="hebergement-card card-modern">
-							<div class="card-image">
-								<a href="<?php the_permalink(); ?>" aria-label="En savoir plus sur l'hébergement <?php echo esc_attr( get_the_title() ); ?>">
+				<div class="maison-cards reveal-section">
+					<?php
+					$chambres = new WP_Query( [ 'post_type' => 'hebergement', 'posts_per_page' => 3, 'orderby' => 'date', 'order' => 'DESC' ] );
+					if ( $chambres->have_posts() ) :
+						while ( $chambres->have_posts() ) : $chambres->the_post();
+							$capacite  = get_post_meta( get_the_ID(), '_dsj_capacite', true );
+							$prix_nuit = get_post_meta( get_the_ID(), '_dsj_prix_nuit', true );
+							?>
+							<article class="room-card">
+								<a href="<?php the_permalink(); ?>" class="room-card-link" aria-label="Voir l'hébergement <?php echo esc_attr( get_the_title() ); ?>">
 									<?php if ( has_post_thumbnail() ) : ?>
-										<?php the_post_thumbnail( 'card-thumb', [
-											'alt' => '',
-											'loading' => 'lazy',
-											'decoding' => 'async',
-										] ); ?>
-									<?php else : ?>
-										<div class="card-icon-placeholder" aria-hidden="true">&#127968;</div>
+										<?php the_post_thumbnail( 'card-thumb', [ 'alt' => '', 'loading' => 'lazy', 'decoding' => 'async' ] ); ?>
 									<?php endif; ?>
+									<div class="room-card-body">
+										<h3><?php the_title(); ?></h3>
+										<p class="room-card-meta">
+											<?php if ( $capacite ) : ?><?php echo $svg['personnes']; ?> <?php echo esc_html( $capacite ); ?> pers.<?php endif; ?>
+											<?php if ( $prix_nuit ) : ?> <span class="meta-sep">·</span> <?php echo esc_html( $prix_nuit ); ?>/nuit<?php endif; ?>
+										</p>
+									</div>
 								</a>
-								<div class="card-image-overlay" aria-hidden="true"></div>
-							</div>
+							</article>
+						<?php endwhile; wp_reset_postdata();
+					endif; ?>
+				</div>
 
-							<div class="card-content">
-								<h3>
-									<a href="<?php the_permalink(); ?>">
-										<?php the_title(); ?>
-									</a>
-								</h3>
-
-								<div class="card-meta">
-									<?php if ( $capacite ) : ?>
-										<span class="meta-item"><span aria-hidden="true">&#128101;</span> <?php echo esc_html( $capacite ); ?> pers.</span>
-									<?php endif; ?>
-
-									<?php if ( $prix_nuit ) : ?>
-										<span class="meta-item"><span aria-hidden="true">&#128176;</span> <?php echo esc_html( $prix_nuit ); ?>/nuit</span>
-									<?php endif; ?>
-								</div>
-
-								<div class="card-description">
-									<?php echo esc_html( wp_trim_words( get_the_excerpt() ?: get_the_content(), 14, '...' ) ); ?>
-								</div>
-
-								<a href="<?php the_permalink(); ?>" class="btn-link" aria-label="Voir les détails de <?php echo esc_attr( get_the_title() ); ?>">
-									Voir les détails <span class="arrow" aria-hidden="true">&#8594;</span>
-								</a>
-							</div>
-						</article>
-
-					<?php
-					endwhile;
-					wp_reset_postdata();
-				else :
-					?>
-					<div class="no-content">
-						<p>Aucun hébergement disponible pour le moment.</p>
-					</div>
-				<?php endif; ?>
-			</div>
-
-			<div class="text-center mt-4">
-				<a href="<?php echo esc_url( home_url( '/maison-daccueil' ) ); ?>" class="btn btn-primary btn-animated">
-					Voir tous les hébergements
-				</a>
 			</div>
 		</div>
 	</section>
 
-	<!-- ===== COMMENT NOUS AIDER ===== -->
-	<?php if ( get_theme_mod( 'aide_accueil_active', true ) ) : ?>
-		<section class="aide-urgence section-padding bg-creme reveal-section" aria-labelledby="aide-title">
-			<div class="container">
-				<div class="section-header">
-					<span class="section-badge section-badge-dark" aria-hidden="true">&#128157; Soutenez notre mission</span>
-					<h2 class="section-title" id="aide-title">Comment nous aider ?</h2>
-					<div class="section-divider" aria-hidden="true"></div>
-					<p class="section-subtitle">Votre générosité change des vies et soutient la formation des jeunes filles.</p>
-				</div>
-
-				<div class="aide-urgence-grid">
-
-					<article class="aide-card aide-card-modern">
-						<div class="aide-card-gradient" aria-hidden="true"></div>
-						<div class="aide-card-content">
-							<div class="aide-card-icon" aria-hidden="true">
-								<?php echo function_exists( 'dsj_icon' ) ? dsj_icon( get_theme_mod( 'aide_parrainage_icone', '&#128103;' ) ) : wp_kses_post( get_theme_mod( 'aide_parrainage_icone', '&#128103;' ) ); ?>
-							</div>
-							<h3><?php echo esc_html( get_theme_mod( 'aide_parrainage_titre', 'Parrainez une jeune fille' ) ); ?></h3>
-							<p>
-								<?php echo wp_kses_post( get_theme_mod( 'aide_parrainage_texte', 'Pour seulement <strong>50 000 F CFA par mois</strong>, vous offrez une formation technique complète à une jeune fille.' ) ); ?>
-							</p>
-
-							<ul class="aide-list">
-								<?php
-								for ( $i = 1; $i <= 3; $i++ ) :
-									$avantage = get_theme_mod( "aide_parrainage_avantage_{$i}", '' );
-
-									if ( ! empty( $avantage ) ) :
-										?>
-										<li><?php echo esc_html( $avantage ); ?></li>
-									<?php
-									endif;
-								endfor;
-								?>
-							</ul>
-
-							<a href="<?php echo esc_url( home_url( '/nous-soutenir' ) ); ?>" class="btn btn-primary btn-animated">
-								<?php echo esc_html( get_theme_mod( 'aide_parrainage_bouton', 'Je parraine' ) ); ?> <span aria-hidden="true">&#8594;</span>
-							</a>
-						</div>
-					</article>
-
-					<article class="aide-card aide-card-modern">
-						<div class="aide-card-gradient" aria-hidden="true"></div>
-						<div class="aide-card-content">
-							<div class="aide-card-icon" aria-hidden="true">
-								<?php echo function_exists( 'dsj_icon' ) ? dsj_icon( get_theme_mod( 'aide_construction_icone', '&#128736;' ) ) : wp_kses_post( get_theme_mod( 'aide_construction_icone', '&#128736;' ) ); ?>
-							</div>
-							<h3><?php echo esc_html( get_theme_mod( 'aide_construction_titre', 'Construisons ensemble' ) ); ?></h3>
-							<p>
-								<?php echo wp_kses_post( get_theme_mod( 'aide_construction_texte', 'Nous avons besoin de <strong>nouvelles salles de formation</strong> pour accueillir plus de jeunes filles.' ) ); ?>
-							</p>
-
-							<ul class="aide-list">
-								<?php
-								for ( $i = 1; $i <= 3; $i++ ) :
-									$besoin = get_theme_mod( "aide_construction_besoin_{$i}", '' );
-
-									if ( ! empty( $besoin ) ) :
-										?>
-										<li><?php echo esc_html( $besoin ); ?></li>
-									<?php
-									endif;
-								endfor;
-								?>
-							</ul>
-
-							<a href="<?php echo esc_url( home_url( '/nous-soutenir' ) ); ?>" class="btn btn-primary btn-animated">
-								<?php echo esc_html( get_theme_mod( 'aide_construction_bouton', 'Je contribue' ) ); ?> <span aria-hidden="true">&#8594;</span>
-							</a>
-						</div>
-					</article>
-
-					<article class="aide-card aide-card-modern">
-						<div class="aide-card-gradient" aria-hidden="true"></div>
-						<div class="aide-card-content">
-							<div class="aide-card-icon" aria-hidden="true">
-								<?php echo function_exists( 'dsj_icon' ) ? dsj_icon( '&#128155;' ) : '&#128155;'; ?>
-							</div>
-							<h3>Faire un don</h3>
-							<p>
-								Votre don, petit ou grand, soutient la formation des jeunes filles et l'entretien du centre.
-							</p>
-
-							<ul class="aide-list">
-								<li>Don ponctuel ou mensuel</li>
-								<li>Reçu fiscal sur demande</li>
-								<li>100% dédié à la mission</li>
-							</ul>
-
-							<a href="<?php echo esc_url( home_url( '/nous-soutenir' ) ); ?>" class="btn btn-primary btn-animated">
-								<span aria-hidden="true">&#128155;</span> Je donne <span aria-hidden="true">&#8594;</span>
-							</a>
-						</div>
-					</article>
-
-				</div>
-
-				<div class="aide-texte-supplementaire text-center mt-4">
-					<p><span aria-hidden="true">&#128222;</span> Un doute ? Contactez-nous par WhatsApp pour toute question sur les dons ou parrainages.</p>
-					<a
-						href="https://wa.me/<?php echo esc_attr( preg_replace( '/[^0-9]/', '', get_theme_mod( 'whatsapp', '22666605890' ) ) ); ?>"
-						class="btn btn-whatsapp btn-animated"
-						target="_blank"
-						rel="noopener noreferrer"
-						aria-label="Nous contacter sur WhatsApp"
-					>
-						<span aria-hidden="true">&#128172;</span> Nous contacter
-					</a>
-				</div>
-			</div>
-		</section>
-	<?php endif; ?>
-
-	<!-- ===== RESTAURANT (4 derniers menus publiés) ===== -->
-	<section class="home-restaurant section-padding bg-blanc reveal-section" aria-labelledby="restaurant-title">
+	<!-- ===== 5. RESTAURANT (compact) ===== -->
+	<section class="home-restaurant section-padding section-alt" aria-labelledby="restaurant-title">
 		<div class="container">
-			<div class="section-header">
-				<span class="section-badge section-badge-dark" aria-hidden="true">&#127869; Table d'hôte</span>
-				<h2 class="section-title" id="restaurant-title">Notre Restaurant</h2>
-				<div class="section-divider" aria-hidden="true"></div>
-				<p class="section-subtitle">Cuisine locale et internationale, préparée avec amour.</p>
-			</div>
+			<div class="resto-layout">
 
-			<div class="restaurant-preview-modern">
+				<div class="resto-info reveal-section">
+					<span class="section-badge-light"><?php echo $svg['repas']; ?> Table d'hôte</span>
+					<h2 class="section-title" id="restaurant-title">Notre Restaurant</h2>
+					<div class="section-divider left" aria-hidden="true"></div>
+					<p>Cuisine locale et internationale, préparée avec amour.</p>
 
-				<div class="restaurant-info-card">
-					<h3><span aria-hidden="true">&#128339;</span> Horaires</h3>
-
-					<?php
-					$petitdej = get_theme_mod( 'restaurant_petitdej', '7h00 - 9h30' );
-					$dejeuner = get_theme_mod( 'restaurant_dejeuner', '12h00 - 14h30' );
-					$diner    = get_theme_mod( 'restaurant_diner', '19h00 - 21h30' );
-					?>
-
-					<div class="horaire-item">
-						<span class="horaire-icon" aria-hidden="true">&#9728;&#65039;</span>
-						<div>
-							<strong>Petit-déjeuner</strong>
-							<span><?php echo esc_html( $petitdej ); ?></span>
-						</div>
+					<div class="resto-horaires">
+						<div class="horaire-ligne"><?php echo $svg['soleil']; ?> <strong>Petit-déjeuner</strong> <span><?php echo esc_html( get_theme_mod( 'restaurant_petitdej', '7h00 - 9h30' ) ); ?></span></div>
+						<div class="horaire-ligne"><?php echo $svg['horloge']; ?> <strong>Déjeuner</strong> <span><?php echo esc_html( get_theme_mod( 'restaurant_dejeuner', '12h00 - 14h30' ) ); ?></span></div>
+						<div class="horaire-ligne"><?php echo $svg['lune']; ?> <strong>Dîner</strong> <span><?php echo esc_html( get_theme_mod( 'restaurant_diner', '19h00 - 21h30' ) ); ?></span></div>
 					</div>
 
-					<div class="horaire-item">
-						<span class="horaire-icon" aria-hidden="true">&#127860;</span>
-						<div>
-							<strong>Déjeuner</strong>
-							<span><?php echo esc_html( $dejeuner ); ?></span>
-						</div>
-					</div>
-
-					<div class="horaire-item">
-						<span class="horaire-icon" aria-hidden="true">&#127769;</span>
-						<div>
-							<strong>Dîner</strong>
-							<span><?php echo esc_html( $diner ); ?></span>
-						</div>
-					</div>
-
-					<div class="restaurant-cta-home mt-3">
-						<a href="<?php echo esc_url( home_url( '/restaurant' ) ); ?>" class="btn btn-primary btn-animated">
-							<span aria-hidden="true">&#127869;</span> Découvrir la carte
-						</a>
-						<a href="<?php echo esc_url( home_url( '/restaurant#reservation-restaurant' ) ); ?>" class="btn btn-secondary btn-animated">
-							<span aria-hidden="true">&#128197;</span> Réserver une table
-						</a>
+					<div class="resto-cta">
+						<a href="<?php echo esc_url( home_url( '/restaurant' ) ); ?>" class="btn btn-primary">Découvrir la carte</a>
+						<a href="<?php echo esc_url( home_url( '/restaurant#reservation-restaurant' ) ); ?>" class="btn-link">Réserver une table <span class="arrow" aria-hidden="true">→</span></a>
 					</div>
 				</div>
 
-				<div class="restaurant-gallery">
+				<div class="resto-gallery reveal-section">
 					<?php if ( ! empty( $menus_recents ) ) : ?>
-						<?php foreach ( $menus_recents as $image ) : ?>
-							<a href="<?php echo esc_url( $image['link'] ); ?>" class="plat-thumb" aria-label="Voir le plat <?php echo esc_attr( $image['title'] ); ?>">
-								<img
-									src="<?php echo esc_url( $image['url'] ); ?>"
-									alt=""
-									loading="lazy"
-									decoding="async"
-								>
-								<span class="plat-overlay">
-									<span><?php echo esc_html( $image['title'] ); ?></span>
-								</span>
+						<?php foreach ( $menus_recents as $plat ) : ?>
+							<a href="<?php echo esc_url( $plat['link'] ); ?>" class="plat-thumb" aria-label="Voir le plat <?php echo esc_attr( $plat['title'] ); ?>">
+								<img src="<?php echo esc_url( $plat['url'] ); ?>" alt="" loading="lazy" decoding="async">
+								<span class="plat-overlay"><span><?php echo esc_html( $plat['title'] ); ?></span></span>
 							</a>
 						<?php endforeach; ?>
-					<?php else : ?>
-						<div class="section-image-placeholder">
-							<span aria-hidden="true">&#127869;</span>
-							<p>Restaurant</p>
-						</div>
 					<?php endif; ?>
 				</div>
 
@@ -598,168 +284,66 @@ $photos_recentes   = $dsj_recent_images( 'galerie', 4 );
 		</div>
 	</section>
 
-	<!-- ===== NOS VALEURS (avec icônes personnalisées via Customizer) ===== -->
-	<section class="valeurs-section section-padding bg-creme reveal-section" aria-labelledby="valeurs-title">
+	<!-- ===== 6. GALERIE + TÉMOIGNAGES (fusionnées) ===== -->
+	<section class="home-galerie section-padding" aria-labelledby="galerie-title">
 		<div class="container">
 			<div class="section-header">
-				<span class="section-badge section-badge-dark" aria-hidden="true">&#11088; Nos fondamentaux</span>
-				<h2 class="section-title" id="valeurs-title">Nos Valeurs</h2>
+				<span class="section-badge-light"><?php echo $svg['camera']; ?> En images</span>
+				<h2 class="section-title" id="galerie-title">Galerie &amp; témoignages</h2>
 				<div class="section-divider" aria-hidden="true"></div>
-				<p class="section-subtitle">Ce qui nous guide au quotidien.</p>
 			</div>
 
-			<div class="valeurs-grid-modern">
-				<?php
-				/**
-				 * Tableau des valeurs :
-				 * [0] = clé du Customizer (valeur_{clé}_icone)
-				 * [1] = emoji par défaut (fallback)
-				 * [2] = titre
-				 * [3] = description
-				 */
-				$valeurs = [
-					[ 'respect',    '&#129309;',        'Respect',    'De chaque personne humaine dans sa dignité.' ],
-					[ 'honnetete',  '&#128142;',        'Honnêteté',  'Dans toutes nos relations et engagements.' ],
-					[ 'compassion', '&#10084;&#65039;', 'Compassion', 'Envers les plus vulnérables.' ],
-					[ 'partage',    '&#127807;',        'Partage',    'Des savoirs, ressources et expériences.' ],
-					[ 'rigueur',    '&#128220;',        'Rigueur',    'Dans le travail sérieux et bien accompli.' ],
-					[ 'excellence', '&#11088;',         'Excellence', 'Toujours viser le meilleur de soi-même.' ],
-				];
-
-				foreach ( $valeurs as $v ) :
-					// Icône personnalisée depuis le Customizer, sinon emoji par défaut
-					$icone_custom = get_theme_mod( 'valeur_' . $v[0] . '_icone', '' );
-					$icone_html   = '';
-
-					if ( function_exists( 'dsj_icon' ) ) {
-						$icone_html = $icone_custom
-							? dsj_icon( $icone_custom, 'valeur-icon' )
-							: dsj_icon( $v[1], 'valeur-icon' );
-					} else {
-						// Fallback si la fonction n'existe pas encore
-						$icone_html = '<span class="valeur-icon">' . ( $icone_custom ? esc_url( $icone_custom ) : $v[1] ) . '</span>';
-					}
-					?>
-					<article class="valeur-card-modern">
-						<div class="valeur-icon-wrapper" aria-hidden="true">
-							<?php echo $icone_html; ?>
-						</div>
-						<h3><?php echo esc_html( $v[2] ); ?></h3>
-						<p><?php echo esc_html( $v[3] ); ?></p>
-					</article>
-				<?php endforeach; ?>
-			</div>
-		</div>
-	</section>
-
-	<!-- ===== GALERIE (4 dernières photos publiées) ===== -->
-	<?php if ( ! empty( $photos_recentes ) ) : ?>
-		<section class="home-galerie section-padding bg-gris reveal-section" aria-labelledby="galerie-title">
-			<div class="container">
-				<div class="section-header">
-					<span class="section-badge section-badge-dark" aria-hidden="true">&#128248; En images</span>
-					<h2 class="section-title" id="galerie-title">Galerie</h2>
-					<div class="section-divider" aria-hidden="true"></div>
-					<p class="section-subtitle">Découvrez notre cadre de vie.</p>
-				</div>
-
+			<?php if ( ! empty( $photos_recentes ) ) : ?>
 				<div class="galerie-grid-masonry galerie-grid-<?php echo esc_attr( count( $photos_recentes ) ); ?>">
-					<?php foreach ( $photos_recentes as $image ) : ?>
+					<?php foreach ( $photos_recentes as $photo ) : ?>
 						<article class="galerie-item-masonry">
-							<a href="<?php echo esc_url( $image['link'] ); ?>" class="galerie-link" aria-label="Voir la photo <?php echo esc_attr( $image['title'] ); ?>">
-								<img
-									src="<?php echo esc_url( $image['url'] ); ?>"
-									alt=""
-									loading="lazy"
-									decoding="async"
-								>
+							<a href="<?php echo esc_url( $photo['link'] ); ?>" class="galerie-link" aria-label="Voir la photo <?php echo esc_attr( $photo['title'] ); ?>">
+								<img src="<?php echo esc_url( $photo['url'] ); ?>" alt="" loading="lazy" decoding="async">
 								<span class="galerie-overlay">
-									<span class="galerie-icon" aria-hidden="true">&#128269;</span>
-									<span class="galerie-title"><?php echo esc_html( $image['title'] ); ?></span>
+									<span class="galerie-title"><?php echo esc_html( $photo['title'] ); ?></span>
 								</span>
 							</a>
 						</article>
 					<?php endforeach; ?>
 				</div>
-
 				<div class="text-center mt-4">
-					<a href="<?php echo esc_url( get_post_type_archive_link( 'galerie' ) ); ?>" class="btn btn-secondary btn-animated">
-						Voir toute la galerie
-					</a>
+					<a href="<?php echo esc_url( home_url( '/galerie' ) ); ?>" class="btn btn-secondary">Voir toute la galerie</a>
 				</div>
-			</div>
-		</section>
-	<?php endif; ?>
+			<?php endif; ?>
 
-	<!-- ===== TÉMOIGNAGES (3 derniers publiés) ===== -->
-	<?php
-	$temoignages = new WP_Query( [
-		'post_type'      => 'temoignage',
-		'posts_per_page' => 3,
-		'orderby'        => 'date',
-		'order'          => 'DESC',
-	] );
-
-	if ( $temoignages->have_posts() ) :
-		?>
-		<section class="temoignages-section section-padding bg-blanc reveal-section" aria-labelledby="temoignages-title">
-			<div class="container">
-				<div class="section-header">
-					<span class="section-badge section-badge-dark" aria-hidden="true">&#128172; Ils parlent de nous</span>
-					<h2 class="section-title" id="temoignages-title">Témoignages</h2>
-					<div class="section-divider" aria-hidden="true"></div>
+			<?php
+			$temoignages = new WP_Query( [ 'post_type' => 'temoignage', 'posts_per_page' => 3, 'orderby' => 'date', 'order' => 'DESC' ] );
+			if ( $temoignages->have_posts() ) : ?>
+				<div class="temoignages-strip">
+					<?php while ( $temoignages->have_posts() ) : $temoignages->the_post(); ?>
+						<blockquote class="temoignage-mini">
+							<p><?php echo esc_html( wp_trim_words( get_the_content(), 20, '...' ) ); ?></p>
+							<footer>— <?php the_title(); ?></footer>
+						</blockquote>
+					<?php endwhile; wp_reset_postdata(); ?>
 				</div>
+			<?php endif; ?>
+		</div>
+	</section>
 
-				<div class="temoignages-grid-modern">
-					<?php
-					while ( $temoignages->have_posts() ) :
-						$temoignages->the_post();
-						?>
-						<article class="temoignage-card-modern">
-							<div class="temoignage-quote" aria-hidden="true">&#8220;</div>
-							<div class="temoignage-content">
-								<?php echo esc_html( wp_trim_words( get_the_content(), 30, '...' ) ); ?>
-							</div>
-							<div class="temoignage-author">
-								<strong><?php the_title(); ?></strong>
-							</div>
-						</article>
-					<?php endwhile; ?>
-				</div>
-			</div>
-		</section>
-		<?php
-		wp_reset_postdata();
-	endif;
-	?>
-
-	<!-- ===== CTA FINAL ===== -->
-	<section class="cta-home-section section-padding bg-gradient-primary reveal-section" aria-labelledby="cta-title">
+	<!-- ===== 7. CTA FINAL (action prioritaire UNIQUE) ===== -->
+	<section class="cta-final-section section-padding" aria-labelledby="cta-title">
 		<div class="container">
-			<div class="cta-content">
-				<h2 id="cta-title">
-					<?php echo esc_html( get_theme_mod( 'cta_title', 'Soutenez notre mission' ) ); ?>
-				</h2>
+			<div class="cta-content reveal-section">
+				<span class="cta-icon"><?php echo $svg['coeur']; ?></span>
+				<h2 id="cta-title"><?php echo esc_html( get_theme_mod( 'cta_title', 'Soutenez notre mission' ) ); ?></h2>
+				<p><?php echo wp_kses_post( get_theme_mod( 'cta_text', 'Votre contribution permet de former les leaders de demain. Parrainez une jeune fille ou faites un don pour soutenir le Domaine Saint Joseph.' ) ); ?></p>
 
-				<p>
-					<?php echo wp_kses_post( get_theme_mod( 'cta_text', 'Votre contribution permet de former les leaders de demain. Parrainez une jeune fille ou faites un don pour soutenir le Domaine Saint Joseph.' ) ); ?>
-				</p>
-
-				<div class="cta-buttons">
-					<a href="<?php echo esc_url( home_url( get_theme_mod( 'cta_button_url', '/nous-soutenir' ) ) ); ?>" class="btn btn-primary btn-large btn-animated">
-						<span aria-hidden="true">&#128155;</span> Nous soutenir
+				<div class="cta-actions">
+					<a href="<?php echo esc_url( home_url( get_theme_mod( 'cta_button_url', '/nous-soutenir' ) ) ); ?>" class="btn btn-primary btn-large">
+						<?php echo $svg['coeur']; ?> Je parraine une jeune fille
 					</a>
-
-					<a
-						href="https://wa.me/<?php echo esc_attr( preg_replace( '/[^0-9]/', '', get_theme_mod( 'whatsapp', '22666605890' ) ) ); ?>"
-						class="btn btn-whatsapp btn-large btn-animated"
-						target="_blank"
-						rel="noopener noreferrer"
-						aria-label="Nous contacter sur WhatsApp"
-					>
-						<span aria-hidden="true">&#128241;</span> WhatsApp
-					</a>
+					<a href="<?php echo $url_soutenir; ?>" class="btn btn-outline-light btn-large">Je fais un don libre</a>
 				</div>
+
+				<p class="cta-whatsapp">
+					Une question ? <a href="<?php echo esc_url( $url_whatsapp ); ?>" target="_blank" rel="noopener noreferrer">Écrivez-nous sur WhatsApp</a>
+				</p>
 			</div>
 		</div>
 	</section>

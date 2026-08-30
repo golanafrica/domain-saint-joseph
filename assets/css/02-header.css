@@ -57,14 +57,6 @@
 .site-header .btn-whatsapp-icon { font-size: 1rem !important; line-height: 1 !important; }
 .site-header .btn-whatsapp-text { display: inline-block !important; font-size: 0.85rem !important; font-weight: 700 !important; }
 
-/* === WHATSAPP UNIVERSEL === */
-[class*="whatsapp"], [class*="whatsapp"]:hover, [class*="whatsapp"]:focus, [class*="whatsapp"]:active {
-    background: #25D366 !important; color: white !important; border-radius: 50px !important;
-    display: inline-flex !important; align-items: center !important; justify-content: center !important;
-    gap: 8px !important; text-decoration: none !important; transition: all 0.3s ease !important;
-    border: none !important; outline: none !important; box-shadow: none !important;
-}
-[class*="whatsapp"]:hover { background: #128C7E !important; transform: translateY(-2px) !important; }
 
 /* === RESPONSIVE MOBILE === */
 @media (max-width: 768px) {

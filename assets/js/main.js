@@ -534,4 +534,51 @@
         init();
     }
 
+
+
+
+
+    
+
+})();
+
+/* ========================================
+ * Compteurs animés (statistiques) — version légère
+ * ======================================== */
+(function() {
+    'use strict';
+    if (!('IntersectionObserver' in window)) return;
+
+    var counters = document.querySelectorAll('.stat-number[data-count]');
+
+    function animate(el) {
+        var target = parseInt(el.getAttribute('data-count'), 10);
+        var suffix = el.getAttribute('data-suffix') || '';
+        var duration = 1500;
+        var start = null;
+
+        function step(ts) {
+            if (!start) start = ts;
+            var progress = Math.min((ts - start) / duration, 1);
+            var value = Math.floor(progress * target);
+            el.textContent = value + suffix;
+            if (progress < 1) {
+                window.requestAnimationFrame(step);
+            } else {
+                el.textContent = target + suffix;
+            }
+        }
+        window.requestAnimationFrame(step);
+    }
+
+    var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+            if (entry.isIntersecting) {
+                animate(entry.target);
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.5 });
+
+    counters.forEach(function(el) { observer.observe(el); });
 })();
