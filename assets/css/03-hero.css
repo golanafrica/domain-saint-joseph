@@ -545,3 +545,81 @@
     outline-offset: 2px;
     border-radius: 50%;
 }
+
+/* ========================================
+   FIX FINAL HERO (à garder en dernier)
+   ======================================== */
+
+/* 1. Image LCP : toujours SOUS les slides, jamais cliquable */
+.hero-lcp-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
+    pointer-events: none;
+}
+
+/* 2. Légende TOUJOURS visible au-dessus */
+.hero-slider .hero-caption-band {
+    position: relative;
+    z-index: 5;
+    background: var(--clr-primary, #1A5276);
+}
+
+/* 3. Dots : position sur la photo + zone tactile 24px */
+.slider-dots {
+    position: absolute;
+    bottom: 8px;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2px;
+    margin-top: 0;
+    z-index: 10;
+}
+
+.slider-dot {
+    width: 24px;
+    height: 24px;
+    background: transparent;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.slider-dot::after {
+    content: '';
+    display: block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.55);
+    transition: all 0.3s ease;
+}
+
+.slider-dot.active {
+    width: 24px;
+    background: transparent;
+    border-radius: 50%;
+}
+
+.slider-dot.active::after {
+    width: 22px;
+    height: 10px;
+    border-radius: 6px;
+    background: var(--clr-accent, #D4AC0D);
+}
+
+.slider-dot:hover::after {
+    background: rgba(255, 255, 255, 0.85);
+}
+
+.slider-dot.active:hover::after {
+    background: var(--clr-accent, #D4AC0D);
+}
