@@ -12,14 +12,12 @@ get_header();
    HELPERS
    ──────────────────────────────────────────────────────────── */
 
-/** Sépare un nombre de son suffixe (ex : "100%" → 100 + "%"). */
 $dsj_split_stat = function ( $value ) {
 	$number = preg_replace( '/[^0-9]/', '', $value );
 	$suffix = str_replace( $number, '', $value );
 	return [ 'number' => $number ?: '0', 'suffix' => $suffix, 'label' => $value ];
 };
 
-/** Dernières images publiées d'un CPT. */
 $dsj_recent_images = function ( $post_type, $limit = 4, $size = 'medium_large' ) {
 	$images = [];
 	$posts  = get_posts( [
@@ -42,7 +40,7 @@ $dsj_recent_images = function ( $post_type, $limit = 4, $size = 'medium_large' )
 };
 
 /* ────────────────────────────────────────────────────────────
-   ICÔNES SVG (cohérentes sur tous les appareils)
+   ICÔNES SVG
    ──────────────────────────────────────────────────────────── */
 $svg_wrap = '<svg class="dsj-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">';
 $svg = [
@@ -60,6 +58,10 @@ $svg = [
 	'etoile'    => $svg_wrap . '<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>',
 	'soleil'    => $svg_wrap . '<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>',
 	'lune'      => $svg_wrap . '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>',
+	/* ✅ Nouvelles icônes pour la section histoire */
+	'eau-vive'  => $svg_wrap . '<path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>',
+	'croix'     => $svg_wrap . '<path d="M10 2v20"/><path d="M4 8h12"/></svg>',
+	'star-fill' => $svg_wrap . '<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>',
 ];
 
 /* ────────────────────────────────────────────────────────────
@@ -101,10 +103,52 @@ $histoire_texte = get_theme_mod(
 					<div class="section-divider left" aria-hidden="true"></div>
 					<div class="histoire-content"><?php echo wp_kses_post( $histoire_texte ); ?></div>
 
+					<!-- ✅ 3 CARTES DE PRÉSENTATION -->
+					<div class="histoire-mission-grid">
+
+						<div class="mission-card">
+							<div class="mission-icon"><?php echo $svg['maison']; ?></div>
+							<h3>Un havre de paix</h3>
+							<p>
+								Située dans un lieu paisible au secteur 25 à Bobo, la maison d'accueil du Domaine Saint Joseph est la destination idéale pour ceux qui recherchent <strong>hébergement confortable</strong>, <strong>salles de conférence</strong>, et une cuisine savoureuse préparée avec soin selon vos goûts — le tout dans une expérience de <strong>paix, de sérénité et de ressourcement spirituel</strong>.
+							</p>
+						</div>
+
+						<div class="mission-card">
+							<div class="mission-icon"><?php echo $svg['diplome']; ?></div>
+							<h3>Notre mission</h3>
+							<p>
+								Accueillir des jeunes filles et les former avec <strong>compassion, discipline, rigueur, professionnalisme, bienveillance</strong> et souci de l'excellence, afin de les conduire vers la réussite et leur épanouissement personnel et professionnel.
+							</p>
+						</div>
+
+						<div class="mission-card">
+							<div class="mission-icon"><?php echo $svg['eau-vive']; ?></div>
+							<h3>Notre origine</h3>
+							<p>
+								La <strong>Société de vie apostolique Donum Dei</strong>, dite les Travailleuses Missionnaires de l'Immaculée (connues sous le nom de « sœurs de l'Eau Vive »), est une congrégation religieuse catholique fondée le <strong>11 février 1950</strong> par le père Marcel Roussel-Galle. Présente sur les cinq continents, elle fait entendre le cri de Jésus : <em>« Donne-moi à boire »</em>, et conduit tous les hommes et toutes les femmes à la Source d'Eau vive qui jaillit du Cœur de Jésus.
+							</p>
+						</div>
+
+					</div>
+
+					<!-- ✅ GENÈSE DU CENTRE -->
+					<div class="histoire-genese">
+						<h3><?php echo $svg['croix']; ?> La genèse du Centre</h3>
+						<p>
+							Le Centre de Formation du Domaine Saint Joseph est né de la volonté des <strong>Sœurs Travailleuses Missionnaires de l'Immaculée (TMI)</strong> de répondre aux besoins des jeunes, en particulier des jeunes filles et garçons en situation de vulnérabilité.
+						</p>
+						<p>
+							Face aux difficultés d'accès à une formation qualifiante et à un emploi décent, les sœurs ont souhaité créer ce lieu où chaque jeune est accueillie avec <strong>dignité</strong>, écoutée, accompagnée et formée dans un esprit de compassion, de respect, de discipline, de rigueur, de professionnalisme et de bienveillance.
+						</p>
+					</div>
+
 					<ul class="valeurs-strip" aria-label="Nos valeurs fondamentales">
 						<li><?php echo $svg['check']; ?> <span>Respect</span></li>
 						<li><?php echo $svg['check']; ?> <span>Compassion</span></li>
 						<li><?php echo $svg['check']; ?> <span>Excellence</span></li>
+						<li><?php echo $svg['check']; ?> <span>Discipline</span></li>
+						<li><?php echo $svg['check']; ?> <span>Bienveillance</span></li>
 					</ul>
 
 					<a href="<?php echo esc_url( home_url( '/a-propos' ) ); ?>" class="btn-link">
