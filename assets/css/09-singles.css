@@ -1,13 +1,13 @@
 /* ========================================
  * 09-SINGLES.CSS
  * Single Formation + Single Hébergement
- * Version corrigée : image = largeur colonne + pleine hauteur (sans débordement)
- * ✅ FIX : info-row en grille (label auto + valeur alignée, plus de texte collé)
+ * ✅ FIX mobile : info-row = label gauche + valeur droite (compact)
+ * ✅ FIX CTA : bouton principal doré (design system + contraste AAA)
  * ======================================== */
 
-/* ═══════════════════════════════════════════════════════════
+/* ═══════════════════════════════════════════
    HERO SINGLE (SANS bandes vides en haut/bas)
-   ═══════════════════════════════════════════════════════════ */
+   ═══════════════════════════════════════════ */
 
 .formation-single-header,
 .formation-single-header::before,
@@ -46,9 +46,9 @@
     background-image: linear-gradient(135deg, var(--clr-primary, #1A5276) 0%, #0d2f47 100%);
 }
 
-/* ═══════════════════════════════════════════════════════════
+/* ═══════════════════════════════════════════
    HERO FORMATION — Badge, titre, diviseur
-   ═══════════════════════════════════════════════════════════ */
+   ═══════════════════════════════════════════ */
 
 .formation-single-header .header-badge {
     display: inline-block;
@@ -93,9 +93,9 @@
     opacity: 0.9;
 }
 
-/* ═══════════════════════════════════════════════════════════
+/* ═══════════════════════════════════════════
    GRILLES PRINCIPALES + ANIMATIONS
-   ═══════════════════════════════════════════════════════════ */
+   ═══════════════════════════════════════════ */
 
 .formation-single-grid,
 .hebergement-grid {
@@ -122,11 +122,9 @@
 .formation-single-grid > *:last-child,
 .hebergement-grid > *:last-child { animation-delay: 0.2s; }
 
-/* ═══════════════════════════════════════════════════════════
+/* ═══════════════════════════════════════════
    🔧 IMAGES — LARGEUR COLONNE + PLEINE HAUTEUR
-   (PAS d'aspect-ratio ni height:100% en desktop : c'est ça qui
-   faisait déborder l'image sur la colonne de droite)
-   ═══════════════════════════════════════════════════════════ */
+   ═══════════════════════════════════════════ */
 
 .formation-single-image,
 .main-image {
@@ -136,8 +134,6 @@
     box-shadow: 0 20px 35px rgba(0, 0, 0, 0.1);
     background: #e8e8e8;
     min-height: 350px;
-    /* Desktop : item de grille → largeur = colonne,
-       et align-self: stretch (défaut) → hauteur = colonne infos */
 }
 
 /* Hébergement : l'image remplit la hauteur restante de la galerie */
@@ -164,9 +160,9 @@
     transform: scale(1.05);
 }
 
-/* ═══════════════════════════════════════════════════════════
+/* ═══════════════════════════════════════════
    GALERIE HÉBERGEMENT (miniatures)
-   ═══════════════════════════════════════════════════════════ */
+   ═══════════════════════════════════════════ */
 
 .hebergement-gallery {
     position: relative;
@@ -197,9 +193,9 @@
     border-color: var(--clr-accent, #D4AC0D);
 }
 
-/* ═══════════════════════════════════════════════════════════
+/* ═══════════════════════════════════════════
    CARTES D'INFORMATIONS
-   ═══════════════════════════════════════════════════════════ */
+   ═══════════════════════════════════════════ */
 
 .formation-single-infos .infos-card,
 .hebergement-infos .infos-card {
@@ -252,9 +248,9 @@
     word-break: break-word;
 }
 
-/* ═══════════════════════════════════════════════════════════
+/* ═══════════════════════════════════════════
    BADGES DE DISPONIBILITÉ
-   ═══════════════════════════════════════════════════════════ */
+   ═══════════════════════════════════════════ */
 
 .badge-disponible {
     color: #28a745;
@@ -286,9 +282,9 @@
     font-size: 0.85rem;
 }
 
-/* ═══════════════════════════════════════════════════════════
+/* ═══════════════════════════════════════════
    ÉQUIPEMENTS
-   ═══════════════════════════════════════════════════════════ */
+   ═══════════════════════════════════════════ */
 
 .equipements-list {
     display: flex;
@@ -315,9 +311,10 @@
     transform: translateY(-2px);
 }
 
-/* ═══════════════════════════════════════════════════════════
+/* ═══════════════════════════════════════════
    BOUTONS CTA (inscription / réservation)
-   ═══════════════════════════════════════════════════════════ */
+   ✅ FIX : bouton principal DORÉ (design system + contraste AAA)
+   ═══════════════════════════════════════════ */
 
 .inscription-cta,
 .reservation-cta {
@@ -346,39 +343,44 @@
     cursor: pointer;
 }
 
-/* Bouton WhatsApp → VERT */
+/* ✅ Bouton principal (S'inscrire / Réserver) → DORÉ */
 .inscription-cta .btn-primary,
-.reservation-cta .btn-whatsapp {
-    background: #25D366;
-    color: var(--clr-white);
-    border: none;
-}
-
-.inscription-cta .btn-primary:hover,
-.reservation-cta .btn-whatsapp:hover {
-    background: #128C7E;
-    transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(37, 211, 102, 0.3);
-}
-
-/* Bouton secondaire → DORÉ */
+.reservation-cta .btn-primary,
 .inscription-cta .btn-outline,
-.reservation-cta .btn-primary {
+.reservation-cta .btn-outline {
     background: var(--clr-accent);
     color: var(--clr-primary);
     border: none;
 }
 
+.inscription-cta .btn-primary:hover,
+.reservation-cta .btn-primary:hover,
 .inscription-cta .btn-outline:hover,
-.reservation-cta .btn-primary:hover {
+.reservation-cta .btn-outline:hover {
     background: #c49b0c;
+    color: var(--clr-primary);
     transform: translateY(-3px);
     box-shadow: 0 8px 20px rgba(212, 172, 13, 0.3);
 }
 
-/* ═══════════════════════════════════════════════════════════
+/* Bouton secondaire (renseignement / WhatsApp outline) */
+.inscription-cta .btn-secondary,
+.reservation-cta .btn-secondary {
+    background: transparent;
+    color: var(--clr-primary);
+    border: 2px solid var(--clr-primary);
+}
+
+.inscription-cta .btn-secondary:hover,
+.reservation-cta .btn-secondary:hover {
+    background: var(--clr-primary);
+    color: #ffffff;
+    transform: translateY(-3px);
+}
+
+/* ═══════════════════════════════════════════
    INFORMATIONS SUPPLÉMENTAIRES
-   ═══════════════════════════════════════════════════════════ */
+   ═══════════════════════════════════════════ */
 
 .info-extra {
     display: flex;
@@ -403,9 +405,9 @@
 .extra-item strong { font-size: 0.85rem; color: var(--clr-primary); }
 .extra-item small { font-size: 0.7rem; color: #666; }
 
-/* ═══════════════════════════════════════════════════════════
+/* ═══════════════════════════════════════════
    DESCRIPTIONS COMPLÈTES
-   ═══════════════════════════════════════════════════════════ */
+   ═══════════════════════════════════════════ */
 
 .formation-description,
 .hebergement-description {
@@ -463,21 +465,19 @@
     margin-bottom: 10px;
 }
 
-/* ═══════════════════════════════════════════════════════════
+/* ═══════════════════════════════════════════
    RESPONSIVE
-   ═══════════════════════════════════════════════════════════ */
+   ═══════════════════════════════════════════ */
 
 /* Tablettes */
 @media (max-width: 992px) {
     .formation-single-grid,
     .hebergement-grid { gap: 35px; }
-    /* ✅ largeurs fixes supprimées : la grille gère */
     .formation-single-image,
     .main-image { min-height: 300px; }
 }
 
-/* Mobile : 1 colonne → là on PEUT utiliser aspect-ratio
-   (hauteur auto = pas de débordement) */
+/* Mobile : 1 colonne */
 @media (max-width: 768px) {
     .formation-single-header,
     .single-hebergement-header { padding: 50px 0 80px !important; }
@@ -500,10 +500,12 @@
         padding: 20px;
         border-radius: 16px;
     }
+
+    /* ✅ FIX BUG : label à GAUCHE + valeur à DROITE (compact, plus d'empilement) */
     .formation-single-infos .info-row,
     .hebergement-infos .info-row {
-        grid-template-columns: 1fr;
-        gap: 4px;
+        grid-template-columns: auto 1fr;
+        gap: 4px 14px;
         padding: 10px 0;
     }
     .formation-single-infos .info-label,
@@ -513,20 +515,19 @@
     .formation-single-infos .info-value,
     .hebergement-infos .info-value {
         font-size: 0.9rem;
+        text-align: right;   /* ✅ valeur collée à droite, même ligne */
     }
+
+    /* Équipements : reste empilé (tags sous le label) */
     .hebergement-infos .info-row.equipements,
     .formation-single-infos .info-row.equipements {
-        flex-direction: column;
-    }
-    .hebergement-infos .info-row.equipements .info-label,
-    .formation-single-infos .info-row.equipements .info-label {
-        width: 100%;
-        margin-bottom: 8px;
+        grid-template-columns: 1fr;
     }
     .hebergement-infos .info-row.equipements .info-value,
     .formation-single-infos .info-row.equipements .info-value {
-        width: 100%;
+        text-align: left;
     }
+
     .inscription-cta,
     .reservation-cta { flex-direction: column; }
     .inscription-cta .btn,
@@ -573,8 +574,6 @@
     .formation-single-header .divider-line { width: 40px; }
     .formation-badge { font-size: 0.7rem; padding: 4px 12px; }
 }
-
-
 
 /* ═══════════════════════════════════════════
    ✅ FIX : bande bleue compacte sous le hero
