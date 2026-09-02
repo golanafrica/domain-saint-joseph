@@ -2572,3 +2572,167 @@ html:not(.dsj-js) .reveal-section {
     .mission-card { transition: none !important; }
     .mission-card:hover { transform: none !important; }
 }
+
+/* ═══════════════════════════════════════════
+   ✅ PRÉSENTATION COUTURE (page Formation)
+   Section d'introduction avec 3 cartes thématiques
+   ═══════════════════════════════════════════ */
+
+.formation-intro-section {
+    background: #ffffff;
+}
+
+.formation-intro-header {
+    max-width: 850px;
+    margin-bottom: 2.5rem;
+}
+
+.formation-intro-lead {
+    font-size: clamp(1rem, 1.2vw, 1.1rem);
+    line-height: 1.8;
+    color: #444;
+    margin: 1.5rem 0 0;
+}
+
+.formation-intro-lead strong {
+    color: var(--clr-primary, #1A5276);
+    font-weight: 700;
+}
+
+/* Grille des 3 cartes */
+.formation-intro-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    margin: 2rem 0;
+}
+
+@media (min-width: 992px) {
+    .formation-intro-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+.formation-intro-card {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 1.75rem;
+    box-shadow: 0 2px 10px rgba(26, 82, 118, 0.06);
+    border: 1px solid rgba(26, 82, 118, 0.06);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.formation-intro-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(26, 82, 118, 0.10);
+}
+
+.formation-intro-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    background: rgba(212, 172, 13, 0.15);
+    color: var(--clr-accent, #D4AC0D);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+}
+
+.formation-intro-icon .dsj-icon {
+    width: 26px;
+    height: 26px;
+}
+
+.formation-intro-card h3 {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--clr-primary, #1A5276);
+    margin: 0 0 0.65rem;
+}
+
+.formation-intro-card p {
+    color: #555;
+    font-size: 0.95rem;
+    line-height: 1.7;
+    margin: 0;
+}
+
+.formation-intro-card p strong {
+    color: var(--clr-primary, #1A5276);
+    font-weight: 600;
+}
+
+/* Bloc ambition (citation centrée) */
+.formation-ambition {
+    max-width: 800px;
+    margin: 2.5rem auto 0;
+    background: linear-gradient(135deg, rgba(212, 172, 13, 0.08) 0%, rgba(26, 82, 118, 0.05) 100%);
+    border-left: 4px solid var(--clr-accent, #D4AC0D);
+    border-radius: 0 16px 16px 0;
+    padding: 1.75rem 2rem;
+    text-align: center;
+    position: relative;
+}
+
+.formation-ambition-icon {
+    display: inline-flex;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: rgba(212, 172, 13, 0.15);
+    color: var(--clr-accent, #D4AC0D);
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.75rem;
+}
+
+.formation-ambition-icon .dsj-icon {
+    width: 24px;
+    height: 24px;
+}
+
+.formation-ambition h3 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--clr-primary, #1A5276);
+    margin: 0 0 0.75rem;
+}
+
+.formation-ambition p {
+    color: #444;
+    font-size: 1rem;
+    line-height: 1.7;
+    margin: 0;
+    font-style: italic;
+}
+
+.formation-ambition p strong {
+    color: var(--clr-primary, #1A5276);
+    font-weight: 700;
+    font-style: normal;
+}
+
+@media (max-width: 768px) {
+    .formation-intro-card {
+        padding: 1.5rem;
+    }
+    .formation-ambition {
+        padding: 1.25rem 1.5rem;
+    }
+    .formation-ambition h3 {
+        font-size: 1.1rem;
+    }
+    .formation-ambition p {
+        font-size: 0.95rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .formation-intro-card {
+        transition: none !important;
+    }
+    .formation-intro-card:hover {
+        transform: none !important;
+    }
+}

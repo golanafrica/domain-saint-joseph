@@ -20,6 +20,7 @@ $svg = [
     'target'    => $svg_wrap . '<circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>',
     'check'     => $svg_wrap . '<path d="M20 6L9 17l-5-5"/></svg>',
     'star'      => $svg_wrap . '<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>',
+    'ciseaux'   => $svg_wrap . '<circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="14.48" x2="20" y2="20"/><line x1="8.12" y1="8.12" x2="12" y2="12"/></svg>',
 ];
 
 $url_whatsapp = 'https://wa.me/' . preg_replace( '/[^0-9]/', '', get_theme_mod( 'whatsapp', '22666605890' ) );
@@ -53,6 +54,62 @@ $hero_soustitre = get_theme_mod( 'hero_formation_soustitre', 'Des compétences c
             <span class="divider-line"></span>
         </div>
         <p class="header-subtitle"><?php echo esc_html( $hero_soustitre ); ?></p>
+    </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     SECTION PRÉSENTATION COUTURE (NOUVEAU)
+     ═══════════════════════════════════════════ -->
+<section class="formation-intro-section section-padding" aria-labelledby="intro-couture-title">
+    <div class="container">
+
+        <div class="formation-intro-header reveal-section">
+            <span class="section-badge-light"><?php echo $svg['ciseaux']; ?> Filière Couture</span>
+            <h2 class="section-title" id="intro-couture-title">La formation en Couture</h2>
+            <div class="section-divider left" aria-hidden="true"></div>
+            <p class="formation-intro-lead">
+                La formation en couture permet aux jeunes filles et aux jeunes garçons d'acquérir les compétences nécessaires pour exercer les métiers de la <strong>confection et de la mode</strong>. Elle combine des enseignements en alphabétisation, en calcul, en théorie et en pratique afin de favoriser une <strong>insertion professionnelle durable</strong>.
+            </p>
+        </div>
+
+        <!-- 3 cartes thématiques -->
+        <div class="formation-intro-grid reveal-section">
+
+            <div class="formation-intro-card">
+                <div class="formation-intro-icon"><?php echo $svg['ciseaux']; ?></div>
+                <h3>Pédagogie complète</h3>
+                <p>
+                    Les apprenants sont formés aux techniques de <strong>coupe, de confection et de finition</strong> des vêtements, tout en étant initiés à la <strong>gestion d'un atelier</strong>, à la <strong>relation avec la clientèle</strong> et à l'<strong>entrepreneuriat</strong>. Encadrés par des formatrices qualifiées, ils évoluent dans un environnement qui encourage la discipline, la créativité, le sens du travail bien fait et la confiance en soi.
+                </p>
+            </div>
+
+            <div class="formation-intro-card">
+                <div class="formation-intro-icon"><?php echo $svg['diplome']; ?></div>
+                <h3>Durée &amp; diplômes</h3>
+                <p>
+                    La formation dure au minimum <strong>trois ans</strong> et conduit au <strong>Brevet de Qualification Professionnelle (BQP)</strong>. Une <strong>quatrième année de perfectionnement</strong> est proposée aux élèves qui souhaitent préparer le <strong>Certificat de Qualification Professionnelle (CQP)</strong>.
+                </p>
+            </div>
+
+            <div class="formation-intro-card">
+                <div class="formation-intro-icon"><?php echo $svg['users']; ?></div>
+                <h3>Public visé</h3>
+                <p>
+                    Formation dédiée à la <strong>promotion de la jeune fille</strong> et aux <strong>femmes</strong>, avec une possibilité d'ouverture aux <strong>garçons</strong>.
+                </p>
+            </div>
+
+        </div>
+
+        <!-- Bloc ambition (citation) -->
+        <div class="formation-ambition reveal-section">
+            <span class="formation-ambition-icon"><?php echo $svg['target']; ?></span>
+            <h3>Notre ambition</h3>
+            <p>
+                Former des <strong>jeunes compétents, autonomes et responsables</strong>, capables de bâtir leur avenir et de contribuer au développement de la société.
+            </p>
+        </div>
+
     </div>
 </section>
 
