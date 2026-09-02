@@ -1,13 +1,35 @@
 <?php
 /*
 Template Name: Formation
+Version modernisée : même langage visuel que l'accueil
 */
-get_header(); ?>
+get_header();
 
-<!-- HERO SECTION -->
+/* ────────────────────────────────────────────────────────────
+   ICÔNES SVG (cohérentes sur tous les appareils)
+   ──────────────────────────────────────────────────────────── */
+$svg_wrap = '<svg class="dsj-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">';
+$svg = [
+    'diplome'   => $svg_wrap . '<path d="M22 10L12 5 2 10l10 5 10-5z"/><path d="M6 12.5V17c0 1.7 2.7 3 6 3s6-1.3 6-3v-4.5"/></svg>',
+    'horloge'   => $svg_wrap . '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>',
+    'argent'    => $svg_wrap . '<line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>',
+    'livre'     => $svg_wrap . '<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>',
+    'coeur'     => $svg_wrap . '<path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21.2l7.8-7.8 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg>',
+    'users'     => $svg_wrap . '<path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="10" cy="7" r="4"/><path d="M21 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>',
+    'award'     => $svg_wrap . '<circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg>',
+    'target'    => $svg_wrap . '<circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>',
+    'check'     => $svg_wrap . '<path d="M20 6L9 17l-5-5"/></svg>',
+    'star'      => $svg_wrap . '<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>',
+];
+
+$url_whatsapp = 'https://wa.me/' . preg_replace( '/[^0-9]/', '', get_theme_mod( 'whatsapp', '22666605890' ) );
+?>
+
+<!-- ═══════════════════════════════════════════
+     HERO SECTION
+     ═══════════════════════════════════════════ -->
 <?php
 $hero_image     = get_theme_mod( 'hero_formation_image' );
-$hero_badge     = get_theme_mod( 'hero_formation_badge', '&#127891; Formation professionnelle' );
 $hero_titre     = get_theme_mod( 'hero_formation_titre', 'Nos Formations' );
 $hero_soustitre = get_theme_mod( 'hero_formation_soustitre', 'Des compétences concrètes pour l\'autonomie des jeunes filles' );
 ?>
@@ -20,122 +42,130 @@ $hero_soustitre = get_theme_mod( 'hero_formation_soustitre', 'Des compétences c
     </div>
 
     <div class="header-caption-band">
-        <span class="header-badge"><?php echo $hero_badge; ?></span>
+        <span class="header-badge">
+            <?php echo $svg['diplome']; ?>
+            Formation professionnelle
+        </span>
         <h1 class="header-title"><?php echo esc_html( $hero_titre ); ?></h1>
         <div class="header-divider">
             <span class="divider-line"></span>
-            <span class="divider-icon">&#128218;</span>
+            <span class="divider-icon"><?php echo $svg['livre']; ?></span>
             <span class="divider-line"></span>
         </div>
         <p class="header-subtitle"><?php echo esc_html( $hero_soustitre ); ?></p>
     </div>
 </section>
 
-<!-- SECTION NOS FORMATIONS (CPT Formations) -->
-<section class="formations-section section-padding">
+<!-- ═══════════════════════════════════════════
+     SECTION NOS FORMATIONS (CPT Formations)
+     ═══════════════════════════════════════════ -->
+<section class="formations-section section-padding section-alt" aria-labelledby="formations-title">
     <div class="container">
+        <div class="section-header">
+            <span class="section-badge-light"><?php echo $svg['star']; ?> Catalogue</span>
+            <h2 class="section-title" id="formations-title">Toutes nos formations</h2>
+            <div class="section-divider" aria-hidden="true"></div>
+            <p class="section-subtitle">Chaque filière combine théorie, pratique et accompagnement personnalisé.</p>
+        </div>
+
         <div class="formations-grid">
             <?php
             $formations = new WP_Query( [
-                'post_type' => 'formation',
+                'post_type'      => 'formation',
                 'posts_per_page' => -1,
-                'orderby' => 'menu_order',
-                'order' => 'ASC'
+                'orderby'        => 'menu_order',
+                'order'          => 'ASC',
             ] );
-            
+
             if ( $formations->have_posts() ) :
                 while ( $formations->have_posts() ) : $formations->the_post(); ?>
-                    <div class="formation-card">
-                        <?php if ( has_post_thumbnail() ) : ?>
-                            <div class="card-image">
-                                <?php the_post_thumbnail( 'card-thumb' ); ?>
-                            </div>
-                        <?php else : ?>
-                            <div class="card-image">
-                                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300'%3E%3Crect width='400' height='300' fill='%23f0f0f0'/%3E%3Ctext x='200' y='160' font-size='18' text-anchor='middle' fill='%23999' font-family='Arial'%3EFormation%3C/text%3E%3C/svg%3E" 
-                                     alt="<?php the_title_attribute(); ?>"
-                                     style="width:100%; height:200px; object-fit:cover;">
-                            </div>
-                        <?php endif; ?>
-                        
+                    <article class="formation-card card-modern reveal-section">
+                        <div class="card-image">
+                            <a href="<?php the_permalink(); ?>" aria-label="En savoir plus sur la formation <?php echo esc_attr( get_the_title() ); ?>">
+                                <?php if ( has_post_thumbnail() ) : ?>
+                                    <?php the_post_thumbnail( 'medium_large', [ 'alt' => '', 'loading' => 'lazy', 'decoding' => 'async' ] ); ?>
+                                <?php else : ?>
+                                    <div class="card-icon-placeholder"><?php echo $svg['diplome']; ?></div>
+                                <?php endif; ?>
+                            </a>
+                        </div>
+
                         <div class="card-content">
-                            <h3><?php the_title(); ?></h3>
-                            
-                            <?php 
-                            $duree = get_post_meta( get_the_ID(), '_dsj_duree', true );
-                            $prix = get_post_meta( get_the_ID(), '_dsj_prix', true );
+                            <h3>
+                                <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
+                            </h3>
+
+                            <?php
+                            $duree  = get_post_meta( get_the_ID(), '_dsj_duree', true );
+                            $prix   = get_post_meta( get_the_ID(), '_dsj_prix', true );
                             $niveau = get_post_meta( get_the_ID(), '_dsj_niveau', true );
-                            $places = get_post_meta( get_the_ID(), '_dsj_places', true );
                             ?>
-                            
+
                             <div class="card-meta">
                                 <?php if ( $duree ) : ?>
-                                    <span class="meta-item">&#128197; <?php echo esc_html( $duree ); ?></span>
+                                    <span class="meta-item"><?php echo $svg['horloge']; ?> <?php echo esc_html( $duree ); ?></span>
                                 <?php endif; ?>
-                                
                                 <?php if ( $prix ) : ?>
-                                    <span class="meta-item">&#128176; <?php echo esc_html( $prix ); ?></span>
+                                    <span class="meta-item"><?php echo esc_html( $prix ); ?></span>
+                                <?php endif; ?>
+                                <?php if ( $niveau ) : ?>
+                                    <span class="meta-item"><?php echo esc_html( $niveau ); ?></span>
                                 <?php endif; ?>
                             </div>
-                            
+
                             <div class="card-description">
-                                <?php 
+                                <?php
                                 if ( has_excerpt() ) {
-                                    echo wp_trim_words( get_the_excerpt(), 15, '...' );
+                                    echo esc_html( wp_trim_words( get_the_excerpt(), 14, '...' ) );
                                 } else {
-                                    echo wp_trim_words( get_the_content(), 15, '...' );
+                                    echo esc_html( wp_trim_words( get_the_content(), 14, '...' ) );
                                 }
                                 ?>
                             </div>
-                            
-                            <?php if ( $niveau ) : ?>
-                                <div class="formation-niveau">
-                                    <span class="niveau-badge">&#128218; Niveau: <?php echo esc_html( $niveau ); ?></span>
-                                </div>
-                            <?php endif; ?>
-                            
-                            <div class="formation-footer">
-                                <a href="<?php the_permalink(); ?>" class="btn-link">En savoir plus &#8594;</a>
-                                <a href="https://wa.me/<?php echo get_theme_mod( 'whatsapp', '22666605890' ); ?>?text=Bonjour,%20je%20suis%20intéressée%20par%20la%20formation%20<?php echo urlencode( get_the_title() ); ?>" 
-                                   class="btn-whatsapp-small" target="_blank">
-                                   &#128172; S'inscrire
-                                </a>
-                            </div>
+
+                            <a href="<?php the_permalink(); ?>" class="btn-link" aria-label="En savoir plus sur <?php echo esc_attr( get_the_title() ); ?>">
+                                En savoir plus <span class="arrow" aria-hidden="true">→</span>
+                            </a>
                         </div>
-                    </div>
+                    </article>
                 <?php endwhile;
                 wp_reset_postdata();
             else : ?>
-                <div class="no-formations">
+                <div class="no-formations" style="text-align: center; padding: 60px; grid-column: 1 / -1;">
                     <p>Aucune formation disponible pour le moment. Revenez bientôt !</p>
+                    <a href="<?php echo esc_url( home_url( '/contact' ) ); ?>" class="btn btn-primary btn-large">
+                        <?php echo $svg['coeur']; ?> Nous contacter
+                    </a>
                 </div>
             <?php endif; ?>
         </div>
     </div>
 </section>
 
-<!-- SECTION POURQUOI NOUS CHOISIR -->
-<section class="pourquoi-section section-padding bg-light">
+<!-- ═══════════════════════════════════════════
+     SECTION POURQUOI NOUS CHOISIR
+     ═══════════════════════════════════════════ -->
+<section class="pourquoi-section section-padding" aria-labelledby="pourquoi-title">
     <div class="container">
         <div class="section-header">
-            <span class="section-badge">&#11088; Pourquoi nous choisir</span>
-            <h2 class="section-title">Une formation de qualité</h2>
-            <div class="section-divider"></div>
+            <span class="section-badge-light"><?php echo $svg['check']; ?> Pourquoi nous choisir</span>
+            <h2 class="section-title" id="pourquoi-title">Une formation de qualité</h2>
+            <div class="section-divider" aria-hidden="true"></div>
         </div>
-        
+
         <div class="features-grid">
-            <div class="feature-card">
-                <div class="feature-icon">&#128105;&#8205;&#127979;</div>
+            <div class="feature-card reveal-section">
+                <div class="feature-icon"><?php echo $svg['users']; ?></div>
                 <h3>Formatrices expérimentées</h3>
                 <p>Des professionnelles passionnées qui vous accompagnent tout au long de votre formation.</p>
             </div>
-            <div class="feature-card">
-                <div class="feature-icon">&#127942;</div>
+            <div class="feature-card reveal-section">
+                <div class="feature-icon"><?php echo $svg['award']; ?></div>
                 <h3>Certification reconnue</h3>
                 <p>Un diplôme valorisable sur le marché du travail local.</p>
             </div>
-            <div class="feature-card">
-                <div class="feature-icon">&#129309;</div>
+            <div class="feature-card reveal-section">
+                <div class="feature-icon"><?php echo $svg['target']; ?></div>
                 <h3>Accompagnement personnalisé</h3>
                 <p>Un suivi individuel pour garantir votre réussite.</p>
             </div>
@@ -143,19 +173,26 @@ $hero_soustitre = get_theme_mod( 'hero_formation_soustitre', 'Des compétences c
     </div>
 </section>
 
-<!-- SECTION CTA -->
-<section class="cta-formation section-padding">
+<!-- ═══════════════════════════════════════════
+     CTA FINAL (1 CTA dominant + WhatsApp discret)
+     ═══════════════════════════════════════════ -->
+<section class="cta-final-section section-padding" aria-labelledby="cta-formation-title">
     <div class="container">
-        <div class="cta-content">
-            <h2>Prête à commencer votre formation ?</h2>
+        <div class="cta-content reveal-section">
+            <span class="cta-icon"><?php echo $svg['coeur']; ?></span>
+            <h2 id="cta-formation-title">Prête à commencer votre formation ?</h2>
             <p>Contactez-nous dès aujourd'hui pour plus d'informations ou pour vous inscrire.</p>
-            <div class="cta-buttons">
-                <a href="<?php echo esc_url( home_url( '/contact' ) ); ?>" class="btn btn-primary">&#128222; Nous contacter</a>
-                <a href="https://wa.me/<?php echo get_theme_mod( 'whatsapp', '22666605890' ); ?>?text=Bonjour,%20je%20souhaite%20des%20informations%20sur%20les%20formations" 
-                   class="btn btn-whatsapp" target="_blank">
-                   &#128241; WhatsApp
+
+            <div class="cta-actions">
+                <a href="<?php echo esc_url( home_url( '/contact' ) ); ?>?sujet=inscription" class="btn btn-primary btn-large">
+                    <?php echo $svg['diplome']; ?> Je m'inscris
                 </a>
+                <a href="<?php echo esc_url( $url_whatsapp ); ?>" class="btn btn-outline-light btn-large" target="_blank" rel="noopener noreferrer">Parler sur WhatsApp</a>
             </div>
+
+            <p class="cta-whatsapp">
+                Une question ? <a href="<?php echo esc_url( $url_whatsapp ); ?>" target="_blank" rel="noopener noreferrer">Écrivez-nous sur WhatsApp</a>
+            </p>
         </div>
     </div>
 </section>

@@ -7,6 +7,9 @@
 (function() {
     'use strict';
 
+    // ✅ Signale que JS est actif (sinon contenu visible sans animation)
+    document.documentElement.classList.add('dsj-js');
+
     // ── Utilitaires ──
     const utils = {
         debounce: function(func, wait) {

@@ -1,7 +1,15 @@
 /* ========================================
  * 02-HEADER.CSS
  * Header, Navigation, Menu Mobile, WhatsApp
+ * ✅ MODERNISÉ : ordre DOM = ordre visuel (plus de hacks `order`)
+ * ✅ Icônes SVG cohérentes sur tous les appareils
  * ======================================== */
+
+/* === TOP BAR === */
+.top-bar { background: #102f49; color: rgba(255, 255, 255, 0.85); font-size: 0.75rem; padding: 6px 0; }
+.top-bar-content { display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap; }
+.top-bar-text { display: inline-flex; align-items: center; gap: 6px; }
+.top-bar-text svg { width: 0.85rem; height: 0.85rem; color: var(--clr-accent); flex-shrink: 0; }
 
 /* === HEADER === */
 .site-header {
@@ -9,18 +17,21 @@
     position: sticky;
     top: 0;
     z-index: 100;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 .header-inner {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 1rem 0;
+    gap: 1rem;
+    padding: 0.8rem 0;
 }
 .logo-text { color: var(--clr-white); font-size: 1.3rem; font-weight: 700; }
 .logo-tagline { font-size: 0.7rem; color: rgba(255, 255, 255, 0.7); }
 .site-logo img { max-width: 100%; height: auto; max-height: 70px; width: auto; }
 
-/* === NAVIGATION === */
+/* === NAVIGATION (desktop : à droite avant WhatsApp) === */
+.site-nav { margin-left: auto; }
 .nav-menu { display: flex; list-style: none; gap: 2rem; margin: 0; padding: 0; }
 .nav-menu a { color: var(--clr-white); font-weight: 500; transition: color var(--transition); position: relative; }
 .nav-menu a:hover, .nav-menu .current-menu-item a { color: var(--clr-accent); }
@@ -30,18 +41,7 @@
 }
 .nav-menu a:hover::after, .nav-menu .current-menu-item a::after { width: 100%; }
 
-/* === MENU TOGGLE === */
-.menu-toggle {
-    background: none; border: none; cursor: pointer; padding: 0;
-    width: 44px; height: 44px; display: none;
-    align-items: center; justify-content: center; flex-direction: column; gap: 5px;
-}
-.menu-toggle span { display: block; width: 25px; height: 2px; background: var(--clr-white); transition: var(--transition); }
-.menu-toggle.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
-.menu-toggle.active span:nth-child(2) { opacity: 0; transform: scale(0); }
-.menu-toggle.active span:nth-child(3) { transform: rotate(-45deg) translate(7px, -6px); }
-
-/* === WHATSAPP HEADER === */
+/* === BOUTON WHATSAPP (contraste WCAG AAA) === */
 .site-header .btn-whatsapp {
     display: inline-flex !important; align-items: center !important; justify-content: center !important;
     gap: 8px !important; background: #25D366 !important; color: #06341F !important;
@@ -54,32 +54,45 @@
     background: #128C7E !important; color: #ffffff !important; transform: translateY(-2px) !important;
     box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3) !important;
 }
-.site-header .btn-whatsapp-icon { font-size: 1rem !important; line-height: 1 !important; }
-.site-header .btn-whatsapp-text { display: inline-block !important; font-size: 0.85rem !important; font-weight: 700 !important; }
+.btn-whatsapp-icon { width: 1rem; height: 1rem; flex-shrink: 0; }
+.btn-whatsapp-text { display: inline-block; font-size: 0.85rem; font-weight: 700; }
 
+/* === MENU BURGER (caché sur desktop) === */
+.menu-toggle {
+    background: none; border: none; cursor: pointer; padding: 0;
+    width: 44px; height: 44px; display: none;
+    align-items: center; justify-content: center; flex-direction: column; gap: 5px;
+}
+.menu-toggle span { display: block; width: 25px; height: 2px; background: var(--clr-white); transition: var(--transition); }
+.menu-toggle.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+.menu-toggle.active span:nth-child(2) { opacity: 0; transform: scale(0); }
+.menu-toggle.active span:nth-child(3) { transform: rotate(-45deg) translate(7px, -6px); }
 
 /* === RESPONSIVE MOBILE === */
 @media (max-width: 768px) {
-    .header-inner { flex-wrap: nowrap; position: relative; gap: 8px; }
-    .site-logo { flex: 1; }
-    .menu-toggle { display: flex !important; margin-left: auto; margin-right: 10px; }
+    .top-bar-content { justify-content: center; gap: 1rem; }
+    .top-bar-text { font-size: 0.7rem; }
+
+    .header-inner { padding: 0.8rem 0; gap: 0.5rem; }
+    .site-logo { flex: 0 0 auto; }
     .site-logo img { max-height: 50px; }
-    .site-header .btn-whatsapp { padding: 6px 12px !important; gap: 5px !important; margin: 0 5px !important; }
-    .site-header .btn-whatsapp-icon { font-size: 0.85rem !important; }
-    .site-header .btn-whatsapp-text { font-size: 0.7rem !important; }
-    
-    .site-nav { position: absolute; top: 100%; left: 0; right: 0; width: 100%; z-index: 1000; }
+
+    /* Nav = dropdown sous le header (sorti du flux) */
+    .site-nav {
+        position: absolute; top: 100%; left: 0; right: 0; width: 100%;
+        margin-left: 0; z-index: 1000;
+    }
     .nav-menu {
-        display: none !important; position: absolute !important; top: 0 !important; left: 0 !important;
-        right: 0 !important; width: 100% !important; background: var(--clr-primary) !important;
-        flex-direction: column !important; gap: 0 !important; padding: 1rem !important; margin: 0 !important;
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2) !important; opacity: 0; transform: translateY(-20px);
+        display: flex !important; flex-direction: column !important; gap: 0 !important;
+        padding: 1rem !important; margin: 0 !important; background: var(--clr-primary) !important;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2) !important;
+        opacity: 0; transform: translateY(-20px);
         transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease;
         pointer-events: none; visibility: hidden;
     }
     .nav-menu.is-open {
-        display: flex !important; opacity: 1; transform: translateY(0);
-        pointer-events: auto; visibility: visible !important;
+        opacity: 1; transform: translateY(0);
+        pointer-events: auto; visibility: visible;
     }
     .nav-menu li {
         margin: 0; padding: 0; border-bottom: 1px solid rgba(255, 255, 255, 0.1);
@@ -92,51 +105,154 @@
     .nav-menu.is-open li:nth-child(4) { transition-delay: 0.2s; }
     .nav-menu.is-open li:nth-child(5) { transition-delay: 0.25s; }
     .nav-menu.is-open li:nth-child(6) { transition-delay: 0.3s; }
+    .nav-menu.is-open li:nth-child(7) { transition-delay: 0.35s; }
     .nav-menu a { display: block; padding: 12px 0; font-size: 1rem; }
     .nav-menu a::after { display: none; }
-    .top-bar-content { justify-content: center; gap: 1rem; }
-    .top-bar-text { font-size: 0.7rem; }
-    
-    /* Alignement correct */
-    .header-inner {
-        display: flex !important;
-        align-items: center !important;
-        justify-content: space-between !important;
-        flex-wrap: nowrap !important;
-        width: 100% !important;
-        padding: 0.8rem 1rem !important;
-        gap: 0 !important;
-    }
-    .site-logo {
-        flex: 0 0 auto !important;
-        margin-right: 8px !important;
-        order: 1 !important;
-    }
-    .site-header .btn-whatsapp {
-        order: 2 !important;
-        margin: 0 8px !important;
-        flex-shrink: 0 !important;
-    }
-    .menu-toggle {
-        order: 3 !important;
-        margin-left: 0 !important;
-        margin-right: 0 !important;
-        flex-shrink: 0 !important;
-    }
-    .site-nav {
-        order: 4 !important;
-        position: absolute !important;
-        top: 100% !important;
-        left: 0 !important;
-        right: 0 !important;
-        width: 100% !important;
-    }
+
+    /* Flux mobile : Logo | WhatsApp | Burger (sans hacks order) */
+    .site-header .btn-whatsapp { margin-left: auto; padding: 6px 12px !important; gap: 5px !important; }
+    .btn-whatsapp-icon { width: 0.85rem; height: 0.85rem; }
+    .btn-whatsapp-text { font-size: 0.7rem; }
+    .menu-toggle { display: flex; }
 }
 
 @media (max-width: 480px) {
     .top-bar { display: none; }
     .site-logo img { max-height: 40px; }
     .site-header .btn-whatsapp { padding: 5px 10px !important; }
-    .site-header .btn-whatsapp-text { font-size: 0.65rem !important; }
-    .site-header .btn-whatsapp-icon { font-size: 0.8rem !important; }
+    .btn-whatsapp-text { font-size: 0.65rem; }
+    .btn-whatsapp-icon { width: 0.8rem; height: 0.8rem; }
+}
+
+/* ═══════════════════════════════════════════
+   MOBILE RENFORCÉ (anti-cache / anti-FOUC)
+   Garantit : icône WhatsApp petite, burger à droite,
+   aucun panneau bleu quand le menu est fermé
+   ═══════════════════════════════════════════ */
+@media (max-width: 768px) {
+    .site-header .btn-whatsapp {
+        padding: 6px 12px !important;
+        margin-left: auto;
+    }
+    .site-header .btn-whatsapp-icon {
+        width: 0.9rem !important;
+        height: 0.9rem !important;
+    }
+    .site-header .btn-whatsapp-text {
+        font-size: 0.7rem !important;
+    }
+    .menu-toggle {
+        display: flex !important;
+    }
+    /* Menu fermé = totalement masqué (pas de bande bleue) */
+    .nav-menu:not(.is-open) {
+        display: none !important;
+    }
+    /* Menu ouvert = dropdown propre */
+    .nav-menu.is-open {
+        display: flex !important;
+        flex-direction: column !important;
+    }
+}
+
+/* ═══════════════════════════════════════════
+   ✅ BLOC ULTIME : anti-conflit mobile
+   Spécificité max : écrase 11-responsive.css
+   ═══════════════════════════════════════════ */
+@media (max-width: 768px) {
+    /* Bouton WhatsApp mobile : petit, lisible, contrasté */
+    .site-header .btn-whatsapp {
+        padding: 6px 12px !important;
+        margin-left: auto !important;
+        background: #25D366 !important;
+        color: #06341F !important;  /* WCAG AAA : jamais blanc ! */
+        font-size: 0.75rem !important;
+        font-weight: 700 !important;
+        gap: 5px !important;
+    }
+    .site-header .btn-whatsapp:hover {
+        background: #128C7E !important;
+        color: #ffffff !important;
+    }
+    .site-header .btn-whatsapp-icon {
+        width: 0.85rem !important;
+        height: 0.85rem !important;
+        flex-shrink: 0 !important;
+    }
+    .site-header .btn-whatsapp-text {
+        font-size: 0.7rem !important;
+        font-weight: 700 !important;
+    }
+
+    /* Burger à droite (dernier élément du flex) */
+    .menu-toggle {
+        display: flex !important;
+        flex-shrink: 0 !important;
+    }
+
+    /* Menu fermé = TOTALEMENT masqué (pas de bande bleue) */
+    .site-nav .nav-menu:not(.is-open) {
+        display: none !important;
+    }
+
+    /* Menu ouvert = dropdown propre */
+    .site-nav .nav-menu.is-open {
+        display: flex !important;
+        flex-direction: column !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .site-header .btn-whatsapp {
+        padding: 5px 10px !important;
+        font-size: 0.7rem !important;
+    }
+    .site-header .btn-whatsapp-icon {
+        width: 0.8rem !important;
+        height: 0.8rem !important;
+    }
+    .site-header .btn-whatsapp-text {
+        font-size: 0.65rem !important;
+    }
+}
+
+/* ═══════════════════════════════════════════
+   FIX FINAL MOBILE : espacement + z-index burger
+   Le header et son dropdown restent AU-DESSUS
+   de tout (footer inclus), partout au scroll
+   ═══════════════════════════════════════════ */
+@media (max-width: 768px) {
+
+    /* 1) Espacement WhatsApp ↔ burger (plus collés) */
+    .menu-toggle {
+        margin-left: 0.75rem !important;
+        position: relative;
+        z-index: 1001;          /* le bouton reste cliquable au-dessus de tout */
+    }
+
+    /* 2) Le header domine tout le reste (footer inclus) */
+    .site-header {
+        z-index: 1000 !important;
+        overflow: visible !important;   /* le dropdown ne doit pas être rogné */
+    }
+
+    /* 3) Le dropdown s'ouvre AU-DESSUS du contenu, à n'importe quel scroll */
+    .site-nav {
+        position: absolute !important;
+        top: 100% !important;
+        left: 0 !important;
+        right: 0 !important;
+        z-index: 1000 !important;
+    }
+
+    /* 4) État ouvert GARANTI (gagne sur toutes les règles "fermé") */
+    .nav-menu.is-open {
+        display: flex !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        pointer-events: auto !important;
+        transform: none !important;
+        max-height: 80vh !important;
+        overflow-y: auto !important;
+    }
 }
