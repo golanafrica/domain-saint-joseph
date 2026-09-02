@@ -216,7 +216,7 @@
     display: inline-block;
 }
 
-/* ✅ Lignes d'informations : grille = label auto + valeur alignée, jamais collée */
+/* Lignes d'informations : grille = label auto + valeur alignée */
 .formation-single-infos .info-row,
 .hebergement-infos .info-row {
     display: grid;
@@ -323,7 +323,7 @@
     flex-wrap: wrap;
     margin: 25px 0;
     position: relative;
-    z-index: 2; /* Les boutons toujours au-dessus */
+    z-index: 2;
 }
 
 .inscription-cta .btn,
@@ -500,34 +500,6 @@
         padding: 20px;
         border-radius: 16px;
     }
-
-    /* ✅ FIX BUG : label à GAUCHE + valeur à DROITE (compact, plus d'empilement) */
-    .formation-single-infos .info-row,
-    .hebergement-infos .info-row {
-        grid-template-columns: auto 1fr;
-        gap: 4px 14px;
-        padding: 10px 0;
-    }
-    .formation-single-infos .info-label,
-    .hebergement-infos .info-label {
-        font-size: 0.9rem;
-    }
-    .formation-single-infos .info-value,
-    .hebergement-infos .info-value {
-        font-size: 0.9rem;
-        text-align: right;   /* ✅ valeur collée à droite, même ligne */
-    }
-
-    /* Équipements : reste empilé (tags sous le label) */
-    .hebergement-infos .info-row.equipements,
-    .formation-single-infos .info-row.equipements {
-        grid-template-columns: 1fr;
-    }
-    .hebergement-infos .info-row.equipements .info-value,
-    .formation-single-infos .info-row.equipements .info-value {
-        text-align: left;
-    }
-
     .inscription-cta,
     .reservation-cta { flex-direction: column; }
     .inscription-cta .btn,
@@ -577,7 +549,6 @@
 
 /* ═══════════════════════════════════════════
    ✅ FIX : bande bleue compacte sous le hero
-   (identique mobile & desktop, tous navigateurs)
    ═══════════════════════════════════════════ */
 
 .formation-single-header .header-caption-band,
@@ -586,14 +557,53 @@
     padding: 2rem 1.25rem 2.75rem !important;
 }
 
-/* Le diviseur colle au titre, l'espace bleu vide disparaît */
 .formation-single-header .header-divider,
 .hebergement-single-header .header-divider {
     margin: 1.25rem 0 0 !important;
 }
 
-/* Sous-titre (extrait) : marge maîtrisée si présent */
 .formation-single-header .header-subtitle,
 .hebergement-single-header .header-subtitle {
     margin: 1.25rem 0 0 !important;
+}
+
+/* ═══════════════════════════════════════════
+   ✅ FIX FINAL MOBILE : label ↔ valeur SUR LA MÊME LIGNE
+   (!important pour gagner contre 13-modern-home à 480px)
+   ═══════════════════════════════════════════ */
+@media (max-width: 768px) {
+    .formation-single-infos .info-row,
+    .hebergement-infos .info-row {
+        grid-template-columns: auto 1fr !important;
+        align-items: center !important;
+        gap: 4px 14px !important;
+    }
+    .formation-single-infos .info-value,
+    .hebergement-infos .info-value {
+        text-align: right !important;
+        justify-self: end !important;
+    }
+
+    /* Équipements : reste empilé (tags sous le label) */
+    .formation-single-infos .info-row.equipements,
+    .hebergement-infos .info-row.equipements {
+        grid-template-columns: 1fr !important;
+    }
+    .formation-single-infos .info-row.equipements .info-value,
+    .hebergement-infos .info-row.equipements .info-value {
+        text-align: left !important;
+        justify-self: start !important;
+    }
+}
+
+/* ✅ CTA doré : gagne contre toute règle verte (wa.me) */
+.inscription-cta a.btn-primary,
+.reservation-cta a.btn-primary {
+    background: var(--clr-accent, #D4AC0D) !important;
+    color: var(--clr-primary, #1A5276) !important;
+    border: none !important;
+}
+.inscription-cta a.btn-primary:hover,
+.reservation-cta a.btn-primary:hover {
+    background: #c49b0c !important;
 }
