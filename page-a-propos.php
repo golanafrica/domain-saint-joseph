@@ -1,42 +1,79 @@
 <?php
 /**
  * Template Name: À propos
+ * Version modernisée : même langage visuel que l'accueil
+ * (SVG cohérents, reveal au scroll, accessibilité complète)
  */
-get_header(); ?>
+get_header();
 
-<!-- HERO SECTION -->
+/* ────────────────────────────────────────────────────────────
+   ICÔNES SVG (cohérentes sur tous les appareils)
+   ──────────────────────────────────────────────────────────── */
+$svg_wrap = '<svg class="dsj-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">';
+$svg = [
+    'livre'     => $svg_wrap . '<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>',
+    'eglise'    => $svg_wrap . '<path d="M18 22V8l-6-6-6 6v14"/><path d="M12 2v4"/><path d="M10 4h4"/><path d="M8 18h8"/><path d="M12 12v6"/></svg>',
+    'target'    => $svg_wrap . '<circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>',
+    'diplome'   => $svg_wrap . '<path d="M22 10L12 5 2 10l10 5 10-5z"/><path d="M6 12.5V17c0 1.7 2.7 3 6 3s6-1.3 6-3v-4.5"/></svg>',
+    'maison'    => $svg_wrap . '<path d="M3 10.5L12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/><path d="M10 21v-6h4v6"/></svg>',
+    'coeur'     => $svg_wrap . '<path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21.2l7.8-7.8 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg>',
+    'etoile'    => $svg_wrap . '<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>',
+    'users'     => $svg_wrap . '<path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="10" cy="7" r="4"/><path d="M21 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>',
+    'person'    => $svg_wrap . '<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>',
+    'hands'     => $svg_wrap . '<path d="M18 11V6a2 2 0 0 0-2-2a2 2 0 0 0-2 2"/><path d="M14 10V4a2 2 0 0 0-2-2a2 2 0 0 0-2 2v2"/><path d="M10 10.5V6a2 2 0 0 0-2-2a2 2 0 0 0-2 2v8"/><path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"/></svg>',
+    'shield'    => $svg_wrap . '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>',
+    'check'     => $svg_wrap . '<path d="M20 6L9 17l-5-5"/></svg>',
+    'award'     => $svg_wrap . '<circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg>',
+    'share'     => $svg_wrap . '<circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>',
+    'clipboard' => $svg_wrap . '<path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg>',
+    'mail'      => $svg_wrap . '<path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>',
+    'fleche'    => $svg_wrap . '<line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>',
+];
+
+$url_whatsapp = 'https://wa.me/' . preg_replace( '/[^0-9]/', '', get_theme_mod( 'whatsapp', '22666605890' ) );
+?>
+
+<!-- ═══════════════════════════════════════════
+     HERO SECTION
+     ═══════════════════════════════════════════ -->
 <?php
 $hero_image     = get_theme_mod( 'hero_apropos_image' );
-$hero_badge     = get_theme_mod( 'hero_apropos_badge', '&#128214; Notre histoire' );
 $hero_titre     = get_theme_mod( 'hero_apropos_titre', 'À propos de nous' );
 $hero_soustitre = get_theme_mod( 'hero_apropos_soustitre', 'Travailleuses Missionnaires de l\'Immaculée - Un engagement au service des femmes et des familles' );
 ?>
 
-<section class="page-header apropos-header">
+<section class="page-header apropos-header" aria-labelledby="apropos-hero-title">
     <div class="page-photo-zone"
          <?php if ( $hero_image ) : ?>
          style="background-image: url('<?php echo esc_url( $hero_image ); ?>');"
-         <?php endif; ?>>
+         <?php endif; ?>
+         role="img"
+         aria-label="<?php echo esc_attr( $hero_titre ); ?>">
     </div>
     <div class="header-caption-band">
-        <span class="header-badge"><?php echo $hero_badge; ?></span>
-        <h1 class="header-title"><?php echo esc_html( $hero_titre ); ?></h1>
+        <span class="header-badge">
+            <?php echo $svg['livre']; ?>
+            Notre histoire
+        </span>
+        <h1 class="header-title" id="apropos-hero-title"><?php echo esc_html( $hero_titre ); ?></h1>
         <div class="header-divider">
             <span class="divider-line"></span>
-            <span class="divider-icon">&#9962;</span>
+            <span class="divider-icon"><?php echo $svg['eglise']; ?></span>
             <span class="divider-line"></span>
         </div>
         <p class="header-subtitle"><?php echo esc_html( $hero_soustitre ); ?></p>
     </div>
 </section>
 
-<!-- SECTION NOTRE HISTOIRE -->
-<section class="histoire-section section-padding">
+<!-- ═══════════════════════════════════════════
+     SECTION NOTRE HISTOIRE
+     ═══════════════════════════════════════════ -->
+<section class="histoire-section section-padding reveal-section" aria-labelledby="histoire-title">
     <div class="container">
         <div class="section-header">
-            <span class="section-badge">&#128214; Notre histoire</span>
-            <h2 class="section-title">Le Domaine Saint Joseph</h2>
-            <div class="section-divider"></div>
+            <span class="section-badge-light"><?php echo $svg['livre']; ?> Notre histoire</span>
+            <h2 class="section-title" id="histoire-title">Le Domaine Saint Joseph</h2>
+            <div class="section-divider" aria-hidden="true"></div>
         </div>
         <div class="histoire-content">
             <p>Le Domaine Saint Joseph a été créé en <strong>2022</strong>. Ce centre est une expression du charisme des <strong>Travailleuses Missionnaires de l'Immaculée</strong>.</p>
@@ -45,49 +82,57 @@ $hero_soustitre = get_theme_mod( 'hero_apropos_soustitre', 'Travailleuses Missio
     </div>
 </section>
 
-<!-- SECTION NOTRE MISSION (Personnalisable via Customizer) -->
-<section class="mission-section section-padding bg-light">
+<!-- ═══════════════════════════════════════════
+     SECTION NOTRE MISSION (feature cards modernes)
+     ═══════════════════════════════════════════ -->
+<section class="mission-section section-padding section-alt" aria-labelledby="mission-title">
     <div class="container">
-        <div class="section-header">
-            <span class="section-badge">&#127919; Notre raison d'être</span>
-            <h2 class="section-title">Notre Mission</h2>
-            <div class="section-divider"></div>
+        <div class="section-header reveal-section">
+            <span class="section-badge-light"><?php echo $svg['target']; ?> Notre raison d'être</span>
+            <h2 class="section-title" id="mission-title">Notre Mission</h2>
+            <div class="section-divider" aria-hidden="true"></div>
         </div>
-        
-        <div class="mission-detail">
+
+        <div class="mission-detail reveal-section">
             <p class="mission-statement">Soutenir, encourager les jeunes filles et les jeunes mamans à acquérir des compétences techniques dans le but d'assumer des responsabilités dans la vie courante.</p>
         </div>
-        
-        <div class="mission-grid">
+
+        <div class="features-grid">
             <!-- Mission 1 - Former -->
-            <div class="mission-card">
-                <?php if ( get_theme_mod( 'mission_1_image' ) ) : ?>
-                    <img src="<?php echo esc_url( get_theme_mod( 'mission_1_image' ) ); ?>" alt="<?php echo esc_attr( get_theme_mod( 'mission_1_titre', 'Former' ) ); ?>" class="mission-image">
-                <?php else : ?>
-                    <div class="mission-icon">&#127891;</div>
-                <?php endif; ?>
+            <div class="feature-card reveal-section">
+                <div class="feature-icon">
+                    <?php if ( get_theme_mod( 'mission_1_image' ) ) : ?>
+                        <img src="<?php echo esc_url( get_theme_mod( 'mission_1_image' ) ); ?>" alt="<?php echo esc_attr( get_theme_mod( 'mission_1_titre', 'Former' ) ); ?>" class="feature-image">
+                    <?php else : ?>
+                        <?php echo $svg['diplome']; ?>
+                    <?php endif; ?>
+                </div>
                 <h3><?php echo esc_html( get_theme_mod( 'mission_1_titre', 'Former' ) ); ?></h3>
                 <p><?php echo wp_kses_post( get_theme_mod( 'mission_1_texte', 'Offrir une formation technique de qualité aux jeunes filles pour leur autonomie financière et sociale.' ) ); ?></p>
             </div>
-            
+
             <!-- Mission 2 - Accueillir -->
-            <div class="mission-card">
-                <?php if ( get_theme_mod( 'mission_2_image' ) ) : ?>
-                    <img src="<?php echo esc_url( get_theme_mod( 'mission_2_image' ) ); ?>" alt="<?php echo esc_attr( get_theme_mod( 'mission_2_titre', 'Accueillir' ) ); ?>" class="mission-image">
-                <?php else : ?>
-                    <div class="mission-icon">&#127968;</div>
-                <?php endif; ?>
+            <div class="feature-card reveal-section">
+                <div class="feature-icon">
+                    <?php if ( get_theme_mod( 'mission_2_image' ) ) : ?>
+                        <img src="<?php echo esc_url( get_theme_mod( 'mission_2_image' ) ); ?>" alt="<?php echo esc_attr( get_theme_mod( 'mission_2_titre', 'Accueillir' ) ); ?>" class="feature-image">
+                    <?php else : ?>
+                        <?php echo $svg['maison']; ?>
+                    <?php endif; ?>
+                </div>
                 <h3><?php echo esc_html( get_theme_mod( 'mission_2_titre', 'Accueillir' ) ); ?></h3>
                 <p><?php echo wp_kses_post( get_theme_mod( 'mission_2_texte', 'Procurer un lieu de repos, de ressourcement et de rencontres dans un cadre paisible et sécurisé.' ) ); ?></p>
             </div>
-            
+
             <!-- Mission 3 - Accompagner -->
-            <div class="mission-card">
-                <?php if ( get_theme_mod( 'mission_3_image' ) ) : ?>
-                    <img src="<?php echo esc_url( get_theme_mod( 'mission_3_image' ) ); ?>" alt="<?php echo esc_attr( get_theme_mod( 'mission_3_titre', 'Accompagner' ) ); ?>" class="mission-image">
-                <?php else : ?>
-                    <div class="mission-icon">&#129309;</div>
-                <?php endif; ?>
+            <div class="feature-card reveal-section">
+                <div class="feature-icon">
+                    <?php if ( get_theme_mod( 'mission_3_image' ) ) : ?>
+                        <img src="<?php echo esc_url( get_theme_mod( 'mission_3_image' ) ); ?>" alt="<?php echo esc_attr( get_theme_mod( 'mission_3_titre', 'Accompagner' ) ); ?>" class="feature-image">
+                    <?php else : ?>
+                        <?php echo $svg['hands']; ?>
+                    <?php endif; ?>
+                </div>
                 <h3><?php echo esc_html( get_theme_mod( 'mission_3_titre', 'Accompagner' ) ); ?></h3>
                 <p><?php echo wp_kses_post( get_theme_mod( 'mission_3_texte', 'Soutenir les plus vulnérables avec compassion et bienveillance dans leurs projets de vie.' ) ); ?></p>
             </div>
@@ -95,100 +140,104 @@ $hero_soustitre = get_theme_mod( 'hero_apropos_soustitre', 'Travailleuses Missio
     </div>
 </section>
 
-<!-- SECTION NOS VALEURS -->
-<section class="nos-valeurs-section section-padding">
+<!-- ═══════════════════════════════════════════
+     SECTION NOS VALEURS (feature cards compactes)
+     ═══════════════════════════════════════════ -->
+<section class="nos-valeurs-section section-padding" aria-labelledby="valeurs-title">
     <div class="container">
-        <div class="section-header">
-            <span class="section-badge">&#11088; Nos fondamentaux</span>
-            <h2 class="section-title">Nos Valeurs</h2>
-            <div class="section-divider"></div>
+        <div class="section-header reveal-section">
+            <span class="section-badge-light"><?php echo $svg['etoile']; ?> Nos fondamentaux</span>
+            <h2 class="section-title" id="valeurs-title">Nos Valeurs</h2>
+            <div class="section-divider" aria-hidden="true"></div>
             <p class="section-subtitle">Ce qui nous guide au quotidien</p>
         </div>
-        
-        <div class="valeurs-list">
-            <div class="valeur-item">
-                <span class="valeur-emoji">&#129309;</span>
-                <span class="valeur-titre">Respect</span>
-                <span class="valeur-desc">De la personne humaine dans sa dignité</span>
+
+        <div class="features-grid">
+            <div class="feature-card reveal-section">
+                <div class="feature-icon"><?php echo $svg['hands']; ?></div>
+                <h3>Respect</h3>
+                <p>De la personne humaine dans sa dignité</p>
             </div>
-            <div class="valeur-item">
-                <span class="valeur-emoji">&#128142;</span>
-                <span class="valeur-titre">Honnêteté</span>
-                <span class="valeur-desc">Dans toutes nos relations et engagements</span>
+            <div class="feature-card reveal-section">
+                <div class="feature-icon"><?php echo $svg['shield']; ?></div>
+                <h3>Honnêteté</h3>
+                <p>Dans toutes nos relations et engagements</p>
             </div>
-            <div class="valeur-item">
-                <span class="valeur-emoji">&#10084;&#65039;</span>
-                <span class="valeur-titre">Compassion</span>
-                <span class="valeur-desc">Envers les plus vulnérables</span>
+            <div class="feature-card reveal-section">
+                <div class="feature-icon"><?php echo $svg['coeur']; ?></div>
+                <h3>Compassion</h3>
+                <p>Envers les plus vulnérables</p>
             </div>
-            <div class="valeur-item">
-                <span class="valeur-emoji">&#127807;</span>
-                <span class="valeur-titre">Partage</span>
-                <span class="valeur-desc">Des savoirs, ressources et expériences</span>
+            <div class="feature-card reveal-section">
+                <div class="feature-icon"><?php echo $svg['share']; ?></div>
+                <h3>Partage</h3>
+                <p>Des savoirs, ressources et expériences</p>
             </div>
-            <div class="valeur-item">
-                <span class="valeur-emoji">&#128220;</span>
-                <span class="valeur-titre">Rigueur</span>
-                <span class="valeur-desc">Dans le travail sérieux et bien accompli</span>
+            <div class="feature-card reveal-section">
+                <div class="feature-icon"><?php echo $svg['clipboard']; ?></div>
+                <h3>Rigueur</h3>
+                <p>Dans le travail sérieux et bien accompli</p>
             </div>
-            <div class="valeur-item">
-                <span class="valeur-emoji">&#11088;</span>
-                <span class="valeur-titre">Excellence</span>
-                <span class="valeur-desc">Toujours viser le meilleur de soi-même</span>
+            <div class="feature-card reveal-section">
+                <div class="feature-icon"><?php echo $svg['award']; ?></div>
+                <h3>Excellence</h3>
+                <p>Toujours viser le meilleur de soi-même</p>
             </div>
         </div>
     </div>
 </section>
 
-<!-- SECTION NOTRE ÉQUIPE (Personnalisable via Customizer) -->
-<section class="equipe-section section-padding bg-light">
+<!-- ═══════════════════════════════════════════
+     SECTION NOTRE ÉQUIPE
+     ═══════════════════════════════════════════ -->
+<section class="equipe-section section-padding section-alt" aria-labelledby="equipe-title">
     <div class="container">
-        <div class="section-header">
-            <span class="section-badge">&#128101; Notre communauté</span>
-            <h2 class="section-title">Notre Équipe</h2>
-            <div class="section-divider"></div>
+        <div class="section-header reveal-section">
+            <span class="section-badge-light"><?php echo $svg['users']; ?> Notre communauté</span>
+            <h2 class="section-title" id="equipe-title">Notre Équipe</h2>
+            <div class="section-divider" aria-hidden="true"></div>
             <p class="section-subtitle">Des personnes dévouées au service des autres</p>
         </div>
-        
+
         <div class="equipe-grid">
             <!-- Équipe 1 -->
-            <div class="equipe-card">
+            <div class="equipe-card reveal-section">
                 <div class="equipe-image">
                     <?php if ( get_theme_mod( 'equipe_1_image' ) ) : ?>
-                        <img src="<?php echo esc_url( get_theme_mod( 'equipe_1_image' ) ); ?>" alt="<?php echo esc_attr( get_theme_mod( 'equipe_1_nom', 'S&#339;ur Marie-Bernadette' ) ); ?>" class="equipe-photo">
+                        <img src="<?php echo esc_url( get_theme_mod( 'equipe_1_image' ) ); ?>" alt="<?php echo esc_attr( get_theme_mod( 'equipe_1_nom', 'Sœur Marie-Bernadette' ) ); ?>" class="equipe-photo">
                     <?php else : ?>
-                        <div class="equipe-placeholder">&#128100;</div>
+                        <div class="equipe-placeholder"><?php echo $svg['person']; ?></div>
                     <?php endif; ?>
                 </div>
-                <h3><?php echo esc_html( get_theme_mod( 'equipe_1_nom', 'S&#339;ur Marie-Bernadette' ) ); ?></h3>
+                <h3><?php echo esc_html( get_theme_mod( 'equipe_1_nom', 'Sœur Marie-Bernadette' ) ); ?></h3>
                 <p class="equipe-fonction"><?php echo esc_html( get_theme_mod( 'equipe_1_fonction', 'Supérieure de la communauté' ) ); ?></p>
                 <p><?php echo esc_html( get_theme_mod( 'equipe_1_description', 'Responsable du Domaine Saint Joseph et de l\'orientation pastorale.' ) ); ?></p>
             </div>
-            
+
             <!-- Équipe 2 -->
-            <div class="equipe-card">
+            <div class="equipe-card reveal-section">
                 <div class="equipe-image">
                     <?php if ( get_theme_mod( 'equipe_2_image' ) ) : ?>
-                        <img src="<?php echo esc_url( get_theme_mod( 'equipe_2_image' ) ); ?>" alt="<?php echo esc_attr( get_theme_mod( 'equipe_2_nom', 'S&#339;ur Thérèse' ) ); ?>" class="equipe-photo">
+                        <img src="<?php echo esc_url( get_theme_mod( 'equipe_2_image' ) ); ?>" alt="<?php echo esc_attr( get_theme_mod( 'equipe_2_nom', 'Sœur Thérèse' ) ); ?>" class="equipe-photo">
                     <?php else : ?>
-                        <div class="equipe-placeholder">&#128100;</div>
+                        <div class="equipe-placeholder"><?php echo $svg['person']; ?></div>
                     <?php endif; ?>
                 </div>
-                <h3><?php echo esc_html( get_theme_mod( 'equipe_2_nom', 'S&#339;ur Thérèse' ) ); ?></h3>
+                <h3><?php echo esc_html( get_theme_mod( 'equipe_2_nom', 'Sœur Thérèse' ) ); ?></h3>
                 <p class="equipe-fonction"><?php echo esc_html( get_theme_mod( 'equipe_2_fonction', 'Responsable des formations' ) ); ?></p>
                 <p><?php echo esc_html( get_theme_mod( 'equipe_2_description', 'Coordinatrice des filières techniques et du suivi pédagogique.' ) ); ?></p>
             </div>
-            
+
             <!-- Équipe 3 -->
-            <div class="equipe-card">
+            <div class="equipe-card reveal-section">
                 <div class="equipe-image">
                     <?php if ( get_theme_mod( 'equipe_3_image' ) ) : ?>
-                        <img src="<?php echo esc_url( get_theme_mod( 'equipe_3_image' ) ); ?>" alt="<?php echo esc_attr( get_theme_mod( 'equipe_3_nom', 'S&#339;ur Claire' ) ); ?>" class="equipe-photo">
+                        <img src="<?php echo esc_url( get_theme_mod( 'equipe_3_image' ) ); ?>" alt="<?php echo esc_attr( get_theme_mod( 'equipe_3_nom', 'Sœur Claire' ) ); ?>" class="equipe-photo">
                     <?php else : ?>
-                        <div class="equipe-placeholder">&#128100;</div>
+                        <div class="equipe-placeholder"><?php echo $svg['person']; ?></div>
                     <?php endif; ?>
                 </div>
-                <h3><?php echo esc_html( get_theme_mod( 'equipe_3_nom', 'S&#339;ur Claire' ) ); ?></h3>
+                <h3><?php echo esc_html( get_theme_mod( 'equipe_3_nom', 'Sœur Claire' ) ); ?></h3>
                 <p class="equipe-fonction"><?php echo esc_html( get_theme_mod( 'equipe_3_fonction', 'Responsable de l\'accueil' ) ); ?></p>
                 <p><?php echo esc_html( get_theme_mod( 'equipe_3_description', 'Gère l\'hébergement et le bien-être des hôtes et résidentes.' ) ); ?></p>
             </div>
@@ -196,17 +245,52 @@ $hero_soustitre = get_theme_mod( 'hero_apropos_soustitre', 'Travailleuses Missio
     </div>
 </section>
 
-<!-- SECTION APPEL À L'AIDE -->
-<section class="aide-section section-padding">
+<!-- ═══════════════════════════════════════════
+     SECTION APPEL À L'AIDE
+     ═══════════════════════════════════════════ -->
+<section class="aide-section section-padding reveal-section" aria-labelledby="aide-title">
     <div class="container">
         <div class="aide-content">
-            <span class="aide-badge">&#128157; Votre soutien compte</span>
-            <h2>Nous sollicitons votre aide</h2>
+            <span class="aide-badge">
+                <?php echo $svg['coeur']; ?>
+                Votre soutien compte
+            </span>
+            <h2 id="aide-title">Nous sollicitons votre aide</h2>
             <p>Nous vous remercions pour votre contribution à la formation de ces jeunes par le moyen de parrainages ou de dons.</p>
             <div class="aide-buttons">
-                <a href="<?php echo esc_url( home_url( '/nous-soutenir' ) ); ?>" class="btn btn-primary btn-large">&#128155; Faire un don</a>
-                <a href="<?php echo esc_url( home_url( '/contact' ) ); ?>" class="btn btn-secondary btn-large">&#128231; Nous contacter</a>
+                <a href="<?php echo esc_url( home_url( '/nous-soutenir' ) ); ?>" class="btn btn-primary btn-large" aria-label="Faire un don pour soutenir le Domaine">
+                    <?php echo $svg['coeur']; ?> Faire un don
+                </a>
+                <a href="<?php echo esc_url( home_url( '/contact' ) ); ?>" class="btn btn-secondary btn-large" aria-label="Nous contacter pour en savoir plus">
+                    <?php echo $svg['mail']; ?> Nous contacter
+                </a>
             </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     CTA FINAL (identique aux autres pages)
+     ═══════════════════════════════════════════ -->
+<section class="cta-final-section section-padding" aria-labelledby="cta-apropos-title">
+    <div class="container">
+        <div class="cta-content reveal-section">
+            <span class="cta-icon"><?php echo $svg['coeur']; ?></span>
+            <h2 id="cta-apropos-title">Envie d'en savoir plus ?</h2>
+            <p>Découvrez nos formations, notre Maison d'Accueil ou contactez-nous pour toute question.</p>
+
+            <div class="cta-actions">
+                <a href="<?php echo esc_url( home_url( '/formation' ) ); ?>" class="btn btn-primary btn-large" aria-label="Découvrir nos formations">
+                    <?php echo $svg['diplome']; ?> Nos formations
+                </a>
+                <a href="<?php echo esc_url( $url_whatsapp ); ?>" class="btn btn-outline-light btn-large" target="_blank" rel="noopener noreferrer" aria-label="Nous contacter sur WhatsApp">
+                    <?php echo $svg['fleche']; ?> Parler sur WhatsApp
+                </a>
+            </div>
+
+            <p class="cta-whatsapp">
+                Une question ? <a href="<?php echo esc_url( $url_whatsapp ); ?>" target="_blank" rel="noopener noreferrer">Écrivez-nous sur WhatsApp</a>
+            </p>
         </div>
     </div>
 </section>

@@ -2,6 +2,7 @@
  * 09-SINGLES.CSS
  * Single Formation + Single Hébergement
  * Version corrigée : image = largeur colonne + pleine hauteur (sans débordement)
+ * ✅ FIX : info-row en grille (label auto + valeur alignée, plus de texte collé)
  * ======================================== */
 
 /* ═══════════════════════════════════════════════════════════
@@ -219,14 +220,15 @@
     display: inline-block;
 }
 
-/* Lignes d'informations */
+/* ✅ Lignes d'informations : grille = label auto + valeur alignée, jamais collée */
 .formation-single-infos .info-row,
 .hebergement-infos .info-row {
-    display: flex;
-    align-items: flex-start;
+    display: grid;
+    grid-template-columns: minmax(180px, auto) 1fr;
+    align-items: center;
     padding: 12px 0;
     border-bottom: 1px solid #f0f0f0;
-    gap: 10px;
+    gap: 0.85rem 2rem;
 }
 
 .formation-single-infos .info-row:last-child,
@@ -236,16 +238,16 @@
 
 .formation-single-infos .info-label,
 .hebergement-infos .info-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
     font-weight: 700;
-    width: 140px;
-    min-width: 140px;
-    flex-shrink: 0;
     color: var(--clr-primary);
+    white-space: nowrap;
 }
 
 .formation-single-infos .info-value,
 .hebergement-infos .info-value {
-    flex: 1;
     color: #555;
     word-break: break-word;
 }
@@ -469,8 +471,7 @@
 @media (max-width: 992px) {
     .formation-single-grid,
     .hebergement-grid { gap: 35px; }
-    .formation-single-infos .info-label,
-    .hebergement-infos .info-label { width: 120px; min-width: 120px; }
+    /* ✅ largeurs fixes supprimées : la grille gère */
     .formation-single-image,
     .main-image { min-height: 300px; }
 }
@@ -501,24 +502,16 @@
     }
     .formation-single-infos .info-row,
     .hebergement-infos .info-row {
-        flex-direction: row;
-        flex-wrap: wrap;
-        align-items: flex-start;
+        grid-template-columns: 1fr;
+        gap: 4px;
         padding: 10px 0;
-        gap: 8px;
     }
     .formation-single-infos .info-label,
     .hebergement-infos .info-label {
-        width: 45%;
-        min-width: 110px;
-        margin-bottom: 0;
-        flex-shrink: 0;
         font-size: 0.9rem;
     }
     .formation-single-infos .info-value,
     .hebergement-infos .info-value {
-        width: 55%;
-        flex: 1;
         font-size: 0.9rem;
     }
     .hebergement-infos .info-row.equipements,
@@ -563,13 +556,11 @@
     }
     .formation-single-infos .info-label,
     .hebergement-infos .info-label {
-        width: 40%;
-        min-width: 90px;
         font-size: 0.85rem;
+        white-space: normal;
     }
     .formation-single-infos .info-value,
     .hebergement-infos .info-value {
-        width: 60%;
         font-size: 0.85rem;
     }
     .formation-single-infos .infos-card,
@@ -581,4 +572,29 @@
     .formation-single-header .divider-icon { font-size: 1.2rem; }
     .formation-single-header .divider-line { width: 40px; }
     .formation-badge { font-size: 0.7rem; padding: 4px 12px; }
+}
+
+
+
+/* ═══════════════════════════════════════════
+   ✅ FIX : bande bleue compacte sous le hero
+   (identique mobile & desktop, tous navigateurs)
+   ═══════════════════════════════════════════ */
+
+.formation-single-header .header-caption-band,
+.hebergement-single-header .header-caption-band {
+    min-height: 0 !important;
+    padding: 2rem 1.25rem 2.75rem !important;
+}
+
+/* Le diviseur colle au titre, l'espace bleu vide disparaît */
+.formation-single-header .header-divider,
+.hebergement-single-header .header-divider {
+    margin: 1.25rem 0 0 !important;
+}
+
+/* Sous-titre (extrait) : marge maîtrisée si présent */
+.formation-single-header .header-subtitle,
+.hebergement-single-header .header-subtitle {
+    margin: 1.25rem 0 0 !important;
 }

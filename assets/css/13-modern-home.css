@@ -1,17 +1,20 @@
 /* ========================================
  * 13-MODERN-HOME.CSS
- * Design "Moderne Chaleureux" pour la page d'accueil
+ * Design "Moderne Chaleureux" pour la page d'accueil + pages internes
  * ✅ SANS backdrop-filter (lent sur téléphones modestes)
  * ✅ SANS animations infinies (batterie + distraction)
  * ✅ Uniquement des transforms (légers pour le GPU)
  * ✅ Compatible avec reveal-section existant
  * ✅ FIX : images cartes formations en 4:3 (plus de rognage)
+ * ✅ DESIGN SYSTEM GLOBAL : accueille accueil + pages internes
  * ======================================== */
 
 /* === PALETTE RÉDUITE : 2 tons + bleu CTA === */
 .home-histoire,
 .home-maison,
-.home-galerie {
+.home-galerie,
+.formations-archive,
+.pourquoi-section {
     background: #ffffff;
 }
 
@@ -22,6 +25,10 @@
 
 .section-padding {
     padding: clamp(3rem, 6vw, 5rem) 0;
+}
+
+.section-alt {
+    background: #F8FAFC !important;
 }
 
 /* === BADGES LÉGERS (remplace section-badge-dark) === */
@@ -880,6 +887,133 @@
 }
 
 /* ═══════════════════════════════════════════
+   FEATURES GRID (Pourquoi nous choisir - pages internes)
+   ═══════════════════════════════════════════ */
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    margin-top: 40px;
+}
+
+.feature-card {
+    background: #ffffff;
+    padding: 40px 30px;
+    text-align: center;
+    border-radius: 20px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.feature-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+}
+
+.feature-icon {
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(212, 172, 13, 0.15);
+    border-radius: 50%;
+    margin-bottom: 20px;
+    transition: transform 0.3s ease, background 0.3s ease;
+}
+
+.feature-card:hover .feature-icon {
+    transform: rotate(15deg) scale(1.1);
+    background: var(--clr-accent, #D4AC0D);
+}
+
+.feature-icon .dsj-icon {
+    width: 2.5rem;
+    height: 2.5rem;
+    color: var(--clr-primary, #1A5276);
+}
+
+.feature-card:hover .feature-icon .dsj-icon {
+    color: white;
+}
+
+.feature-card h3 {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--clr-primary, #1A5276);
+    margin-bottom: 15px;
+}
+
+.feature-card p {
+    color: #666;
+    line-height: 1.6;
+    font-size: 0.95rem;
+    margin: 0;
+    flex-grow: 1;
+}
+
+/* ═══════════════════════════════════════════
+   ÉTAPES D'INSCRIPTION (pages internes)
+   ═══════════════════════════════════════════ */
+.pourquoi-list {
+    max-width: 800px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.pourquoi-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    padding: 25px;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.pourquoi-item:hover {
+    transform: translateX(8px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+}
+
+.pourquoi-icon {
+    flex-shrink: 0;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(212, 172, 13, 0.15);
+    border-radius: 50%;
+}
+
+.pourquoi-icon .dsj-icon {
+    width: 2rem;
+    height: 2rem;
+    color: var(--clr-primary, #1A5276);
+}
+
+.pourquoi-item h3 {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--clr-primary, #1A5276);
+    margin-bottom: 6px;
+}
+
+.pourquoi-item p {
+    color: #666;
+    line-height: 1.6;
+    margin: 0;
+    font-size: 0.95rem;
+}
+
+/* ═══════════════════════════════════════════
    RESPONSIVE MOBILE
    ═══════════════════════════════════════════ */
 @media (max-width: 992px) {
@@ -901,6 +1035,20 @@
     .galerie-grid-4,
     .galerie-grid-3 {
         grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .features-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 25px;
+    }
+    
+    .feature-card {
+        padding: 30px 20px;
+    }
+    
+    .feature-icon {
+        width: 70px;
+        height: 70px;
     }
 }
 
@@ -933,6 +1081,53 @@
     .temoignages-strip {
         grid-template-columns: 1fr;
     }
+    
+    .features-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .feature-card {
+        padding: 25px 20px;
+    }
+    
+    .feature-icon {
+        width: 65px;
+        height: 65px;
+        margin-bottom: 15px;
+    }
+    
+    .feature-card h3 {
+        font-size: 1.15rem;
+        margin-bottom: 12px;
+    }
+    
+    .feature-card p {
+        font-size: 0.9rem;
+    }
+    
+    .pourquoi-item {
+        padding: 20px 15px;
+        gap: 15px;
+    }
+    
+    .pourquoi-icon {
+        width: 50px;
+        height: 50px;
+    }
+    
+    .pourquoi-icon .dsj-icon {
+        width: 1.6rem;
+        height: 1.6rem;
+    }
+    
+    .pourquoi-item h3 {
+        font-size: 1.05rem;
+    }
+    
+    .pourquoi-item p {
+        font-size: 0.9rem;
+    }
 }
 
 @media (max-width: 480px) {
@@ -964,6 +1159,24 @@
         padding: 0.85rem 1.5rem;
         font-size: 0.95rem;
     }
+    
+    .feature-icon {
+        width: 55px;
+        height: 55px;
+    }
+    
+    .feature-icon .dsj-icon {
+        width: 2rem;
+        height: 2rem;
+    }
+    
+    .feature-card h3 {
+        font-size: 1.05rem;
+    }
+    
+    .feature-card p {
+        font-size: 0.85rem;
+    }
 }
 
 /* ═══════════════════════════════════════════
@@ -977,6 +1190,9 @@
     .galerie-item-masonry,
     .temoignage-mini,
     .btn,
+    .feature-card,
+    .feature-icon,
+    .pourquoi-item,
     .formation-card .card-image img,
     .plat-thumb img,
     .galerie-link img,
@@ -991,7 +1207,1238 @@
     .plat-thumb:hover,
     .galerie-item-masonry:hover,
     .temoignage-mini:hover,
-    .btn:hover {
+    .btn:hover,
+    .feature-card:hover,
+    .feature-card:hover .feature-icon,
+    .pourquoi-item:hover {
         transform: none !important;
     }
+}
+
+/* ═══════════════════════════════════════════
+   TAILLES D'ICÔNES PAR CONTEXTE (pages internes)
+   ═══════════════════════════════════════════ */
+.header-badge .dsj-icon,
+.divider-icon .dsj-icon {
+    width: 1rem;
+    height: 1rem;
+}
+
+.besoins-urgents-icon .dsj-icon {
+    width: 3rem;
+    height: 3rem;
+    color: #b02a37;
+}
+
+.pourquoi-icon .dsj-icon {
+    width: 2.2rem;
+    height: 2.2rem;
+    color: var(--clr-accent, #D4AC0D);
+}
+
+.modalite-icon .dsj-icon {
+    width: 2.5rem;
+    height: 2.5rem;
+    color: var(--clr-primary, #1A5276);
+}
+
+.paiement-icon .dsj-icon {
+    width: 2.2rem;
+    height: 2.2rem;
+    color: var(--clr-primary, #1A5276);
+}
+
+.paiement-note .dsj-icon {
+    width: 1rem;
+    height: 1rem;
+    vertical-align: -2px;
+    color: #666;
+}
+
+.temoignage-quote .dsj-icon {
+    width: 2.5rem;
+    height: 2.5rem;
+    color: var(--clr-accent, #D4AC0D);
+    opacity: 0.4;
+}
+
+
+/* ═══════════════════════════════════════════
+   AJUSTEMENTS LISIBILITÉ (page Formation)
+   ═══════════════════════════════════════════ */
+
+/* ✅ Cartes modernes : texte aligné à gauche (plus propre) */
+.formation-card .card-content {
+    text-align: left;
+}
+
+.formation-card .card-content h3 {
+    text-align: left;
+}
+
+.formation-card .card-meta {
+    justify-content: flex-start;
+}
+
+.formation-card .card-description {
+    font-size: 0.95rem;
+    color: #555;
+}
+
+/* ✅ SÉCURITÉ : sans JavaScript, tout le contenu reste visible */
+html:not(.dsj-js) .reveal-section {
+    opacity: 1 !important;
+    transform: none !important;
+}
+
+
+/* ═══════════════════════════════════════════
+   SINGLE FORMATION (page individuelle)
+   ═══════════════════════════════════════════ */
+
+.formation-single {
+    background: #ffffff;
+}
+
+.formation-single-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    margin-bottom: 3rem;
+    align-items: start;
+}
+
+/* Image de la formation */
+/* ✅ Image de la formation : cadre 4:3 naturel (comme les cartes) */
+.formation-single-image {
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    background: #f8f9fa;
+    aspect-ratio: 4 / 3;
+}
+
+.formation-single-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center center; /* ✅ cadrage équilibré, fini le plafond */
+    display: block;
+}
+
+.formation-image-placeholder {
+    min-height: 350px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: rgba(26, 82, 118, 0.05);
+    padding: 3rem;
+    gap: 1rem;
+}
+
+.formation-image-placeholder .dsj-icon {
+    width: 5rem;
+    height: 5rem;
+    color: var(--clr-accent, #D4AC0D);
+    opacity: 0.5;
+}
+
+.formation-image-placeholder span {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--clr-primary, #1A5276);
+}
+
+/* Carte d'infos */
+.formation-single-infos .infos-card {
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 2rem;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.06);
+    border: 1px solid rgba(26, 82, 118, 0.08);
+}
+
+.formation-single-infos .infos-card h3 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--clr-primary, #1A5276);
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid rgba(26, 82, 118, 0.08);
+}
+
+.formation-single-infos .infos-card h3 .dsj-icon {
+    width: 1.5rem;
+    height: 1.5rem;
+    color: var(--clr-accent, #D4AC0D);
+}
+
+.info-row {
+    display: grid;
+    grid-template-columns: minmax(170px, auto) 1fr;  /* ✅ colonne label plus large */
+    gap: 0.85rem 2rem;                               /* ✅ 2rem entre label et valeur */
+    padding: 0.85rem 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    align-items: center;
+}
+
+.info-row:last-child {
+    border-bottom: none;
+}
+
+.info-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 700;
+    color: var(--clr-primary, #1A5276);
+    font-size: 0.9rem;
+    white-space: nowrap;
+}
+
+.info-label .dsj-icon {
+    width: 1.1rem;
+    height: 1.1rem;
+    color: var(--clr-accent, #D4AC0D);
+}
+
+.info-value {
+    color: #444;
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+/* CTA d'inscription */
+.inscription-cta {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.inscription-cta .btn {
+    width: 100%;
+    justify-content: center;
+}
+
+/* Description complète */
+.formation-description {
+    max-width: 900px;
+    margin: 0 auto;
+    padding-top: 3rem;
+    border-top: 2px solid rgba(26, 82, 118, 0.08);
+}
+
+.formation-description h3 {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: var(--clr-primary, #1A5276);
+    margin-bottom: 1.5rem;
+}
+
+.formation-description h3 .dsj-icon {
+    width: 1.8rem;
+    height: 1.8rem;
+    color: var(--clr-accent, #D4AC0D);
+}
+
+.formation-description .content {
+    color: #444;
+    line-height: 1.8;
+    font-size: 1.05rem;
+}
+
+.formation-description .content h2,
+.formation-description .content h3,
+.formation-description .content h4 {
+    color: var(--clr-primary, #1A5276);
+    margin: 1.5rem 0 1rem;
+    font-weight: 700;
+}
+
+.formation-description .content p {
+    margin-bottom: 1.2rem;
+}
+
+.formation-description .content ul,
+.formation-description .content ol {
+    margin: 1rem 0 1.5rem 2rem;
+}
+
+.formation-description .content li {
+    margin-bottom: 0.5rem;
+}
+
+.formation-description .content img {
+    border-radius: 16px;
+    margin: 1.5rem 0;
+    max-width: 100%;
+    height: auto;
+}
+
+/* Badges catégories */
+.formation-badges {
+    max-width: 900px;
+    margin: 2rem auto 0;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(26, 82, 118, 0.08);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.formation-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 14px;
+    background: rgba(212, 172, 13, 0.15);
+    color: var(--clr-primary, #1A5276);
+    border-radius: 100px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+/* ═══════════════════════════════════════════
+   RESPONSIVE SINGLE FORMATION
+   ═══════════════════════════════════════════ */
+@media (max-width: 992px) {
+    .formation-single-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .formation-single-image {
+        aspect-ratio: 16 / 10;
+    }    
+    .formation-single-infos .infos-card {
+        padding: 1.5rem;
+    }
+    
+    .formation-single-infos .infos-card h3 {
+        font-size: 1.15rem;
+    }
+    
+    .info-row {
+        gap: 0.75rem;
+        padding: 0.75rem 0;
+    }
+    
+    .info-label {
+        font-size: 0.85rem;
+    }
+    
+    .info-value {
+        font-size: 0.9rem;
+    }
+    
+    .formation-description h3 {
+        font-size: 1.3rem;
+    }
+    
+    .formation-description .content {
+        font-size: 1rem;
+    }
+    
+    .inscription-cta .btn {
+        font-size: 0.95rem;
+        padding: 0.85rem 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .info-row {
+        grid-template-columns: 1fr;
+        gap: 4px;
+    }
+    
+    .info-value {
+        padding-left: 0;
+    }
+    
+    .formation-single-image {
+        min-height: 200px;
+    }
+}
+
+/* ═══════════════════════════════════════════
+   PAGE MAISON D'ACCUEIL (moderne)
+   ═══════════════════════════════════════════ */
+
+/* Hero boutons : pill outline */
+.maison-accueil-header .header-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 2rem;
+}
+
+.maison-accueil-header .btn-scroll {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0.85rem 1.75rem;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    text-decoration: none;
+    transition: transform 0.3s ease, background 0.3s ease;
+    background: var(--clr-accent, #D4AC0D);
+    color: var(--clr-primary, #1A5276);
+}
+
+.maison-accueil-header .btn-scroll.btn-outline {
+    background: transparent;
+    color: white;
+    border: 2px solid rgba(255, 255, 255, 0.5);
+}
+
+.maison-accueil-header .btn-scroll:hover {
+    transform: translateY(-2px);
+}
+
+.maison-accueil-header .btn-scroll.btn-outline:hover {
+    background: white;
+    color: var(--clr-primary, #1A5276);
+    border-color: white;
+}
+
+/* Présentation : titre h3 centré */
+.maison-presentation .services-list h3 {
+    text-align: center;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--clr-primary, #1A5276);
+    margin-bottom: 1.5rem;
+}
+
+/* Cartes chambres : texte aligné à gauche */
+.nos-chambres .formation-card .card-content {
+    text-align: left;
+}
+
+.nos-chambres .formation-card .card-content h3 {
+    text-align: left;
+}
+
+.nos-chambres .formation-card .card-meta {
+    justify-content: flex-start;
+}
+
+/* Feature card : 8 équipements = 4 cols sur desktop */
+.equipements-section .features-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+}
+
+.equipements-section .feature-card {
+    padding: 25px 20px;
+}
+
+.equipements-section .feature-icon {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 15px;
+}
+
+.equipements-section .feature-icon .dsj-icon {
+    width: 1.8rem;
+    height: 1.8rem;
+}
+
+.equipements-section .feature-card h3 {
+    font-size: 1.05rem;
+    margin-bottom: 8px;
+}
+
+.equipements-section .feature-card p {
+    font-size: 0.85rem;
+    line-height: 1.5;
+}
+
+/* Badge réservation */
+.reservation-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 14px;
+    background: rgba(26, 82, 118, 0.08);
+    color: var(--clr-primary, #1A5276);
+    border-radius: 100px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+}
+
+.reservation-badge .dsj-icon {
+    width: 16px;
+    height: 16px;
+    color: var(--clr-accent, #D4AC0D);
+}
+
+/* Responsive Maison d'Accueil */
+@media (max-width: 992px) {
+    .equipements-section .features-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .maison-accueil-header .header-buttons {
+        flex-direction: column;
+        width: 100%;
+    }
+    .maison-accueil-header .btn-scroll {
+        width: 100%;
+        justify-content: center;
+    }
+    .equipements-section .features-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+    }
+    .equipements-section .feature-card {
+        padding: 20px 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .equipements-section .features-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ═══════════════════════════════════════════
+   PAGE RESTAURANT (moderne)
+   ═══════════════════════════════════════════ */
+
+/* Bouton "Tous" actif par défaut */
+.menu-cat-btn.active {
+    background: var(--clr-accent, #D4AC0D) !important;
+    color: var(--clr-primary, #1A5276) !important;
+    border-color: var(--clr-accent, #D4AC0D) !important;
+}
+
+/* Carte menu : texte aligné à gauche */
+.menu-card {
+    text-align: left;
+}
+
+.menu-card .menu-content h3 {
+    text-align: left;
+}
+
+.menu-card .menu-footer {
+    margin-top: 1rem;
+}
+
+/* Menu meta avec icônes SVG */
+.menu-time,
+.menu-allergenes {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.menu-time .dsj-icon,
+.menu-allergenes .dsj-icon {
+    width: 0.85rem;
+    height: 0.85rem;
+}
+
+/* Horaires section : fond alternatif */
+.horaires-section {
+    background: #F8FAFC;
+}
+
+/* Responsive Restaurant */
+@media (max-width: 768px) {
+    .menu-categories {
+        gap: 10px;
+    }
+    .menu-cat-btn {
+        padding: 6px 18px;
+        font-size: 0.85rem;
+    }
+}
+
+
+
+
+/* ═══════════════════════════════════════════
+   SINGLE HÉBERGEMENT (page individuelle chambre)
+   ═══════════════════════════════════════════ */
+
+/* Placeholder si pas d'image */
+.hebergement-image-placeholder {
+    min-height: 350px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: rgba(26, 82, 118, 0.05);
+    padding: 3rem;
+    gap: 1rem;
+    border-radius: 20px;
+}
+
+.hebergement-image-placeholder .dsj-icon {
+    width: 5rem;
+    height: 5rem;
+    color: var(--clr-accent, #D4AC0D);
+    opacity: 0.5;
+}
+
+.hebergement-image-placeholder span {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--clr-primary, #1A5276);
+    text-align: center;
+}
+
+/* Titre infos-card : flex avec icône */
+.hebergement-infos .infos-card h3 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.hebergement-infos .infos-card h3 .dsj-icon {
+    width: 1.5rem;
+    height: 1.5rem;
+    color: var(--clr-accent, #D4AC0D);
+}
+
+/* Description chambre : titre avec icône */
+.hebergement-description h3 {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.hebergement-description h3 .dsj-icon {
+    width: 1.8rem;
+    height: 1.8rem;
+    color: var(--clr-accent, #D4AC0D);
+}
+
+/* Badges avec icônes */
+.badge-disponible,
+.badge-reservation,
+.badge-complet {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.badge-disponible .dsj-icon,
+.badge-reservation .dsj-icon,
+.badge-complet .dsj-icon {
+    width: 0.9rem;
+    height: 0.9rem;
+}
+
+/* Équipements tags avec icône check */
+.equipement-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.equipement-tag .dsj-icon {
+    width: 0.8rem;
+    height: 0.8rem;
+    color: var(--clr-accent, #D4AC0D);
+}
+
+/* Info-extra : icônes cohérentes */
+.extra-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.extra-icon .dsj-icon {
+    width: 1.8rem;
+    height: 1.8rem;
+    color: var(--clr-accent, #D4AC0D);
+}
+
+/* Alertes avec icônes */
+.alert-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+}
+
+.alert-icon .dsj-icon {
+    width: 1.5rem;
+    height: 1.5rem;
+}
+
+.alert-success .alert-icon .dsj-icon {
+    color: #28a745;
+}
+
+.alert-error .alert-icon .dsj-icon {
+    color: #dc3545;
+}
+
+/* Responsive Single Hébergement */
+@media (max-width: 768px) {
+    .hebergement-image-placeholder {
+        min-height: 250px;
+        aspect-ratio: 16 / 10;
+    }
+    
+    .hebergement-image-placeholder .dsj-icon {
+        width: 3.5rem;
+        height: 3.5rem;
+    }
+    
+    .hebergement-image-placeholder span {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .hebergement-image-placeholder {
+        aspect-ratio: 1 / 1;
+    }
+}
+
+
+/* ═══════════════════════════════════════════
+   PAGE À PROPOS (moderne)
+   ═══════════════════════════════════════════ */
+
+/* Mission statement (citation centrale) */
+.mission-statement {
+    font-size: 1.2rem;
+    line-height: 1.8;
+    max-width: 800px;
+    margin: 0 auto 3rem;
+    padding: 2rem;
+    background: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+    color: var(--clr-primary, #1A5276);
+    font-weight: 500;
+    border-left: 4px solid var(--clr-accent, #D4AC0D);
+    text-align: center;
+}
+
+/* Feature cards avec images (missions) */
+.feature-image {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+/* Valeurs : grille 3 colonnes sur desktop */
+.nos-valeurs-section .features-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
+}
+
+.nos-valeurs-section .feature-card {
+    padding: 30px 20px;
+}
+
+.nos-valeurs-section .feature-icon {
+    width: 70px;
+    height: 70px;
+    margin-bottom: 18px;
+}
+
+.nos-valeurs-section .feature-icon .dsj-icon {
+    width: 2rem;
+    height: 2rem;
+}
+
+.nos-valeurs-section .feature-card h3 {
+    font-size: 1.15rem;
+    margin-bottom: 10px;
+}
+
+.nos-valeurs-section .feature-card p {
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+/* Équipe : placeholder SVG */
+.equipe-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
+
+.equipe-placeholder .dsj-icon {
+    width: 4rem;
+    height: 4rem;
+    color: var(--clr-primary, #1A5276);
+    opacity: 0.3;
+}
+
+/* Section aide : centrage */
+.aide-section {
+    background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+    text-align: center;
+}
+
+.aide-content {
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.aide-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 18px;
+    background: var(--clr-accent, #D4AC0D);
+    color: var(--clr-primary, #1A5276);
+    border-radius: 100px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+}
+
+.aide-badge .dsj-icon {
+    width: 1rem;
+    height: 1rem;
+}
+
+.aide-section h2 {
+    font-size: 2rem;
+    color: var(--clr-primary, #1A5276);
+    margin-bottom: 1.5rem;
+}
+
+.aide-section p {
+    max-width: 600px;
+    margin: 0 auto 2rem;
+    color: #555;
+    font-size: 1.1rem;
+    line-height: 1.6;
+}
+
+.aide-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+/* Responsive À propos */
+@media (max-width: 992px) {
+    .nos-valeurs-section .features-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .nos-valeurs-section .features-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .nos-valeurs-section .feature-card {
+        padding: 25px 20px;
+    }
+    
+    .mission-statement {
+        padding: 1.5rem;
+        font-size: 1.05rem;
+    }
+    
+    .aide-buttons {
+        flex-direction: column;
+        width: 100%;
+    }
+    
+    .aide-buttons .btn {
+        width: 100%;
+    }
+}
+
+
+/* ═══════════════════════════════════════════
+   PAGE GALERIE (moderne)
+   ═══════════════════════════════════════════ */
+
+/* Filtres de catégories : pills modernes */
+.galerie-filters {
+    background: #ffffff;
+}
+
+.filter-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+}
+
+.filter-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 22px;
+    border-radius: 50px;
+    border: 2px solid rgba(26, 82, 118, 0.15);
+    background: transparent;
+    color: var(--clr-primary, #1A5276);
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.filter-btn .dsj-icon {
+    width: 1rem;
+    height: 1rem;
+    color: var(--clr-accent, #D4AC0D);
+}
+
+.filter-btn:hover {
+    border-color: var(--clr-primary, #1A5276);
+    background: rgba(26, 82, 118, 0.05);
+    transform: translateY(-2px);
+}
+
+.filter-btn.active {
+    background: var(--clr-accent, #D4AC0D);
+    color: var(--clr-primary, #1A5276);
+    border-color: var(--clr-accent, #D4AC0D);
+}
+
+.filter-btn.active .dsj-icon {
+    color: var(--clr-primary, #1A5276);
+}
+
+/* Grille galerie : utilise .galerie-grid-masonry existante */
+.galerie-grid-section {
+    background: #F8FAFC !important;
+}
+
+/* Icône loupe dans l'overlay */
+.galerie-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: var(--clr-accent, #D4AC0D);
+    color: var(--clr-primary, #1A5276);
+    margin-bottom: 12px;
+    transition: transform 0.3s ease;
+}
+
+.galerie-icon .dsj-icon {
+    width: 1.5rem;
+    height: 1.5rem;
+}
+
+.galerie-item-masonry:hover .galerie-icon {
+    transform: scale(1.1) rotate(10deg);
+}
+
+/* Titre dans overlay */
+.galerie-title-overlay {
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 1rem;
+    margin: 0;
+    text-align: center;
+}
+
+.galerie-excerpt {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 0.85rem;
+    margin: 8px 0 0;
+    text-align: center;
+}
+
+/* État vide de la galerie */
+.gallery-empty {
+    text-align: center;
+    padding: 60px 20px;
+    color: #666;
+    font-size: 1.05rem;
+    grid-column: 1 / -1;
+}
+
+/* Responsive Galerie */
+@media (max-width: 768px) {
+    .filter-buttons {
+        gap: 8px;
+    }
+    
+    .filter-btn {
+        padding: 8px 16px;
+        font-size: 0.85rem;
+    }
+    
+    .filter-btn .dsj-icon {
+        width: 0.9rem;
+        height: 0.9rem;
+    }
+}
+
+/* ═══════════════════════════════════════════
+   CORRECTIFS BUGS (constatés sur captures)
+   ═══════════════════════════════════════════ */
+
+/* ── 1) RESTAURANT : cartes menu + filtres (styles rétablis) ── */
+.menu-categories {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 2.5rem;
+}
+
+.menu-cat-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 22px;
+    border-radius: 50px;
+    border: 2px solid rgba(26, 82, 118, 0.15);
+    background: transparent;
+    color: var(--clr-primary, #1A5276);
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.menu-cat-btn .dsj-icon {
+    width: 1rem;
+    height: 1rem;
+    color: var(--clr-accent, #D4AC0D);
+}
+
+.menu-cat-btn:hover {
+    border-color: var(--clr-primary, #1A5276);
+    background: rgba(26, 82, 118, 0.05);
+    transform: translateY(-2px);
+}
+
+.menu-cat-btn.active {
+    background: var(--clr-accent, #D4AC0D);
+    color: var(--clr-primary, #1A5276);
+    border-color: var(--clr-accent, #D4AC0D);
+}
+
+.menu-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+.menu-card {
+    border-radius: 20px;
+    background: #ffffff;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(26, 82, 118, 0.06);
+    transition: transform 0.35s ease, box-shadow 0.35s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.menu-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 32px rgba(26, 82, 118, 0.12);
+}
+
+.menu-image {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+}
+
+.menu-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.menu-card:hover .menu-image img {
+    transform: scale(1.06);
+}
+
+.menu-price {
+    position: absolute;
+    bottom: 12px;
+    right: 12px;
+    background: var(--clr-accent, #D4AC0D);
+    color: var(--clr-primary, #1A5276);
+    padding: 4px 14px;
+    border-radius: 30px;
+    font-weight: 700;
+    font-size: 0.85rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.menu-content {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    text-align: left;
+}
+
+.menu-content h3 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--clr-primary, #1A5276);
+    margin: 0 0 0.5rem;
+}
+
+.menu-ingredients {
+    color: #666;
+    font-size: 0.9rem;
+    line-height: 1.55;
+    margin-bottom: 1rem;
+    flex: 1;
+}
+
+.menu-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.menu-time,
+.menu-allergenes {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 10px;
+    border-radius: 100px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.menu-time {
+    background: rgba(26, 82, 118, 0.06);
+    color: var(--clr-primary, #1A5276);
+}
+
+.menu-time .dsj-icon,
+.menu-allergenes .dsj-icon {
+    width: 0.85rem;
+    height: 0.85rem;
+}
+
+.menu-allergenes {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.menu-footer {
+    margin-top: auto;
+}
+
+/* ── 2) À PROPOS : équipe (photos en cercle) ── */
+.equipe-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+    margin-top: 40px;
+}
+
+.equipe-card {
+    text-align: center;
+    background: #ffffff;
+    padding: 25px;
+    border-radius: 20px;
+    box-shadow: 0 2px 12px rgba(26, 82, 118, 0.06);
+    transition: transform 0.3s ease;
+}
+
+.equipe-card:hover {
+    transform: translateY(-5px);
+}
+
+.equipe-image {
+    width: 150px;
+    height: 150px;
+    margin: 0 auto 20px;
+    overflow: hidden;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.equipe-photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.equipe-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
+
+.equipe-placeholder .dsj-icon {
+    width: 4rem;
+    height: 4rem;
+    color: var(--clr-primary, #1A5276);
+    opacity: 0.3;
+}
+
+.equipe-card h3 {
+    font-size: 1.2rem;
+    color: var(--clr-primary, #1A5276);
+    margin-bottom: 5px;
+}
+
+.equipe-fonction {
+    color: #8A6D00;   /* ✅ doré foncé (contraste 4.9:1) au lieu du doré clair */
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+.equipe-card p {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+/* ── 3) SINGLE FORMATION : bouton WhatsApp vert → doré (contraste + cohérence) ── */
+.inscription-cta .btn-whatsapp {
+    background: var(--clr-accent, #D4AC0D) !important;
+    color: var(--clr-primary, #1A5276) !important;
+    border: none !important;
+}
+
+.inscription-cta .btn-whatsapp:hover {
+    background: #c49b0c !important;
+    color: var(--clr-primary, #1A5276) !important;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(212, 172, 13, 0.3);
 }

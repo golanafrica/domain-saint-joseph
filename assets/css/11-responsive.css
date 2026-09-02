@@ -125,12 +125,17 @@
 
 /* === SINGLE FORMATION/HÉBERGEMENT HEADER MOBILE === */
 @media (max-width: 768px) {
-    .formation-single-header,
-    .single-hebergement-header { padding: 50px 0 80px !important; }
+    /* ✅ FIX : priorité au padding 0 du hero single (spécificité 2 classes)
+       → plus de bande bleue vide, rendu identique mobile & desktop */
+    .page-header.formation-single-header,
+    .page-header.hebergement-single-header {
+        padding: 0 !important;
+        min-height: 0 !important;
+    }
     .formation-single-header .header-title,
-    .single-hebergement-header .header-title { font-size: 1.6rem !important; }
+    .hebergement-single-header .header-title { font-size: 1.6rem !important; }
     .formation-single-header .header-subtitle,
-    .single-hebergement-header .header-subtitle { font-size: 0.85rem !important; }
+    .hebergement-single-header .header-subtitle { font-size: 0.85rem !important; }
 }
 
 /* === SECTION HEADER MOBILE === */
@@ -182,66 +187,72 @@
     .stat-item::before { display: none !important; }
 }
 
-/* === WHATSAPP HEADER MOBILE (ciblé : .btn-whatsapp uniquement) === */
+
+/* ═══════════════════════════════════════════
+   ✅ FIX MOBILE : FORMULAIRES (réservation + contact)
+   Corrige : bouton "cercle", champs écrasés, labels cassés
+   ═══════════════════════════════════════════ */
 @media (max-width: 768px) {
-    .site-header .btn-whatsapp,
-    .header-inner .btn-whatsapp {
-        display: inline-flex !important;
-        align-items: center !important;
-        justify-content: center !important;
+
+    /* 1) Formulaires sur 1 seule colonne */
+    .form-grid,
+    .form-grid-3 {
+        grid-template-columns: 1fr !important;
+        gap: 1.25rem !important;
+    }
+
+    /* 2) Labels : icône + texte ensemble, "(max 5000…)" passe dessous */
+    .form-group label {
+        flex-wrap: wrap !important;
         gap: 6px !important;
-        background: #25D366 !important;
-        color: white !important;
-        padding: 8px 12px !important;
-        font-size: 0.75rem !important;
-        font-weight: 600 !important;
-        border-radius: 50px !important;
-        text-decoration: none !important;
-        transition: all 0.3s ease !important;
-        border: none !important;
-        cursor: pointer !important;
-        white-space: nowrap !important;
-        width: auto !important;
+    }
+    .form-group label small {
+        flex-basis: 100%;
+        font-weight: 400;
+        color: #666;
+    }
+
+    /* 3) Pied du formulaire : bouton PUIS note, en colonne */
+    .form-footer {
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 1rem !important;
+        margin-top: 1.5rem !important;
+    }
+
+    /* 4) Bouton envoyer : pleine largeur, forme pilule (FINI le cercle) */
+    .btn-submit {
+        width: 100% !important;
+        flex: none !important;
         height: auto !important;
+        border-radius: 50px !important;
+        padding: 14px 24px !important;
+        font-size: 1rem !important;
+        white-space: normal !important;
     }
-    .site-header .btn-whatsapp::before,
-    .site-header .btn-whatsapp::after {
-        display: none !important;
-        content: none !important;
+
+    /* 5) Note sous le bouton, centrée */
+    .form-note {
+        width: 100% !important;
+        text-align: center !important;
+        justify-content: center !important;
     }
-    .site-header .btn-whatsapp:hover {
-        background: #128C7E !important;
-        transform: translateY(-2px) !important;
-        color: white !important;
-        box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3) !important;
+
+    /* 6) Champs pleine largeur + 16px (empêche le zoom auto iPhone/Android) */
+    .form-control {
+        width: 100% !important;
+        font-size: 16px !important;
     }
-    .site-header .btn-whatsapp-icon {
-        font-size: 0.85rem !important;
-        margin: 0 !important;
-    }
-    .site-header .btn-whatsapp-text {
-        display: inline-block !important;
-        font-size: 0.7rem !important;
-    }
-    .header-inner { gap: 8px !important; }
 }
 
-@media (max-width: 768px) {
-    .site-header .btn-whatsapp {
-        border-radius: 50px !important;
-        width: auto !important;
-        height: auto !important;
-        padding: 8px 12px !important;
-    }
-    .site-header .btn-whatsapp-icon {
-        background: transparent !important;
-        color: white !important;
-        width: auto !important;
-        height: auto !important;
-        display: inline-block !important;
-        font-size: 0.85rem !important;
+@media (max-width: 480px) {
+    .btn-submit {
+        padding: 13px 20px !important;
+        font-size: 0.95rem !important;
     }
 }
+
+/* === WHATSAPP HEADER MOBILE (ciblé : .btn-whatsapp uniquement) === */
 
 /* ❌ SUPPRIMÉ : le bloc .site-header [class*="whatsapp"] a été retiré.
    Il ciblait TOUTES les classes contenant "whatsapp" (y compris le

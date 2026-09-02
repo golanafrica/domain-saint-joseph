@@ -108,6 +108,7 @@ function dsj_get_combined_css_url() {
         '10-cta.css',
         '11-responsive.css',
         '12-accessibility.css',
+         '13-modern-home.css',
     ];
     
     // Calcul du hash basé sur les timestamps de modification
@@ -168,7 +169,7 @@ function dsj_assets() {
     $css_files_list = [
         '01-base', '02-header', '03-hero', '04-footer', '05-components',
         '06-forms', '07-galerie', '08-pages', '09-singles', '10-cta',
-        '11-responsive', '12-accessibility',
+        '11-responsive', '12-accessibility','13-modern-home'
     ];
     
     // 🚀 CSS concaténé/minifié (1 requête au lieu de 12)
@@ -193,13 +194,7 @@ function dsj_assets() {
         $inline_handle = 'dsj-01-base';
     }
     
-    // ✅ NOUVEAU Phase 12 : CSS moderne pour la page d'accueil uniquement
-    if ( is_front_page() ) {
-        $modern_home_path = get_template_directory() . '/assets/css/13-modern-home.css';
-        $modern_home_url  = get_template_directory_uri() . '/assets/css/13-modern-home.css';
-        $modern_version   = file_exists( $modern_home_path ) ? filemtime( $modern_home_path ) : '1.0';
-        wp_enqueue_style( 'dsj-modern-home', $modern_home_url, [ $inline_handle ], $modern_version );
-    }
+    
     
     // 🚀 PERF : JavaScript principal en DEFER (non-bloquant)
     $script_file = get_template_directory() . '/assets/js/main.js';

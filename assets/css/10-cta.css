@@ -1,327 +1,306 @@
 /* ========================================
  * 10-CTA.CSS
- * Sections CTA Home + CTA Formation
+ * Sections CTA : Accueil + Formation + Final
+ * ✅ MODERNISÉ : sans animations infinies, icônes SVG,
+ *    WCAG AAA, design system unifié
  * ======================================== */
 
-/* === CTA HOME SECTION === */
-.cta-home-section {
-    background: linear-gradient(135deg, var(--clr-primary, #1A5276) 0%, #1a3c5e 100%);
-    color: var(--clr-white);
-    text-align: center;
-    padding: 80px 0;
+/* ═══════════════════════════════════════════
+   BASE COMMUNE (toutes sections CTA)
+   ═══════════════════════════════════════════ */
+.cta-home-section,
+.cta-formation,
+.cta-final-section {
     position: relative;
+    background: linear-gradient(135deg, var(--clr-primary, #1A5276) 0%, #1a3c5e 100%);
+    color: #ffffff;
+    text-align: center;
+    padding: 5rem 0;
     overflow: hidden;
 }
 
-.cta-home-section::before {
+/* Halo doré subtil (statique, sans animation) */
+.cta-home-section::before,
+.cta-formation::before,
+.cta-final-section::before {
     content: '';
     position: absolute;
-    top: -50%;
-    right: -20%;
-    width: 80%;
-    height: 150%;
-    background: radial-gradient(circle, rgba(212, 172, 13, 0.08) 0%, transparent 70%);
+    top: -30%;
+    right: -15%;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(212, 172, 13, 0.12) 0%, transparent 70%);
     border-radius: 50%;
     pointer-events: none;
     z-index: 0;
 }
 
-.cta-home-section .container { position: relative; z-index: 1; }
-
-.cta-content h2 {
-    font-size: 2.5rem;
-    font-weight: 800;
-    margin-bottom: 20px;
-    line-height: 1.2;
-    color: var(--clr-white);
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+.cta-formation::before {
+    right: auto;
+    left: -15%;
 }
 
-.cta-content p {
-    font-size: 1.1rem;
-    margin-bottom: 30px;
-    max-width: 700px;
-    margin-left: auto;
-    margin-right: auto;
-    opacity: 0.95;
-    line-height: 1.6;
-    color: var(--clr-white);
-}
-
-.cta-buttons {
-    display: flex;
-    gap: 20px;
-    justify-content: center;
-    flex-wrap: wrap;
-}
-
-/* Bouton primaire doré */
-.cta-buttons .btn-primary {
-    background: var(--clr-accent, #D4AC0D);
-    color: var(--clr-primary, #1A5276);
-    border: none;
-    padding: 14px 35px;
-    font-size: 1rem;
-    font-weight: 700;
-    border-radius: 50px;
-    transition: all var(--transition);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-}
-
-.cta-buttons .btn-primary:hover {
-    transform: translateY(-3px);
-    background: #c49b0c;
-    box-shadow: 0 8px 25px rgba(212, 172, 13, 0.3);
-}
-
-/* Bouton WhatsApp vert */
-.cta-buttons .btn-whatsapp {
-    background: #25D366 !important;
-    color: var(--clr-white) !important;
-    border: none !important;
-    padding: 14px 35px !important;
-    font-size: 1rem !important;
-    font-weight: 700 !important;
-    border-radius: 50px !important;
-    transition: all var(--transition) !important;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1) !important;
-    display: inline-flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    gap: 8px !important;
-    text-decoration: none !important;
-    cursor: pointer !important;
-}
-
-.cta-buttons .btn-whatsapp:hover {
-    background: #128C7E !important;
-    transform: translateY(-3px) !important;
-    box-shadow: 0 8px 25px rgba(37, 211, 102, 0.3) !important;
-}
-
-/* Effet brillance */
-.cta-buttons .btn-primary::before,
-.cta-buttons .btn-whatsapp::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-    transition: left 0.5s ease;
-    border-radius: 50px;
-}
-
-.cta-buttons .btn-primary:hover::before,
-.cta-buttons .btn-whatsapp:hover::before { left: 100%; }
-
-/* === CTA FORMATION === */
-.cta-formation {
+.cta-home-section .container,
+.cta-formation .container,
+.cta-final-section .container {
     position: relative;
-    background: linear-gradient(135deg, var(--clr-primary, #1A5276) 0%, #1a3c5e 100%);
-    color: var(--clr-white);
-    text-align: center;
-    overflow: hidden;
     z-index: 1;
 }
 
-.cta-formation::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -20%;
-    width: 80%;
-    height: 200%;
-    background: radial-gradient(circle, rgba(212, 172, 13, 0.08) 0%, transparent 70%);
-    border-radius: 50%;
-    z-index: -1;
-    animation: floatAnimation 20s ease-in-out infinite;
-}
-
-@keyframes floatAnimation {
-    0%, 100% { transform: translate(0, 0) rotate(0deg); }
-    25% { transform: translate(20px, -20px) rotate(5deg); }
-    50% { transform: translate(-10px, 30px) rotate(-3deg); }
-    75% { transform: translate(30px, 10px) rotate(2deg); }
-}
-
-.cta-formation .cta-content {
-    position: relative;
-    z-index: 2;
+/* Contenu CTA */
+.cta-content,
+.cta-final-content {
     max-width: 700px;
     margin: 0 auto;
 }
 
-.cta-formation h2 {
-    font-size: 2.2rem;
+.cta-content h2,
+.cta-formation h2,
+.cta-final-content h2 {
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
     font-weight: 800;
-    margin-bottom: 20px;
+    margin-bottom: 1rem;
     line-height: 1.2;
-    color: var(--clr-white);
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    letter-spacing: -0.01em;
+    color: #ffffff;
 }
 
-.cta-formation p {
-    font-size: 1.1rem;
-    margin-bottom: 30px;
-    opacity: 0.95;
+.cta-content p,
+.cta-formation p,
+.cta-final-content p {
+    font-size: clamp(0.95rem, 1.2vw, 1.1rem);
+    margin-bottom: 2rem;
+    opacity: 0.92;
     line-height: 1.6;
-    color: var(--clr-white);
+    color: #ffffff;
 }
 
-.cta-formation .cta-buttons {
+/* ═══════════════════════════════════════════
+   BOUTONS CTA (base commune)
+   ═══════════════════════════════════════════ */
+.cta-buttons,
+.cta-final-buttons {
     display: flex;
-    gap: 20px;
+    gap: 1rem;
     justify-content: center;
     flex-wrap: wrap;
+    align-items: center;
 }
 
-.cta-formation .btn-primary {
+/* Bouton doré (primaire) */
+.cta-buttons .btn-primary,
+.cta-formation .btn-primary,
+.cta-final-buttons .btn-primary {
     background: var(--clr-accent, #D4AC0D);
     color: var(--clr-primary, #1A5276);
     border: none;
-    padding: 14px 32px;
+    padding: 0.9rem 2rem;
     font-size: 1rem;
     font-weight: 700;
     border-radius: 50px;
-    transition: all var(--transition);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    text-decoration: none;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
+    gap: 10px;
+    transition: transform 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 12px rgba(212, 172, 13, 0.25);
+    cursor: pointer;
 }
-
-.cta-formation .btn-primary:hover {
-    transform: translateY(-3px);
+.cta-buttons .btn-primary:hover,
+.cta-formation .btn-primary:hover,
+.cta-final-buttons .btn-primary:hover {
     background: #c49b0c;
-    box-shadow: 0 8px 25px rgba(212, 172, 13, 0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(212, 172, 13, 0.35);
+}
+.cta-buttons .btn-primary:focus-visible,
+.cta-formation .btn-primary:focus-visible,
+.cta-final-buttons .btn-primary:focus-visible {
+    outline: 3px solid #ffffff;
+    outline-offset: 3px;
 }
 
-.cta-formation .btn-whatsapp {
-    background: #25D366 !important;
-    color: var(--clr-white) !important;
-    border: none !important;
-    padding: 14px 32px !important;
-    font-size: 1rem !important;
-    font-weight: 700 !important;
-    border-radius: 50px !important;
-    transition: all var(--transition) !important;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1) !important;
-    display: inline-flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    gap: 8px !important;
-    text-decoration: none !important;
-    cursor: pointer !important;
+/* Icônes dans les boutons */
+.cta-buttons .btn-primary .dsj-icon,
+.cta-formation .btn-primary .dsj-icon,
+.cta-final-buttons .btn-primary .dsj-icon {
+    width: 1.1rem;
+    height: 1.1rem;
+    color: var(--clr-primary, #1A5276);
 }
 
-.cta-formation .btn-whatsapp:hover {
-    background: #128C7E !important;
-    transform: translateY(-3px) !important;
-    box-shadow: 0 8px 25px rgba(37, 211, 102, 0.3) !important;
-}
-
-.cta-formation .btn-primary::before,
-.cta-formation .btn-whatsapp::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-    transition: left 0.5s ease;
+/* Bouton WhatsApp (✅ CONTRASTE WCAG AAA : vert foncé au lieu de blanc) */
+.cta-buttons .btn-whatsapp,
+.cta-formation .btn-whatsapp,
+.cta-final-buttons .btn-whatsapp {
+    background: #25D366;
+    color: #06341F;
+    border: none;
+    padding: 0.9rem 2rem;
+    font-size: 1rem;
+    font-weight: 700;
     border-radius: 50px;
-}
-
-.cta-formation .btn-primary:hover::before,
-.cta-formation .btn-whatsapp:hover::before { left: 100%; }
-
-/* === CTA FINAL === */
-.cta-final-section { text-align: center; color: white; }
-.cta-final-content h2 { font-size: 2rem; margin-bottom: 15px; }
-.cta-final-content p { margin-bottom: 30px; opacity: 0.9; }
-.cta-final-buttons {
-    display: flex;
-    gap: 20px;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
     justify-content: center;
-    flex-wrap: wrap;
+    gap: 10px;
+    transition: transform 0.3s ease, background 0.3s ease, box-shadow 0.3s ease, color 0.3s ease;
+    box-shadow: 0 4px 12px rgba(37, 211, 102, 0.25);
+    cursor: pointer;
+}
+.cta-buttons .btn-whatsapp:hover,
+.cta-formation .btn-whatsapp:hover,
+.cta-final-buttons .btn-whatsapp:hover {
+    background: #128C7E;
+    color: #ffffff;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(37, 211, 102, 0.35);
+}
+.cta-buttons .btn-whatsapp:focus-visible,
+.cta-formation .btn-whatsapp:focus-visible,
+.cta-final-buttons .btn-whatsapp:focus-visible {
+    outline: 3px solid #ffffff;
+    outline-offset: 3px;
 }
 
-/* === RESPONSIVE CTA === */
+/* Icône WhatsApp officielle dans le bouton */
+.cta-buttons .btn-whatsapp svg,
+.cta-formation .btn-whatsapp svg,
+.cta-final-buttons .btn-whatsapp svg {
+    width: 1.15rem;
+    height: 1.15rem;
+    flex-shrink: 0;
+}
+
+/* Bouton secondaire (outline) */
+.cta-buttons .btn-secondary,
+.cta-formation .btn-secondary,
+.cta-final-buttons .btn-secondary {
+    background: transparent;
+    color: #ffffff;
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    padding: 0.85rem 2rem;
+    font-size: 1rem;
+    font-weight: 700;
+    border-radius: 50px;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: transform 0.3s ease, background 0.3s ease, border-color 0.3s ease;
+    cursor: pointer;
+}
+.cta-buttons .btn-secondary:hover,
+.cta-formation .btn-secondary:hover,
+.cta-final-buttons .btn-secondary:hover {
+    background: #ffffff;
+    color: var(--clr-primary, #1A5276);
+    border-color: #ffffff;
+    transform: translateY(-2px);
+}
+
+/* ═══════════════════════════════════════════
+   VARIANTES SPÉCIFIQUES
+   ═══════════════════════════════════════════ */
+
+/* CTA Home : padding plus généreux */
+.cta-home-section {
+    padding: 6rem 0;
+}
+
+/* CTA Formation : variante subtile */
+.cta-formation {
+    padding: 5rem 0;
+}
+
+/* CTA Final : bordure dorée en haut pour démarquer */
+.cta-final-section {
+    padding: 5rem 0;
+    border-top: 3px solid var(--clr-accent, #D4AC0D);
+}
+
+/* ═══════════════════════════════════════════
+   RESPONSIVE
+   ═══════════════════════════════════════════ */
 @media (max-width: 768px) {
-    .cta-home-section { padding: 50px 20px !important; }
-    .cta-content h2 { font-size: 1.8rem !important; margin-bottom: 15px !important; }
-    .cta-content p { font-size: 1rem !important; margin-bottom: 25px !important; padding: 0 10px !important; }
-    .cta-buttons { flex-direction: column !important; align-items: center !important; gap: 15px !important; }
+    .cta-home-section,
+    .cta-formation,
+    .cta-final-section {
+        padding: 3.5rem 1.25rem;
+    }
+    .cta-content,
+    .cta-final-content {
+        padding: 0 0.5rem;
+    }
+    .cta-buttons,
+    .cta-final-buttons {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.75rem;
+    }
     .cta-buttons .btn-primary,
-    .cta-buttons .btn-whatsapp {
-        width: 100% !important;
-        max-width: 280px !important;
-        text-align: center !important;
-        justify-content: center !important;
-        padding: 12px 20px !important;
-        font-size: 0.95rem !important;
-    }
-    .cta-formation { padding: 50px 20px !important; }
-    .cta-formation h2 { font-size: 1.6rem !important; margin-bottom: 15px !important; }
-    .cta-formation p { font-size: 1rem !important; margin-bottom: 25px !important; padding: 0 10px !important; }
-    .cta-formation .cta-buttons { flex-direction: column !important; align-items: center !important; gap: 15px !important; }
+    .cta-buttons .btn-whatsapp,
+    .cta-buttons .btn-secondary,
     .cta-formation .btn-primary,
-    .cta-formation .btn-whatsapp {
-        width: 100% !important;
-        max-width: 280px !important;
-        text-align: center !important;
-        justify-content: center !important;
-        padding: 12px 20px !important;
-        font-size: 0.95rem !important;
-    }
-    .cta-final-content .cta-final-buttons {
-        display: flex !important;
-        flex-direction: column !important;
-        align-items: center !important;
-        gap: 15px !important;
-        width: 100% !important;
-    }
-    .cta-final-content .btn-whatsapp {
-        width: 100% !important;
-        max-width: 280px !important;
-        margin: 0 auto !important;
-    }
-    .cta-final-content .btn-primary {
-        width: 100% !important;
-        max-width: 280px !important;
-        text-align: center !important;
-        justify-content: center !important;
-        display: inline-flex !important;
-        align-items: center !important;
-        gap: 10px !important;
+    .cta-formation .btn-whatsapp,
+    .cta-formation .btn-secondary,
+    .cta-final-buttons .btn-primary,
+    .cta-final-buttons .btn-whatsapp,
+    .cta-final-buttons .btn-secondary {
+        width: 100%;
+        max-width: 300px;
+        margin: 0 auto;
+        justify-content: center;
     }
 }
 
 @media (max-width: 480px) {
-    .cta-home-section { padding: 40px 15px !important; }
-    .cta-content h2 { font-size: 1.5rem !important; }
-    .cta-content p { font-size: 0.95rem !important; }
-    .cta-buttons .btn-primary,
-    .cta-buttons .btn-whatsapp {
-        padding: 10px 16px !important;
-        font-size: 0.9rem !important;
-        max-width: 250px !important;
+    .cta-home-section,
+    .cta-formation,
+    .cta-final-section {
+        padding: 3rem 1rem;
     }
-    .cta-formation { padding: 40px 15px !important; }
-    .cta-formation h2 { font-size: 1.4rem !important; }
-    .cta-formation p { font-size: 0.95rem !important; }
+    .cta-buttons .btn-primary,
+    .cta-buttons .btn-whatsapp,
+    .cta-buttons .btn-secondary,
     .cta-formation .btn-primary,
-    .cta-formation .btn-whatsapp {
-        padding: 10px 16px !important;
-        font-size: 0.9rem !important;
-        max-width: 250px !important;
+    .cta-formation .btn-whatsapp,
+    .cta-formation .btn-secondary,
+    .cta-final-buttons .btn-primary,
+    .cta-final-buttons .btn-whatsapp,
+    .cta-final-buttons .btn-secondary {
+        padding: 0.85rem 1.5rem;
+        font-size: 0.95rem;
+    }
+}
+
+/* ═══════════════════════════════════════════
+   RESPECT DES PRÉFÉRENCES UTILISATEUR
+   ═══════════════════════════════════════════ */
+@media (prefers-reduced-motion: reduce) {
+    .cta-buttons .btn-primary,
+    .cta-buttons .btn-whatsapp,
+    .cta-buttons .btn-secondary,
+    .cta-formation .btn-primary,
+    .cta-formation .btn-whatsapp,
+    .cta-formation .btn-secondary,
+    .cta-final-buttons .btn-primary,
+    .cta-final-buttons .btn-whatsapp,
+    .cta-final-buttons .btn-secondary {
+        transition: none !important;
+    }
+    .cta-buttons .btn-primary:hover,
+    .cta-buttons .btn-whatsapp:hover,
+    .cta-buttons .btn-secondary:hover,
+    .cta-formation .btn-primary:hover,
+    .cta-formation .btn-whatsapp:hover,
+    .cta-formation .btn-secondary:hover,
+    .cta-final-buttons .btn-primary:hover,
+    .cta-final-buttons .btn-whatsapp:hover,
+    .cta-final-buttons .btn-secondary:hover {
+        transform: none !important;
     }
 }

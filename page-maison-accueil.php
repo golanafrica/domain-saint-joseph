@@ -1,14 +1,42 @@
 <?php
 /**
  * Template Name: Maison d'Accueil
- * ✅ Phase A11Y : aria-label, alt vides, role=alert, contrastes
+ * Version modernisée : même langage visuel que l'accueil
+ * (SVG cohérents, reveal au scroll, accessibilité complète)
  */
-get_header(); ?>
+get_header();
 
-<!-- HERO SECTION -->
+/* ────────────────────────────────────────────────────────────
+   ICÔNES SVG (cohérentes sur tous les appareils)
+   ──────────────────────────────────────────────────────────── */
+$svg_wrap = '<svg class="dsj-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">';
+$svg = [
+    'maison'    => $svg_wrap . '<path d="M3 10.5L12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/><path d="M10 21v-6h4v6"/></svg>',
+    'users'     => $svg_wrap . '<path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="10" cy="7" r="4"/><path d="M21 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>',
+    'coeur'     => $svg_wrap . '<path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21.2l7.8-7.8 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg>',
+    'check'     => $svg_wrap . '<path d="M20 6L9 17l-5-5"/></svg>',
+    'horloge'   => $svg_wrap . '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>',
+    'calendrier'=> $svg_wrap . '<rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>',
+    'etoile'    => $svg_wrap . '<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>',
+    'eglise'    => $svg_wrap . '<path d="M18 22V8l-6-6-6 6v14"/><path d="M12 2v4"/><path d="M10 4h4"/><path d="M8 18h8"/><path d="M12 12v6"/></svg>',
+    'soleil'    => $svg_wrap . '<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>',
+    'neige'     => $svg_wrap . '<line x1="12" y1="2" x2="12" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/><line x1="19.07" y1="4.93" x2="4.93" y2="19.07"/></svg>',
+    'livre'     => $svg_wrap . '<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>',
+    'micro'     => $svg_wrap . '<path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>',
+    'ordi'      => $svg_wrap . '<rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>',
+    'couverts'  => $svg_wrap . '<path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>',
+    'edit'      => $svg_wrap . '<path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>',
+    'fleche'    => $svg_wrap . '<line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>',
+];
+
+$url_whatsapp = 'https://wa.me/' . preg_replace( '/[^0-9]/', '', get_theme_mod( 'whatsapp', '22666605890' ) );
+?>
+
+<!-- ═══════════════════════════════════════════
+     HERO SECTION
+     ═══════════════════════════════════════════ -->
 <?php
 $hero_image     = get_theme_mod( 'hero_maison_image' );
-$hero_badge     = get_theme_mod( 'hero_maison_badge', '&#127968; Nos hébergements' );
 $hero_titre     = get_theme_mod( 'hero_maison_titre', 'Maison d\'Accueil' );
 $hero_soustitre = get_theme_mod( 'hero_maison_soustitre', 'Un lieu de repos, de ressourcement et de rencontres' );
 ?>
@@ -23,26 +51,31 @@ $hero_soustitre = get_theme_mod( 'hero_maison_soustitre', 'Un lieu de repos, de 
     </div>
 
     <div class="header-caption-band">
-        <span class="header-badge" aria-hidden="true"><?php echo wp_kses_post( $hero_badge ); ?></span>
+        <span class="header-badge">
+            <?php echo $svg['maison']; ?>
+            Nos hébergements
+        </span>
         <h1 class="header-title" id="maison-hero-title"><?php echo esc_html( $hero_titre ); ?></h1>
-        <div class="header-divider" aria-hidden="true">
+        <div class="header-divider">
             <span class="divider-line"></span>
-            <span class="divider-icon">&#9962;</span>
+            <span class="divider-icon"><?php echo $svg['eglise']; ?></span>
             <span class="divider-line"></span>
         </div>
         <p class="header-subtitle"><?php echo esc_html( $hero_soustitre ); ?></p>
         <div class="header-buttons">
             <a href="#nos-chambres" class="btn-scroll" aria-label="Découvrir nos chambres">
-                <span aria-hidden="true">&#128270;</span> Découvrir nos chambres
+                <?php echo $svg['maison']; ?> Découvrir nos chambres
             </a>
             <a href="#reservation" class="btn-scroll btn-outline" aria-label="Réserver une chambre maintenant">
-                <span aria-hidden="true">&#128197;</span> Réserver maintenant
+                <?php echo $svg['calendrier']; ?> Réserver maintenant
             </a>
         </div>
     </div>
 </section>
 
-<!-- CONTENU ÉDITABLE (Gutenberg) -->
+<!-- ═══════════════════════════════════════════
+     CONTENU ÉDITABLE (Gutenberg)
+     ═══════════════════════════════════════════ -->
 <section class="contenu-maison-accueil section-padding" aria-labelledby="maison-contenu-title">
     <div class="container">
         <h2 id="maison-contenu-title" class="screen-reader-text">Présentation</h2>
@@ -54,117 +87,127 @@ $hero_soustitre = get_theme_mod( 'hero_maison_soustitre', 'Un lieu de repos, de 
     </div>
 </section>
 
-<!-- SECTION PRÉSENTATION DE LA MAISON D'ACCUEIL -->
-<section class="maison-presentation section-padding bg-light" aria-labelledby="maison-presentation-title">
+<!-- ═══════════════════════════════════════════
+     PRÉSENTATION + SERVICES
+     ═══════════════════════════════════════════ -->
+<section class="maison-presentation section-padding section-alt reveal-section" aria-labelledby="maison-presentation-title">
     <div class="container">
         <div class="section-header">
-            <span class="section-badge" aria-hidden="true">&#127968; Un lieu pour tous</span>
+            <span class="section-badge-light"><?php echo $svg['maison']; ?> Un lieu pour tous</span>
             <h2 class="section-title" id="maison-presentation-title">La Maison d'Accueil</h2>
             <div class="section-divider" aria-hidden="true"></div>
         </div>
         <div class="presentation-content">
             <p>La Maison d'Accueil, ouverte à tous, a pour but l'autoprise en charge du Centre pour soutenir la formation.</p>
         </div>
-        
+
         <div class="services-list">
             <h3>Nos espaces sont disponibles pour :</h3>
-            <div class="services-grid" role="list">
-                <div class="service-item" role="listitem"><span aria-hidden="true">&#128332;</span> Retraites, récollections</div>
-                <div class="service-item" role="listitem"><span aria-hidden="true">&#127881;</span> Événements</div>
-                <div class="service-item" role="listitem"><span aria-hidden="true">&#128104;&#8205;&#128105;&#8205;&#128103;&#8205;&#128102;</span> Réunions de famille</div>
-                <div class="service-item" role="listitem"><span aria-hidden="true">&#128188;</span> Sessions de travail</div>
-                <div class="service-item" role="listitem"><span aria-hidden="true">&#128218;</span> Conférences</div>
-                <div class="service-item" role="listitem"><span aria-hidden="true">&#128214;</span> Journées d'étude</div>
-            </div>
+            <ul class="services-compact" role="list">
+                <li><?php echo $svg['horloge']; ?> Retraites, récollections</li>
+                <li><?php echo $svg['etoile']; ?> Événements</li>
+                <li><?php echo $svg['users']; ?> Réunions de famille</li>
+                <li><?php echo $svg['edit']; ?> Sessions de travail</li>
+                <li><?php echo $svg['micro']; ?> Conférences</li>
+                <li><?php echo $svg['livre']; ?> Journées d'étude</li>
+            </ul>
         </div>
     </div>
 </section>
 
-<!-- SECTION ÉQUIPEMENTS DU CENTRE -->
-<section class="equipements-section section-padding" aria-labelledby="equipements-title">
+<!-- ═══════════════════════════════════════════
+     ÉQUIPEMENTS (feature grid moderne)
+     ═══════════════════════════════════════════ -->
+<section class="equipements-section section-padding reveal-section" aria-labelledby="equipements-title">
     <div class="container">
         <div class="section-header">
-            <span class="section-badge" aria-hidden="true">&#128295; Nos équipements</span>
+            <span class="section-badge-light"><?php echo $svg['etoile']; ?> Nos équipements</span>
             <h2 class="section-title" id="equipements-title">Le Centre est doté</h2>
             <div class="section-divider" aria-hidden="true"></div>
         </div>
-        
-        <div class="equipements-grid" role="list">
-            <div class="equipement-item" role="listitem">
-                <span class="equipement-icon" aria-hidden="true">&#127744;</span>
-                <span class="equipement-name">Chambres ventilées</span>
+
+        <div class="features-grid">
+            <div class="feature-card reveal-section">
+                <div class="feature-icon"><?php echo $svg['soleil']; ?></div>
+                <h3>Chambres ventilées</h3>
+                <p>Confort naturel pour un repos paisible.</p>
             </div>
-            <div class="equipement-item" role="listitem">
-                <span class="equipement-icon" aria-hidden="true">&#10052;</span>
-                <span class="equipement-name">Chambres climatisées</span>
+            <div class="feature-card reveal-section">
+                <div class="feature-icon"><?php echo $svg['neige']; ?></div>
+                <h3>Chambres climatisées</h3>
+                <p>Fraîcheur garantie pour les nuits tropicales.</p>
             </div>
-            <div class="equipement-item" role="listitem">
-                <span class="equipement-icon" aria-hidden="true">&#128524;</span>
-                <span class="equipement-name">Cadre de recueillement</span>
+            <div class="feature-card reveal-section">
+                <div class="feature-icon"><?php echo $svg['coeur']; ?></div>
+                <h3>Cadre de recueillement</h3>
+                <p>Un environnement propice à la réflexion.</p>
             </div>
-            <div class="equipement-item" role="listitem">
-                <span class="equipement-icon" aria-hidden="true">&#9962;</span>
-                <span class="equipement-name">Chapelle</span>
+            <div class="feature-card reveal-section">
+                <div class="feature-icon"><?php echo $svg['eglise']; ?></div>
+                <h3>Chapelle</h3>
+                <p>Lieu de prière et de silence ouvert à tous.</p>
             </div>
-            <div class="equipement-item" role="listitem">
-                <span class="equipement-icon" aria-hidden="true">&#127897;</span>
-                <span class="equipement-name">Salle de conférence</span>
+            <div class="feature-card reveal-section">
+                <div class="feature-icon"><?php echo $svg['micro']; ?></div>
+                <h3>Salle de conférence</h3>
+                <p>Équipée pour vos événements professionnels.</p>
             </div>
-            <div class="equipement-item" role="listitem">
-                <span class="equipement-icon" aria-hidden="true">&#128218;</span>
-                <span class="equipement-name">Salles de formation</span>
+            <div class="feature-card reveal-section">
+                <div class="feature-icon"><?php echo $svg['livre']; ?></div>
+                <h3>Salles de formation</h3>
+                <p>Espaces dédiés à l'apprentissage.</p>
             </div>
-            <div class="equipement-item" role="listitem">
-                <span class="equipement-icon" aria-hidden="true">&#128187;</span>
-                <span class="equipement-name">Cadre de travail</span>
+            <div class="feature-card reveal-section">
+                <div class="feature-icon"><?php echo $svg['ordi']; ?></div>
+                <h3>Cadre de travail</h3>
+                <p>Un environnement calme pour vos projets.</p>
             </div>
-            <div class="equipement-item" role="listitem">
-                <span class="equipement-icon" aria-hidden="true">&#127869;</span>
-                <span class="equipement-name">Salle à manger</span>
+            <div class="feature-card reveal-section">
+                <div class="feature-icon"><?php echo $svg['couverts']; ?></div>
+                <h3>Salle à manger</h3>
+                <p>Convivialité et cuisine locale.</p>
             </div>
         </div>
     </div>
 </section>
 
-<!-- SECTION NOS CHAMBRES (CPT Hébergements) -->
-<section id="nos-chambres" class="nos-chambres section-padding bg-light" aria-labelledby="nos-chambres-title">
+<!-- ═══════════════════════════════════════════
+     NOS CHAMBRES (CPT Hébergements — cards modernes)
+     ═══════════════════════════════════════════ -->
+<section id="nos-chambres" class="nos-chambres section-padding section-alt" aria-labelledby="nos-chambres-title">
     <div class="container">
-        <div class="section-header">
-            <span class="section-badge" aria-hidden="true">&#127968; Notre espace</span>
+        <div class="section-header reveal-section">
+            <span class="section-badge-light"><?php echo $svg['maison']; ?> Notre espace</span>
             <h2 class="section-title" id="nos-chambres-title">Nos Chambres</h2>
             <div class="section-divider" aria-hidden="true"></div>
             <p class="section-subtitle">Des chambres confortables pour votre séjour</p>
         </div>
-        
-        <div class="hebergements-grid">
+
+        <div class="formations-grid">
             <?php
             $hebergements = new WP_Query( [
                 'post_type'      => 'hebergement',
                 'posts_per_page' => -1,
                 'orderby'        => 'menu_order',
-                'order'          => 'ASC'
+                'order'          => 'ASC',
             ] );
-            
+
             if ( $hebergements->have_posts() ) :
                 while ( $hebergements->have_posts() ) : $hebergements->the_post(); ?>
-                    <article class="hebergement-card card-modern">
+                    <article class="formation-card card-modern reveal-section">
                         <div class="card-image">
                             <a href="<?php the_permalink(); ?>" aria-label="Voir l'hébergement : <?php echo esc_attr( get_the_title() ); ?>">
-                                <?php if ( has_post_thumbnail() ) : 
-                                    the_post_thumbnail( 'card-thumb', [
+                                <?php if ( has_post_thumbnail() ) :
+                                    the_post_thumbnail( 'medium_large', [
                                         'alt'      => '',
                                         'loading'  => 'lazy',
                                         'decoding' => 'async',
                                     ] );
                                 else : ?>
-                                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300'%3E%3Crect width='400' height='300' fill='%23f0f0f0'/%3E%3Ctext x='200' y='160' font-size='18' text-anchor='middle' fill='%23999' font-family='Arial'%3E%F0%9F%8F%A0 Chambre%3C/text%3E%3C/svg%3E" 
-                                         alt=""
-                                         loading="lazy"
-                                         decoding="async"
-                                         style="width:100%; height:200px; object-fit:cover;">
+                                    <div class="card-icon-placeholder"><?php echo $svg['maison']; ?></div>
                                 <?php endif; ?>
                             </a>
-                            <?php 
+                            <?php
                             $dispo = get_post_meta( get_the_ID(), '_dsj_dispo', true );
                             if ( $dispo === 'disponible' ) : ?>
                                 <span class="card-badge disponible">Disponible</span>
@@ -174,45 +217,38 @@ $hero_soustitre = get_theme_mod( 'hero_maison_soustitre', 'Un lieu de repos, de 
                                 <span class="card-badge complet">Complet</span>
                             <?php endif; ?>
                         </div>
-                        
+
                         <div class="card-content">
                             <h3>
-                                <a href="<?php the_permalink(); ?>">
-                                    <?php the_title(); ?>
-                                </a>
+                                <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
                             </h3>
-                            
-                            <?php 
+
+                            <?php
                             $capacite  = get_post_meta( get_the_ID(), '_dsj_capacite', true );
                             $prix_nuit = get_post_meta( get_the_ID(), '_dsj_prix_nuit', true );
                             ?>
-                            
+
                             <div class="card-meta">
                                 <?php if ( $capacite ) : ?>
-                                    <span class="meta-item">
-                                        <span aria-hidden="true">&#128101;</span> <?php echo esc_html( $capacite ); ?> pers.
-                                    </span>
+                                    <span class="meta-item"><?php echo $svg['users']; ?> <?php echo esc_html( $capacite ); ?> pers.</span>
                                 <?php endif; ?>
-                                
                                 <?php if ( $prix_nuit ) : ?>
-                                    <span class="meta-item">
-                                        <span aria-hidden="true">&#128176;</span> <?php echo esc_html( $prix_nuit ); ?> F/nuit
-                                    </span>
+                                    <span class="meta-item"><?php echo esc_html( $prix_nuit ); ?> F/nuit</span>
                                 <?php endif; ?>
                             </div>
-                            
+
                             <div class="card-description">
-                                <?php 
+                                <?php
                                 if ( has_excerpt() ) {
-                                    echo esc_html( wp_trim_words( get_the_excerpt(), 12, '...' ) );
+                                    echo esc_html( wp_trim_words( get_the_excerpt(), 14, '...' ) );
                                 } else {
-                                    echo esc_html( wp_trim_words( get_the_content(), 12, '...' ) );
+                                    echo esc_html( wp_trim_words( get_the_content(), 14, '...' ) );
                                 }
                                 ?>
                             </div>
-                            
+
                             <a href="<?php the_permalink(); ?>" class="btn-link" aria-label="Voir les détails de <?php echo esc_attr( get_the_title() ); ?>">
-                                Voir les détails <span class="arrow" aria-hidden="true">&#8594;</span>
+                                Voir les détails <span class="arrow" aria-hidden="true">→</span>
                             </a>
                         </div>
                     </article>
@@ -225,26 +261,30 @@ $hero_soustitre = get_theme_mod( 'hero_maison_soustitre', 'Un lieu de repos, de 
     </div>
 </section>
 
-<!-- FORMULAIRE DE RÉSERVATION -->
-<section id="reservation" class="reservation section-padding" aria-labelledby="reservation-title">
+<!-- ═══════════════════════════════════════════
+     FORMULAIRE DE RÉSERVATION
+     ═══════════════════════════════════════════ -->
+<section id="reservation" class="reservation section-padding reveal-section" aria-labelledby="reservation-title">
     <div class="container">
         <div class="reservation-header">
-            <span class="reservation-badge" aria-hidden="true">&#128197; Réservation</span>
+            <span class="reservation-badge">
+                <?php echo $svg['calendrier']; ?> Réservation
+            </span>
             <h2 class="reservation-title" id="reservation-title">Demander une Réservation</h2>
             <div class="reservation-divider" aria-hidden="true"></div>
             <p class="reservation-subtitle">Remplissez ce formulaire et nous vous répondrons sous 48h</p>
         </div>
-        
+
         <?php if ( isset( $_GET['success'] ) && $_GET['success'] === '1' ) : ?>
             <div class="alert alert-success" role="alert" aria-live="polite">
-                <span class="alert-icon" aria-hidden="true">&#9989;</span>
+                <span class="alert-icon" aria-hidden="true"><?php echo $svg['check']; ?></span>
                 <div class="alert-content">
                     <strong>Merci !</strong> Votre demande a bien été envoyée. Nous vous répondrons sous 48h par WhatsApp ou email.
                 </div>
             </div>
         <?php elseif ( isset( $_GET['error'] ) ) : ?>
             <div class="alert alert-error" role="alert" aria-live="assertive">
-                <span class="alert-icon" aria-hidden="true">&#10060;</span>
+                <span class="alert-icon" aria-hidden="true">✕</span>
                 <div class="alert-content">
                     <?php
                     $error = sanitize_text_field( wp_unslash( $_GET['error'] ?? '' ) );
@@ -271,31 +311,31 @@ $hero_soustitre = get_theme_mod( 'hero_maison_soustitre', 'Un lieu de repos, de 
                 </div>
             </div>
         <?php endif; ?>
-        
+
         <form class="form-reservation" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" method="post" novalidate>
             <input type="hidden" name="action" value="dsj_reservation_form">
             <?php wp_nonce_field( 'dsj_reservation_nonce', '_wpnonce' ); ?>
-            
+
             <!-- Honeypot anti-spam -->
             <div class="dsj-honeypot" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden;">
                 <label for="dsj_hp_field">Ne pas remplir ce champ</label>
                 <input type="text" id="dsj_hp_field" name="dsj_hp_field" tabindex="-1" autocomplete="off">
             </div>
-            
+
             <div class="form-grid">
                 <div class="form-group">
                     <label for="resa-nom">
-                        <span class="label-icon" aria-hidden="true">&#128100;</span>
+                        <?php echo $svg['users']; ?>
                         Nom complet <span class="required" aria-hidden="true">*</span>
                         <span class="screen-reader-text">(obligatoire)</span>
                     </label>
                     <input type="text" id="resa-nom" name="nom" class="form-control" placeholder="Votre nom et prénom" required aria-required="true">
                     <span class="input-border" aria-hidden="true"></span>
                 </div>
-                
+
                 <div class="form-group">
                     <label for="resa-contact">
-                        <span class="label-icon" aria-hidden="true">&#128222;</span>
+                        <?php echo $svg['fleche']; ?>
                         Email ou Téléphone <span class="required" aria-hidden="true">*</span>
                         <span class="screen-reader-text">(obligatoire)</span>
                     </label>
@@ -303,31 +343,31 @@ $hero_soustitre = get_theme_mod( 'hero_maison_soustitre', 'Un lieu de repos, de 
                     <span class="input-border" aria-hidden="true"></span>
                 </div>
             </div>
-            
+
             <div class="form-grid form-grid-3">
                 <div class="form-group">
                     <label for="resa-arrivee">
-                        <span class="label-icon" aria-hidden="true">&#128197;</span>
+                        <?php echo $svg['calendrier']; ?>
                         Date d'arrivée <span class="required" aria-hidden="true">*</span>
                         <span class="screen-reader-text">(obligatoire)</span>
                     </label>
                     <input type="date" id="resa-arrivee" name="arrivee" class="form-control" required aria-required="true">
                     <span class="input-border" aria-hidden="true"></span>
                 </div>
-                
+
                 <div class="form-group">
                     <label for="resa-depart">
-                        <span class="label-icon" aria-hidden="true">&#128197;</span>
+                        <?php echo $svg['calendrier']; ?>
                         Date de départ <span class="required" aria-hidden="true">*</span>
                         <span class="screen-reader-text">(obligatoire)</span>
                     </label>
                     <input type="date" id="resa-depart" name="depart" class="form-control" required aria-required="true">
                     <span class="input-border" aria-hidden="true"></span>
                 </div>
-                
+
                 <div class="form-group">
                     <label for="resa-type">
-                        <span class="label-icon" aria-hidden="true">&#127968;</span>
+                        <?php echo $svg['maison']; ?>
                         Type de chambre
                     </label>
                     <div class="select-wrapper">
@@ -342,32 +382,55 @@ $hero_soustitre = get_theme_mod( 'hero_maison_soustitre', 'Un lieu de repos, de 
                                 wp_reset_postdata();
                             endif; ?>
                         </select>
-                        <span class="select-arrow" aria-hidden="true">&#9660;</span>
+                        <span class="select-arrow" aria-hidden="true">▾</span>
                     </div>
                     <span class="input-border" aria-hidden="true"></span>
                 </div>
             </div>
-            
+
             <div class="form-group full-width">
                 <label for="resa-message">
-                    <span class="label-icon" aria-hidden="true">&#128172;</span>
+                    <?php echo $svg['edit']; ?>
                     Besoins particuliers
                 </label>
                 <textarea id="resa-message" name="message" class="form-control" rows="4" placeholder="Ex: régime alimentaire, accès PMR, besoins spécifiques..."></textarea>
                 <span class="input-border" aria-hidden="true"></span>
             </div>
-            
+
             <div class="form-footer">
-                <button type="submit" class="btn-submit">
-                    <span class="btn-icon" aria-hidden="true">&#9993;</span>
-                    Envoyer ma demande
+                <button type="submit" class="btn-submit btn btn-primary btn-large">
+                    <?php echo $svg['fleche']; ?> Envoyer ma demande
                 </button>
                 <p class="form-note">
-                    <span class="note-icon" aria-hidden="true">&#128274;</span>
+                    <?php echo $svg['check']; ?>
                     Nous vous répondrons sous 48h par WhatsApp ou email
                 </p>
             </div>
         </form>
+    </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     CTA FINAL (identique aux autres pages)
+     ═══════════════════════════════════════════ -->
+<section class="cta-final-section section-padding" aria-labelledby="cta-maison-title">
+    <div class="container">
+        <div class="cta-content reveal-section">
+            <span class="cta-icon"><?php echo $svg['coeur']; ?></span>
+            <h2 id="cta-maison-title">Besoin d'un hébergement ?</h2>
+            <p>Notre Maison d'Accueil vous accueille pour un séjour, une retraite ou un événement. Contactez-nous pour toute information.</p>
+
+            <div class="cta-actions">
+                <a href="#reservation" class="btn btn-primary btn-large">
+                    <?php echo $svg['calendrier']; ?> Réserver maintenant
+                </a>
+                <a href="<?php echo esc_url( $url_whatsapp ); ?>" class="btn btn-outline-light btn-large" target="_blank" rel="noopener noreferrer">Parler sur WhatsApp</a>
+            </div>
+
+            <p class="cta-whatsapp">
+                Une question ? <a href="<?php echo esc_url( $url_whatsapp ); ?>" target="_blank" rel="noopener noreferrer">Écrivez-nous sur WhatsApp</a>
+            </p>
+        </div>
     </div>
 </section>
 
