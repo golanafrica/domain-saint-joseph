@@ -1517,3 +1517,162 @@ function dsj_customize_a_propos_histoire( $wp_customize ) {
 	) ) );
 }
 add_action( 'customize_register', 'dsj_customize_a_propos_histoire' );
+
+/* ═══════════════════════════════════════════
+   SECTION À PROPOS — NOTRE MISSION (éditable)
+   Citation + 3 missions modifiables
+   ═══════════════════════════════════════════ */
+function dsj_customize_a_propos_mission( $wp_customize ) {
+
+	$wp_customize->add_section( 'dsj_a_propos_mission', array(
+		'title'       => __( '🎯 À propos — Notre Mission', 'domaine-saint-joseph' ),
+		'description' => __( 'Modifiez la citation de mission et les 3 missions affichées.', 'domaine-saint-joseph' ),
+		'priority'    => 38,
+	) );
+
+	// Badge & titre
+	$wp_customize->add_setting( 'mission_badge', array(
+		'default'           => 'Notre raison d\'être',
+		'sanitize_callback' => 'sanitize_text_field',
+	) );
+	$wp_customize->add_control( 'mission_badge', array(
+		'label'   => __( 'Badge de la section', 'domaine-saint-joseph' ),
+		'section' => 'dsj_a_propos_mission',
+		'type'    => 'text',
+	) );
+
+	$wp_customize->add_setting( 'mission_titre', array(
+		'default'           => 'Notre Mission',
+		'sanitize_callback' => 'sanitize_text_field',
+	) );
+	$wp_customize->add_control( 'mission_titre', array(
+		'label'   => __( 'Titre de la section', 'domaine-saint-joseph' ),
+		'section' => 'dsj_a_propos_mission',
+		'type'    => 'text',
+	) );
+
+	// Citation principale
+	$wp_customize->add_setting( 'mission_citation', array(
+		'default'           => 'Soutenir, encourager les jeunes filles et les jeunes mamans à acquérir des compétences techniques dans le but d\'assumer des responsabilités dans la vie courante.',
+		'sanitize_callback' => 'wp_kses_post',
+	) );
+	$wp_customize->add_control( 'mission_citation', array(
+		'label'       => __( 'Citation de mission (encadré central)', 'domaine-saint-joseph' ),
+		'description' => __( 'Texte affiché dans l\'encadré doré central.', 'domaine-saint-joseph' ),
+		'section'     => 'dsj_a_propos_mission',
+		'type'        => 'textarea',
+	) );
+}
+add_action( 'customize_register', 'dsj_customize_a_propos_mission' );
+
+
+/* ═══════════════════════════════════════════
+   SECTION À PROPOS — NOTRE ÉQUIPE (DYNAMIQUE)
+   Jusqu'à 8 membres, activables/désactivables
+   ═══════════════════════════════════════════ */
+function dsj_customize_a_propos_equipe( $wp_customize ) {
+
+	$wp_customize->add_section( 'dsj_a_propos_equipe', array(
+		'title'       => __( '👥 À propos — Notre Équipe', 'domaine-saint-joseph' ),
+		'description' => __( 'Activez jusqu\'à 8 membres. Décochez pour masquer un membre.', 'domaine-saint-joseph' ),
+		'priority'    => 39,
+	) );
+
+	// Titres de section
+	$wp_customize->add_setting( 'equipe_badge', array(
+		'default'           => 'Notre communauté',
+		'sanitize_callback' => 'sanitize_text_field',
+	) );
+	$wp_customize->add_control( 'equipe_badge', array(
+		'label'   => __( 'Badge de la section', 'domaine-saint-joseph' ),
+		'section' => 'dsj_a_propos_equipe',
+		'type'    => 'text',
+	) );
+
+	$wp_customize->add_setting( 'equipe_titre', array(
+		'default'           => 'Notre Équipe',
+		'sanitize_callback' => 'sanitize_text_field',
+	) );
+	$wp_customize->add_control( 'equipe_titre', array(
+		'label'   => __( 'Titre de la section', 'domaine-saint-joseph' ),
+		'section' => 'dsj_a_propos_equipe',
+		'type'    => 'text',
+	) );
+
+	$wp_customize->add_setting( 'equipe_soustitre', array(
+		'default'           => 'Des personnes dévouées au service des autres',
+		'sanitize_callback' => 'sanitize_text_field',
+	) );
+	$wp_customize->add_control( 'equipe_soustitre', array(
+		'label'   => __( 'Sous-titre', 'domaine-saint-joseph' ),
+		'section' => 'dsj_a_propos_equipe',
+		'type'    => 'text',
+	) );
+
+	// ── 8 slots de membres ──
+	$defaults = array(
+		1 => array( 'nom' => 'Sœur Marie-Bernadette', 'fonction' => 'Supérieure de la communauté', 'desc' => 'Responsable du Domaine Saint Joseph et de l\'orientation pastorale.' ),
+		2 => array( 'nom' => 'Sœur Thérèse',           'fonction' => 'Responsable des formations',  'desc' => 'Coordinatrice des filières techniques et du suivi pédagogique.' ),
+		3 => array( 'nom' => 'Sœur Claire',            'fonction' => 'Responsable de l\'accueil',   'desc' => 'Gère l\'hébergement et le bien-être des hôtes et résidentes.' ),
+	);
+
+	for ( $i = 1; $i <= 8; $i++ ) {
+
+		$d = $defaults[ $i ] ?? array( 'nom' => '', 'fonction' => '', 'desc' => '' );
+
+		// ✅ Activer ce membre (checkbox)
+		$wp_customize->add_setting( "equipe_membre_{$i}_active", array(
+			'default'           => ( $i <= 3 ), // les 3 premiers actifs par défaut
+			'sanitize_callback' => 'wp_validate_boolean',
+		) );
+		$wp_customize->add_control( "equipe_membre_{$i}_active", array(
+			'label'   => sprintf( __( '— Membre %d : Afficher', 'domaine-saint-joseph' ), $i ),
+			'section' => 'dsj_a_propos_equipe',
+			'type'    => 'checkbox',
+		) );
+
+		// Nom
+		$wp_customize->add_setting( "equipe_membre_{$i}_nom", array(
+			'default'           => $d['nom'],
+			'sanitize_callback' => 'sanitize_text_field',
+		) );
+		$wp_customize->add_control( "equipe_membre_{$i}_nom", array(
+			'label'   => sprintf( __( 'Membre %d — Nom', 'domaine-saint-joseph' ), $i ),
+			'section' => 'dsj_a_propos_equipe',
+			'type'    => 'text',
+		) );
+
+		// Fonction
+		$wp_customize->add_setting( "equipe_membre_{$i}_fonction", array(
+			'default'           => $d['fonction'],
+			'sanitize_callback' => 'sanitize_text_field',
+		) );
+		$wp_customize->add_control( "equipe_membre_{$i}_fonction", array(
+			'label'   => sprintf( __( 'Membre %d — Fonction', 'domaine-saint-joseph' ), $i ),
+			'section' => 'dsj_a_propos_equipe',
+			'type'    => 'text',
+		) );
+
+		// Description
+		$wp_customize->add_setting( "equipe_membre_{$i}_description", array(
+			'default'           => $d['desc'],
+			'sanitize_callback' => 'sanitize_textarea_field',
+		) );
+		$wp_customize->add_control( "equipe_membre_{$i}_description", array(
+			'label'   => sprintf( __( 'Membre %d — Description', 'domaine-saint-joseph' ), $i ),
+			'section' => 'dsj_a_propos_equipe',
+			'type'    => 'textarea',
+		) );
+
+		// Photo
+		$wp_customize->add_setting( "equipe_membre_{$i}_image", array(
+			'default'           => '',
+			'sanitize_callback' => 'esc_url_raw',
+		) );
+		$wp_customize->add_control( new WP_Customize_Image_Control( $wp_customize, "equipe_membre_{$i}_image", array(
+			'label'   => sprintf( __( 'Membre %d — Photo', 'domaine-saint-joseph' ), $i ),
+			'section' => 'dsj_a_propos_equipe',
+		) ) );
+	}
+}
+add_action( 'customize_register', 'dsj_customize_a_propos_equipe' );
