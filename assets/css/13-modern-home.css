@@ -2500,3 +2500,120 @@ html:not(.dsj-js) .reveal-section {
         transform: none !important;
     }
 }
+
+/* ═══════════════════════════════════════════
+   MAISON D'ACCUEIL : SECTION ACCUEIL ET HÉBERGEMENT
+   Layout 2 colonnes (texte + photo)
+   ═══════════════════════════════════════════ */
+.maison-accueil-presentation {
+    background: #ffffff;
+}
+
+.maison-accueil-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: center;
+}
+
+.maison-accueil-texte {
+    order: 1;
+}
+
+.maison-accueil-image {
+    order: 2;
+}
+
+.accueil-hebergement-content {
+    margin-top: 1.5rem;
+}
+
+.accueil-hebergement-content p {
+    font-size: clamp(1rem, 1.1vw, 1.05rem);
+    line-height: 1.8;
+    color: #444;
+    margin-bottom: 1.2rem;
+}
+
+.accueil-hebergement-content p:last-child {
+    margin-bottom: 0;
+}
+
+.accueil-hebergement-content strong {
+    color: var(--clr-primary, #1A5276);
+    font-weight: 700;
+}
+
+.accueil-hebergement-photo {
+    width: 100%;
+    height: auto;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(26, 82, 118, 0.12);
+    object-fit: cover;
+    aspect-ratio: 4 / 3;
+}
+
+.accueil-hebergement-placeholder {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    border-radius: 20px;
+    background: rgba(26, 82, 118, 0.05);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    padding: 2rem;
+    text-align: center;
+}
+
+.accueil-hebergement-placeholder .dsj-icon {
+    width: 4rem;
+    height: 4rem;
+    color: var(--clr-accent, #D4AC0D);
+    opacity: 0.4;
+}
+
+.accueil-hebergement-placeholder span {
+    color: #666;
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+@media (max-width: 992px) {
+    .maison-accueil-layout {
+        grid-template-columns: 1fr;
+        gap: 2.5rem;
+    }
+
+    .maison-accueil-texte {
+        order: 2;
+    }
+
+    .maison-accueil-image {
+        order: 1;
+    }
+}
+
+@media (max-width: 768px) {
+    .accueil-hebergement-content p {
+        font-size: 0.98rem;
+    }
+
+    .accueil-hebergement-photo {
+        border-radius: 16px;
+    }
+
+    .accueil-hebergement-placeholder {
+        border-radius: 16px;
+    }
+
+    .accueil-hebergement-placeholder .dsj-icon {
+        width: 3rem;
+        height: 3rem;
+    }
+
+    .accueil-hebergement-placeholder span {
+        font-size: 0.9rem;
+    }
+}
