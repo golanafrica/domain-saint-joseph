@@ -1347,3 +1347,82 @@ function dsj_customize_maison_accueil( $wp_customize ) {
 	) ) );
 }
 add_action( 'customize_register', 'dsj_customize_maison_accueil' );
+
+/* ═══════════════════════════════════════════
+   SECTION SALLES DE CONFÉRENCE & TARIFS
+   Modifiable par les sœurs via le Customizer
+   ═══════════════════════════════════════════ */
+function dsj_customize_salles( $wp_customize ) {
+
+	$wp_customize->add_section( 'dsj_salles', array(
+		'title'    => __( '🏛 Salles & Tarifs - Maison d\'Accueil', 'domaine-saint-joseph' ),
+		'priority' => 36,
+		'description' => __( 'Photos, capacités, tarifs et services des salles de conférence.', 'domaine-saint-joseph' ),
+	) );
+
+	// ── Les 2 salles (boucle) ──
+	$salles = array(
+		1 => array(
+			'nom'              => 'Grande salle de conférence',
+			'capacite'         => '85 à 90 places',
+			'prix_ventilee'    => '50 000 FCFA',
+			'prix_climatisee'  => '85 000 FCFA',
+			'heure_ventilee'   => '7 000 FCFA / heure',
+			'heure_climatisee' => '12 000 FCFA / heure',
+		),
+		2 => array(
+			'nom'              => 'Salle de conférence moyenne',
+			'capacite'         => '40 places',
+			'prix_ventilee'    => '35 000 FCFA',
+			'prix_climatisee'  => '55 000 FCFA',
+			'heure_ventilee'   => '5 000 FCFA / heure',
+			'heure_climatisee' => '8 000 FCFA / heure',
+		),
+	);
+
+	foreach ( $salles as $i => $d ) {
+		$wp_customize->add_setting( "salle{$i}_nom", array( 'default' => $d['nom'], 'sanitize_callback' => 'sanitize_text_field' ) );
+		$wp_customize->add_control( "salle{$i}_nom", array( 'label' => "Salle {$i} — Nom", 'section' => 'dsj_salles', 'type' => 'text' ) );
+
+		$wp_customize->add_setting( "salle{$i}_capacite", array( 'default' => $d['capacite'], 'sanitize_callback' => 'sanitize_text_field' ) );
+		$wp_customize->add_control( "salle{$i}_capacite", array( 'label' => "Salle {$i} — Capacité", 'section' => 'dsj_salles', 'type' => 'text' ) );
+
+		$wp_customize->add_setting( "salle{$i}_image", array( 'default' => '', 'sanitize_callback' => 'esc_url_raw' ) );
+		$wp_customize->add_control( new WP_Customize_Image_Control( $wp_customize, "salle{$i}_image", array( 'label' => "Salle {$i} — Photo", 'section' => 'dsj_salles' ) ) );
+
+		$wp_customize->add_setting( "salle{$i}_prix_ventilee", array( 'default' => $d['prix_ventilee'], 'sanitize_callback' => 'sanitize_text_field' ) );
+		$wp_customize->add_control( "salle{$i}_prix_ventilee", array( 'label' => "Salle {$i} — Prix / jour (ventilée)", 'section' => 'dsj_salles', 'type' => 'text' ) );
+
+		$wp_customize->add_setting( "salle{$i}_prix_climatisee", array( 'default' => $d['prix_climatisee'], 'sanitize_callback' => 'sanitize_text_field' ) );
+		$wp_customize->add_control( "salle{$i}_prix_climatisee", array( 'label' => "Salle {$i} — Prix / jour (climatisée)", 'section' => 'dsj_salles', 'type' => 'text' ) );
+
+		$wp_customize->add_setting( "salle{$i}_heure_ventilee", array( 'default' => $d['heure_ventilee'], 'sanitize_callback' => 'sanitize_text_field' ) );
+		$wp_customize->add_control( "salle{$i}_heure_ventilee", array( 'label' => "Salle {$i} — Prix / heure (ventilée)", 'section' => 'dsj_salles', 'type' => 'text' ) );
+
+		$wp_customize->add_setting( "salle{$i}_heure_climatisee", array( 'default' => $d['heure_climatisee'], 'sanitize_callback' => 'sanitize_text_field' ) );
+		$wp_customize->add_control( "salle{$i}_heure_climatisee", array( 'label' => "Salle {$i} — Prix / heure (climatisée)", 'section' => 'dsj_salles', 'type' => 'text' ) );
+	}
+
+	// ── Services & infos pratiques ──
+	$wp_customize->add_setting( 'salles_avis', array( 'default' => 'Les heures supplémentaires vous seront facturées.', 'sanitize_callback' => 'sanitize_text_field' ) );
+	$wp_customize->add_control( 'salles_avis', array( 'label' => 'Avis (heures supplémentaires)', 'section' => 'dsj_salles', 'type' => 'text' ) );
+
+	$wp_customize->add_setting( 'service_menage', array( 'default' => 'Un service de ménage est mis à votre disposition afin de maintenir votre chambre propre et agréable. Une participation de 500 FCFA est demandée par intervention.', 'sanitize_callback' => 'sanitize_textarea_field' ) );
+	$wp_customize->add_control( 'service_menage', array( 'label' => 'Service de chambre (ménage)', 'section' => 'dsj_salles', 'type' => 'textarea' ) );
+
+	$wp_customize->add_setting( 'service_wifi', array( 'default' => 'Un wifi de haut niveau est offert pour vos recherches internet.', 'sanitize_callback' => 'sanitize_textarea_field' ) );
+	$wp_customize->add_control( 'service_wifi', array( 'label' => 'Wifi gratuit', 'section' => 'dsj_salles', 'type' => 'textarea' ) );
+
+	$wp_customize->add_setting( 'service_groupe', array( 'default' => 'Le groupe électrogène assure le relais en cas de coupure de courant.', 'sanitize_callback' => 'sanitize_textarea_field' ) );
+	$wp_customize->add_control( 'service_groupe', array( 'label' => 'Groupe électrogène', 'section' => 'dsj_salles', 'type' => 'textarea' ) );
+
+	$wp_customize->add_setting( 'service_petitdej', array( 'default' => 'Un petit déjeuner vous est proposé sur place.', 'sanitize_callback' => 'sanitize_textarea_field' ) );
+	$wp_customize->add_control( 'service_petitdej', array( 'label' => 'Petit déjeuner', 'section' => 'dsj_salles', 'type' => 'textarea' ) );
+
+	$wp_customize->add_setting( 'salles_horaires', array( 'default' => '6H00 à 22h30 (du lundi au dimanche)', 'sanitize_callback' => 'sanitize_text_field' ) );
+	$wp_customize->add_control( 'salles_horaires', array( 'label' => 'Horaires', 'section' => 'dsj_salles', 'type' => 'text' ) );
+
+	$wp_customize->add_setting( 'salles_contact', array( 'default' => '(+226) 20 97 28 97 / WhatsApp (+226) 57 52 19 29 / (+226) 01 09 36 71', 'sanitize_callback' => 'sanitize_text_field' ) );
+	$wp_customize->add_control( 'salles_contact', array( 'label' => 'Contact salles', 'section' => 'dsj_salles', 'type' => 'text' ) );
+}
+add_action( 'customize_register', 'dsj_customize_salles' );

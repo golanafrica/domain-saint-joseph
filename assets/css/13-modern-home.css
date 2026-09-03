@@ -2617,3 +2617,279 @@ html:not(.dsj-js) .reveal-section {
         font-size: 0.9rem;
     }
 }
+
+/* ═══════════════════════════════════════════
+   SALLES DE CONFÉRENCE & TARIFS
+   ═══════════════════════════════════════════ */
+.salles-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+.salle-card {
+    background: #ffffff;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(26, 82, 118, 0.06);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.salle-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(26, 82, 118, 0.12);
+}
+
+.salle-card img {
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
+    display: block;
+}
+
+.salle-photo-placeholder {
+    aspect-ratio: 16 / 10;
+    background: rgba(26, 82, 118, 0.05);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    color: #666;
+    font-size: 0.9rem;
+    padding: 1rem;
+    text-align: center;
+}
+
+.salle-photo-placeholder .dsj-icon {
+    width: 3rem;
+    height: 3rem;
+    color: var(--clr-accent, #D4AC0D);
+    opacity: 0.4;
+}
+
+.salle-card-body {
+    padding: 1.5rem;
+}
+
+.salle-card-body h3 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--clr-primary, #1A5276);
+    margin: 0 0 0.5rem;
+}
+
+.salle-capacite {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 12px;
+    background: rgba(212, 172, 13, 0.15);
+    color: var(--clr-primary, #1A5276);
+    border-radius: 100px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+.salle-capacite .dsj-icon {
+    width: 1rem;
+    height: 1rem;
+    color: var(--clr-accent, #D4AC0D);
+}
+
+/* Tarifs */
+.tarifs-wrap {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+.tarif-block h3 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--clr-primary, #1A5276);
+    margin: 0 0 1rem;
+}
+
+.tarif-block h3 .dsj-icon {
+    width: 1.3rem;
+    height: 1.3rem;
+    color: var(--clr-accent, #D4AC0D);
+}
+
+.tarif-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #ffffff;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(26, 82, 118, 0.06);
+    font-size: 0.95rem;
+}
+
+.tarif-table thead th {
+    background: var(--clr-primary, #1A5276);
+    color: #ffffff;
+    padding: 0.9rem 1rem;
+    text-align: left;
+    font-weight: 700;
+}
+
+.tarif-table tbody th,
+.tarif-table tbody td {
+    padding: 0.9rem 1rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.tarif-table tbody tr:last-child th,
+.tarif-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.tarif-table tbody tr:nth-child(even) {
+    background: #F8FAFC;
+}
+
+.tarif-table tbody th {
+    color: var(--clr-primary, #1A5276);
+    font-weight: 600;
+}
+
+.tarif-table td {
+    color: #444;
+    font-weight: 600;
+}
+
+.tarif-avis {
+    margin: 1rem 0 0;
+    padding: 0.75rem 1rem;
+    background: #fff3cd;
+    color: #856404;
+    border-left: 4px solid #ffc107;
+    border-radius: 0 10px 10px 0;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+/* Services */
+.services-info-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+}
+
+.service-info-card {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 1.5rem;
+    text-align: center;
+    box-shadow: 0 2px 10px rgba(26, 82, 118, 0.06);
+    border: 1px solid rgba(26, 82, 118, 0.06);
+}
+
+.service-info-icon {
+    display: inline-flex;
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    background: rgba(212, 172, 13, 0.15);
+    color: var(--clr-accent, #D4AC0D);
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.75rem;
+}
+
+.service-info-icon .dsj-icon {
+    width: 26px;
+    height: 26px;
+}
+
+.service-info-card h3 {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--clr-primary, #1A5276);
+    margin: 0 0 0.5rem;
+}
+
+.service-info-card p {
+    color: #555;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* Bandeau horaires + contact */
+.salles-infos-banner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    background: linear-gradient(135deg, var(--clr-primary, #1A5276) 0%, #102f49 100%);
+    border-radius: 20px;
+    padding: 1.75rem 2rem;
+    color: #ffffff;
+}
+
+.salles-banner-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.salles-banner-item .dsj-icon {
+    width: 2rem;
+    height: 2rem;
+    color: var(--clr-accent, #D4AC0D);
+    flex-shrink: 0;
+}
+
+.salles-banner-item strong {
+    display: block;
+    font-size: 1rem;
+    margin-bottom: 2px;
+}
+
+.salles-banner-item span {
+    font-size: 0.95rem;
+    opacity: 0.92;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+    .services-info-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .tarifs-wrap {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .salles-grid {
+        grid-template-columns: 1fr;
+    }
+    .salles-infos-banner {
+        grid-template-columns: 1fr;
+        padding: 1.5rem;
+    }
+    .tarif-table {
+        font-size: 0.85rem;
+    }
+    .tarif-table thead th,
+    .tarif-table tbody th,
+    .tarif-table tbody td {
+        padding: 0.7rem 0.6rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .services-info-grid {
+        grid-template-columns: 1fr;
+    }
+}
