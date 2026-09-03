@@ -7,7 +7,7 @@
 get_header();
 
 /* ────────────────────────────────────────────────────────────
-   ICÔNES SVG (cohérentes sur tous les appareils)
+   ICÔNES SVG (cohérents sur tous les appareils)
    ──────────────────────────────────────────────────────────── */
 $svg_wrap = '<svg class="dsj-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">';
 $svg = [
@@ -69,6 +69,59 @@ $hero_soustitre = get_theme_mod( 'hero_maison_soustitre', 'Un lieu de repos, de 
             <a href="#reservation" class="btn-scroll btn-outline" aria-label="Réserver une chambre maintenant">
                 <?php echo $svg['calendrier']; ?> Réserver maintenant
             </a>
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     SECTION ACCUEIL ET HÉBERGEMENT
+     ✅ TEXTE + PHOTO MODIFIABLES VIA CUSTOMIZER
+     Personnaliser → Maison d'Accueil — Présentation
+     ═══════════════════════════════════════════ -->
+<?php
+$ma_titre  = get_theme_mod( 'maison_accueil_titre', 'Accueil et Hébergement' );
+$ma_texte1 = get_theme_mod( 'maison_accueil_texte1', 'L\'accueil et l\'hébergement ont pour but de vous offrir un <strong>cadre simple, propre et paisible</strong>, propice au repos, au recueillement et à la convivialité.' );
+$ma_texte2 = get_theme_mod( 'maison_accueil_texte2', 'Que vous soyez en déplacement, en retraite spirituelle, en session de formation, en réunion ou simplement en séjour de repos, seul, en famille ou en groupe de réflexion, nous mettons à votre disposition un <strong>environnement chaleureux</strong> favorisant votre confort et votre bien-être.' );
+$ma_texte3 = get_theme_mod( 'maison_accueil_texte3', 'En choisissant de séjourner au Domaine Saint Joseph, vous participez directement à une <strong>œuvre de solidarité</strong>. Les revenus de l\'accueil et de l\'hébergement sont entièrement réinvestis dans les actions du Centre afin de soutenir la formation humaine, professionnelle et spirituelle des jeunes, en particulier des jeunes qui ne bénéficient d\'aucun soutien financier.' );
+
+// Priorité photo : Customizer > image mise en avant de la page > placeholder
+$ma_photo = get_theme_mod( 'maison_accueil_photo', '' );
+if ( empty( $ma_photo ) && has_post_thumbnail() ) {
+    $ma_photo = get_the_post_thumbnail_url( get_the_ID(), 'large' );
+}
+?>
+<section class="maison-accueil-presentation section-padding" aria-labelledby="accueil-hebergement-title">
+    <div class="container">
+        <div class="maison-accueil-layout reveal-section">
+
+            <!-- Colonne texte -->
+            <div class="maison-accueil-texte">
+                <span class="section-badge-light"><?php echo $svg['coeur']; ?> Notre mission d'accueil</span>
+                <h2 class="section-title" id="accueil-hebergement-title"><?php echo esc_html( $ma_titre ); ?></h2>
+                <div class="section-divider left" aria-hidden="true"></div>
+
+                <div class="accueil-hebergement-content">
+                    <?php if ( $ma_texte1 ) : ?><p><?php echo wp_kses_post( $ma_texte1 ); ?></p><?php endif; ?>
+                    <?php if ( $ma_texte2 ) : ?><p><?php echo wp_kses_post( $ma_texte2 ); ?></p><?php endif; ?>
+                    <?php if ( $ma_texte3 ) : ?><p><?php echo wp_kses_post( $ma_texte3 ); ?></p><?php endif; ?>
+                </div>
+            </div>
+
+            <!-- Colonne image -->
+            <div class="maison-accueil-image">
+                <?php if ( $ma_photo ) : ?>
+                    <img src="<?php echo esc_url( $ma_photo ); ?>"
+                         class="accueil-hebergement-photo"
+                         alt="<?php echo esc_attr( 'Maison d\'accueil du Domaine Saint Joseph' ); ?>"
+                         loading="lazy" decoding="async">
+                <?php else : ?>
+                    <div class="accueil-hebergement-placeholder">
+                        <?php echo $svg['maison']; ?>
+                        <span>Ajoutez une photo : Personnaliser → Maison d'Accueil — Présentation</span>
+                    </div>
+                <?php endif; ?>
+            </div>
+
         </div>
     </div>
 </section>
@@ -316,7 +369,6 @@ $hero_soustitre = get_theme_mod( 'hero_maison_soustitre', 'Un lieu de repos, de 
             <input type="hidden" name="action" value="dsj_reservation_form">
             <?php wp_nonce_field( 'dsj_reservation_nonce', '_wpnonce' ); ?>
 
-            <!-- Honeypot anti-spam -->
             <div class="dsj-honeypot" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden;">
                 <label for="dsj_hp_field">Ne pas remplir ce champ</label>
                 <input type="text" id="dsj_hp_field" name="dsj_hp_field" tabindex="-1" autocomplete="off">
@@ -411,7 +463,7 @@ $hero_soustitre = get_theme_mod( 'hero_maison_soustitre', 'Un lieu de repos, de 
 </section>
 
 <!-- ═══════════════════════════════════════════
-     CTA FINAL (identique aux autres pages)
+     CTA FINAL
      ═══════════════════════════════════════════ -->
 <section class="cta-final-section section-padding" aria-labelledby="cta-maison-title">
     <div class="container">
