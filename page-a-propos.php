@@ -122,63 +122,49 @@ $h_photo        = get_theme_mod( 'apropos_histoire_photo', '' );
     </div>
 </section>
 <!-- ═══════════════════════════════════════════
-     SECTION NOTRE MISSION (feature cards modernes)
+     SECTION NOTRE MISSION (Customizer)
      ═══════════════════════════════════════════ -->
+<?php
+$m_badge   = get_theme_mod( 'mission_badge', 'Notre raison d\'être' );
+$m_titre   = get_theme_mod( 'mission_titre', 'Notre Mission' );
+$m_citation = get_theme_mod( 'mission_citation', 'Soutenir, encourager les jeunes filles et les jeunes mamans à acquérir des compétences techniques dans le but d\'assumer des responsabilités dans la vie courante.' );
+?>
 <section class="mission-section section-padding section-alt" aria-labelledby="mission-title">
     <div class="container">
         <div class="section-header reveal-section">
-            <span class="section-badge-light"><?php echo $svg['target']; ?> Notre raison d'être</span>
-            <h2 class="section-title" id="mission-title">Notre Mission</h2>
+            <span class="section-badge-light"><?php echo $svg['target']; ?> <?php echo esc_html( $m_badge ); ?></span>
+            <h2 class="section-title" id="mission-title"><?php echo esc_html( $m_titre ); ?></h2>
             <div class="section-divider" aria-hidden="true"></div>
         </div>
 
+        <?php if ( $m_citation ) : ?>
         <div class="mission-detail reveal-section">
-            <p class="mission-statement">Soutenir, encourager les jeunes filles et les jeunes mamans à acquérir des compétences techniques dans le but d'assumer des responsabilités dans la vie courante.</p>
+            <p class="mission-statement"><?php echo wp_kses_post( $m_citation ); ?></p>
         </div>
+        <?php endif; ?>
 
         <div class="features-grid">
-            <!-- Mission 1 - Former -->
-            <div class="feature-card reveal-section">
-                <div class="feature-icon">
-                    <?php if ( get_theme_mod( 'mission_1_image' ) ) : ?>
-                        <img src="<?php echo esc_url( get_theme_mod( 'mission_1_image' ) ); ?>" alt="<?php echo esc_attr( get_theme_mod( 'mission_1_titre', 'Former' ) ); ?>" class="feature-image">
-                    <?php else : ?>
-                        <?php echo $svg['diplome']; ?>
-                    <?php endif; ?>
+            <?php for ( $i = 1; $i <= 3; $i++ ) :
+                $titre = get_theme_mod( "mission_{$i}_titre", $i === 1 ? 'Former' : ( $i === 2 ? 'Accueillir' : 'Accompagner' ) );
+                $texte = get_theme_mod( "mission_{$i}_texte", '' );
+                $image = get_theme_mod( "mission_{$i}_image", '' );
+                $icon  = ( $i === 1 ) ? $svg['diplome'] : ( ( $i === 2 ) ? $svg['maison'] : $svg['hands'] );
+            ?>
+                <div class="feature-card reveal-section">
+                    <div class="feature-icon">
+                        <?php if ( $image ) : ?>
+                            <img src="<?php echo esc_url( $image ); ?>" alt="<?php echo esc_attr( $titre ); ?>" class="feature-image">
+                        <?php else : ?>
+                            <?php echo $icon; ?>
+                        <?php endif; ?>
+                    </div>
+                    <h3><?php echo esc_html( $titre ); ?></h3>
+                    <p><?php echo wp_kses_post( $texte ); ?></p>
                 </div>
-                <h3><?php echo esc_html( get_theme_mod( 'mission_1_titre', 'Former' ) ); ?></h3>
-                <p><?php echo wp_kses_post( get_theme_mod( 'mission_1_texte', 'Offrir une formation technique de qualité aux jeunes filles pour leur autonomie financière et sociale.' ) ); ?></p>
-            </div>
-
-            <!-- Mission 2 - Accueillir -->
-            <div class="feature-card reveal-section">
-                <div class="feature-icon">
-                    <?php if ( get_theme_mod( 'mission_2_image' ) ) : ?>
-                        <img src="<?php echo esc_url( get_theme_mod( 'mission_2_image' ) ); ?>" alt="<?php echo esc_attr( get_theme_mod( 'mission_2_titre', 'Accueillir' ) ); ?>" class="feature-image">
-                    <?php else : ?>
-                        <?php echo $svg['maison']; ?>
-                    <?php endif; ?>
-                </div>
-                <h3><?php echo esc_html( get_theme_mod( 'mission_2_titre', 'Accueillir' ) ); ?></h3>
-                <p><?php echo wp_kses_post( get_theme_mod( 'mission_2_texte', 'Procurer un lieu de repos, de ressourcement et de rencontres dans un cadre paisible et sécurisé.' ) ); ?></p>
-            </div>
-
-            <!-- Mission 3 - Accompagner -->
-            <div class="feature-card reveal-section">
-                <div class="feature-icon">
-                    <?php if ( get_theme_mod( 'mission_3_image' ) ) : ?>
-                        <img src="<?php echo esc_url( get_theme_mod( 'mission_3_image' ) ); ?>" alt="<?php echo esc_attr( get_theme_mod( 'mission_3_titre', 'Accompagner' ) ); ?>" class="feature-image">
-                    <?php else : ?>
-                        <?php echo $svg['hands']; ?>
-                    <?php endif; ?>
-                </div>
-                <h3><?php echo esc_html( get_theme_mod( 'mission_3_titre', 'Accompagner' ) ); ?></h3>
-                <p><?php echo wp_kses_post( get_theme_mod( 'mission_3_texte', 'Soutenir les plus vulnérables avec compassion et bienveillance dans leurs projets de vie.' ) ); ?></p>
-            </div>
+            <?php endfor; ?>
         </div>
     </div>
 </section>
-
 <!-- ═══════════════════════════════════════════
      SECTION NOS VALEURS (feature cards compactes)
      ═══════════════════════════════════════════ -->
@@ -227,62 +213,56 @@ $h_photo        = get_theme_mod( 'apropos_histoire_photo', '' );
 </section>
 
 <!-- ═══════════════════════════════════════════
-     SECTION NOTRE ÉQUIPE
+     SECTION NOTRE ÉQUIPE (Dynamique — Customizer)
+     Les sœurs activent/désactivent les membres
      ═══════════════════════════════════════════ -->
+<?php
+$eq_badge    = get_theme_mod( 'equipe_badge', 'Notre communauté' );
+$eq_titre    = get_theme_mod( 'equipe_titre', 'Notre Équipe' );
+$eq_soustitre = get_theme_mod( 'equipe_soustitre', 'Des personnes dévouées au service des autres' );
+
+// Collecter les membres actifs
+$membres_actifs = array();
+for ( $i = 1; $i <= 8; $i++ ) {
+    if ( get_theme_mod( "equipe_membre_{$i}_active", ( $i <= 3 ) ) ) {
+        $membres_actifs[] = array(
+            'nom'         => get_theme_mod( "equipe_membre_{$i}_nom", '' ),
+            'fonction'    => get_theme_mod( "equipe_membre_{$i}_fonction", '' ),
+            'description' => get_theme_mod( "equipe_membre_{$i}_description", '' ),
+            'image'       => get_theme_mod( "equipe_membre_{$i}_image", '' ),
+        );
+    }
+}
+?>
+<?php if ( ! empty( $membres_actifs ) ) : ?>
 <section class="equipe-section section-padding section-alt" aria-labelledby="equipe-title">
     <div class="container">
         <div class="section-header reveal-section">
-            <span class="section-badge-light"><?php echo $svg['users']; ?> Notre communauté</span>
-            <h2 class="section-title" id="equipe-title">Notre Équipe</h2>
+            <span class="section-badge-light"><?php echo $svg['users']; ?> <?php echo esc_html( $eq_badge ); ?></span>
+            <h2 class="section-title" id="equipe-title"><?php echo esc_html( $eq_titre ); ?></h2>
             <div class="section-divider" aria-hidden="true"></div>
-            <p class="section-subtitle">Des personnes dévouées au service des autres</p>
+            <p class="section-subtitle"><?php echo esc_html( $eq_soustitre ); ?></p>
         </div>
 
         <div class="equipe-grid">
-            <!-- Équipe 1 -->
-            <div class="equipe-card reveal-section">
-                <div class="equipe-image">
-                    <?php if ( get_theme_mod( 'equipe_1_image' ) ) : ?>
-                        <img src="<?php echo esc_url( get_theme_mod( 'equipe_1_image' ) ); ?>" alt="<?php echo esc_attr( get_theme_mod( 'equipe_1_nom', 'Sœur Marie-Bernadette' ) ); ?>" class="equipe-photo">
-                    <?php else : ?>
-                        <div class="equipe-placeholder"><?php echo $svg['person']; ?></div>
-                    <?php endif; ?>
+            <?php foreach ( $membres_actifs as $m ) : ?>
+                <div class="equipe-card reveal-section">
+                    <div class="equipe-image">
+                        <?php if ( $m['image'] ) : ?>
+                            <img src="<?php echo esc_url( $m['image'] ); ?>" alt="<?php echo esc_attr( $m['nom'] ); ?>" class="equipe-photo">
+                        <?php else : ?>
+                            <div class="equipe-placeholder"><?php echo $svg['person']; ?></div>
+                        <?php endif; ?>
+                    </div>
+                    <h3><?php echo esc_html( $m['nom'] ); ?></h3>
+                    <p class="equipe-fonction"><?php echo esc_html( $m['fonction'] ); ?></p>
+                    <p><?php echo esc_html( $m['description'] ); ?></p>
                 </div>
-                <h3><?php echo esc_html( get_theme_mod( 'equipe_1_nom', 'Sœur Marie-Bernadette' ) ); ?></h3>
-                <p class="equipe-fonction"><?php echo esc_html( get_theme_mod( 'equipe_1_fonction', 'Supérieure de la communauté' ) ); ?></p>
-                <p><?php echo esc_html( get_theme_mod( 'equipe_1_description', 'Responsable du Domaine Saint Joseph et de l\'orientation pastorale.' ) ); ?></p>
-            </div>
-
-            <!-- Équipe 2 -->
-            <div class="equipe-card reveal-section">
-                <div class="equipe-image">
-                    <?php if ( get_theme_mod( 'equipe_2_image' ) ) : ?>
-                        <img src="<?php echo esc_url( get_theme_mod( 'equipe_2_image' ) ); ?>" alt="<?php echo esc_attr( get_theme_mod( 'equipe_2_nom', 'Sœur Thérèse' ) ); ?>" class="equipe-photo">
-                    <?php else : ?>
-                        <div class="equipe-placeholder"><?php echo $svg['person']; ?></div>
-                    <?php endif; ?>
-                </div>
-                <h3><?php echo esc_html( get_theme_mod( 'equipe_2_nom', 'Sœur Thérèse' ) ); ?></h3>
-                <p class="equipe-fonction"><?php echo esc_html( get_theme_mod( 'equipe_2_fonction', 'Responsable des formations' ) ); ?></p>
-                <p><?php echo esc_html( get_theme_mod( 'equipe_2_description', 'Coordinatrice des filières techniques et du suivi pédagogique.' ) ); ?></p>
-            </div>
-
-            <!-- Équipe 3 -->
-            <div class="equipe-card reveal-section">
-                <div class="equipe-image">
-                    <?php if ( get_theme_mod( 'equipe_3_image' ) ) : ?>
-                        <img src="<?php echo esc_url( get_theme_mod( 'equipe_3_image' ) ); ?>" alt="<?php echo esc_attr( get_theme_mod( 'equipe_3_nom', 'Sœur Claire' ) ); ?>" class="equipe-photo">
-                    <?php else : ?>
-                        <div class="equipe-placeholder"><?php echo $svg['person']; ?></div>
-                    <?php endif; ?>
-                </div>
-                <h3><?php echo esc_html( get_theme_mod( 'equipe_3_nom', 'Sœur Claire' ) ); ?></h3>
-                <p class="equipe-fonction"><?php echo esc_html( get_theme_mod( 'equipe_3_fonction', 'Responsable de l\'accueil' ) ); ?></p>
-                <p><?php echo esc_html( get_theme_mod( 'equipe_3_description', 'Gère l\'hébergement et le bien-être des hôtes et résidentes.' ) ); ?></p>
-            </div>
+            <?php endforeach; ?>
         </div>
     </div>
 </section>
+<?php endif; ?>
 
 <!-- ═══════════════════════════════════════════
      SECTION APPEL À L'AIDE
