@@ -1278,3 +1278,72 @@ function dsj_customize_preview_js() {
     <?php
 }
 add_action( 'wp_footer', 'dsj_customize_preview_js' );
+
+/* ═══════════════════════════════════════════
+   SECTION MAISON D'ACCUEIL — PRÉSENTATION
+   Texte + photo modifiables par les sœurs
+   ═══════════════════════════════════════════ */
+function dsj_customize_maison_accueil( $wp_customize ) {
+
+	$wp_customize->add_section( 'dsj_maison_accueil', array(
+		'title'       => __( 'Maison d\'Accueil — Présentation', 'domaine-saint-joseph' ),
+		'description' => __( 'Texte et photo de la section « Accueil et Hébergement ».', 'domaine-saint-joseph' ),
+		'priority'    => 35,
+	) );
+
+	// Titre de la section
+	$wp_customize->add_setting( 'maison_accueil_titre', array(
+		'default'           => 'Accueil et Hébergement',
+		'sanitize_callback' => 'sanitize_text_field',
+	) );
+	$wp_customize->add_control( 'maison_accueil_titre', array(
+		'label'   => __( 'Titre de la section', 'domaine-saint-joseph' ),
+		'section' => 'dsj_maison_accueil',
+		'type'    => 'text',
+	) );
+
+	// Paragraphe 1 — le cadre
+	$wp_customize->add_setting( 'maison_accueil_texte1', array(
+		'default'           => 'L\'accueil et l\'hébergement ont pour but de vous offrir un cadre simple, propre et paisible, propice au repos, au recueillement et à la convivialité.',
+		'sanitize_callback' => 'wp_kses_post',
+	) );
+	$wp_customize->add_control( 'maison_accueil_texte1', array(
+		'label'   => __( 'Paragraphe 1 — Le cadre', 'domaine-saint-joseph' ),
+		'section' => 'dsj_maison_accueil',
+		'type'    => 'textarea',
+	) );
+
+	// Paragraphe 2 — pour qui
+	$wp_customize->add_setting( 'maison_accueil_texte2', array(
+		'default'           => 'Que vous soyez en déplacement, en retraite spirituelle, en session de formation, en réunion ou simplement en séjour de repos, seul, en famille ou en groupe de réflexion, nous mettons à votre disposition un environnement chaleureux favorisant votre confort et votre bien-être.',
+		'sanitize_callback' => 'wp_kses_post',
+	) );
+	$wp_customize->add_control( 'maison_accueil_texte2', array(
+		'label'   => __( 'Paragraphe 2 — Pour qui ?', 'domaine-saint-joseph' ),
+		'section' => 'dsj_maison_accueil',
+		'type'    => 'textarea',
+	) );
+
+	// Paragraphe 3 — solidarité
+	$wp_customize->add_setting( 'maison_accueil_texte3', array(
+		'default'           => 'En choisissant de séjourner au Domaine Saint Joseph, vous participez directement à une œuvre de solidarité. Les revenus de l\'accueil et de l\'hébergement sont entièrement réinvestis dans les actions du Centre afin de soutenir la formation humaine, professionnelle et spirituelle des jeunes, en particulier des jeunes qui ne bénéficient d\'aucun soutien financier.',
+		'sanitize_callback' => 'wp_kses_post',
+	) );
+	$wp_customize->add_control( 'maison_accueil_texte3', array(
+		'label'   => __( 'Paragraphe 3 — Œuvre de solidarité', 'domaine-saint-joseph' ),
+		'section' => 'dsj_maison_accueil',
+		'type'    => 'textarea',
+	) );
+
+	// Photo de la maison d'accueil
+	$wp_customize->add_setting( 'maison_accueil_photo', array(
+		'default'           => '',
+		'sanitize_callback' => 'esc_url_raw',
+	) );
+	$wp_customize->add_control( new WP_Customize_Image_Control( $wp_customize, 'maison_accueil_photo', array(
+		'label'       => __( 'Photo de la maison d\'accueil', 'domaine-saint-joseph' ),
+		'description' => __( 'Image affichée à droite du texte (format conseillé : paysage 4:3).', 'domaine-saint-joseph' ),
+		'section'     => 'dsj_maison_accueil',
+	) ) );
+}
+add_action( 'customize_register', 'dsj_customize_maison_accueil' );
