@@ -27,6 +27,9 @@ $svg = [
     'couverts'  => $svg_wrap . '<path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>',
     'edit'      => $svg_wrap . '<path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>',
     'fleche'    => $svg_wrap . '<line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>',
+    'wifi'      => $svg_wrap . '<path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>',
+    'eclair'    => $svg_wrap . '<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>',
+    'phone'     => $svg_wrap . '<path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2.18 1.72 12.84 12.84 0 0 0 .71 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.71A2 2 0 0 1 22 16.92z"/></svg>',
 ];
 
 $url_whatsapp = 'https://wa.me/' . preg_replace( '/[^0-9]/', '', get_theme_mod( 'whatsapp', '22666605890' ) );
@@ -222,6 +225,142 @@ if ( empty( $ma_photo ) && has_post_thumbnail() ) {
             </div>
         </div>
     </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     SALLES DE CONFÉRENCE & TARIFS (Customizer)
+     ═══════════════════════════════════════════ -->
+<?php
+$salles = array(
+	1 => array(
+		'nom'              => get_theme_mod( 'salle1_nom', 'Grande salle de conférence' ),
+		'capacite'         => get_theme_mod( 'salle1_capacite', '85 à 90 places' ),
+		'image'            => get_theme_mod( 'salle1_image', '' ),
+		'prix_ventilee'    => get_theme_mod( 'salle1_prix_ventilee', '50 000 FCFA' ),
+		'prix_climatisee'  => get_theme_mod( 'salle1_prix_climatisee', '85 000 FCFA' ),
+		'heure_ventilee'   => get_theme_mod( 'salle1_heure_ventilee', '7 000 FCFA / heure' ),
+		'heure_climatisee' => get_theme_mod( 'salle1_heure_climatisee', '12 000 FCFA / heure' ),
+	),
+	2 => array(
+		'nom'              => get_theme_mod( 'salle2_nom', 'Salle de conférence moyenne' ),
+		'capacite'         => get_theme_mod( 'salle2_capacite', '40 places' ),
+		'image'            => get_theme_mod( 'salle2_image', '' ),
+		'prix_ventilee'    => get_theme_mod( 'salle2_prix_ventilee', '35 000 FCFA' ),
+		'prix_climatisee'  => get_theme_mod( 'salle2_prix_climatisee', '55 000 FCFA' ),
+		'heure_ventilee'   => get_theme_mod( 'salle2_heure_ventilee', '5 000 FCFA / heure' ),
+		'heure_climatisee' => get_theme_mod( 'salle2_heure_climatisee', '8 000 FCFA / heure' ),
+	),
+);
+$salles_avis      = get_theme_mod( 'salles_avis', 'Les heures supplémentaires vous seront facturées.' );
+$service_menage   = get_theme_mod( 'service_menage', 'Un service de ménage est mis à votre disposition afin de maintenir votre chambre propre et agréable. Une participation de 500 FCFA est demandée par intervention.' );
+$service_wifi     = get_theme_mod( 'service_wifi', 'Un wifi de haut niveau est offert pour vos recherches internet.' );
+$service_groupe   = get_theme_mod( 'service_groupe', 'Le groupe électrogène assure le relais en cas de coupure de courant.' );
+$service_petitdej = get_theme_mod( 'service_petitdej', 'Un petit déjeuner vous est proposé sur place.' );
+$salles_horaires  = get_theme_mod( 'salles_horaires', '6H00 à 22h30 (du lundi au dimanche)' );
+$salles_contact   = get_theme_mod( 'salles_contact', '(+226) 20 97 28 97 / WhatsApp (+226) 57 52 19 29 / (+226) 01 09 36 71' );
+?>
+<section class="salles-section section-padding" aria-labelledby="salles-title">
+	<div class="container">
+		<div class="section-header">
+			<span class="section-badge-light"><?php echo $svg['micro']; ?> Vos rencontres</span>
+			<h2 class="section-title" id="salles-title">Salles de conférence</h2>
+			<div class="section-divider" aria-hidden="true"></div>
+			<p class="section-subtitle">Nous disposons des salles pour vos différentes rencontres, formations et conférences.</p>
+		</div>
+
+		<!-- Cartes des salles avec photos -->
+		<div class="salles-grid reveal-section">
+			<?php foreach ( $salles as $i => $s ) : ?>
+				<article class="salle-card">
+					<?php if ( $s['image'] ) : ?>
+						<img src="<?php echo esc_url( $s['image'] ); ?>" alt="<?php echo esc_attr( $s['nom'] ); ?>" loading="lazy" decoding="async">
+					<?php else : ?>
+						<div class="salle-photo-placeholder"><?php echo $svg['micro']; ?><span>Ajoutez une photo dans le Customizer</span></div>
+					<?php endif; ?>
+					<div class="salle-card-body">
+						<h3><?php echo esc_html( $s['nom'] ); ?></h3>
+						<p class="salle-capacite"><?php echo $svg['users']; ?> <?php echo esc_html( $s['capacite'] ); ?></p>
+					</div>
+				</article>
+			<?php endforeach; ?>
+		</div>
+
+		<!-- Tarifs -->
+		<div class="tarifs-wrap reveal-section">
+			<div class="tarif-block">
+				<h3><?php echo $svg['calendrier']; ?> Location à la journée</h3>
+				<table class="tarif-table">
+					<thead>
+						<tr><th scope="col">Salle</th><th scope="col">Ventilée</th><th scope="col">Climatisée</th></tr>
+					</thead>
+					<tbody>
+						<?php foreach ( $salles as $s ) : ?>
+							<tr>
+								<th scope="row"><?php echo esc_html( $s['nom'] ); ?></th>
+								<td><?php echo esc_html( $s['prix_ventilee'] ); ?></td>
+								<td><?php echo esc_html( $s['prix_climatisee'] ); ?></td>
+							</tr>
+						<?php endforeach; ?>
+					</tbody>
+				</table>
+			</div>
+
+			<div class="tarif-block">
+				<h3><?php echo $svg['horloge']; ?> Location à l'heure</h3>
+				<table class="tarif-table">
+					<thead>
+						<tr><th scope="col">Salle</th><th scope="col">Ventilée</th><th scope="col">Climatisée</th></tr>
+					</thead>
+					<tbody>
+						<?php foreach ( $salles as $s ) : ?>
+							<tr>
+								<th scope="row"><?php echo esc_html( $s['nom'] ); ?></th>
+								<td><?php echo esc_html( $s['heure_ventilee'] ); ?></td>
+								<td><?php echo esc_html( $s['heure_climatisee'] ); ?></td>
+							</tr>
+						<?php endforeach; ?>
+					</tbody>
+				</table>
+				<p class="tarif-avis">⚠️ <?php echo esc_html( $salles_avis ); ?></p>
+			</div>
+		</div>
+
+		<!-- Services inclus -->
+		<div class="services-info-grid reveal-section">
+			<div class="service-info-card">
+				<span class="service-info-icon"><?php echo $svg['etoile']; ?></span>
+				<h3>Service de chambre</h3>
+				<p><?php echo esc_html( $service_menage ); ?></p>
+			</div>
+			<div class="service-info-card">
+				<span class="service-info-icon"><?php echo $svg['wifi']; ?></span>
+				<h3>Wifi gratuit</h3>
+				<p><?php echo esc_html( $service_wifi ); ?></p>
+			</div>
+			<div class="service-info-card">
+				<span class="service-info-icon"><?php echo $svg['eclair']; ?></span>
+				<h3>Groupe électrogène</h3>
+				<p><?php echo esc_html( $service_groupe ); ?></p>
+			</div>
+			<div class="service-info-card">
+				<span class="service-info-icon"><?php echo $svg['couverts']; ?></span>
+				<h3>Petit déjeuner</h3>
+				<p><?php echo esc_html( $service_petitdej ); ?></p>
+			</div>
+		</div>
+
+		<!-- Horaires + contact -->
+		<div class="salles-infos-banner reveal-section">
+			<div class="salles-banner-item">
+				<?php echo $svg['horloge']; ?>
+				<div><strong>Horaires</strong><span><?php echo esc_html( $salles_horaires ); ?></span></div>
+			</div>
+			<div class="salles-banner-item">
+				<?php echo $svg['phone']; ?>
+				<div><strong>Contact</strong><span><?php echo esc_html( $salles_contact ); ?></span></div>
+			</div>
+		</div>
+	</div>
 </section>
 
 <!-- ═══════════════════════════════════════════
