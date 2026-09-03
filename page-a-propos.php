@@ -66,22 +66,61 @@ $hero_soustitre = get_theme_mod( 'hero_apropos_soustitre', 'Travailleuses Missio
 </section>
 
 <!-- ═══════════════════════════════════════════
-     SECTION NOTRE HISTOIRE
+     SECTION NOTRE HISTOIRE (Customizer)
+     Texte + photo modifiables par les sœurs
      ═══════════════════════════════════════════ -->
+<?php
+$h_titre        = get_theme_mod( 'apropos_histoire_titre', 'Le Domaine Saint Joseph' );
+$h_p1           = get_theme_mod( 'apropos_histoire_p1', 'Le Centre a été créé en <strong>2022</strong> et ouvert en <strong>2023</strong>. Il offre des formations humaines, techniques, professionnelles et spirituelles adaptées aux réalités du Burkina Faso.' );
+$h_p2           = get_theme_mod( 'apropos_histoire_p2', 'Son objectif est de permettre aux apprenantes d\'acquérir des <strong>compétences solides</strong>, de développer leur autonomie et de réussir leur insertion sociale et professionnelle.' );
+$h_p3           = get_theme_mod( 'apropos_histoire_p3', 'Au-delà de sa mission de formation, le Domaine Saint Joseph dispose également d\'un service d\'accueil, d\'hébergement et de restauration. Les revenus générés par ces activités sont entièrement réinvestis dans la formation des jeunes, en particulier de celles qui ne bénéficient d\'aucun soutien financier.' );
+$h_p4           = get_theme_mod( 'apropos_histoire_p4', 'Aujourd\'hui, le Centre de Formation du Domaine Saint Joseph est un <strong>lieu d\'espérance</strong> où l\'apprentissage, le travail, la solidarité et les valeurs humaines se conjuguent pour bâtir un avenir meilleur pour chaque jeune accueillie.' );
+$h_accompagner  = get_theme_mod( 'apropos_histoire_accompagner', 'Accompagner les jeunes en situation de précarité avec compassion et bienveillance dans leurs projets de vie.' );
+$h_photo        = get_theme_mod( 'apropos_histoire_photo', '' );
+?>
 <section class="histoire-section section-padding reveal-section" aria-labelledby="histoire-title">
     <div class="container">
-        <div class="section-header">
-            <span class="section-badge-light"><?php echo $svg['livre']; ?> Notre histoire</span>
-            <h2 class="section-title" id="histoire-title">Le Domaine Saint Joseph</h2>
-            <div class="section-divider" aria-hidden="true"></div>
-        </div>
-        <div class="histoire-content">
-            <p>Le Domaine Saint Joseph a été créé en <strong>2022</strong>. Ce centre est une expression du charisme des <strong>Travailleuses Missionnaires de l'Immaculée</strong>.</p>
-            <p>Notre centre est dédié à la formation technique et à l'accueil, dans un esprit de service et de partage selon les valeurs de notre communauté.</p>
+        <div class="apropos-histoire-layout">
+
+            <!-- Colonne texte -->
+            <div class="apropos-histoire-texte">
+                <span class="section-badge-light"><?php echo $svg['livre']; ?> Notre histoire</span>
+                <h2 class="section-title" id="histoire-title"><?php echo esc_html( $h_titre ); ?></h2>
+                <div class="section-divider left" aria-hidden="true"></div>
+
+                <div class="apropos-histoire-content">
+                    <?php if ( $h_p1 ) : ?><p><?php echo wp_kses_post( $h_p1 ); ?></p><?php endif; ?>
+                    <?php if ( $h_p2 ) : ?><p><?php echo wp_kses_post( $h_p2 ); ?></p><?php endif; ?>
+                    <?php if ( $h_p3 ) : ?><p><?php echo wp_kses_post( $h_p3 ); ?></p><?php endif; ?>
+                    <?php if ( $h_p4 ) : ?><p><?php echo wp_kses_post( $h_p4 ); ?></p><?php endif; ?>
+                </div>
+
+                <?php if ( $h_accompagner ) : ?>
+                    <div class="apropos-accompagner">
+                        <span class="apropos-accompagner-icon"><?php echo $svg['hands']; ?></span>
+                        <p><?php echo esc_html( $h_accompagner ); ?></p>
+                    </div>
+                <?php endif; ?>
+            </div>
+
+            <!-- Colonne photo -->
+            <div class="apropos-histoire-image">
+                <?php if ( $h_photo ) : ?>
+                    <img src="<?php echo esc_url( $h_photo ); ?>"
+                         class="apropos-histoire-photo"
+                         alt="<?php echo esc_attr( $h_titre ); ?>"
+                         loading="lazy" decoding="async">
+                <?php else : ?>
+                    <div class="apropos-histoire-placeholder">
+                        <?php echo $svg['livre']; ?>
+                        <span>Ajoutez une photo : Personnaliser → 📖 À propos — Notre Histoire</span>
+                    </div>
+                <?php endif; ?>
+            </div>
+
         </div>
     </div>
 </section>
-
 <!-- ═══════════════════════════════════════════
      SECTION NOTRE MISSION (feature cards modernes)
      ═══════════════════════════════════════════ -->

@@ -1426,3 +1426,94 @@ function dsj_customize_salles( $wp_customize ) {
 	$wp_customize->add_control( 'salles_contact', array( 'label' => 'Contact salles', 'section' => 'dsj_salles', 'type' => 'text' ) );
 }
 add_action( 'customize_register', 'dsj_customize_salles' );
+
+/* ═══════════════════════════════════════════
+   SECTION À PROPOS — NOTRE HISTOIRE (éditable)
+   Texte complet + photo modifiables par les sœurs
+   ═══════════════════════════════════════════ */
+function dsj_customize_a_propos_histoire( $wp_customize ) {
+
+	$wp_customize->add_section( 'dsj_a_propos_histoire', array(
+		'title'       => __( '📖 À propos — Notre Histoire', 'domaine-saint-joseph' ),
+		'description' => __( 'Modifiez le texte de présentation et la photo de la section Histoire.', 'domaine-saint-joseph' ),
+		'priority'    => 37,
+	) );
+
+	// Titre
+	$wp_customize->add_setting( 'apropos_histoire_titre', array(
+		'default'           => 'Le Domaine Saint Joseph',
+		'sanitize_callback' => 'sanitize_text_field',
+	) );
+	$wp_customize->add_control( 'apropos_histoire_titre', array(
+		'label'   => __( 'Titre de la section', 'domaine-saint-joseph' ),
+		'section' => 'dsj_a_propos_histoire',
+		'type'    => 'text',
+	) );
+
+	// Paragraphe 1 — Création et ouverture
+	$wp_customize->add_setting( 'apropos_histoire_p1', array(
+		'default'           => 'Le Centre a été créé en <strong>2022</strong> et ouvert en <strong>2023</strong>. Il offre des formations humaines, techniques, professionnelles et spirituelles adaptées aux réalités du Burkina Faso.',
+		'sanitize_callback' => 'wp_kses_post',
+	) );
+	$wp_customize->add_control( 'apropos_histoire_p1', array(
+		'label'   => __( 'Paragraphe 1 — Création et ouverture', 'domaine-saint-joseph' ),
+		'section' => 'dsj_a_propos_histoire',
+		'type'    => 'textarea',
+	) );
+
+	// Paragraphe 2 — Objectif
+	$wp_customize->add_setting( 'apropos_histoire_p2', array(
+		'default'           => 'Son objectif est de permettre aux apprenantes d\'acquérir des <strong>compétences solides</strong>, de développer leur autonomie et de réussir leur insertion sociale et professionnelle.',
+		'sanitize_callback' => 'wp_kses_post',
+	) );
+	$wp_customize->add_control( 'apropos_histoire_p2', array(
+		'label'   => __( 'Paragraphe 2 — Objectif', 'domaine-saint-joseph' ),
+		'section' => 'dsj_a_propos_histoire',
+		'type'    => 'textarea',
+	) );
+
+	// Paragraphe 3 — Au-delà de la formation
+	$wp_customize->add_setting( 'apropos_histoire_p3', array(
+		'default'           => 'Au-delà de sa mission de formation, le Domaine Saint Joseph dispose également d\'un service d\'accueil, d\'hébergement et de restauration. Les revenus générés par ces activités sont entièrement réinvestis dans la formation des jeunes, en particulier de celles qui ne bénéficient d\'aucun soutien financier.',
+		'sanitize_callback' => 'wp_kses_post',
+	) );
+	$wp_customize->add_control( 'apropos_histoire_p3', array(
+		'label'   => __( 'Paragraphe 3 — Au-delà de la formation', 'domaine-saint-joseph' ),
+		'section' => 'dsj_a_propos_histoire',
+		'type'    => 'textarea',
+	) );
+
+	// Paragraphe 4 — Lieu d'espérance
+	$wp_customize->add_setting( 'apropos_histoire_p4', array(
+		'default'           => 'Aujourd\'hui, le Centre de Formation du Domaine Saint Joseph est un <strong>lieu d\'espérance</strong> où l\'apprentissage, le travail, la solidarité et les valeurs humaines se conjuguent pour bâtir un avenir meilleur pour chaque jeune accueillie.',
+		'sanitize_callback' => 'wp_kses_post',
+	) );
+	$wp_customize->add_control( 'apropos_histoire_p4', array(
+		'label'   => __( 'Paragraphe 4 — Lieu d\'espérance', 'domaine-saint-joseph' ),
+		'section' => 'dsj_a_propos_histoire',
+		'type'    => 'textarea',
+	) );
+
+	// Accompagner
+	$wp_customize->add_setting( 'apropos_histoire_accompagner', array(
+		'default'           => 'Accompagner les jeunes en situation de précarité avec compassion et bienveillance dans leurs projets de vie.',
+		'sanitize_callback' => 'sanitize_textarea_field',
+	) );
+	$wp_customize->add_control( 'apropos_histoire_accompagner', array(
+		'label'   => __( 'Accompagner (phrase finale)', 'domaine-saint-joseph' ),
+		'section' => 'dsj_a_propos_histoire',
+		'type'    => 'textarea',
+	) );
+
+	// Photo de l'histoire
+	$wp_customize->add_setting( 'apropos_histoire_photo', array(
+		'default'           => '',
+		'sanitize_callback' => 'esc_url_raw',
+	) );
+	$wp_customize->add_control( new WP_Customize_Image_Control( $wp_customize, 'apropos_histoire_photo', array(
+		'label'       => __( 'Photo de la section Histoire', 'domaine-saint-joseph' ),
+		'description' => __( 'Image affichée à droite du texte (format paysage 4:3 recommandé).', 'domaine-saint-joseph' ),
+		'section'     => 'dsj_a_propos_histoire',
+	) ) );
+}
+add_action( 'customize_register', 'dsj_customize_a_propos_histoire' );
