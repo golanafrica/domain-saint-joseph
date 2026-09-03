@@ -3030,3 +3030,19 @@ html:not(.dsj-js) .reveal-section {
         text-align: center;
     }
 }
+
+/* ═══════════════════════════════════════════
+   ✅ FIX HERO DESKTOP : photo visible en entier
+   Mobile : cover = parfait.
+   Desktop : cover rognait trop → contain + fond bleu
+   (la photo est encadrée par le bleu du bandeau,
+   comme un tableau, sans perdre de détails)
+   ═══════════════════════════════════════════ */
+@media (min-width: 769px) {
+    .page-header .page-photo-zone {
+        background-size: contain;
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-color: var(--clr-primary, #1A5276);
+    }
+}
