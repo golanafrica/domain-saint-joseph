@@ -3031,6 +3031,18 @@ html:not(.dsj-js) .reveal-section {
     }
 }
 
+
+/* ═══════════════════════════════════════════
+   ✅ FIX CHAMBRES : cadrage centré (pas le plafond)
+   Les photos d'intérieur montrent la chambre,
+   pas le ventilateur ! (center top réservé aux
+   photos de personnes des formations)
+   ═══════════════════════════════════════════ */
+.nos-chambres .formation-card .card-image img,
+.post-type-archive-hebergement .formation-card .card-image img {
+    object-position: center center;
+}
+
 /* ═══════════════════════════════════════════
    ✅ FIX HERO DESKTOP : même cadrage que mobile
    Photo dans une fenêtre 16/9 centrée (max 1200px)
