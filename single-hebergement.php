@@ -169,7 +169,7 @@ $url_whatsapp = 'https://wa.me/' . preg_replace( '/[^0-9]/', '', get_theme_mod( 
                                 <span class="info-label"><?php echo $svg['bed']; ?> Équipements</span>
                                 <div class="equipements-list">
                                     <?php
-                                    $equipements_clean = preg_split( '/[\s,]+/', $equipements );
+                                    $equipements_clean = preg_split( '/[,;\n\r]+/', $equipements );
                                     foreach ( $equipements_clean as $equip ) :
                                         if ( trim( $equip ) ) : ?>
                                             <span class="equipement-tag"><?php echo $svg['check']; ?> <?php echo esc_html( ucfirst( trim( $equip ) ) ); ?></span>
