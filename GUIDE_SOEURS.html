@@ -1,0 +1,1060 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Guide d'utilisation — Domaine Saint Joseph</title>
+<style>
+  :root {
+    --bleu: #1A5276;
+    --bleu-fonce: #0F2F49;
+    --or: #D4AC0D;
+    --or-clair: #F4E4A1;
+    --gris: #3A3A3A;
+    --gris-clair: #F8FAFC;
+    --gris-bord: #E5E9EF;
+    --rouge: #C0392B;
+    --vert: #27AE60;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  @page { size: A4; margin: 0; }
+  html, body {
+    background: #e8e8e8;
+    font-family: 'Georgia', 'Times New Roman', serif;
+    color: var(--gris);
+    line-height: 1.65;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* ═══ PAGE : HAUTEUR FIXE A4 = jamais de coupure ═══ */
+  .page {
+    width: 210mm;
+    height: 297mm;          /* ✅ fixe au lieu de min-height */
+    margin: 20px auto;
+    padding: 25mm 22mm;
+    background: white;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+    position: relative;
+    overflow: hidden;       /* ✅ rien ne déborde */
+    page-break-after: always;
+  }
+  .page:last-child { page-break-after: auto; }
+
+  /* ═══ PIED DE PAGE (filigrane élégant) ═══ */
+  .page::after {
+    content: 'Guide d\'utilisation — Domaine Saint Joseph';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 12mm;
+    padding: 0 22mm;
+    display: flex;
+    align-items: center;
+    border-top: 1px solid var(--gris-bord);
+    font-family: -apple-system, sans-serif;
+    font-size: 9px;
+    letter-spacing: 1px;
+    color: #9AA5B1;
+    text-transform: uppercase;
+  }
+  .couverture::after, .fin-page::after { display: none; }
+
+  .page-num {
+    position: absolute;
+    bottom: 3.8mm;
+    right: 22mm;
+    font-size: 10px;
+    color: #9AA5B1;
+    font-family: -apple-system, sans-serif;
+    z-index: 2;
+  }
+  .page-num::before { content: '— '; color: var(--or); font-weight: bold; }
+  .page-num::after { content: ' —'; color: var(--or); font-weight: bold; }
+
+  /* Ornements */
+  .ornement {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin: 20px 0;
+  }
+  .ornement::before, .ornement::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--or), transparent);
+  }
+  .ornement-diamond {
+    width: 8px;
+    height: 8px;
+    background: var(--or);
+    transform: rotate(45deg);
+  }
+
+  /* ═══ COUVERTURE (compacte = 1 seule page) ═══ */
+  .couverture {
+    padding: 0;
+    background: var(--bleu-fonce);
+    color: white;
+    display: flex;
+    flex-direction: column;
+  }
+  .couverture-top {
+    height: 148mm;              /* ✅ réduit (était 180mm) */
+    background: linear-gradient(135deg, var(--bleu) 0%, var(--bleu-fonce) 100%);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 0 30mm;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+  .couverture-top::before {
+    content: '';
+    position: absolute;
+    top: 20mm;
+    right: -30mm;
+    width: 200mm;
+    height: 200mm;
+    background: radial-gradient(circle, rgba(212, 172, 13, 0.15) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+  .croix-or {
+    width: 46px;
+    height: 46px;
+    margin-bottom: 18px;
+    position: relative;
+  }
+  .croix-or::before, .croix-or::after {
+    content: '';
+    position: absolute;
+    background: var(--or);
+    border-radius: 2px;
+  }
+  .croix-or::before { width: 4px; height: 100%; left: 50%; transform: translateX(-50%); }
+  .croix-or::after { height: 4px; width: 60%; top: 30%; left: 20%; }
+  .couverture-top h1 {
+    font-size: 50px;
+    font-weight: normal;
+    letter-spacing: 3px;
+    font-variant: small-caps;
+    margin-bottom: 6px;
+    position: relative;
+  }
+  .couverture-top .sous-titre {
+    font-size: 20px;
+    color: var(--or);
+    font-style: italic;
+    margin-bottom: 18px;
+    position: relative;
+  }
+  .couverture-top .ligne-or {
+    width: 80px;
+    height: 3px;
+    background: var(--or);
+    position: relative;
+  }
+  .couverture-bottom {
+    flex: 1;
+    background: white;
+    color: var(--gris);
+    padding: 10mm 28mm;         /* ✅ réduit */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+  }
+  .couverture-bottom::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 6px;
+    background: var(--or);
+  }
+  .couverture-bottom h2 {
+    font-size: 26px;
+    color: var(--bleu);
+    font-weight: normal;
+    font-variant: small-caps;
+    letter-spacing: 2px;
+    text-align: center;
+    margin-bottom: 12px;
+  }
+  .couverture-bottom .intro {
+    font-size: 13.5px;
+    text-align: center;
+    line-height: 1.7;
+    max-width: 140mm;
+    margin: 0 auto 16px;
+    font-style: italic;
+    color: #555;
+  }
+  .infos-card {
+    background: var(--gris-clair);
+    border-left: 5px solid var(--or);
+    padding: 12px 20px;
+    margin: 0 auto;
+    max-width: 150mm;
+  }
+  .infos-card p {
+    font-size: 12.5px;
+    margin: 4px 0;
+    font-family: -apple-system, sans-serif;
+  }
+  .infos-card strong {
+    color: var(--bleu);
+    display: inline-block;
+    width: 90px;
+  }
+  .footer-couv {
+    text-align: center;
+    margin-top: 14px;
+    font-style: italic;
+    color: #888;
+    font-size: 12px;
+  }
+  .version-badge {
+    position: absolute;
+    bottom: 8mm;
+    right: 12mm;
+    background: var(--or);
+    color: var(--bleu-fonce);
+    padding: 5px 14px;
+    border-radius: 20px;
+    font-size: 10px;
+    font-weight: bold;
+    font-family: sans-serif;
+    letter-spacing: 0.5px;
+  }
+
+  /* ═══ SOMMAIRE ═══ */
+  .sommaire { padding: 28mm 25mm 20mm; }
+  .sommaire-titre { text-align: center; margin-bottom: 8px; }
+  .sommaire-titre h1 {
+    font-size: 40px;
+    color: var(--bleu);
+    font-weight: normal;
+    font-variant: small-caps;
+    letter-spacing: 4px;
+  }
+  .sommaire ol {
+    list-style: none;
+    padding: 0;
+    counter-reset: chap;
+    margin-top: 8mm;
+  }
+  .sommaire li {
+    counter-increment: chap;
+    padding: 9px 0;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    border-bottom: 1px dotted var(--gris-bord);
+  }
+  .sommaire li::before {
+    content: counter(chap, decimal-leading-zero);
+    font-family: Georgia, serif;
+    font-size: 20px;
+    color: var(--or);
+    font-weight: bold;
+    width: 40px;
+    text-align: right;
+    flex-shrink: 0;
+  }
+  .sommaire a {
+    color: var(--bleu);
+    text-decoration: none;
+    font-size: 14.5px;
+    flex: 1;
+  }
+
+  /* ═══ CHAPITRES ═══ */
+  .chap-header {
+    margin: -25mm -22mm 12mm;
+    padding: 22mm 22mm 16mm;
+    background: linear-gradient(135deg, var(--bleu) 0%, var(--bleu-fonce) 100%);
+    color: white;
+    position: relative;
+    overflow: hidden;
+  }
+  .chap-header::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 5px;
+    background: var(--or);
+  }
+  .chap-num {
+    font-family: Georgia, serif;
+    font-size: 90px;
+    font-weight: bold;
+    color: rgba(212, 172, 13, 0.3);
+    line-height: 1;
+    position: absolute;
+    top: 16mm;
+    right: 18mm;
+    font-variant: small-caps;
+  }
+  .chap-label {
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: var(--or);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    font-family: sans-serif;
+  }
+  .chap-titre {
+    font-size: 30px;
+    font-weight: normal;
+    font-variant: small-caps;
+    letter-spacing: 1px;
+    line-height: 1.2;
+    position: relative;
+  }
+  h2 {
+    font-size: 20px;
+    color: var(--bleu);
+    font-weight: normal;
+    margin: 18px 0 10px;
+    padding-bottom: 6px;
+    border-bottom: 2px solid var(--or);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  h2::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    background: var(--or);
+    transform: rotate(45deg);
+    flex-shrink: 0;
+  }
+  h3 {
+    font-size: 15px;
+    color: var(--bleu);
+    margin: 14px 0 8px;
+    font-weight: bold;
+    font-variant: small-caps;
+    letter-spacing: 0.5px;
+  }
+  p {
+    font-size: 13px;
+    margin: 7px 0;
+    line-height: 1.65;
+  }
+  ul, ol { margin: 8px 0 8px 8px; padding-left: 22px; }
+  li {
+    margin: 4px 0;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+  li::marker { color: var(--or); }
+  strong { color: var(--bleu); }
+
+  /* Étapes numérotées */
+  ol.etapes {
+    counter-reset: etape;
+    list-style: none;
+    padding-left: 0;
+    margin: 12px 0;
+  }
+  ol.etapes > li {
+    counter-increment: etape;
+    margin: 12px 0;
+    padding-left: 46px;
+    position: relative;
+    min-height: 34px;
+  }
+  ol.etapes > li::before {
+    content: counter(etape);
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 32px;
+    height: 32px;
+    background: var(--or);
+    color: var(--bleu-fonce);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 14px;
+    font-family: Georgia, serif;
+    box-shadow: 0 2px 6px rgba(212, 172, 13, 0.4);
+  }
+
+  /* Encadrés */
+  .enc {
+    margin: 14px 0;
+    padding: 12px 18px;
+    border-radius: 4px;
+    border-left: 5px solid;
+    position: relative;
+  }
+  .enc-titre {
+    font-size: 13.5px;
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: -apple-system, sans-serif;
+  }
+  .enc-icon {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    flex-shrink: 0;
+  }
+  .enc p { margin: 3px 0; font-size: 12.5px; }
+  .enc-astuce { background: linear-gradient(135deg, #EEF5FA 0%, #F5F9FC 100%); border-color: var(--bleu); }
+  .enc-astuce .enc-titre { color: var(--bleu); }
+  .enc-astuce .enc-icon { background: var(--bleu); color: white; }
+  .enc-important { background: linear-gradient(135deg, #FDF2F2 0%, #FBF6F6 100%); border-color: var(--rouge); }
+  .enc-important .enc-titre { color: var(--rouge); }
+  .enc-important .enc-icon { background: var(--rouge); color: white; }
+  .enc-info { background: linear-gradient(135deg, #FBF6E3 0%, #FDF9ED 100%); border-color: var(--or); }
+  .enc-info .enc-titre { color: #8A6D00; }
+  .enc-info .enc-icon { background: var(--or); color: white; }
+  .enc-succes { background: linear-gradient(135deg, #EFF8F1 0%, #F5FBF6 100%); border-color: var(--vert); }
+  .enc-succes .enc-titre { color: var(--vert); }
+  .enc-succes .enc-icon { background: var(--vert); color: white; }
+
+  /* Tableaux */
+  table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin: 12px 0;
+    font-size: 12.5px;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(26, 82, 118, 0.08);
+    font-family: -apple-system, sans-serif;
+  }
+  thead tr { background: linear-gradient(135deg, var(--bleu) 0%, var(--bleu-fonce) 100%); }
+  th {
+    padding: 10px 14px;
+    text-align: left;
+    color: white;
+    font-weight: 600;
+    font-size: 11.5px;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+  }
+  td {
+    padding: 8px 14px;
+    border-bottom: 1px solid var(--gris-bord);
+    background: white;
+  }
+  tbody tr:nth-child(even) td { background: var(--gris-clair); }
+  tbody tr:last-child td { border-bottom: none; }
+  td:first-child { color: var(--bleu); font-weight: 600; }
+
+  /* Citation */
+  .citation {
+    background: linear-gradient(135deg, var(--or-clair) 0%, #FDF8E1 100%);
+    border-left: 5px solid var(--or);
+    padding: 16px 22px;
+    margin: 16px 0;
+    font-style: italic;
+    font-size: 13.5px;
+    line-height: 1.7;
+    position: relative;
+    border-radius: 0 8px 8px 0;
+  }
+  .citation::before {
+    content: '"';
+    position: absolute;
+    top: -10px;
+    left: 12px;
+    font-size: 60px;
+    color: var(--or);
+    font-family: Georgia, serif;
+    line-height: 1;
+    opacity: 0.5;
+  }
+
+  /* Page de fin */
+  .fin-page {
+    background: linear-gradient(135deg, var(--bleu) 0%, var(--bleu-fonce) 100%);
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 0 30mm;
+  }
+  .fin-page .grand-coeur { font-size: 80px; color: var(--or); margin-bottom: 30px; }
+  .fin-page h1 {
+    font-size: 42px;
+    font-weight: normal;
+    font-variant: small-caps;
+    letter-spacing: 3px;
+    margin-bottom: 25px;
+  }
+  .fin-page p {
+    font-size: 15px;
+    line-height: 1.8;
+    max-width: 140mm;
+    color: rgba(255,255,255,0.9);
+    margin: 10px 0;
+  }
+  .fin-page .benediction { margin-top: 40px; font-style: italic; color: var(--or); font-size: 18px; }
+  .fin-page .croix-fin { margin-top: 30px; width: 40px; height: 40px; position: relative; }
+  .fin-page .croix-fin::before, .fin-page .croix-fin::after { content: ''; position: absolute; background: var(--or); }
+  .fin-page .croix-fin::before { width: 3px; height: 100%; left: 50%; transform: translateX(-50%); }
+  .fin-page .croix-fin::after { height: 3px; width: 70%; top: 25%; left: 15%; }
+
+  /* Bouton impression */
+  .print-btn {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    background: var(--bleu);
+    color: white;
+    border: 3px solid var(--or);
+    padding: 14px 24px;
+    border-radius: 50px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 6px 20px rgba(26, 82, 118, 0.35);
+    font-size: 14px;
+    z-index: 999;
+    font-family: -apple-system, sans-serif;
+    transition: transform 0.2s;
+  }
+  .print-btn:hover { transform: translateY(-3px); }
+
+  /* Impression */
+  @media print {
+    html, body { background: white; }
+    .page {
+      margin: 0;
+      box-shadow: none;
+      page-break-after: always;
+    }
+    .page:last-child { page-break-after: auto; }
+    .print-btn { display: none; }
+    a { color: inherit !important; }
+  }
+</style>
+</head>
+<body>
+<button class="print-btn" onclick="window.print()">🖨️ Imprimer en PDF</button>
+
+<!-- ═══════════════ COUVERTURE ═══════════════ -->
+<div class="page couverture">
+  <div class="couverture-top">
+    <div class="croix-or"></div>
+    <h1>GUIDE</h1>
+    <div class="sous-titre">d'utilisation du site</div>
+    <div class="ligne-or"></div>
+  </div>
+  <div class="couverture-bottom">
+    <h2>Domaine Saint Joseph</h2>
+    <p class="intro">
+      Ce livret vous accompagne pas à pas dans la gestion quotidienne du site internet.<br>
+      Tous les textes et toutes les photos peuvent être modifiés facilement depuis
+      « Personnaliser », sans aucune connaissance technique.
+    </p>
+    <div class="infos-card">
+      <p><strong>Version :</strong> 2.0 — Septembre 2026</p>
+      <p><strong>Site :</strong> responsible-monkey-dc7bf8.instawp.site</p>
+      <p><strong>Support :</strong> ifbburkina@gmail.com</p>
+      <p><strong>WhatsApp :</strong> +226 76 61 94 57</p>
+    </div>
+    <div class="footer-couv">Pour les Sœurs Travailleuses Missionnaires de l'Immaculée</div>
+    <div class="version-badge">v2.0</div>
+  </div>
+</div>
+
+<!-- ═══════════════ SOMMAIRE ═══════════════ -->
+<div class="page sommaire">
+  <div class="sommaire-titre">
+    <h1>Sommaire</h1>
+  </div>
+  <div class="ornement"><div class="ornement-diamond"></div></div>
+  <ol>
+    <li><a href="#c1">Se connecter au site</a></li>
+    <li><a href="#c2">Découvrir le tableau de bord</a></li>
+    <li><a href="#c3">Ajouter une formation</a></li>
+    <li><a href="#c4">Ajouter un hébergement</a></li>
+    <li><a href="#c5">Ajouter une photo à la galerie</a></li>
+    <li><a href="#c6">Ajouter un plat au restaurant</a></li>
+    <li><a href="#c7">Ajouter un témoignage</a></li>
+    <li><a href="#c8">Personnaliser le site (Customizer)</a></li>
+    <li><a href="#c9">Gérer les widgets</a></li>
+    <li><a href="#c10">Médiathèque (images)</a></li>
+    <li><a href="#c11">Voir les messages reçus</a></li>
+    <li><a href="#c12">Astuces et dépannage</a></li>
+    <li><a href="#c13">Récapitulatif des actions courantes</a></li>
+  </ol>
+  <div class="page-num">2</div>
+</div>
+
+<!-- ═══════════════ CHAPITRE 1 ═══════════════ -->
+<div class="page" id="c1">
+  <div class="chap-header">
+    <div class="chap-num">01</div>
+    <div class="chap-label">Chapitre premier</div>
+    <div class="chap-titre">Se connecter au site</div>
+  </div>
+  <p>Pour accéder à l'administration du site, suivez ces étapes :</p>
+  <ol class="etapes">
+    <li>Ouvrez votre navigateur web (Chrome, Firefox ou Edge).</li>
+    <li>Dans la barre d'adresse, tapez :<br><strong>responsible-monkey-dc7bf8.instawp.site/wp-admin</strong></li>
+    <li>Saisissez votre <strong>nom d'utilisateur</strong> et votre <strong>mot de passe</strong>.</li>
+    <li>Cochez <strong>« Se souvenir de moi »</strong> pour ne pas avoir à vous reconnecter.</li>
+    <li>Cliquez sur <strong>« Se connecter »</strong>.</li>
+  </ol>
+  <div class="enc enc-astuce">
+    <div class="enc-titre"><span class="enc-icon">💡</span> Astuce</div>
+    <p>Si vous perdez votre mot de passe, cliquez sur <strong>« Mot de passe oublié ? »</strong> sur la page de connexion. Un email de réinitialisation vous sera envoyé.</p>
+  </div>
+  <div class="page-num">3</div>
+</div>
+
+<!-- ═══════════════ CHAPITRE 2 ═══════════════ -->
+<div class="page" id="c2">
+  <div class="chap-header">
+    <div class="chap-num">02</div>
+    <div class="chap-label">Chapitre deuxième</div>
+    <div class="chap-titre">Découvrir le tableau de bord</div>
+  </div>
+  <p>Une fois connectée, le tableau de bord vous donne un aperçu complet du site :</p>
+  <h2>Les statistiques</h2>
+  <ul>
+    <li>Nombre de formations publiées</li>
+    <li>Nombre d'hébergements</li>
+    <li>Nombre de photos dans la galerie</li>
+    <li>Nombre de témoignages</li>
+  </ul>
+  <h2>Les actions rapides</h2>
+  <p>Des boutons pour ajouter rapidement une formation, un hébergement, une photo, un plat au restaurant ou un témoignage.</p>
+  <h2>Les liens utiles</h2>
+  <ul>
+    <li>Voir et modifier les contenus existants</li>
+    <li>Personnaliser le site (couleurs, textes, photos)</li>
+    <li>Gérer les widgets</li>
+    <li>Consulter les messages reçus</li>
+    <li>Accéder à la médiathèque</li>
+  </ul>
+  <div class="page-num">4</div>
+</div>
+
+<!-- ═══════════════ CHAPITRE 3 ═══════════════ -->
+<div class="page" id="c3">
+  <div class="chap-header">
+    <div class="chap-num">03</div>
+    <div class="chap-label">Chapitre troisième</div>
+    <div class="chap-titre">Ajouter une formation</div>
+  </div>
+  <ol class="etapes">
+    <li>Cliquez sur <strong>« Ajouter une formation »</strong> dans les actions rapides, OU allez dans <strong>Formations → Ajouter</strong>.</li>
+    <li>Donnez un titre (ex. : « Formation en couture »).</li>
+    <li>Rédigez la description complète dans la grande zone de texte.</li>
+    <li>Remplissez les détails en bas de page.</li>
+    <li>Ajoutez une <strong>image mise en avant</strong> : cliquez sur « Image mise en avant » à droite.</li>
+    <li>Cliquez sur <strong>« Publier »</strong> en haut à droite.</li>
+  </ol>
+  <div class="enc enc-important">
+    <div class="enc-titre"><span class="enc-icon">!</span> Important</div>
+    <p>Si vous oubliez certains champs (durée, prix), un avertissement jaune apparaîtra. Cliquez sur « Compléter maintenant » pour corriger avant de publier.</p>
+  </div>
+  <h2>Champs à remplir</h2>
+  <table>
+    <thead><tr><th>Champ</th><th>Exemple</th></tr></thead>
+    <tbody>
+      <tr><td>Durée</td><td>6 mois</td></tr>
+      <tr><td>Prix</td><td>45 000 F CFA</td></tr>
+      <tr><td>Niveau</td><td>Débutant</td></tr>
+      <tr><td>Places</td><td>15</td></tr>
+      <tr><td>Formatrice</td><td>Sœur Marie</td></tr>
+      <tr><td>Horaires</td><td>Lundi-Vendredi 8h-12h</td></tr>
+    </tbody>
+  </table>
+  <div class="page-num">5</div>
+</div>
+
+<!-- ═══════════════ CHAPITRE 4 ═══════════════ -->
+<div class="page" id="c4">
+  <div class="chap-header">
+    <div class="chap-num">04</div>
+    <div class="chap-label">Chapitre quatrième</div>
+    <div class="chap-titre">Ajouter un hébergement</div>
+  </div>
+  <ol class="etapes">
+    <li>Allez dans <strong>Hébergements → Ajouter</strong>.</li>
+    <li>Donnez un titre (ex. : « Chambre Familiale »).</li>
+    <li>Rédigez la description.</li>
+    <li>Remplissez les détails : capacité, prix par nuit, équipements, disponibilité.</li>
+    <li>Ajoutez une photo mise en avant.</li>
+    <li>Cliquez sur <strong>« Publier »</strong>.</li>
+  </ol>
+  <div class="enc enc-info">
+    <div class="enc-titre"><span class="enc-icon">💡</span> Astuce équipements</div>
+    <p>Dans le champ « Équipements », séparez les éléments par des virgules : <em>Wi-Fi, Climatisation, TV</em></p>
+  </div>
+  <h2>Gérer les disponibilités</h2>
+  <p>Quand une chambre est réservée :</p>
+  <ol class="etapes">
+    <li>Allez dans <strong>« Hébergements »</strong>.</li>
+    <li>Cliquez sur la chambre concernée.</li>
+    <li>Changez la <strong>Disponibilité</strong> : Disponible / Sur réservation / Complet.</li>
+    <li>Cliquez sur <strong>« Mettre à jour »</strong>.</li>
+  </ol>
+  <div class="page-num">6</div>
+</div>
+
+<!-- ═══════════════ CHAPITRE 5 ═══════════════ -->
+<div class="page" id="c5">
+  <div class="chap-header">
+    <div class="chap-num">05</div>
+    <div class="chap-label">Chapitre cinquième</div>
+    <div class="chap-titre">Ajouter une photo à la galerie</div>
+  </div>
+  <ol class="etapes">
+    <li>Allez dans <strong>Galerie → Ajouter</strong>.</li>
+    <li>Donnez un titre (ex. : « Cérémonie de fin d'année »).</li>
+    <li>Ajoutez l'<strong>image mise en avant</strong>.</li>
+    <li>Choisissez une catégorie : Formations, Hébergement, Événements, Restaurant ou Vie communautaire.</li>
+    <li>Ajoutez éventuellement un extrait.</li>
+    <li>Cliquez sur <strong>« Publier »</strong>.</li>
+  </ol>
+  <div class="enc enc-astuce">
+    <div class="enc-titre"><span class="enc-icon">💡</span> Astuce photo</div>
+    <p>Utilisez des photos lumineuses, de bonne qualité, de préférence au format paysage. Taille idéale : <strong>moins de 200 Ko</strong>.</p>
+  </div>
+  <div class="page-num">7</div>
+</div>
+
+<!-- ═══════════════ CHAPITRE 6 ═══════════════ -->
+<div class="page" id="c6">
+  <div class="chap-header">
+    <div class="chap-num">06</div>
+    <div class="chap-label">Chapitre sixième</div>
+    <div class="chap-titre">Ajouter un plat au restaurant</div>
+  </div>
+  <ol class="etapes">
+    <li>Allez dans <strong>Menus Restaurant → Ajouter</strong>.</li>
+    <li>Donnez un titre (ex. : « Poulet DG »).</li>
+    <li>Rédigez la description.</li>
+    <li>Remplissez les détails : prix, temps de préparation, ingrédients, allergènes.</li>
+    <li>Ajoutez une <strong>belle photo</strong> (très important pour donner envie !).</li>
+    <li>Cliquez sur <strong>« Publier »</strong>.</li>
+  </ol>
+  <div class="page-num">8</div>
+</div>
+
+<!-- ═══════════════ CHAPITRE 7 ═══════════════ -->
+<div class="page" id="c7">
+  <div class="chap-header">
+    <div class="chap-num">07</div>
+    <div class="chap-label">Chapitre septième</div>
+    <div class="chap-titre">Ajouter un témoignage</div>
+  </div>
+  <ol class="etapes">
+    <li>Allez dans <strong>Témoignages → Ajouter</strong>.</li>
+    <li>Donnez un titre = le nom de la personne (ex. : « Marie K. »).</li>
+    <li>Rédigez le témoignage complet.</li>
+    <li>Cliquez sur <strong>« Publier »</strong>.</li>
+  </ol>
+  <div class="citation">
+    Les témoignages renforcent la confiance des visiteurs. Demandez toujours l'autorisation aux personnes avant de publier leur témoignage sur le site.
+  </div>
+  <div class="page-num">9</div>
+</div>
+
+<!-- ═══════════════ CHAPITRE 8 - PARTIE 1 ═══════════════ -->
+<div class="page" id="c8">
+  <div class="chap-header">
+    <div class="chap-num">08</div>
+    <div class="chap-label">Chapitre huitième</div>
+    <div class="chap-titre">Personnaliser le site</div>
+  </div>
+  <p>Le <strong>Customizer</strong> est l'endroit où vous modifiez <strong>tous les textes et toutes les photos</strong> du site, sans toucher au code. Les changements apparaissent en direct dans l'aperçu à droite.</p>
+  <div class="enc enc-important">
+    <div class="enc-titre"><span class="enc-icon">!</span> Règle d'or</div>
+    <p>À la fin de chaque modification, cliquez sur le bouton bleu <strong>« Publier »</strong> en haut à droite. Sans cela, <strong>rien</strong> n'est enregistré sur le site.</p>
+  </div>
+  <h2>Ouvrir le Customizer</h2>
+  <ol class="etapes">
+    <li>Depuis le tableau de bord : cliquez sur <strong>« Personnaliser »</strong>.</li>
+    <li>Depuis le site : barre noire en haut → <strong>« Personnaliser »</strong>.</li>
+    <li>OU : <strong>Apparence → Personnaliser</strong>.</li>
+  </ol>
+  <h2>Page ACCUEIL</h2>
+  <table>
+    <thead><tr><th>Section</th><th>Ce que vous pouvez modifier</th></tr></thead>
+    <tbody>
+      <tr><td>Hero Slider</td><td>Diaporama : jusqu'à 5 photos avec titre, sous-titre et badge</td></tr>
+      <tr><td>Statistiques Hero</td><td>Les 3 chiffres (année, filières, %)</td></tr>
+      <tr><td>Histoire</td><td>Texte court de « Notre histoire »</td></tr>
+      <tr><td>Appel à l'aide</td><td>Blocs parrainage et construction</td></tr>
+    </tbody>
+  </table>
+  <h2>Page FORMATION</h2>
+  <table>
+    <thead><tr><th>Section</th><th>Ce que vous pouvez modifier</th></tr></thead>
+    <tbody>
+      <tr><td>Hero - Page Formation</td><td>Bandeau : badge, titre, sous-titre, photo de fond</td></tr>
+    </tbody>
+  </table>
+  <div class="page-num">10</div>
+</div>
+
+<!-- ═══════════════ CHAPITRE 8 - PARTIE 2 ═══════════════ -->
+<div class="page">
+  <div class="chap-header">
+    <div class="chap-num">08</div>
+    <div class="chap-label">Chapitre huitième (suite)</div>
+    <div class="chap-titre">Maison d'Accueil & À propos</div>
+  </div>
+  <h2>Page MAISON D'ACCUEIL</h2>
+  <table>
+    <thead><tr><th>Section</th><th>Ce que vous pouvez modifier</th></tr></thead>
+    <tbody>
+      <tr><td>Hero Maison d'Accueil</td><td>Bandeau : badge, titre, sous-titre, photo</td></tr>
+      <tr><td>Maison d'Accueil — Présentation</td><td>Titre, les 3 paragraphes et la photo</td></tr>
+      <tr><td>Salles & Tarifs</td><td>Photos, capacités, tarifs, services, horaires, contact</td></tr>
+    </tbody>
+  </table>
+  <div class="enc enc-info">
+    <div class="enc-titre"><span class="enc-icon">💡</span> Exemple — changer un tarif</div>
+    <p>1. Ouvrez « Salles & Tarifs »<br>
+    2. Modifiez par ex. « Salle 1 — Prix / jour (climatisée) »<br>
+    3. Cliquez sur « Publier »</p>
+  </div>
+  <h2>Page À PROPOS</h2>
+  <table>
+    <thead><tr><th>Section</th><th>Ce que vous pouvez modifier</th></tr></thead>
+    <tbody>
+      <tr><td>Hero À propos</td><td>Bandeau : badge, titre, sous-titre, photo</td></tr>
+      <tr><td>À propos — Notre Histoire</td><td>Titre, 4 paragraphes, phrase « Accompagner », photo</td></tr>
+      <tr><td>À propos — Notre Mission</td><td>Badge, titre et citation centrale</td></tr>
+      <tr><td>Mission - Page À propos</td><td>Les 3 cartes : Former, Accueillir, Accompagner</td></tr>
+      <tr><td>À propos — Notre Équipe</td><td>Jusqu'à 8 membres activables + photos</td></tr>
+    </tbody>
+  </table>
+  <div class="page-num">11</div>
+</div>
+
+<!-- ═══════════════ CHAPITRE 8 - PARTIE 3 (ÉQUIPE) ═══════════════ -->
+<div class="page">
+  <div class="chap-header">
+    <div class="chap-num">08</div>
+    <div class="chap-label">Chapitre huitième (suite)</div>
+    <div class="chap-titre">Gérer l'équipe</div>
+  </div>
+  <h2>➕ Ajouter un membre à l'équipe</h2>
+  <ol class="etapes">
+    <li>Ouvrez <strong>« À propos — Notre Équipe »</strong>.</li>
+    <li>Descendez jusqu'au premier membre vide (ex. « Membre 4 »).</li>
+    <li>Cochez la case <strong>« — Membre 4 : Afficher »</strong>.</li>
+    <li>Remplissez : Nom, Fonction, Description.</li>
+    <li>Ajoutez sa photo via <strong>« Membre 4 — Photo »</strong>.</li>
+    <li>Cliquez sur <strong>« Publier »</strong>.</li>
+  </ol>
+  <h2>➖ Retirer un membre</h2>
+  <p>Décochez simplement la case <strong>« — Membre X : Afficher »</strong> puis cliquez sur « Publier ». Rien n'est supprimé : le membre est juste masqué. Recochez la case pour le faire réapparaître.</p>
+  <h2>🖼️ Changer ou supprimer une photo</h2>
+  <p>Cliquez sur l'image dans le Customizer, puis <strong>« Changer l'image »</strong> pour remplacer, ou <strong>« Retirer »</strong> pour enlever. Cliquez sur « Publier ».</p>
+  <div class="enc enc-important">
+    <div class="enc-titre"><span class="enc-icon">!</span> Section à NE PAS utiliser</div>
+    <p><strong>« Équipe - Page À propos »</strong> (sans « À propos — » au début) est une ancienne section. Ce que vous y écrivez <strong>n'apparaît pas</strong> sur le site. Utilisez toujours <strong>« À propos — Notre Équipe »</strong>.</p>
+  </div>
+  <div class="page-num">12</div>
+</div>
+
+<!-- ═══════════════ CHAPITRE 8 - PARTIE 4 (AUTRES PAGES) ═══════════════ -->
+<div class="page">
+  <div class="chap-header">
+    <div class="chap-num">08</div>
+    <div class="chap-label">Chapitre huitième (suite)</div>
+    <div class="chap-titre">Autres pages & réglages</div>
+  </div>
+  <h2>Page RESTAURANT</h2>
+  <table>
+    <thead><tr><th>Section</th><th>Ce que vous pouvez modifier</th></tr></thead>
+    <tbody>
+      <tr><td>Hero Restaurant</td><td>Bandeau : badge, titre, sous-titre, photo</td></tr>
+      <tr><td>Horaires Restaurant</td><td>Heures du petit-déjeuner, déjeuner, dîner</td></tr>
+    </tbody>
+  </table>
+  <h2>Page NOUS SOUTENIR</h2>
+  <table>
+    <thead><tr><th>Section</th><th>Ce que vous pouvez modifier</th></tr></thead>
+    <tbody>
+      <tr><td>Hero Nous soutenir</td><td>Bandeau : badge, titre, sous-titre, photo</td></tr>
+      <tr><td>Contenu</td><td>Besoin urgent, montants, parrainage, CTA final</td></tr>
+    </tbody>
+  </table>
+  <h2>Réglages GÉNÉRAUX (tout le site)</h2>
+  <table>
+    <thead><tr><th>Section</th><th>Ce que vous pouvez modifier</th></tr></thead>
+    <tbody>
+      <tr><td>Contact & WhatsApp</td><td>Numéro WhatsApp, téléphone, email (footer + boutons)</td></tr>
+      <tr><td>Couleurs</td><td>Bleu principal + or (alerte si contraste insuffisant)</td></tr>
+      <tr><td>Bandeau d'urgence</td><td>Messages défilants, vitesse, couleur, bouton</td></tr>
+      <tr><td>Appel à l'action</td><td>Titre, texte et lien du grand bandeau</td></tr>
+    </tbody>
+  </table>
+  <div class="page-num">13</div>
+</div>
+
+<!-- ═══════════════ CHAPITRE 9 ═══════════════ -->
+<div class="page" id="c9">
+  <div class="chap-header">
+    <div class="chap-num">09</div>
+    <div class="chap-label">Chapitre neuvième</div>
+    <div class="chap-titre">Gérer les widgets</div>
+  </div>
+  <ol class="etapes">
+    <li>Allez dans <strong>Apparence → Widgets</strong>.</li>
+    <li>Choisissez la zone : <strong>Zone Hero</strong> ou <strong>Pied de page</strong> (3 colonnes).</li>
+    <li>Cliquez sur le widget à modifier.</li>
+    <li>Changez les textes, images ou liens.</li>
+    <li>Cliquez sur <strong>« Mettre à jour »</strong>.</li>
+  </ol>
+  <div class="page-num">14</div>
+</div>
+
+<!-- ═══════════════ CHAPITRE 10 ═══════════════ -->
+<div class="page" id="c10">
+  <div class="chap-header">
+    <div class="chap-num">10</div>
+    <div class="chap-label">Chapitre dixième</div>
+    <div class="chap-titre">Médiathèque (images)</div>
+  </div>
+  <p>La médiathèque contient toutes les images du site.</p>
+  <h2>Ajouter une image</h2>
+  <ol class="etapes">
+    <li>Allez dans <strong>Médias → Bibliothèque</strong>.</li>
+    <li>Cliquez sur <strong>« Ajouter »</strong> en haut.</li>
+    <li>Glissez-déposez vos images OU cliquez sur « Sélectionner des fichiers ».</li>
+    <li>Vos images sont maintenant disponibles partout sur le site.</li>
+  </ol>
+  <div class="enc enc-astuce">
+    <div class="enc-titre"><span class="enc-icon">💡</span> Bonnes pratiques</div>
+    <p>• Format : <strong>JPG ou WebP</strong><br>
+    • Taille : <strong>moins de 200 Ko</strong> (important pour la 3G)<br>
+    • Noms clairs : <em>ceremonie-2026.jpg</em><br>
+    • Format <strong>paysage</strong> pour les photos de sections</p>
+  </div>
+  <div class="page-num">15</div>
+</div>
+
+<!-- ═══════════════ CHAPITRE 11 ═══════════════ -->
+<div class="page" id="c11">
+  <div class="chap-header">
+    <div class="chap-num">11</div>
+    <div class="chap-label">Chapitre onzième</div>
+    <div class="chap-titre">Voir les messages reçus</div>
+  </div>
+  <p>Tous les messages envoyés via les formulaires arrivent ici :</p>
+  <ul>
+    <li>Formulaire de contact</li>
+    <li>Réservations d'hébergement</li>
+    <li>Réservations de restaurant</li>
+  </ul>
+  <p>Chaque message contient : le nom de la personne, son email ou téléphone, et son message. Utilisez ces coordonnées pour répondre par email ou WhatsApp.</p>
+  <div class="enc enc-info">
+    <div class="enc-titre"><span class="enc-icon">💡</span> Double réception</div>
+    <p>Les messages arrivent <strong>également</strong> par email sur <em>centredsj@gmail.com</em>. Pensez à vérifier ce dossier.</p>
+  </div>
+  <div class="page-num">16</div>
+</div>
+
+<!-- ═══════════════ CHAPITRE 12 ═══════════════ -->
+<div class="page" id="c12">
+  <div class="chap-header">
+    <div class="chap-num">12</div>
+    <div class="chap-label">Chapitre douzième</div>
+    <div class="chap-titre">Astuces et dépannage</div>
+  </div>
+  <h2>Le site ne montre pas mes modifications ?</h2>
+  <ol class="etapes">
+    <li>Vérifiez que vous avez bien cliqué sur <strong>« Publier »</strong> dans le Customizer.</li>
+    <li>Videz le cache : <strong>Ctrl + F5</strong> (Windows) ou <strong>Cmd + Shift + R</strong> (Mac).</li>
+    <li>Sur téléphone : ouvrez une <strong>fenêtre privée</strong>.</li>
+  </ol>
+  <h2>Mon image ne s'affiche pas ?</h2>
+  <ol class="etapes">
+    <li>Vérifiez qu'elle est bien en <strong>« Image mise en avant »</strong>.</li>
+    <li>Vérifiez que le fichier fait moins de 200 Ko.</li>
+  </ol>
+  <h2>Une page donne une erreur 404 ?</h2>
+  <ol class="etapes">
+    <li>Allez dans <strong>Réglages → Permaliens</strong>.</li>
+    <li>Cliquez sur <strong>« Enregistrer les modifications »</strong> (sans rien changer).</li>
+  </ol>
+  <h2>Je ne reçois pas les emails ?</h2>
+  <ul>
+    <li>Vérifiez votre dossier <strong>Spam</strong>.</li>
+    <li>Contactez le support technique.</li>
+  </ul>
+  <div class="enc enc-info">
+    <div class="enc-titre"><span class="enc-icon">🆘</span> Besoin d'aide ?</div>
+    <p>Contactez le support technique :<br>
+    📧 Email : <strong>ifbburkina@gmail.com</strong><br>
+    💬 WhatsApp : <strong>+226 76 61 94 57</strong></p>
+  </div>
+  <div class="page-num">17</div>
+</div>
+
+<!-- ═══════════════ CHAPITRE 13 ═══════════════ -->
+<div class="page" id="c13">
+  <div class="chap-header">
+    <div class="chap-num">13</div>
+    <div class="chap-label">Chapitre treizième</div>
+    <div class="chap-titre">Récapitulatif des actions</div>
+  </div>
+  <p>Tableau récapitulatif des actions les plus fréquentes :</p>
+  <table>
+    <thead><tr><th>Action</th><th>Où cliquer</th></tr></thead>
+    <tbody>
+      <tr><td>Ajouter une formation</td><td>Actions rapides → Formation</td></tr>
+      <tr><td>Ajouter un hébergement</td><td>Actions rapides → Hébergement</td></tr>
+      <tr><td>Ajouter une photo</td><td>Actions rapides → Photo</td></tr>
+      <tr><td>Ajouter un plat</td><td>Actions rapides → Plat</td></tr>
+      <tr><td>Ajouter un témoignage</td><td>Actions rapides → Témoignage</td></tr>
+      <tr><td>Changer photos du diaporama</td><td>Personnaliser → Hero Slider</td></tr>
+      <tr><td>Changer « Notre histoire »</td><td>Personnaliser → Histoire - Page Accueil</td></tr>
+      <tr><td>Changer « Accueil et Hébergement »</td><td>Personnaliser → Maison d'Accueil — Présentation</td></tr>
+      <tr><td>Changer tarifs des salles</td><td>Personnaliser → Salles & Tarifs</td></tr>
+      <tr><td>Changer histoire À propos</td><td>Personnaliser → À propos — Notre Histoire</td></tr>
+      <tr><td>Changer citation de mission</td><td>Personnaliser → À propos — Notre Mission</td></tr>
+      <tr><td>Ajouter / retirer un membre</td><td>Personnaliser → À propos — Notre Équipe</td></tr>
+      <tr><td>Changer horaires restaurant</td><td>Personnaliser → Horaires Restaurant</td></tr>
+      <tr><td>Changer WhatsApp / téléphone</td><td>Personnaliser → Contact & WhatsApp</td></tr>
+      <tr><td>Activer bandeau défilant</td><td>Personnaliser → Bandeau d'urgence</td></tr>
+      <tr><td>Changer les couleurs</td><td>Personnaliser → Couleurs</td></tr>
+      <tr><td>Voir les messages</td><td>Tableau de bord → Messages</td></tr>
+    </tbody>
+  </table>
+  <div class="page-num">18</div>
+</div>
+
+<!-- ═══════════════ PAGE DE FIN ═══════════════ -->
+<div class="page fin-page">
+  <div class="grand-coeur">❤</div>
+  <h1>Merci</h1>
+  <p>Ce site est un outil précieux pour la mission du <strong style="color: var(--or);">Domaine Saint Joseph</strong>.</p>
+  <p>Votre travail quotidien permet de <strong style="color: var(--or);">former davantage de jeunes filles</strong>, d'<strong style="color: var(--or);">accueillir plus de visiteurs</strong> et de <strong style="color: var(--or);">faire connaître votre belle mission</strong>.</p>
+  <p class="benediction">Que Dieu vous bénisse !</p>
+  <div class="croix-fin"></div>
+</div>
+
+</body>
+</html>
